@@ -198,8 +198,8 @@ function DevBg() {
                 <span className="text-[#3a3530] text-[9px] font-mono w-3 shrink-0 text-right">{i + 1}</span>
                 <span
                   className={`text-[9px] font-mono leading-relaxed ${line.text.startsWith('//') ? 'text-[#5a5550]' :
-                      line.text.startsWith('const') || line.text.startsWith('await') ? 'text-[#C9A84C]/80' :
-                        'text-[#F5F0E8]/60'
+                    line.text.startsWith('const') || line.text.startsWith('await') ? 'text-[#C9A84C]/80' :
+                      'text-[#F5F0E8]/60'
                     }`}
                   style={{ paddingLeft: `${line.indent * 12}px` }}
                 >
@@ -240,8 +240,8 @@ function DevBg() {
                 <span className="text-[#2a2a2a] text-[11px] font-mono w-4 shrink-0 text-right">{i + 1}</span>
                 <span
                   className={`text-[11px] font-mono leading-relaxed ${line.text.startsWith('//') ? 'text-[#5a5550]' :
-                      line.text.startsWith('const') || line.text.startsWith('await') ? 'text-[#C9A84C]' :
-                        'text-[#F5F0E8]/70'
+                    line.text.startsWith('const') || line.text.startsWith('await') ? 'text-[#C9A84C]' :
+                      'text-[#F5F0E8]/70'
                     }`}
                   style={{ paddingLeft: `${line.indent * 16}px` }}
                 >
@@ -490,7 +490,7 @@ function HomeBg() {
     { o: 78, c: 95, h: 100, l: 76, bull: true },
     { o: 95, c: 88, h: 102, l: 84, bull: false },
     { o: 88, c: 108, h: 114, l: 86, bull: true },
-    { o: 108, c: 98, h: 115, h2: 95, bull: false },
+    { o: 108, c: 98, h: 115, l: 95, bull: false },
     { o: 98, c: 118, h: 124, l: 96, bull: true },
     { o: 118, c: 112, h: 126, l: 108, bull: false },
     { o: 112, c: 130, h: 136, l: 110, bull: true },
@@ -538,7 +538,7 @@ function HomeBg() {
           const bodyBot = padding.top + (maxH - Math.min(c.o, c.c)) * scale
           const bodyH = Math.max(bodyBot - bodyTop, 3)
           const wickTop = padding.top + (maxH - c.h) * scale
-          const wickBot = padding.top + (maxH - c.l) * scale
+          const wickBot = padding.top + (maxH - (c.l ?? c.o - 5)) * scale
 
           return (
             <g key={i}>
@@ -723,7 +723,7 @@ export default function PageHero({
         </motion.div>
 
         {/* Title */}
-        <AnimatedTitle line1={titleLine1} line2={titleLine2} accent={titleAccent} />
+        <AnimatedTitle line1={titleLine1} line2={titleLine2} accent={titleAccent as 'line1' | 'line2'} />
 
         {/* Description */}
         <motion.p className="text-[#5a5550] text-base md:text-lg max-w-xl leading-relaxed mb-10"
