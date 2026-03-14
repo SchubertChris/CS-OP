@@ -347,4 +347,4 @@ Einnahmen generieren durch Merch-Shop, Kurse und Beratungsangebote.
 ---
 
 *Roadmap erstellt für CandleScope.de · Chris Schubert*  
-*Stack: React + Vite + TS · NestJS · PostgreSQL · IONOS VPS*
+*Stack: React + Vite + TS · NestJS · PostgreSQL · IONOS VPS*# CS-OP
