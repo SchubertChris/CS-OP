@@ -1,60 +1,72 @@
+/* ============================================================
+   CandleScope — Impressum
+   src/pages/ImpressumPage.tsx
+   ============================================================ */
+import { SectionWrapper, GoldDivider, HighlightLine } from '../components/ui'
+
 export default function ImpressumPage() {
   return (
-    <section className="min-h-screen pt-32 pb-24 px-8 md:px-16 lg:px-24">
-      <div className="max-w-2xl mx-auto">
-        <p className="text-[11px] tracking-[0.2em] uppercase text-[#C9A84C] mb-4">
-          Rechtliches
-        </p>
-        <h1 className="font-display text-4xl md:text-5xl text-[#F5F0E8] tracking-tight mb-12">
-          Impressum
-        </h1>
+    <>
+      <div className="pt-32 px-8 md:px-16 lg:px-24 pb-10">
+        <p className="font-mono text-[11px] tracking-[0.2em] text-[#C9A84C]/60 uppercase mb-4">Rechtliches</p>
+        <h1 className="font-display text-4xl md:text-5xl text-[#F5F0E8] tracking-tight">Impressum</h1>
+      </div>
 
-        <div className="flex flex-col gap-10 text-sm text-[#5a5550] leading-relaxed">
+      <SectionWrapper maxWidth="md" reveal={false}>
+        <div className="flex flex-col gap-8 text-[#9A9590] text-sm leading-relaxed">
 
-          <div className="flex flex-col gap-2">
-            <span className="text-[10px] tracking-[0.16em] uppercase text-[#3a3530]">Angaben gemäß § 5 TMG</span>
-            <p className="text-[#9A9590]">
-              Chris Schubert<br />
-              CandleScope<br />
-              [Straße & Hausnummer]<br />
-              [PLZ] [Stadt]<br />
-              Deutschland
-            </p>
+          <div>
+            <p className="font-mono text-[11px] tracking-[0.16em] text-[#C9A84C]/60 uppercase mb-3">Angaben gemäß § 5 TMG</p>
+            <div className="flex flex-col gap-1">
+              {/* TODO: echte Daten eintragen */}
+              <p className="text-[#F5F0E8]">Chris Schubert</p>
+              <p>Musterstraße 1 {/* TODO */}</p>
+              <p>12345 Musterstadt {/* TODO */}</p>
+              <p>Deutschland</p>
+            </div>
           </div>
 
-          <div className="flex flex-col gap-2">
-            <span className="text-[10px] tracking-[0.16em] uppercase text-[#3a3530]">Kontakt</span>
-            <p className="text-[#9A9590]">
-              E-Mail: hello@candlescope.de<br />
-              Web: candlescope.de
-            </p>
+          <GoldDivider variant="fade" />
+
+          <div>
+            <p className="font-mono text-[11px] tracking-[0.16em] text-[#C9A84C]/60 uppercase mb-3">Kontakt</p>
+            <div className="flex flex-col gap-1">
+              <p>E-Mail: <a href="mailto:hello@candlescope.de" className="text-[#C9A84C] hover:text-[#E8C56D] transition-colors">hello@candlescope.de</a></p>
+              <p>Website: <a href="https://candlescope.de" className="text-[#C9A84C] hover:text-[#E8C56D] transition-colors">candlescope.de</a></p>
+            </div>
           </div>
 
-          <div className="flex flex-col gap-2">
-            <span className="text-[10px] tracking-[0.16em] uppercase text-[#3a3530]">Haftungsausschluss</span>
+          <GoldDivider variant="fade" />
+
+          <div>
+            <p className="font-mono text-[11px] tracking-[0.16em] text-[#C9A84C]/60 uppercase mb-3">Haftungsausschluss</p>
             <p>
-              Alle Inhalte dieser Website, insbesondere Finance- und Trading-bezogene
-              Inhalte, stellen keine Anlageberatung dar. Es handelt sich um persönliche
-              Meinungen und Informationen ohne Gewähr. Investitionsentscheidungen
-              erfolgen auf eigene Verantwortung.
+              Die Inhalte dieser Website wurden mit größtmöglicher Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit
+              und Aktualität der Inhalte kann keine Gewähr übernommen werden.
             </p>
           </div>
 
-          <div className="flex flex-col gap-2">
-            <span className="text-[10px] tracking-[0.16em] uppercase text-[#3a3530]">Urheberrecht</span>
+          <div>
+            <p className="font-mono text-[11px] tracking-[0.16em] text-[#C9A84C]/60 uppercase mb-3">Finanz-Disclaimer</p>
+            <HighlightLine>
+              Alle Inhalte zu Finanzen, Trading und Kryptowährungen stellen keine Anlageberatung dar.
+              Es handelt sich ausschließlich um persönliche Meinungen. Keine BaFin-Zulassung vorhanden.
+              Investitionen sind mit Risiken verbunden.
+            </HighlightLine>
+          </div>
+
+          <div>
+            <p className="font-mono text-[11px] tracking-[0.16em] text-[#C9A84C]/60 uppercase mb-3">Urheberrecht</p>
             <p>
-              Die durch den Seitenbetreiber erstellten Inhalte und Werke auf diesen
-              Seiten unterliegen dem deutschen Urheberrecht. Die Vervielfältigung,
-              Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der
-              Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung des
-              jeweiligen Autors bzw. Erstellers.
+              Die durch den Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem
+              deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der
+              Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung
+              des jeweiligen Autors bzw. Erstellers.
             </p>
           </div>
 
         </div>
-
-        <div className="mt-16 h-px w-24 bg-gradient-to-r from-[#C9A84C] to-transparent" />
-      </div>
-    </section>
+      </SectionWrapper>
+    </>
   )
 }

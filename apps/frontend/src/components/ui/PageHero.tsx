@@ -20,7 +20,7 @@ const CHAR_VARIANTS = {
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
-    transition: { delay: i * 0.025, duration: 0.55, ease: [0.22, 1, 0.36, 1] },
+    transition: { delay: i * 0.025, duration: 0.55, ease: 'easeOut' as const },
   }),
 }
 
@@ -478,181 +478,223 @@ function ContactBg() {
     </>
   )
 }
+/* ============================================================
+   In PageHero.tsx:
+   Suche:  function HomeBg() {
+   Ersetze alles bis zum nächsten: function FinanceBg()
+   durch diesen Code:
+   ============================================================ */
 
-/* ── Home: Candlestick chart (passt zu CandleScope!) ───── */
 function HomeBg() {
-  // Realistic candlestick data: [open, close, high, low, bullish]
   const candles = [
-    { o: 60, c: 75, h: 80, l: 55, bull: true },
-    { o: 75, c: 68, h: 82, l: 64, bull: false },
-    { o: 68, c: 85, h: 90, l: 65, bull: true },
-    { o: 85, c: 78, h: 92, l: 74, bull: false },
-    { o: 78, c: 95, h: 100, l: 76, bull: true },
-    { o: 95, c: 88, h: 102, l: 84, bull: false },
-    { o: 88, c: 108, h: 114, l: 86, bull: true },
-    { o: 108, c: 98, h: 115, l: 95, bull: false },
-    { o: 98, c: 118, h: 124, l: 96, bull: true },
-    { o: 118, c: 112, h: 126, l: 108, bull: false },
-    { o: 112, c: 130, h: 136, l: 110, bull: true },
-    { o: 130, c: 122, h: 138, l: 118, bull: false },
-    { o: 122, c: 142, h: 148, l: 120, bull: true },
+    { o: 82, c: 90, h: 93, l: 79, bull: true },
+    { o: 90, c: 86, h: 93, l: 83, bull: false },
+    { o: 86, c: 94, h: 97, l: 84, bull: true },
+    { o: 94, c: 100, h: 103, l: 91, bull: true },
+    { o: 100, c: 95, h: 104, l: 93, bull: false },
+    { o: 95, c: 105, h: 108, l: 93, bull: true },
+    { o: 105, c: 99, h: 109, l: 97, bull: false },
+    { o: 99, c: 93, h: 102, l: 90, bull: false },
+    { o: 93, c: 97, h: 100, l: 91, bull: true },
+    { o: 97, c: 91, h: 100, l: 88, bull: false },
+    { o: 91, c: 100, h: 103, l: 89, bull: true },
+    { o: 100, c: 107, h: 110, l: 98, bull: true },
+    { o: 107, c: 103, h: 111, l: 101, bull: false },
+    { o: 103, c: 111, h: 115, l: 101, bull: true },
+    { o: 111, c: 116, h: 119, l: 109, bull: true },
+    { o: 116, c: 111, h: 120, l: 109, bull: false },
+    { o: 111, c: 118, h: 122, l: 109, bull: true },
+    { o: 118, c: 113, h: 122, l: 111, bull: false },
+    { o: 113, c: 105, h: 116, l: 102, bull: false },
+    { o: 105, c: 109, h: 112, l: 103, bull: true },
+    { o: 109, c: 103, h: 112, l: 100, bull: false },
+    { o: 103, c: 112, h: 115, l: 101, bull: true },
+    { o: 112, c: 118, h: 122, l: 110, bull: true },
+    { o: 118, c: 114, h: 122, l: 112, bull: false },
+    { o: 114, c: 123, h: 127, l: 112, bull: true },
+    { o: 123, c: 119, h: 127, l: 117, bull: false },
+    { o: 119, c: 128, h: 132, l: 117, bull: true },
+    { o: 128, c: 124, h: 132, l: 122, bull: false },
+    { o: 124, c: 133, h: 137, l: 122, bull: true },
   ]
 
   const W = 1200
   const H = 360
-  const padding = { left: 80, right: 80, top: 40, bottom: 40 }
-  const chartH = H - padding.top - padding.bottom
-  const candleW = 28
-  const spacing = (W - padding.left - padding.right) / candles.length
-  const maxH = 155
-  const scale = chartH / maxH
+  const PAD = { l: 40, r: 40, t: 28, b: 28 }
+  const chartH = H - PAD.t - PAD.b
+  const candleW = 13
+  const spacing = (W - PAD.l - PAD.r) / candles.length
+  const maxP = 142, minP = 72
+  const toY = (p: number) => PAD.t + chartH - ((p - minP) / (maxP - minP)) * chartH
+
+  const midPoints = candles.map((c, i) => ({
+    x: PAD.l + i * spacing + spacing / 2,
+    y: toY((c.o + c.c) / 2),
+  }))
+
+  const areaPath =
+    `M ${midPoints[0].x},${midPoints[0].y} ` +
+    midPoints.slice(1).map(p => `L ${p.x},${p.y}`).join(' ') +
+    ` L ${midPoints[midPoints.length - 1].x},${H} L ${midPoints[0].x},${H} Z`
+
+  const linePath =
+    `M ${midPoints[0].x},${midPoints[0].y} ` +
+    midPoints.slice(1).map(p => `L ${p.x},${p.y}`).join(' ')
 
   return (
     <>
-      {/* Mobile: compact candlestick */}
+      {/* ── Mobile ─────────────────────────────────────── */}
       <svg className="absolute top-14 left-0 pointer-events-none block md:hidden"
-        width="100vw" height="220"
-        viewBox={`0 0 ${W} 260`} preserveAspectRatio="xMidYMin meet">
+        width="100vw" height="220" viewBox={`0 0 ${W} 260`}
+        preserveAspectRatio="xMidYMin meet">
         <defs>
-          <linearGradient id="mBullGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#C9A84C" stopOpacity="0.9" />
-            <stop offset="100%" stopColor="#C9A84C" stopOpacity="0.5" />
+          <linearGradient id="mBull" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#C9A84C" stopOpacity="0.85" />
+            <stop offset="100%" stopColor="#C9A84C" stopOpacity="0.35" />
           </linearGradient>
-          <linearGradient id="mBearGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#C9A84C" stopOpacity="0.2" />
-            <stop offset="100%" stopColor="#C9A84C" stopOpacity="0.1" />
+          <linearGradient id="mBear" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#C9A84C" stopOpacity="0.16" />
+            <stop offset="100%" stopColor="#C9A84C" stopOpacity="0.05" />
           </linearGradient>
         </defs>
-
-        {/* Grid lines */}
-        {[65, 130, 195].map((y, i) => (
-          <motion.line key={y} x1="60" y1={y} x2={W - 60} y2={y}
-            stroke="#C9A84C" strokeOpacity="0.06" strokeWidth="1" strokeDasharray="6 10"
+        {[90, 110].map((price, i) => (
+          <motion.line key={price}
+            x1={PAD.l} y1={toY(price)} x2={W - PAD.r} y2={toY(price)}
+            stroke="#C9A84C" strokeOpacity="0.05" strokeWidth="1" strokeDasharray="4 12"
             initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 + i * 0.1 }} />
+            transition={{ delay: 0.5 + i * 0.1 }} />
         ))}
-
         {candles.map((c, i) => {
-          const x = padding.left + i * spacing + spacing / 2
-          const bodyTop = padding.top + (maxH - Math.max(c.o, c.c)) * scale
-          const bodyBot = padding.top + (maxH - Math.min(c.o, c.c)) * scale
-          const bodyH = Math.max(bodyBot - bodyTop, 3)
-          const wickTop = padding.top + (maxH - c.h) * scale
-          const wickBot = padding.top + (maxH - (c.l ?? c.o - 5)) * scale
-
+          const x = PAD.l + i * spacing + spacing / 2
+          const bTop = Math.min(toY(c.o), toY(c.c))
+          const bBot = Math.max(toY(c.o), toY(c.c))
           return (
             <g key={i}>
-              {/* Wick */}
-              <motion.line
-                x1={x} y1={wickTop} x2={x} y2={wickBot}
-                stroke="#C9A84C" strokeOpacity={c.bull ? 0.5 : 0.25} strokeWidth="1.5"
-                initial={{ scaleY: 0, originY: wickTop }}
-                animate={{ scaleY: 1 }}
-                transition={{ delay: 0.5 + i * 0.12, duration: 0.3 }}
-              />
-              {/* Body */}
+              <motion.line x1={x} y1={toY(c.h)} x2={x} y2={toY(c.l)}
+                stroke="#C9A84C" strokeOpacity={c.bull ? 0.4 : 0.15} strokeWidth="1"
+                initial={{ scaleY: 0 }} animate={{ scaleY: 1 }}
+                transition={{ delay: 0.2 + i * 0.04, duration: 0.2 }} />
               <motion.rect
-                x={x - candleW / 2} y={bodyTop}
-                width={candleW} height={bodyH}
-                fill={c.bull ? 'url(#mBullGrad)' : 'url(#mBearGrad)'}
-                stroke="#C9A84C" strokeOpacity={c.bull ? 0.6 : 0.2} strokeWidth="1"
-                rx="3"
-                initial={{ scaleY: 0, originY: bodyBot }}
-                animate={{ scaleY: 1 }}
-                transition={{ delay: 0.5 + i * 0.12, duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-              />
+                x={x - candleW * 0.4} y={bTop}
+                width={candleW * 0.8} height={Math.max(bBot - bTop, 2)}
+                fill={c.bull ? 'url(#mBull)' : 'url(#mBear)'}
+                stroke="#C9A84C" strokeOpacity={c.bull ? 0.4 : 0.1} strokeWidth="0.5"
+                rx="2"
+                initial={{ scaleY: 0, originY: bBot }} animate={{ scaleY: 1 }}
+                transition={{ delay: 0.2 + i * 0.04, duration: 0.18, ease: [0.22, 1, 0.36, 1] }} />
             </g>
           )
         })}
-
-        {/* Price label */}
-        <motion.text x={W - 55} y={padding.top + (maxH - 142) * scale + 4}
-          fill="#C9A84C" fillOpacity="0.6" fontSize="18"
+        <motion.text x={W - PAD.r - 8} y={toY(133) - 5}
+          fill="#C9A84C" fillOpacity="0.4" fontSize="16"
           fontFamily="JetBrains Mono, monospace" textAnchor="end"
           initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-          transition={{ delay: 2.2, duration: 0.5 }}>
+          transition={{ delay: 2.2 }}>
           +41.2%
         </motion.text>
       </svg>
 
-      {/* Desktop: full candlestick chart right side */}
+      {/* ── Desktop ─────────────────────────────────────── */}
       <svg className="absolute inset-0 w-full h-full pointer-events-none hidden md:block"
         viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid slice">
         <defs>
-          <linearGradient id="bullGrad" x1="0" y1="0" x2="0" y2="1">
+          <linearGradient id="bull" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#C9A84C" stopOpacity="0.9" />
-            <stop offset="100%" stopColor="#C9A84C" stopOpacity="0.5" />
+            <stop offset="100%" stopColor="#C9A84C" stopOpacity="0.4" />
           </linearGradient>
-          <linearGradient id="bearGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#C9A84C" stopOpacity="0.2" />
-            <stop offset="100%" stopColor="#C9A84C" stopOpacity="0.08" />
+          <linearGradient id="bear" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#C9A84C" stopOpacity="0.15" />
+            <stop offset="100%" stopColor="#C9A84C" stopOpacity="0.05" />
           </linearGradient>
+          <linearGradient id="area" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#C9A84C" stopOpacity="0.07" />
+            <stop offset="100%" stopColor="#C9A84C" stopOpacity="0" />
+          </linearGradient>
+          <mask id="reveal">
+            <motion.rect x="0" y="0" height={H} fill="white"
+              initial={{ width: 0 }} animate={{ width: W }}
+              transition={{ duration: 2.6, ease: [0.22, 1, 0.36, 1], delay: 0.2 }} />
+          </mask>
         </defs>
 
         {/* Grid */}
-        {[80, 160, 240, 320].map((y, i) => (
-          <motion.line key={y} x1={padding.left} y1={y} x2={W - padding.right} y2={y}
-            stroke="#C9A84C" strokeOpacity="0.05" strokeWidth="1" strokeDasharray="6 12"
+        {[90, 105, 120].map((price, i) => (
+          <motion.line key={price}
+            x1={PAD.l} y1={toY(price)} x2={W - PAD.r} y2={toY(price)}
+            stroke="#C9A84C" strokeOpacity="0.04" strokeWidth="1" strokeDasharray="4 14"
             initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 + i * 0.1 }} />
+            transition={{ delay: 0.4 + i * 0.1 }} />
         ))}
 
-        {candles.map((c, i) => {
-          const x = padding.left + i * spacing + spacing / 2
-          const bodyTop = padding.top + (maxH - Math.max(c.o, c.c)) * scale
-          const bodyBot = padding.top + (maxH - Math.min(c.o, c.c)) * scale
-          const bodyH = Math.max(bodyBot - bodyTop, 4)
-          const wickTop = padding.top + (maxH - c.h) * scale
-          const wickBot = padding.top + (maxH - (c.l || 50)) * scale
+        {/* Area fill unter Mittellinie */}
+        <path d={areaPath} fill="url(#area)" mask="url(#reveal)" />
 
+        {/* Gestrichelte Mittellinie */}
+        <motion.path d={linePath} fill="none"
+          stroke="#C9A84C" strokeOpacity="0.1" strokeWidth="1" strokeDasharray="3 10"
+          mask="url(#reveal)" />
+
+        {/* Kerzen */}
+        {candles.map((c, i) => {
+          const x = PAD.l + i * spacing + spacing / 2
+          const bTop = Math.min(toY(c.o), toY(c.c))
+          const bBot = Math.max(toY(c.o), toY(c.c))
+          const bH = Math.max(bBot - bTop, 2.5)
           return (
             <g key={i}>
-              <motion.line
-                x1={x} y1={wickTop} x2={x} y2={wickBot}
-                stroke="#C9A84C" strokeOpacity={c.bull ? 0.5 : 0.2} strokeWidth="2"
-                initial={{ scaleY: 0 }}
-                animate={{ scaleY: 1 }}
-                transition={{ delay: 0.5 + i * 0.1, duration: 0.3 }}
-              />
+              <motion.line x1={x} y1={toY(c.h)} x2={x} y2={toY(c.l)}
+                stroke="#C9A84C" strokeOpacity={c.bull ? 0.4 : 0.15} strokeWidth="0.8"
+                initial={{ scaleY: 0 }} animate={{ scaleY: 1 }}
+                transition={{ delay: 0.15 + i * 0.045, duration: 0.22 }} />
               <motion.rect
-                x={x - candleW / 2} y={bodyTop}
-                width={candleW} height={bodyH}
-                fill={c.bull ? 'url(#bullGrad)' : 'url(#bearGrad)'}
-                stroke="#C9A84C" strokeOpacity={c.bull ? 0.5 : 0.15} strokeWidth="1.5"
-                rx="4"
-                initial={{ scaleY: 0 }}
-                animate={{ scaleY: 1 }}
-                transition={{ delay: 0.5 + i * 0.1, duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              />
+                x={x - candleW / 2} y={bTop} width={candleW} height={bH}
+                fill={c.bull ? 'url(#bull)' : 'url(#bear)'}
+                stroke="#C9A84C" strokeOpacity={c.bull ? 0.4 : 0.1} strokeWidth="0.6"
+                rx="2"
+                initial={{ scaleY: 0, originY: bBot }} animate={{ scaleY: 1 }}
+                transition={{ delay: 0.15 + i * 0.045, duration: 0.18, ease: [0.22, 1, 0.36, 1] }} />
             </g>
           )
         })}
 
-        {/* Price label top right */}
-        <motion.text x={W - 70} y={padding.top + (maxH - 142) * scale}
-          fill="#C9A84C" fillOpacity="0.5" fontSize="13"
-          fontFamily="JetBrains Mono, monospace" textAnchor="end"
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-          transition={{ delay: 2, duration: 0.6 }}>
-          CS/USD +41.2%
-        </motion.text>
-
-        {/* Volume bars at bottom */}
+        {/* Volume bars unten */}
         {candles.map((c, i) => {
-          const x = padding.left + i * spacing + spacing / 2
-          const volH = (c.bull ? 20 : 12) + Math.random() * 8
+          const x = PAD.l + i * spacing + spacing / 2
+          const vh = c.bull ? 10 : 6
           return (
             <motion.rect key={i}
-              x={x - candleW / 2} y={H - padding.bottom - volH}
-              width={candleW} height={volH}
-              fill="#C9A84C" fillOpacity={c.bull ? 0.08 : 0.04}
-              rx="2"
-              initial={{ scaleY: 0 }}
-              animate={{ scaleY: 1 }}
-              transition={{ delay: 0.8 + i * 0.1, duration: 0.2 }}
-            />
+              x={x - candleW / 2} y={H - PAD.b - vh}
+              width={candleW} height={vh}
+              fill="#C9A84C" fillOpacity={c.bull ? 0.06 : 0.025}
+              rx="1"
+              initial={{ scaleY: 0 }} animate={{ scaleY: 1 }}
+              transition={{ delay: 0.5 + i * 0.035, duration: 0.12 }} />
           )
         })}
+
+        {/* Preis-Label */}
+        <motion.text x={W - PAD.r - 8} y={toY(133) - 6}
+          fill="#C9A84C" fillOpacity="0.4" fontSize="11"
+          fontFamily="JetBrains Mono, monospace" textAnchor="end"
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+          transition={{ delay: 2 }}>
+          CS/USD · +41.2%
+        </motion.text>
+
+        {/* Live-Dot auf letzter Kerze */}
+        <motion.circle
+          cx={midPoints[midPoints.length - 1].x}
+          cy={midPoints[midPoints.length - 1].y}
+          r="3" fill="#C9A84C"
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+          transition={{ delay: 2.4 }} />
+        <motion.circle
+          cx={midPoints[midPoints.length - 1].x}
+          cy={midPoints[midPoints.length - 1].y}
+          r="8" fill="none" stroke="#C9A84C"
+          initial={{ opacity: 0, scale: 0.5 }}
+          animate={{ opacity: [0, 0.35, 0], scale: [0.5, 1.6, 2.2] }}
+          transition={{ delay: 2.6, duration: 1.6, repeat: Infinity, repeatDelay: 2.5 }} />
       </svg>
     </>
   )

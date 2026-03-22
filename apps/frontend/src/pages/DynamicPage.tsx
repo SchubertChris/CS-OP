@@ -1,9 +1,6 @@
 /* ============================================================
    CandleScope — Dynamic Page Renderer
    src/pages/DynamicPage.tsx
-
-   Rendert Blöcke aus dem Store auf der öffentlichen Website.
-   Nur published=true Seiten sind erreichbar.
    ============================================================ */
 
 import { useEffect } from 'react'
@@ -11,7 +8,6 @@ import { useParams, Navigate } from 'react-router-dom'
 import { usePagesStore } from '../store/usePagesStore'
 import type { HeroBlockProps } from '../types/page.types'
 import PageHero from '../components/ui/PageHero'
-import { Link } from 'react-router-dom'
 
 export default function DynamicPage() {
   const { slug } = useParams<{ slug: string }>()
@@ -19,12 +15,10 @@ export default function DynamicPage() {
 
   useEffect(() => { loadPages() }, [loadPages])
 
-  /* Seite aus Store holen */
   const page = pages.find(p => p.slug === (slug ?? ''))
 
-  /* Nicht gefunden oder nicht publiziert */
-  if (!page)            return <Navigate to="/404" replace />
-  if (!page.published)  return <Navigate to="/404" replace />
+  if (!page) return <Navigate to="/404" replace />
+  if (!page.published) return <Navigate to="/404" replace />
 
   return (
     <div className="min-h-screen">
@@ -39,7 +33,6 @@ export default function DynamicPage() {
   )
 }
 
-/* ── Block Renderer ──────────────────────────────────────── */
 function BlockRenderer({ block }: { block: { id: string; type: string; props: unknown } }) {
   switch (block.type) {
 
@@ -59,22 +52,14 @@ function BlockRenderer({ block }: { block: { id: string; type: string; props: un
             <>
               {p.ctas.map((cta, i) => (
                 cta.variant === 'primary' ? (
-                  <a
-                    key={i}
-                    href={cta.href}
-                    className="relative overflow-hidden group text-[11px] tracking-[0.16em] uppercase border border-[#C9A84C]/35 text-[#C9A84C] px-7 py-3.5 rounded-full"
-                  >
-                    <span className="relative z-10 group-hover:text-[#080808] transition-colors duration-300">
-                      {cta.label}
-                    </span>
+                  <a key={i} href={cta.href}
+                    className="relative overflow-hidden group text-[11px] tracking-[0.16em] uppercase border border-[#C9A84C]/35 text-[#C9A84C] px-7 py-3.5 rounded-full">
+                    <span className="relative z-10 group-hover:text-[#080808] transition-colors duration-300">{cta.label}</span>
                     <span className="absolute inset-0 bg-[#C9A84C] rounded-full translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
                   </a>
                 ) : (
-                  <a
-                    key={i}
-                    href={cta.href}
-                    className="text-[11px] tracking-[0.16em] uppercase text-[#5a5550] hover:text-[#F5F0E8] transition-colors duration-300 flex items-center gap-2 group"
-                  >
+                  <a key={i} href={cta.href}
+                    className="text-[11px] tracking-[0.16em] uppercase text-[#5a5550] hover:text-[#F5F0E8] transition-colors duration-300 flex items-center gap-2 group">
                     {cta.label}
                     <span className="w-4 h-px bg-current transition-all duration-300 group-hover:w-6" />
                   </a>
@@ -93,9 +78,7 @@ function BlockRenderer({ block }: { block: { id: string; type: string; props: un
       return (
         <section className={`px-8 md:px-16 lg:px-24 py-16 ${align}`}>
           <div className={`${maxW} ${p.alignment === 'center' ? 'mx-auto' : ''}`}>
-            <p className="text-[#9A9590] text-base leading-relaxed whitespace-pre-wrap">
-              {p.content}
-            </p>
+            <p className="text-[#9A9590] text-base leading-relaxed whitespace-pre-wrap">{p.content}</p>
           </div>
         </section>
       )
@@ -126,10 +109,8 @@ function BlockRenderer({ block }: { block: { id: string; type: string; props: un
               <h2 className="font-display text-3xl text-[#F5F0E8] mb-2">{p.title}</h2>
               {p.description && <p className="text-[#5a5550] text-sm">{p.description}</p>}
             </div>
-            <a
-              href={p.buttonHref}
-              className="relative overflow-hidden group text-[11px] tracking-[0.16em] uppercase border border-[#C9A84C]/35 text-[#C9A84C] px-8 py-4 rounded-full shrink-0"
-            >
+            <a href={p.buttonHref}
+              className="relative overflow-hidden group text-[11px] tracking-[0.16em] uppercase border border-[#C9A84C]/35 text-[#C9A84C] px-8 py-4 rounded-full shrink-0">
               <span className="relative z-10 group-hover:text-[#080808] transition-colors duration-300">{p.buttonLabel}</span>
               <span className="absolute inset-0 bg-[#C9A84C] rounded-full translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
             </a>
@@ -156,14 +137,9 @@ function BlockRenderer({ block }: { block: { id: string; type: string; props: un
       return (
         <section className="px-8 md:px-16 lg:px-24 py-8">
           <figure>
-            <img
-              src={p.src} alt={p.alt}
-              className={`w-full object-cover ${p.rounded ? 'rounded-2xl' : ''}`}
-            />
+            <img src={p.src} alt={p.alt} className={`w-full object-cover ${p.rounded ? 'rounded-2xl' : ''}`} />
             {p.caption && (
-              <figcaption className="text-[11px] text-[#5a5550] mt-3 text-center tracking-[0.06em]">
-                {p.caption}
-              </figcaption>
+              <figcaption className="text-[11px] text-[#5a5550] mt-3 text-center tracking-[0.06em]">{p.caption}</figcaption>
             )}
           </figure>
         </section>

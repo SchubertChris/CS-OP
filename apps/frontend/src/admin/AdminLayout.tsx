@@ -5,7 +5,7 @@
 
 import { useState, useEffect } from 'react'
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
-import { LayoutDashboard, FileText, Settings, LogOut, Eye, Zap } from 'lucide-react'
+import { LayoutDashboard, FileText, Settings, LogOut, Eye } from 'lucide-react'
 import { useAdminStore } from '../store/useAdminStore'
 import { usePagesStore } from '../store/usePagesStore'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -34,11 +34,9 @@ export default function AdminLayout() {
   return (
     <div className="min-h-screen bg-[#050505] text-[#F5F0E8] flex flex-col overflow-hidden">
 
-      {/* Scan line */}
       <div className="pointer-events-none fixed inset-0 z-0"
         style={{ backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(201,168,76,0.006) 2px, rgba(201,168,76,0.006) 4px)' }} />
 
-      {/* Corner decorations */}
       {[['top-0 left-0', 'top-3 left-3'], ['top-0 right-0', 'top-3 right-3'], ['bottom-0 left-0', 'bottom-3 left-3'], ['bottom-0 right-0', 'bottom-3 right-3']].map(([pos, inner], i) => (
         <div key={i} className={`fixed ${pos} w-16 h-16 pointer-events-none z-10`}>
           <div className={`absolute ${inner} w-6 h-px bg-[#C9A84C]/30`} />
@@ -46,11 +44,8 @@ export default function AdminLayout() {
         </div>
       ))}
 
-      {/* ── Top Command Bar ─────────────────────────────── */}
       <header className="relative z-30 shrink-0">
         <div className="flex items-center justify-between px-6 md:px-10 h-14 border-b border-[#C9A84C]/15">
-
-          {/* Left */}
           <div className="flex items-center gap-5">
             <div className="flex items-center gap-2.5">
               <div className="relative w-5 h-5 shrink-0">
@@ -68,7 +63,6 @@ export default function AdminLayout() {
             </div>
           </div>
 
-          {/* Center Nav */}
           <nav className="flex items-center gap-1">
             {navItems.map(({ to, label, short, icon: Icon, end }) => (
               <NavLink key={to} to={to} end={end}
@@ -92,7 +86,6 @@ export default function AdminLayout() {
             ))}
           </nav>
 
-          {/* Right */}
           <div className="flex items-center gap-4">
             <AnimatePresence>
               {isDirty && (
@@ -104,20 +97,16 @@ export default function AdminLayout() {
                 </motion.div>
               )}
             </AnimatePresence>
-
             <div className="hidden md:flex flex-col items-end">
               <span className="font-mono text-[12px] text-[#C9A84C]/80 tracking-[0.06em]">{timeStr}</span>
               <span className="font-mono text-[10px] text-[#9A9590] tracking-[0.06em]">{dateStr}</span>
             </div>
-
             <div className="w-px h-5 bg-[#C9A84C]/15" />
-
             <button onClick={() => window.open('/', '_blank')}
               className="flex items-center gap-1.5 font-mono text-[11px] tracking-[0.1em] uppercase text-[#9A9590] hover:text-[#C9A84C] transition-colors">
               <Eye size={13} strokeWidth={1.5} />
               <span className="hidden sm:block">Site</span>
             </button>
-
             <button onClick={() => { logout(); navigate('/') }}
               className="flex items-center gap-1.5 font-mono text-[11px] tracking-[0.1em] uppercase text-[#9A9590] hover:text-[#FF4444] transition-colors">
               <LogOut size={13} strokeWidth={1.5} />
@@ -126,7 +115,6 @@ export default function AdminLayout() {
           </div>
         </div>
 
-        {/* Stats bar */}
         <div className="flex items-center gap-6 px-6 md:px-10 h-9 border-b border-[#C9A84C]/8 bg-[#080808]/50">
           <StatItem label="PAGES" value={String(pages.length)} />
           <StatItem label="NAV" value={String(pages.filter(p => p.nav?.visible).length)} />
@@ -135,7 +123,6 @@ export default function AdminLayout() {
         </div>
       </header>
 
-      {/* Content */}
       <main className="flex-1 relative z-20 overflow-auto">
         <Outlet />
       </main>
