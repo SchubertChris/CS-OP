@@ -1,46 +1,19 @@
 /* ============================================================
    CandleScope — Page Builder Types
    src/types/page.types.ts
-
-   Datenstruktur für Pages & Blöcke.
-   Phase 1: Mockdaten in pages.ts
-   Phase 2: identische Struktur — nur Quelle wechselt zu API
    ============================================================ */
 
-import type { LucideIcon } from 'lucide-react'
 
-/* ─── Hero Themes ──────────────────────────────────────────
-   Jede Page hat ein thematisches SVG im Hintergrund.
-   'default' fällt auf HomeBg zurück.
-──────────────────────────────────────────────────────────── */
 export type HeroTheme =
-  | 'home'
-  | 'finance'
-  | 'dev'
-  | 'about'
-  | 'community'
-  | 'contact'
-  | 'default'
+  | 'home' | 'finance' | 'dev' | 'about'
+  | 'community' | 'contact' | 'default'
 
-/* ─── Block Types ──────────────────────────────────────────
-   Alle verfügbaren Block-Typen im Baukasten.
-──────────────────────────────────────────────────────────── */
 export type BlockType =
-  | 'hero'        // ✅ Implementiert — PageHero Komponente
-  | 'text'
-  | 'card-grid'
-  | 'list'
-  | 'image'
-  | 'stats'
-  | 'cta-banner'
-  | 'timeline'
-  | 'divider'
-  | 'embed'
+  | 'hero' | 'text' | 'card-grid' | 'list'
+  | 'image' | 'stats' | 'cta-banner'
+  | 'timeline' | 'divider' | 'embed'
 
-/* ─── Block Props ──────────────────────────────────────────
-   Typisierte Props je Block-Typ.
-──────────────────────────────────────────────────────────── */
-
+/* ─── Block Props ──────────────────────────────────────────── */
 export interface HeroBlockProps {
   eyebrow: string
   titleLine1: string
@@ -49,15 +22,11 @@ export interface HeroBlockProps {
   description: string
   badge?: string
   theme?: HeroTheme
-  ctas?: Array<{
-    label: string
-    href: string
-    variant: 'primary' | 'ghost'
-  }>
+  ctas?: Array<{ label: string; href: string; variant: 'primary' | 'ghost' }>
 }
 
 export interface TextBlockProps {
-  content: string        // Markdown oder HTML
+  content: string
   alignment?: 'left' | 'center' | 'right'
   maxWidth?: 'sm' | 'md' | 'lg' | 'full'
 }
@@ -65,59 +34,38 @@ export interface TextBlockProps {
 export interface CardGridBlockProps {
   cols: 2 | 3 | 4
   cards: Array<{
-    id: string
-    title: string
-    description: string
-    icon?: string        // Lucide Icon Name
-    href?: string
-    badge?: string
+    id: string; title: string; description: string
+    icon?: string; href?: string; badge?: string
   }>
 }
 
 export interface ListBlockProps {
   title?: string
   style?: 'bullet' | 'numbered' | 'icon' | 'check'
-  items: Array<{
-    id: string
-    text: string
-    subtext?: string
-    icon?: string
-  }>
+  items: Array<{ id: string; text: string; subtext?: string; icon?: string }>
 }
 
 export interface ImageBlockProps {
-  src: string
-  alt: string
-  caption?: string
+  src: string; alt: string; caption?: string
   layout?: 'full' | 'center' | 'left' | 'right'
   rounded?: boolean
 }
 
 export interface StatsBlockProps {
-  items: Array<{
-    id: string
-    value: string       // z.B. "42+" oder "100k"
-    label: string
-    suffix?: string
-  }>
+  items: Array<{ id: string; value: string; label: string; suffix?: string }>
 }
 
 export interface CtaBannerBlockProps {
-  title: string
-  description?: string
-  buttonLabel: string
-  buttonHref: string
+  title: string; description?: string
+  buttonLabel: string; buttonHref: string
   variant?: 'gold' | 'dark' | 'outline'
 }
 
 export interface TimelineBlockProps {
   title?: string
   items: Array<{
-    id: string
-    date: string
-    title: string
-    description: string
-    status?: 'done' | 'active' | 'upcoming'
+    id: string; date: string; title: string
+    description: string; status?: 'done' | 'active' | 'upcoming'
   }>
 }
 
@@ -133,10 +81,7 @@ export interface EmbedBlockProps {
   caption?: string
 }
 
-/* ─── Block Props Map ──────────────────────────────────────
-   Verbindet BlockType mit den korrekten Props.
-   Ermöglicht typsichere Verwendung im Editor.
-──────────────────────────────────────────────────────────── */
+/* ─── Block Props Map ──────────────────────────────────────── */
 export interface BlockPropsMap {
   'hero':       HeroBlockProps
   'text':       TextBlockProps
@@ -150,84 +95,58 @@ export interface BlockPropsMap {
   'embed':      EmbedBlockProps
 }
 
-/* ─── Generic Block ────────────────────────────────────────
-   Einzelner Block auf einer Seite.
-──────────────────────────────────────────────────────────── */
 export interface Block<T extends BlockType = BlockType> {
-  id:        string
-  type:      T
-  props:     BlockPropsMap[T]
-  order:     number
+  id: string
+  type: T
+  props: BlockPropsMap[T]
+  order: number
 }
 
-/* Untypisierte Variante für Rendering & Store */
-export type AnyBlock = {
-  [T in BlockType]: Block<T>
-}[BlockType]
+export type AnyBlock = { [T in BlockType]: Block<T> }[BlockType]
 
-/* ─── Nav Item ─────────────────────────────────────────────
-   Navigation-Eintrag für eine Seite.
-──────────────────────────────────────────────────────────── */
+/* ─── Nav Config ───────────────────────────────────────────── */
 export interface PageNavConfig {
-  label:    string        // Anzeigename in Nav
-  icon:     string        // Lucide Icon Name (z.B. 'TrendingUp')
-  position: number        // Reihenfolge (1 = ganz links/oben)
-  visible:  boolean       // In Nav anzeigen
+  label:    string
+  icon:     string
+  position: number
+  visible:  boolean
 }
 
-/* ─── Page ─────────────────────────────────────────────────
-   Eine vollständige Seite mit Blöcken.
-──────────────────────────────────────────────────────────── */
+/* ─── Page ─────────────────────────────────────────────────── */
 export interface Page {
   id:         string
-  slug:       string        // z.B. 'finance' → /finance
-  title:      string        // Interner Name im Admin
-  nav?:       PageNavConfig // Nav-Konfiguration
-  isSystem:   boolean       // true = nicht löschbar (Impressum etc.)
+  slug:       string
+  title:      string
+  nav?:       PageNavConfig
+  isSystem:   boolean
+  published:  boolean      // false = Entwurf, true = live auf Website
   blocks:     AnyBlock[]
   seo?: {
     title?:       string
     description?: string
     ogImage?:     string
   }
-  createdAt:  string        // ISO string
+  createdAt:  string
   updatedAt:  string
 }
 
-/* ─── Page Meta ────────────────────────────────────────────
-   Leichtgewichtige Übersicht für Listen-Ansicht.
-──────────────────────────────────────────────────────────── */
 export type PageMeta = Pick<
-  Page,
-  'id' | 'slug' | 'title' | 'nav' | 'isSystem' | 'createdAt' | 'updatedAt'
+  Page, 'id' | 'slug' | 'title' | 'nav' | 'isSystem' | 'published' | 'createdAt' | 'updatedAt'
 >
 
-/* ─── Block Config ─────────────────────────────────────────
-   Metadaten je Block-Typ für den Editor (Picker, Labels).
-──────────────────────────────────────────────────────────── */
 export interface BlockConfig {
-  type:        BlockType
-  label:       string
-  description: string
-  icon:        string       // Lucide Icon Name
-  category:    'content' | 'layout'
+  type:         BlockType
+  label:        string
+  description:  string
+  icon:         string
+  category:     'content' | 'layout'
   defaultProps: BlockPropsMap[BlockType]
 }
 
-/* ─── Admin Store State ────────────────────────────────────
-──────────────────────────────────────────────────────────── */
-export interface AdminState {
-  isAuthenticated: boolean
-  pin:             string | null   // gehashter PIN in localStorage
-  lastActivity:    number | null   // Timestamp für Auto-Logout
-}
-
-/* ─── Pages Store State ────────────────────────────────────
-──────────────────────────────────────────────────────────── */
 export interface PagesState {
-  pages:          Page[]
-  activePage:     Page | null
-  isDirty:        boolean          // ungespeicherte Änderungen
-  isSaving:       boolean
-  selectedBlock:  string | null    // Block ID im Editor
+  pages:         Page[]
+  activePage:    Page | null
+  isDirty:       boolean
+  isSaving:      boolean
+  selectedBlock: string | null
 }

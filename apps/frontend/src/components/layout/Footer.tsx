@@ -1,15 +1,20 @@
+/* ============================================================
+   CandleScope — Footer
+   src/components/layout/Footer.tsx
+   ============================================================ */
+
 import { Link } from 'react-router-dom'
 import { Github, TrendingUp, Code2, User, MessageSquare, Mail, ExternalLink } from 'lucide-react'
 
 const footerNav = [
-  { to: '/finance', label: 'Finance', icon: <TrendingUp size={14} strokeWidth={1.5} />, desc: 'Haushaltsbuch · Trading · Tools' },
-  { to: '/dev', label: 'Dev & Web', icon: <Code2 size={14} strokeWidth={1.5} />, desc: 'Websites · Coding · Projekte' },
-  { to: '/about', label: 'About', icon: <User size={14} strokeWidth={1.5} />, desc: 'Über mich · Angebote' },
-  { to: '/contact', label: 'Kontakt', icon: <MessageSquare size={14} strokeWidth={1.5} />, desc: 'Anfragen · Kooperationen' },
+  { to: '/finance',   label: 'Finance',   icon: <TrendingUp size={14} strokeWidth={1.5} />,   desc: 'Haushaltsbuch · Trading · Tools' },
+  { to: '/dev',       label: 'Dev & Web', icon: <Code2 size={14} strokeWidth={1.5} />,         desc: 'Websites · Coding · Projekte' },
+  { to: '/about',     label: 'About',     icon: <User size={14} strokeWidth={1.5} />,           desc: 'Über mich · Angebote' },
+  { to: '/contact',   label: 'Kontakt',   icon: <MessageSquare size={14} strokeWidth={1.5} />, desc: 'Anfragen · Kooperationen' },
 ]
 
 const legalLinks = [
-  { to: '/impressum', label: 'Impressum' },
+  { to: '/impressum',   label: 'Impressum' },
   { to: '/datenschutz', label: 'Datenschutz' },
 ]
 
@@ -37,22 +42,22 @@ export default function Footer() {
                 Candle<span className="text-[#C9A84C]">Scope</span>
               </span>
             </Link>
-            <p className="text-sm text-[#3a3530] leading-loose max-w-[220px]">
+            <p className="text-sm text-[#9A9590] leading-loose max-w-[220px]">
               Trading · WebDev · Finance · Gaming.<br />Alles unter einer Marke.
             </p>
             <div className="flex items-center gap-3">
               <a href="https://github.com/SchubertChris" target="_blank" rel="noopener noreferrer"
-                className="w-9 h-9 flex items-center justify-center rounded-full border border-[#ffffff]/6 text-[#3a3530] hover:text-[#C9A84C] hover:border-[#C9A84C]/30 transition-all duration-300"
+                className="w-9 h-9 flex items-center justify-center rounded-full border border-[#ffffff]/8 text-[#9A9590] hover:text-[#C9A84C] hover:border-[#C9A84C]/30 transition-all duration-300"
                 aria-label="GitHub">
                 <Github size={15} strokeWidth={1.5} />
               </a>
               <a href="https://discord.gg/" target="_blank" rel="noopener noreferrer"
-                className="w-9 h-9 flex items-center justify-center rounded-full border border-[#ffffff]/6 text-[#3a3530] hover:text-[#C9A84C] hover:border-[#C9A84C]/30 transition-all duration-300"
+                className="w-9 h-9 flex items-center justify-center rounded-full border border-[#ffffff]/8 text-[#9A9590] hover:text-[#C9A84C] hover:border-[#C9A84C]/30 transition-all duration-300"
                 aria-label="Discord">
                 <DiscordIcon />
               </a>
               <a href="mailto:hello@candlescope.de"
-                className="w-9 h-9 flex items-center justify-center rounded-full border border-[#ffffff]/6 text-[#3a3530] hover:text-[#C9A84C] hover:border-[#C9A84C]/30 transition-all duration-300"
+                className="w-9 h-9 flex items-center justify-center rounded-full border border-[#ffffff]/8 text-[#9A9590] hover:text-[#C9A84C] hover:border-[#C9A84C]/30 transition-all duration-300"
                 aria-label="E-Mail">
                 <Mail size={15} strokeWidth={1.5} />
               </a>
@@ -61,54 +66,53 @@ export default function Footer() {
 
           {/* Navigation */}
           <div className="flex flex-col gap-5">
-            <span className="text-[10px] tracking-[0.18em] uppercase text-[#2a2a2a]">Navigation</span>
-            <div className="flex flex-col gap-4">
+            <span className="text-[11px] tracking-[0.16em] uppercase text-[#C9A84C]/70 font-medium">Navigation</span>
+            <nav className="flex flex-col gap-3">
               {footerNav.map(({ to, label, icon, desc }) => (
                 <Link key={to} to={to}
-                  className="group flex items-start gap-3 text-[#5a5550] hover:text-[#F5F0E8] transition-colors duration-300">
-                  <span className="mt-0.5 text-[#2a2a2a] group-hover:text-[#C9A84C] transition-colors duration-300 shrink-0">
-                    {icon}
-                  </span>
-                  <div className="flex flex-col gap-0.5">
-                    <span className="text-sm tracking-[0.04em]">{label}</span>
-                    <span className="text-[10px] tracking-[0.08em] text-[#2a2a2a] group-hover:text-[#3a3530] transition-colors uppercase">{desc}</span>
-                  </div>
+                  className="group flex items-center gap-3 text-[#9A9590] hover:text-[#F5F0E8] transition-colors duration-300">
+                  <span className="text-[#5a5550] group-hover:text-[#C9A84C] transition-colors">{icon}</span>
+                  <span className="text-sm">{label}</span>
                 </Link>
               ))}
-            </div>
+            </nav>
           </div>
 
           {/* Kontakt */}
           <div className="flex flex-col gap-5">
-            <span className="text-[10px] tracking-[0.18em] uppercase text-[#2a2a2a]">Kontakt</span>
-            <div className="flex flex-col gap-4">
+            <span className="text-[11px] tracking-[0.16em] uppercase text-[#C9A84C]/70 font-medium">Kontakt</span>
+            <div className="flex flex-col gap-3">
               <a href="mailto:hello@candlescope.de"
-                className="group flex items-center gap-2 text-sm text-[#5a5550] hover:text-[#C9A84C] transition-colors duration-300 w-fit">
+                className="group flex items-center gap-2 text-sm text-[#9A9590] hover:text-[#F5F0E8] transition-colors duration-300">
+                <Mail size={14} strokeWidth={1.5} className="text-[#5a5550] group-hover:text-[#C9A84C] transition-colors shrink-0" />
                 hello@candlescope.de
-                <ExternalLink size={11} strokeWidth={1.5} className="opacity-0 group-hover:opacity-100 transition-opacity" />
               </a>
-              <a href="https://candlescope.de"
-                className="group flex items-center gap-2 text-sm text-[#5a5550] hover:text-[#C9A84C] transition-colors duration-300 w-fit">
-                candlescope.de
-                <ExternalLink size={11} strokeWidth={1.5} className="opacity-0 group-hover:opacity-100 transition-opacity" />
+              <a href="https://github.com/SchubertChris" target="_blank" rel="noopener noreferrer"
+                className="group flex items-center gap-2 text-sm text-[#9A9590] hover:text-[#F5F0E8] transition-colors duration-300">
+                <Github size={14} strokeWidth={1.5} className="text-[#5a5550] group-hover:text-[#C9A84C] transition-colors shrink-0" />
+                github.com/SchubertChris
+                <ExternalLink size={10} strokeWidth={1.5} className="text-[#3a3530] group-hover:text-[#5a5550] transition-colors" />
               </a>
               <a href="https://discord.gg/" target="_blank" rel="noopener noreferrer"
-                className="group flex items-center gap-2 text-sm text-[#5a5550] hover:text-[#C9A84C] transition-colors duration-300 w-fit mt-1">
-                <DiscordIcon />
-                Discord beitreten
-                <ExternalLink size={11} strokeWidth={1.5} className="opacity-0 group-hover:opacity-100 transition-opacity" />
+                className="group flex items-center gap-2 text-sm text-[#9A9590] hover:text-[#F5F0E8] transition-colors duration-300">
+                <span className="text-[#5a5550] group-hover:text-[#C9A84C] transition-colors shrink-0">
+                  <DiscordIcon />
+                </span>
+                Discord Community
+                <ExternalLink size={10} strokeWidth={1.5} className="text-[#3a3530] group-hover:text-[#5a5550] transition-colors" />
               </a>
             </div>
           </div>
 
           {/* CTA */}
           <div className="flex flex-col gap-5">
-            <span className="text-[10px] tracking-[0.18em] uppercase text-[#2a2a2a]">Zusammenarbeit</span>
-            <p className="text-sm text-[#3a3530] leading-loose">
-              Projekt, Kooperation oder ein Gespräch über Märkte?
+            <span className="text-[11px] tracking-[0.16em] uppercase text-[#C9A84C]/70 font-medium">Zusammenarbeit</span>
+            <p className="text-sm text-[#9A9590] leading-relaxed">
+              Projekt · Kooperation · Beratung.<br />
+              Ich antworte innerhalb von 24h.
             </p>
             <a href="mailto:hello@candlescope.de"
-              className="relative overflow-hidden group w-fit text-[10px] tracking-[0.16em] uppercase border border-[#C9A84C]/30 text-[#C9A84C] px-6 py-3 rounded-full">
+              className="relative overflow-hidden group w-fit text-[11px] tracking-[0.16em] uppercase border border-[#C9A84C]/30 text-[#C9A84C] px-6 py-3 rounded-full">
               <span className="relative z-10 transition-colors duration-300 group-hover:text-[#080808]">
                 Kontakt aufnehmen
               </span>
@@ -121,17 +125,17 @@ export default function Footer() {
       {/* Bottom Bar */}
       <div className="border-t border-[#C9A84C]/8 px-8 md:px-14 lg:px-20 py-6">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <span className="text-[11px] text-[#2a2a2a] tracking-[0.08em]">
+          <span className="text-[12px] text-[#9A9590] tracking-[0.08em]">
             © {new Date().getFullYear()} CandleScope · Chris Schubert
           </span>
           <div className="flex items-center gap-6">
             {legalLinks.map(({ to, label }) => (
               <Link key={to} to={to}
-                className="text-[11px] text-[#2a2a2a] hover:text-[#5a5550] tracking-[0.08em] transition-colors duration-300">
+                className="text-[12px] text-[#9A9590] hover:text-[#F5F0E8] tracking-[0.08em] transition-colors duration-300">
                 {label}
               </Link>
             ))}
-            <span className="text-[11px] text-[#2a2a2a] tracking-[0.08em]">
+            <span className="text-[12px] text-[#5a5550] tracking-[0.08em]">
               Built with React · Vite · TS
             </span>
           </div>
