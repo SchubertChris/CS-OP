@@ -338,3 +338,6 @@ interface Page {
 ---
 
 *CandleScope.de · Chris Schubert · Stand: März 2026*
+
+
+$ git add . && git commit -m "v3" && git push && git push origin main && 
