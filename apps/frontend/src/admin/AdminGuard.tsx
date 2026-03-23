@@ -1,36 +1,31 @@
 /* ============================================================
    CandleScope — Admin Guard
    src/admin/AdminGuard.tsx
-
-   Protected Route Wrapper.
-   DEV_BYPASS = true  → direkt durchklickbar (Phase 1)
-   DEV_BYPASS = false → echter PIN-Check (Phase 2)
    ============================================================ */
 
-import { Navigate, useSearchParams } from 'react-router-dom'
+import { useEffect } from 'react'
+import { Navigate } from 'react-router-dom'
 import { useAdminStore } from '../store/useAdminStore'
 
-/* Auf false setzen wenn echter Auth aktiv sein soll */
-const DEV_BYPASS = true
+export default function AdminGuard({ children }: { children: React.ReactNode }) {
+  const { isAuthenticated, checkTimeout, updateActivity } = useAdminStore()
 
-interface AdminGuardProps {
-  children: React.ReactNode
-}
+  /* Timeout bei jedem Render prüfen */
+  useEffect(() => {
+    checkTimeout()
+  }, [checkTimeout])
 
-export default function AdminGuard({ children }: AdminGuardProps) {
-  const [searchParams] = useSearchParams()
-  const { isAuthenticated, checkUrlKey } = useAdminStore()
+  /* Activity bei Maus/Tastatur updaten */
+  useEffect(() => {
+    const handler = () => updateActivity()
+    window.addEventListener('mousemove', handler)
+    window.addEventListener('keydown', handler)
+    return () => {
+      window.removeEventListener('mousemove', handler)
+      window.removeEventListener('keydown', handler)
+    }
+  }, [updateActivity])
 
-  /* DEV: immer durchlassen */
-  if (DEV_BYPASS) return <>{children}</>
-
-  /* URL-Key prüfen */
-  const key = searchParams.get('key')
-  if (!checkUrlKey(key)) {
-    return <Navigate to="/" replace />
-  }
-
-  /* Auth prüfen */
   if (!isAuthenticated) {
     return <Navigate to="/admin/login" replace />
   }
