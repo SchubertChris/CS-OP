@@ -22,8 +22,8 @@ async function sha256(message: string): Promise<string> {
 }
 
 /* ── Env Variables ─────────────────────────────────────── */
-const ENV_PIN      = '2553'
-const ENV_PASSWORD = 'cscope2020'
+const ENV_PIN      = import.meta.env.VITE_ADMIN_PIN      ?? ''
+const ENV_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD ?? ''
 
 /* ── Store Types ───────────────────────────────────────── */
 interface AdminState {
