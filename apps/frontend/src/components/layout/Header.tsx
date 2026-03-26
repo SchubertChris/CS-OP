@@ -1,10 +1,6 @@
 /* ============================================================
    CandleScope — Header
    src/components/layout/Header.tsx
-
-   Desktop: Top Nav
-   Mobile:  Icon-Sidebar rechts (ein-/ausblendbar)
-            Kein Fullscreen-Menü mehr
    ============================================================ */
 
 import { useState, useEffect } from 'react'
@@ -13,6 +9,7 @@ import {
   TrendingUp, Code2, User, MessageSquare,
   Shield, ChevronRight, Mail,
 } from 'lucide-react'
+import csLogo from '../../assets/images/CandleScope.webp'
 
 interface NavItem {
   to: string
@@ -22,11 +19,11 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { to: '/finance',   label: 'Finance',   icon: <TrendingUp size={18} strokeWidth={1.5} />,   tooltip: 'Haushaltsbuch · Trading · Tools' },
-  { to: '/dev',       label: 'Dev & Web', icon: <Code2 size={18} strokeWidth={1.5} />,         tooltip: 'Websites · Coding · Projekte' },
-  { to: '/about',     label: 'About',     icon: <User size={18} strokeWidth={1.5} />,           tooltip: 'Über mich · Angebote · CV' },
+  { to: '/finance', label: 'Finance', icon: <TrendingUp size={18} strokeWidth={1.5} />, tooltip: 'Haushaltsbuch · Trading · Tools' },
+  { to: '/dev', label: 'Dev & Web', icon: <Code2 size={18} strokeWidth={1.5} />, tooltip: 'Websites · Coding · Projekte' },
+  { to: '/about', label: 'About', icon: <User size={18} strokeWidth={1.5} />, tooltip: 'Über mich · Angebote · CV' },
   { to: '/community', label: 'Community', icon: <MessageSquare size={18} strokeWidth={1.5} />, tooltip: 'Discord · Community · Events' },
-  { to: '/contact',   label: 'Kontakt',   icon: <Mail size={18} strokeWidth={1.5} />,           tooltip: 'Anfragen · Kooperationen' },
+  { to: '/contact', label: 'Kontakt', icon: <Mail size={18} strokeWidth={1.5} />, tooltip: 'Anfragen · Kooperationen' },
 ]
 
 /* ─── Desktop Tooltip ──────────────────────────────────────── */
@@ -53,8 +50,8 @@ function SidebarTooltip({ label, tooltip }: { label: string; tooltip: string }) 
 }
 
 export default function Header() {
-  const [scrolled,     setScrolled]     = useState(false)
-  const [sidebarOpen,  setSidebarOpen]  = useState(true)
+  const [scrolled, setScrolled] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(true)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
@@ -79,11 +76,11 @@ export default function Header() {
       `}>
         {/* Logo */}
         <Link to="/" className="group flex items-center gap-3 shrink-0">
-          <div className="relative w-7 h-7 shrink-0">
-            <div className="absolute inset-0 border border-[#C9A84C]/50 rotate-45 group-hover:rotate-[225deg] transition-transform duration-700 rounded-sm" />
-            <div className="absolute inset-[5px] bg-[#C9A84C]/15 rotate-45 group-hover:rotate-[225deg] transition-transform duration-700 delay-75 rounded-sm" />
-            <div className="absolute inset-[9px] bg-[#C9A84C] rotate-45 group-hover:scale-125 transition-transform duration-300 rounded-sm" />
-          </div>
+          <img
+            src={csLogo}
+            alt="CandleScope"
+            className={`object-contain transition-all duration-500 group-hover:scale-105 ${scrolled ? 'w-8 h-8' : 'w-10 h-10'}`}
+          />
           <span className={`font-display tracking-[0.15em] text-[#F5F0E8] uppercase transition-all duration-500 ${scrolled ? 'text-sm' : 'text-base'}`}>
             Candle<span className="text-[#C9A84C]">Scope</span>
           </span>
@@ -118,21 +115,21 @@ export default function Header() {
             Admin
           </Link>
           <div className="w-px h-4 bg-[#C9A84C]/15" />
-          <a href="mailto:hello@candlescope.de"
+          {/* Hire me → Kontaktformular */}
+          <Link to="/contact"
             className="relative overflow-hidden group text-[11px] tracking-[0.15em] uppercase border border-[#C9A84C]/35 text-[#C9A84C] px-5 py-2.5 rounded-full transition-colors duration-300">
             <span className="relative z-10 group-hover:text-[#080808] transition-colors duration-300">Hire me</span>
             <span className="absolute inset-0 bg-[#C9A84C] rounded-full translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
-          </a>
+          </Link>
         </div>
       </header>
 
       {/* ══════════════════════════════════════════════
           MOBILE ICON SIDEBAR  (< lg)
-          Rechts, ein-/ausblendbar
       ══════════════════════════════════════════════ */}
       <aside className="fixed right-0 top-[30%] z-40 lg:hidden flex items-center">
 
-        {/* Klapp-Pfeil — immer sichtbar */}
+        {/* Klapp-Pfeil */}
         <button
           onClick={() => setSidebarOpen(v => !v)}
           className="w-5 h-10 flex items-center justify-center bg-[#0d0d0d]/90 border border-[#C9A84C]/20 border-r-0 rounded-l-lg text-[#C9A84C]/60 hover:text-[#C9A84C] transition-all"
@@ -154,12 +151,13 @@ export default function Header() {
           ${sidebarOpen ? 'w-14 opacity-100' : 'w-0 opacity-0 border-transparent'}
         `}>
 
-          {/* Logo dot */}
+          {/* Logo */}
           <Link to="/" className="flex items-center justify-center w-10 h-10 mb-1">
-            <div className="relative w-5 h-5">
-              <div className="absolute inset-0 border border-[#C9A84C]/50 rotate-45 rounded-sm" />
-              <div className="absolute inset-[4px] bg-[#C9A84C] rotate-45 rounded-sm" />
-            </div>
+            <img
+              src={csLogo}
+              alt="CandleScope"
+              className="w-7 h-7 object-contain hover:scale-110 transition-transform duration-200"
+            />
           </Link>
 
           <div className="w-5 h-px bg-[#C9A84C]/20 mb-1" />
@@ -177,7 +175,6 @@ export default function Header() {
                 `}>
                 {({ isActive }) => (
                   <>
-                    {/* Active indicator */}
                     <span className={`absolute left-0 top-2 bottom-2 w-0.5 rounded-full transition-all duration-300 ${isActive ? 'bg-[#C9A84C] opacity-100' : 'opacity-0'}`} />
                     {icon}
                   </>
@@ -198,13 +195,13 @@ export default function Header() {
             <SidebarTooltip label="Admin" tooltip="Panel · CMS" />
           </div>
 
-          {/* Mail */}
+          {/* Hire me → Kontaktformular */}
           <div className="relative group">
-            <a href="mailto:hello@candlescope.de"
+            <Link to="/contact"
               className="w-10 h-10 flex items-center justify-center rounded-xl text-[#9A9590] hover:bg-[#C9A84C]/8 hover:text-[#C9A84C] transition-all duration-200">
               <Mail size={16} strokeWidth={1.5} />
-            </a>
-            <SidebarTooltip label="Hire me" tooltip="hello@candlescope.de" />
+            </Link>
+            <SidebarTooltip label="Hire me" tooltip="Kontakt aufnehmen" />
           </div>
         </div>
       </aside>

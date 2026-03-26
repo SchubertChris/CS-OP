@@ -5,6 +5,7 @@
 
 import { Link } from 'react-router-dom'
 import { Github, TrendingUp, Code2, User, MessageSquare, Mail, ExternalLink } from 'lucide-react'
+import csLogo from '../../assets/images/CandleScope.webp'
 
 const footerNav = [
   { to: '/finance', label: 'Finance', icon: <TrendingUp size={14} strokeWidth={1.5} /> },
@@ -33,11 +34,11 @@ export default function Footer() {
           {/* Brand */}
           <div className="lg:col-span-1 flex flex-col gap-6">
             <Link to="/" className="group flex items-center gap-3 w-fit">
-              <div className="relative w-8 h-8 shrink-0">
-                <div className="absolute inset-0 border border-[#C9A84C]/40 rotate-45 group-hover:rotate-[225deg] transition-transform duration-700 rounded-sm" />
-                <div className="absolute inset-[5px] bg-[#C9A84C]/15 rotate-45 rounded-sm" />
-                <div className="absolute inset-[10px] bg-[#C9A84C] rotate-45 rounded-sm" />
-              </div>
+              <img
+                src={csLogo}
+                alt="CandleScope"
+                className="w-9 h-9 object-contain group-hover:scale-105 transition-transform duration-300"
+              />
               <span className="font-display text-lg tracking-[0.14em] text-[#F5F0E8] uppercase">
                 Candle<span className="text-[#C9A84C]">Scope</span>
               </span>
@@ -105,11 +106,12 @@ export default function Footer() {
             <p className="text-sm text-[#9A9590] leading-relaxed">
               Projekt · Kooperation · Beratung.<br />Ich antworte innerhalb von 24h.
             </p>
-            <a href="mailto:hello@candlescope.de"
+            {/* Kontakt aufnehmen → Kontaktformular */}
+            <Link to="/contact"
               className="relative overflow-hidden group w-fit text-[11px] tracking-[0.16em] uppercase border border-[#C9A84C]/30 text-[#C9A84C] px-6 py-3 rounded-full">
               <span className="relative z-10 transition-colors duration-300 group-hover:text-[#080808]">Kontakt aufnehmen</span>
               <span className="absolute inset-0 bg-[#C9A84C] translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out rounded-full" />
-            </a>
+            </Link>
           </div>
         </div>
       </div>
