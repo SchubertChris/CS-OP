@@ -10,10 +10,9 @@ import {
   Card, CardIcon, GradientText, CtaButton, TagList,
 } from '../components/ui'
 import {
-  MessageSquare, Users, Zap, TrendingUp,
+  MessageSquare, TrendingUp,
   Shield, BarChart2, Code2, Video,
-  ExternalLink, CheckCircle2, ArrowRight,
-  Loader2,
+  CheckCircle2, ArrowRight,
 } from 'lucide-react'
 
 /* ════════════════════════════════════════════════════════════════
