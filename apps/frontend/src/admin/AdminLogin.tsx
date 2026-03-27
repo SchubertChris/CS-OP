@@ -1,14 +1,11 @@
 /* ============================================================
    CandleScope — Admin Login (Zweistufig)
    src/admin/AdminLogin.tsx
-
-   Schritt 1: 4-stellige PIN
-   Schritt 2: Passwort
    ============================================================ */
 
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { Shield, ArrowRight, Lock, Eye, EyeOff } from 'lucide-react'
+import { useNavigate, Link } from 'react-router-dom'
+import { Shield, ArrowRight, Lock, Eye, EyeOff, Home } from 'lucide-react'
 import { useAdminStore } from '../store/useAdminStore'
 import { motion, AnimatePresence } from 'framer-motion'
 
@@ -72,7 +69,7 @@ export default function AdminLogin() {
   return (
     <div className="min-h-screen bg-[#080808] flex items-center justify-center px-6">
 
-      {/* Ambient */}
+      {/* Ambient glow */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-[#C9A84C]/3 blur-[120px]" />
       </div>
@@ -122,7 +119,8 @@ export default function AdminLogin() {
                 transition={{ duration: 0.4 }}>
                 {[0, 1, 2, 3].map(i => (
                   <div key={i} className={`w-12 h-14 rounded-xl border flex items-center justify-center transition-all duration-200 ${pin.length > i ? 'border-[#C9A84C]/50 bg-[#C9A84C]/10' :
-                      pin.length === i ? 'border-[#C9A84C]/30 bg-[#0d0d0d]' : 'border-[#ffffff]/6 bg-[#0d0d0d]'
+                      pin.length === i ? 'border-[#C9A84C]/30 bg-[#0d0d0d]' :
+                        'border-[#ffffff]/6 bg-[#0d0d0d]'
                     }`}>
                     {pin.length > i && <div className="w-2.5 h-2.5 rounded-full bg-[#C9A84C]" />}
                   </div>
@@ -221,9 +219,18 @@ export default function AdminLogin() {
           )}
         </AnimatePresence>
 
-        <p className="text-[10px] text-[#2a2a2a] text-center mt-6 tracking-[0.08em]">
-          CandleScope Admin · Geschützt
-        </p>
+        {/* ── Bottom Links ────────────────────────────────── */}
+        <div className="flex items-center justify-between mt-8 pt-6 border-t border-[#ffffff]/5">
+          <p className="text-[10px] text-[#2a2a2a] tracking-[0.08em]">
+            CandleScope Admin · Geschützt
+          </p>
+          <Link to="/"
+            className="flex items-center gap-1.5 text-[11px] tracking-[0.1em] uppercase text-[#3a3530] hover:text-[#C9A84C] transition-colors duration-200 group">
+            <Home size={12} strokeWidth={1.5} className="group-hover:scale-110 transition-transform" />
+            Home
+          </Link>
+        </div>
+
       </motion.div>
     </div>
   )
