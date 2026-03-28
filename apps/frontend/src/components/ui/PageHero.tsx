@@ -1,14 +1,17 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 
 /* ─── Mobile Check Hook ─────────────────────────────────── */
+// matchMedia statt innerWidth — kein Forced Reflow
+const mobileQuery = typeof window !== 'undefined' ? window.matchMedia('(max-width: 767px)') : null
+
 function useIsMobile() {
-  const [isMobile, setIsMobile] = useState(false)
-  useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 768)
-    check()
-    window.addEventListener('resize', check)
-    return () => window.removeEventListener('resize', check)
+  const [isMobile, setIsMobile] = useState(() => mobileQuery?.matches ?? false)
+  useLayoutEffect(() => {
+    if (!mobileQuery) return
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches)
+    mobileQuery.addEventListener('change', handler)
+    return () => mobileQuery.removeEventListener('change', handler)
   }, [])
   return isMobile
 }
