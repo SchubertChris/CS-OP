@@ -9,18 +9,15 @@ import PageHero from '../components/ui/PageHero'
 import {
   SectionWrapper, SectionHeader, GoldDivider,
   GradientText, CtaButton, TagList, HighlightLine,
-  Card, CardIcon,
+  CardIcon,
 } from '../components/ui'
 import {
-  Code2, TrendingUp, Zap, Users, Heart,
+  TrendingUp, Zap, Users, Heart,
   BookOpen, Shield, Star, ArrowRight,
   Globe, Bot, GraduationCap, Briefcase,
 } from 'lucide-react'
 import chrisPhoto from '../assets/images/ChrisSchubert.jpg'
 
-/* ════════════════════════════════════════════════════════════════
-   ANIMATION HELPERS
-   ════════════════════════════════════════════════════════════════ */
 function StaggerContainer({ children, className }: { children: React.ReactNode; className?: string }) {
   const ref = useRef<HTMLDivElement>(null)
   const isInView = useInView(ref, { once: true, margin: '-60px' })
@@ -44,20 +41,15 @@ function StaggerItem({ children, className }: { children: React.ReactNode; class
   )
 }
 
-/* ════════════════════════════════════════════════════════════════
-   TIMELINE ITEM
-   ════════════════════════════════════════════════════════════════ */
 function TimelineItem({ year, title, desc, current }: {
   year: string; title: string; desc: string; current?: boolean
 }) {
   return (
     <div className="relative flex gap-6 pb-10 last:pb-0">
-      {/* Line */}
       <div className="flex flex-col items-center shrink-0">
         <div className={`w-3 h-3 rounded-full border-2 mt-1 shrink-0 ${current ? 'border-[#C9A84C] bg-[#C9A84C]' : 'border-[#C9A84C]/40 bg-[#080808]'}`} />
         <div className="w-px flex-1 bg-gradient-to-b from-[#C9A84C]/30 to-transparent mt-2" />
       </div>
-      {/* Content */}
       <div className="flex-1 pb-2">
         <span className="font-mono text-[10px] tracking-[0.16em] uppercase text-[#C9A84C]/60 mb-1 block">{year}</span>
         <h4 className="font-display text-base text-[#F5F0E8] mb-1">{title}</h4>
@@ -73,9 +65,6 @@ function TimelineItem({ year, title, desc, current }: {
   )
 }
 
-/* ════════════════════════════════════════════════════════════════
-   VALUE CARD
-   ════════════════════════════════════════════════════════════════ */
 function ValueCard({ icon, title, desc }: { icon: React.ReactNode; title: string; desc: string }) {
   return (
     <motion.div whileHover={{ y: -3 }} transition={{ duration: 0.2 }}
@@ -91,9 +80,6 @@ function ValueCard({ icon, title, desc }: { icon: React.ReactNode; title: string
   )
 }
 
-/* ════════════════════════════════════════════════════════════════
-   SERVICE CARD
-   ════════════════════════════════════════════════════════════════ */
 function ServiceCard({ icon, title, desc, tags }: {
   icon: React.ReactNode; title: string; desc: string; tags: string[]
 }) {
@@ -112,9 +98,6 @@ function ServiceCard({ icon, title, desc, tags }: {
   )
 }
 
-/* ════════════════════════════════════════════════════════════════
-   PAGE
-   ════════════════════════════════════════════════════════════════ */
 const SKILLS_DEV = ['React', 'TypeScript', 'Vite', 'Tailwind CSS', 'Node.js', 'NestJS', 'PostgreSQL', 'Docker', 'Git', 'Linux']
 const SKILLS_FINANCE = ['Technische Analyse', 'Aktien', 'ETFs', 'Krypto', 'DeFi', 'Portfolio-Management', 'Haushaltsbuch']
 const SKILLS_OTHER = ['Automatisierung', 'KI-Tools', 'Claude AI', 'ChatGPT', 'Discord', 'Community-Building']
@@ -204,76 +187,49 @@ export default function AboutPage() {
         </a>
       </PageHero>
 
-      {/* ── Foto + Story ──────────────────────────────────── */}
       <SectionWrapper id="story">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-
-          {/* Foto */}
           <div className="relative">
             <div className="relative rounded-2xl overflow-hidden border border-[#C9A84C]/20">
-              <img
-                src={chrisPhoto}
-                alt="Chris Schubert"
-                className="w-full object-cover aspect-[4/5] grayscale hover:grayscale-0 transition-all duration-700"
-              />
+              <img src={chrisPhoto} alt="Chris Schubert"
+                className="w-full object-cover aspect-[4/5] grayscale hover:grayscale-0 transition-all duration-700" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#080808]/80 via-transparent to-transparent" />
               <div className="absolute bottom-6 left-6 right-6">
                 <p className="font-display text-xl text-[#F5F0E8] tracking-wide">Chris Schubert</p>
-                <p className="font-mono text-[11px] tracking-[0.14em] uppercase text-[#C9A84C]/70 mt-1">
-                  Potsdam · WebDev · Trader
-                </p>
+                <p className="font-mono text-[11px] tracking-[0.14em] uppercase text-[#C9A84C]/70 mt-1">Potsdam · WebDev · Trader</p>
               </div>
             </div>
-            {/* Glow */}
             <div className="absolute -inset-4 rounded-3xl bg-[radial-gradient(ellipse_at_center,rgba(201,168,76,0.06)_0%,transparent_70%)] pointer-events-none" />
           </div>
-
-          {/* Story Text */}
           <div className="flex flex-col gap-6">
-            <SectionHeader
-              eyebrow="Die Geschichte"
-              title={<>Quereinsteiger.<br /><GradientText>Vollgas.</GradientText></>}
-              className="mb-2"
-            />
-
-            <HighlightLine>
-              „Think big — then double it."
-            </HighlightLine>
-
+            <SectionHeader eyebrow="Die Geschichte" title={<>Quereinsteiger.<br /><GradientText>Vollgas.</GradientText></>} className="mb-2" />
+            <HighlightLine>„Think big — then double it."</HighlightLine>
             <p className="text-[#9A9590] leading-relaxed">
               1994 in Potsdam geboren und aufgewachsen — seit dem zehnten Lebensjahr am PC,
               immer neugierig auf Technik, Hardware und wie Dinge funktionieren.
               Mit 15 ersten eigenen Lohn verdient, mit 17 den Führerschein selbst bezahlt.
             </p>
-
             <p className="text-[#9A9590] leading-relaxed">
               13 Jahre Gastronomie auf verschiedenen Levels — vom Hotelfach über die Juliette Potsdam
               bis hin zum Käfer im Bundestag Berlin. Das hat mich gelehrt was wirklich zählt:
               Verlässlichkeit, Qualität unter Druck und echte Kommunikation.
             </p>
-
             <p className="text-[#9A9590] leading-relaxed">
               2023 die Weiterbildung zum Webentwickler beim DCI Berlin — kombiniert mit allem was ich
               mir davor und danach selbst beigebracht habe. React, TypeScript, Full-Stack —
               heute baue ich Dinge die funktionieren und gut aussehen.
             </p>
-
             <p className="text-[#9A9590] leading-relaxed">
               Krypto und Finanzen sind kein Hobby — das ist echtes Interesse mit echtem Einsatz.
               Märkte verstehen, Chancen erkennen, eigene Tools bauen.
               2022 entstand CandleScope — meine Marke, mein Projekt, mein Weg.
             </p>
-
-            <HighlightLine>
-              "I automate what others do manually — for maximum efficiency and freedom."
-            </HighlightLine>
-
+            <HighlightLine>"I automate what others do manually — for maximum efficiency and freedom."</HighlightLine>
             <div className="flex flex-wrap gap-3 pt-2">
               <Link to="/contact">
                 <CtaButton variant="primary" href="/contact">Projekt anfragen</CtaButton>
               </Link>
-              <Link to="/dev"
-                className="flex items-center gap-2 text-[11px] tracking-[0.14em] uppercase text-[#5a5550] hover:text-[#F5F0E8] transition-colors duration-200 px-2">
+              <Link to="/dev" className="flex items-center gap-2 text-[11px] tracking-[0.14em] uppercase text-[#5a5550] hover:text-[#F5F0E8] transition-colors duration-200 px-2">
                 Meine Projekte <ArrowRight size={13} strokeWidth={1.5} />
               </Link>
             </div>
@@ -283,7 +239,6 @@ export default function AboutPage() {
 
       <GoldDivider className="mx-8 md:mx-16 lg:mx-24" />
 
-      {/* ── Timeline ─────────────────────────────────────── */}
       <SectionWrapper id="timeline">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
           <div>
@@ -296,22 +251,15 @@ export default function AboutPage() {
             <CtaButton variant="primary" href="/contact">Lass uns arbeiten</CtaButton>
           </div>
           <div className="pt-2">
-            {TIMELINE.map((item, i) => (
-              <TimelineItem key={i} {...item} />
-            ))}
+            {TIMELINE.map((item, i) => (<TimelineItem key={i} {...item} />))}
           </div>
         </div>
       </SectionWrapper>
 
       <GoldDivider className="mx-8 md:mx-16 lg:mx-24" />
 
-      {/* ── Skills ───────────────────────────────────────── */}
       <SectionWrapper id="skills">
-        <SectionHeader
-          eyebrow="Skills"
-          title={<>Was ich <GradientText>kann</GradientText></>}
-          className="mb-10"
-        />
+        <SectionHeader eyebrow="Skills" title={<>Was ich <GradientText>kann</GradientText></>} className="mb-10" />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
             <p className="font-mono text-[11px] tracking-[0.16em] text-[#C9A84C]/60 uppercase mb-4">Development</p>
@@ -330,7 +278,6 @@ export default function AboutPage() {
 
       <GoldDivider className="mx-8 md:mx-16 lg:mx-24" />
 
-      {/* ── Werte ────────────────────────────────────────── */}
       <SectionWrapper id="values">
         <SectionHeader
           eyebrow="Werte & Philosophie"
@@ -339,17 +286,12 @@ export default function AboutPage() {
           className="mb-14"
         />
         <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {VALUES.map((v, i) => (
-            <StaggerItem key={i}>
-              <ValueCard {...v} />
-            </StaggerItem>
-          ))}
+          {VALUES.map((v, i) => (<StaggerItem key={i}><ValueCard {...v} /></StaggerItem>))}
         </StaggerContainer>
       </SectionWrapper>
 
       <GoldDivider className="mx-8 md:mx-16 lg:mx-24" />
 
-      {/* ── Was ich anbiete ──────────────────────────────── */}
       <SectionWrapper id="services">
         <SectionHeader
           eyebrow="Was ich anbiete"
@@ -358,23 +300,14 @@ export default function AboutPage() {
           className="mb-14"
         />
         <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {SERVICES.map((s, i) => (
-            <StaggerItem key={i} className="h-full">
-              <ServiceCard {...s} />
-            </StaggerItem>
-          ))}
+          {SERVICES.map((s, i) => (<StaggerItem key={i} className="h-full"><ServiceCard {...s} /></StaggerItem>))}
         </StaggerContainer>
       </SectionWrapper>
 
       <GoldDivider className="mx-8 md:mx-16 lg:mx-24" />
 
-      {/* ── Fun Facts ────────────────────────────────────── */}
       <SectionWrapper id="fun-facts">
-        <SectionHeader
-          eyebrow="Fun Facts"
-          title={<>Die <GradientText>persönliche Seite</GradientText></>}
-          className="mb-10"
-        />
+        <SectionHeader eyebrow="Fun Facts" title={<>Die <GradientText>persönliche Seite</GradientText></>} className="mb-10" />
         <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {FUN_FACTS.map((fact, i) => (
             <StaggerItem key={i}>
@@ -389,7 +322,6 @@ export default function AboutPage() {
 
       <GoldDivider className="mx-8 md:mx-16 lg:mx-24" />
 
-      {/* ── Hire me CTA ──────────────────────────────────── */}
       <SectionWrapper id="hire">
         <div className="relative rounded-2xl border border-[#C9A84C]/20 bg-gradient-to-br from-[#0f0e0c] to-[#080808] p-10 md:p-14 overflow-hidden">
           <motion.div
@@ -417,8 +349,7 @@ export default function AboutPage() {
                 </Link>
                 <a href="mailto:hello@candlescope.de"
                   className="flex items-center gap-2 text-[11px] tracking-[0.14em] uppercase text-[#5a5550] hover:text-[#F5F0E8] transition-colors duration-200 px-4">
-                  hello@candlescope.de
-                  <ArrowRight size={13} strokeWidth={1.5} />
+                  hello@candlescope.de <ArrowRight size={13} strokeWidth={1.5} />
                 </a>
               </div>
             </div>
