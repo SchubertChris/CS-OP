@@ -6,36 +6,30 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
 
   build: {
-    // Ziel: moderne Browser — kleinere Bundles
     target: 'es2020',
-
-    // CSS Code Splitting
     cssCodeSplit: true,
-
-    // Chunk size warning bei 400KB
     chunkSizeWarningLimit: 400,
 
     rollupOptions: {
       output: {
-        // Manuelles Bundle-Splitting — jede Lib in eigenen Chunk
-        manualChunks: {
-          // React Core — wird immer gecacht
-          'vendor-react': ['react', 'react-dom'],
-
-          // Router — separat
-          'vendor-router': ['react-router-dom'],
-
-          // Framer Motion — groß, selten geändert
-          'vendor-motion': ['framer-motion'],
-
-          // Icons — tree-shakeable aber groß
-          'vendor-icons': ['lucide-react'],
-
-          // Zustand
-          'vendor-state': ['zustand'],
+        // manualChunks als Funktion — kompatibel mit Vite 8
+        manualChunks(id) {
+          if (id.includes('node_modules/react-dom') || id.includes('node_modules/react/')) {
+            return 'vendor-react'
+          }
+          if (id.includes('node_modules/react-router-dom') || id.includes('node_modules/react-router/')) {
+            return 'vendor-router'
+          }
+          if (id.includes('node_modules/framer-motion')) {
+            return 'vendor-motion'
+          }
+          if (id.includes('node_modules/lucide-react')) {
+            return 'vendor-icons'
+          }
+          if (id.includes('node_modules/zustand')) {
+            return 'vendor-state'
+          }
         },
-
-        // Chunk Dateinamen mit Hash für Cache-Busting
         chunkFileNames: 'assets/[name]-[hash].js',
         entryFileNames: 'assets/[name]-[hash].js',
         assetFileNames: 'assets/[name]-[hash].[ext]',
@@ -43,7 +37,6 @@ export default defineConfig({
     },
   },
 
-  // Optimiere Deps beim Start
   optimizeDeps: {
     include: ['react', 'react-dom', 'react-router-dom', 'framer-motion'],
   },
