@@ -1,17 +1,12 @@
 /* ============================================================
    CandleScope — Cookie Banner
    src/components/ui/CookieBanner.tsx
-
-   DSGVO-konform — nur technisch notwendige Cookies.
-   Speichert Entscheidung in localStorage.
    ============================================================ */
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Cookie, Shield, ChevronDown, ChevronUp } from 'lucide-react'
 
-
 const STORAGE_KEY = 'candlescope-cookie-consent'
-
 type Consent = 'accepted' | 'declined' | null
 
 export default function CookieBanner() {
@@ -47,21 +42,14 @@ export default function CookieBanner() {
     <AnimatePresence>
       {visible && (
         <>
-          {/* Backdrop */}
           <motion.div
             className="fixed inset-0 z-[90] bg-[#080808]/60 backdrop-blur-sm"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             transition={{ duration: 0.4 }}
           />
-
-          {/* Banner */}
           <motion.div
             className="fixed inset-0 z-[91] flex items-center justify-center px-4"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
             <motion.div
@@ -71,16 +59,10 @@ export default function CookieBanner() {
               exit={{ opacity: 0, y: 20, scale: 0.97 }}
               transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             >
-              {/* Glow */}
               <div className="absolute -inset-6 rounded-3xl bg-[radial-gradient(ellipse_at_center,rgba(201,168,76,0.08)_0%,transparent_70%)] pointer-events-none" />
-
               <div className="relative rounded-2xl border border-[#C9A84C]/25 bg-[#0d0d0d] overflow-hidden shadow-2xl shadow-black/60">
-
-                {/* Gold top bar */}
                 <div className="h-px bg-gradient-to-r from-transparent via-[#C9A84C]/60 to-transparent" />
-
                 <div className="p-8">
-                  {/* Header */}
                   <div className="flex items-start justify-between mb-5">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-xl bg-[#C9A84C]/10 border border-[#C9A84C]/20 flex items-center justify-center">
@@ -92,23 +74,18 @@ export default function CookieBanner() {
                       </div>
                     </div>
                   </div>
-
-                  {/* Text */}
                   <p className="text-[#9A9590] text-sm leading-relaxed mb-5">
                     Diese Website verwendet ausschließlich <span className="text-[#F5F0E8]">technisch notwendige Cookies</span> —
                     keine Tracking-, Werbe- oder Analyse-Cookies.
                     Deine Daten verlassen nicht deinen Browser.
                   </p>
-
-                  {/* Details Toggle */}
                   <button
                     onClick={() => setExpanded(v => !v)}
-                    className="flex items-center gap-2 text-[11px] tracking-[0.1em] uppercase text-[#5a5550] hover:text-[#9A9590] transition-colors mb-4 cursor-pointer"
+                    className="flex items-center gap-2 text-[11px] tracking-[0.1em] uppercase text-[#5a5550] hover:text-[#9A9590] transition-colors mb-4 cursor-pointer bg-transparent border-none outline-none"
                   >
                     {expanded ? <ChevronUp size={13} strokeWidth={1.5} /> : <ChevronDown size={13} strokeWidth={1.5} />}
                     Details anzeigen
                   </button>
-
                   <AnimatePresence>
                     {expanded && (
                       <motion.div
@@ -143,10 +120,11 @@ export default function CookieBanner() {
                     )}
                   </AnimatePresence>
 
-                  {/* Buttons */}
+                  {/* Buttons — iOS Fix */}
                   <div className="flex flex-col sm:flex-row gap-3">
                     <button
                       onClick={handleAccept}
+                      style={{ WebkitAppearance: 'none', appearance: 'none', backgroundColor: 'transparent' }}
                       className="relative overflow-hidden group flex-1 h-12 rounded-full border border-[#C9A84C]/40 text-[11px] tracking-[0.16em] uppercase text-[#C9A84C] font-medium cursor-pointer"
                     >
                       <span className="relative z-10 group-hover:text-[#080808] transition-colors duration-300">
@@ -156,19 +134,16 @@ export default function CookieBanner() {
                     </button>
                     <button
                       onClick={handleDecline}
+                      style={{ WebkitAppearance: 'none', appearance: 'none', backgroundColor: 'transparent' }}
                       className="flex-1 h-12 rounded-full border border-[#ffffff]/8 text-[11px] tracking-[0.16em] uppercase text-[#9A9590] hover:text-[#F5F0E8] hover:border-[#ffffff]/15 transition-all duration-200 cursor-pointer"
                     >
                       Nur notwendige
                     </button>
                   </div>
-
-                  {/* Legal Info — kein Link, verhindert Umgehung des Banners */}
-                  <p className="font-mono text-[10px] tracking-[0.08em] text-center mt-4" style={{ color: "#3a3530" }}>
+                  <p className="font-mono text-[10px] tracking-[0.08em] text-center mt-4" style={{ color: '#3a3530' }}>
                     Weitere Infos in Datenschutz &amp; Impressum — nach Bestätigung zugänglich.
                   </p>
                 </div>
-
-                {/* Gold bottom bar */}
                 <div className="h-px bg-gradient-to-r from-transparent via-[#C9A84C]/30 to-transparent" />
               </div>
             </motion.div>

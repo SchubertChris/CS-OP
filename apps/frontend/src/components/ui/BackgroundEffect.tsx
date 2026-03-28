@@ -1,12 +1,11 @@
 /* ============================================================
    CandleScope — Background Effect
    src/components/ui/BackgroundEffect.tsx
-
-   Dezente, extrem langsam gleitende Orbs im Hintergrund.
-   Läuft auf allen Seiten via RootLayout.
+   Mobile: deaktiviert (spart CPU + Akku)
+   Desktop: langsam gleitende Orbs
    ============================================================ */
-
 import { motion } from 'framer-motion'
+import { useEffect, useState } from 'react'
 
 const ORBS = [
   { w: 600, h: 600, x: -10, y: -5, tx: 8, ty: 12, duration: 28, delay: 0, opacity: 0.045 },
@@ -18,6 +17,39 @@ const ORBS = [
 ]
 
 export default function BackgroundEffect() {
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768)
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [])
+
+  // Auf Mobile nur statische Orbs — kein Infinite-Animation
+  if (isMobile) {
+    return (
+      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0" aria-hidden>
+        {ORBS.slice(0, 2).map((orb, i) => (
+          <div
+            key={i}
+            className="absolute rounded-full"
+            style={{
+              width: orb.w * 0.6,
+              height: orb.h * 0.6,
+              left: `${orb.x}%`,
+              top: `${orb.y}%`,
+              background: 'radial-gradient(circle, rgba(201,168,76,1) 0%, transparent 70%)',
+              opacity: orb.opacity * 0.6,
+              filter: 'blur(60px)',
+              transform: 'translate(-50%, -50%)',
+            }}
+          />
+        ))}
+      </div>
+    )
+  }
+
   return (
     <div className="fixed inset-0 pointer-events-none overflow-hidden z-0" aria-hidden>
       {ORBS.map((orb, i) => (
@@ -47,8 +79,6 @@ export default function BackgroundEffect() {
           }}
         />
       ))}
-
-      {/* Subtile Körnung für Tiefe */}
       <div
         className="absolute inset-0 opacity-[0.015]"
         style={{
