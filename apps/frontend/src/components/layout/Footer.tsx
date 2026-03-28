@@ -9,7 +9,7 @@ import csLogo from '../../assets/images/CandleScope.webp'
 
 const footerNav = [
   { to: '/finance', label: 'Finance', icon: <TrendingUp size={14} strokeWidth={1.5} /> },
-  { to: '/dev', label: 'Dev & Web', icon: <Code2 size={14} strokeWidth={1.5} /> },
+  { to: '/dev', label: 'Dev & Web-Projekte', icon: <Code2 size={14} strokeWidth={1.5} /> },
   { to: '/about', label: 'About', icon: <User size={14} strokeWidth={1.5} /> },
   { to: '/contact', label: 'Kontakt', icon: <MessageSquare size={14} strokeWidth={1.5} /> },
 ]
