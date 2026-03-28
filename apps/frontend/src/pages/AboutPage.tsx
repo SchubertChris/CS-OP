@@ -85,7 +85,7 @@ function ServiceCard({ icon, title, desc, tags }: {
 }) {
   return (
     <motion.div whileHover={{ y: -4 }} transition={{ duration: 0.22 }}
-      className="flex flex-col h-full rounded-xl border border-[#ffffff]/8 bg-[#0d0d0d] p-6 hover:border-[#C9A84C]/20 transition-colors duration-300 group">
+      className="flex flex-col h-full rounded-xl border border-[#ffffff]/8 bg-[#0d0d0d] p-6 hover:border-[#C9A84C]/20 transition-colors duration-300">
       <CardIcon>{icon}</CardIcon>
       <h4 className="font-display text-base text-[#F5F0E8] mb-2">{title}</h4>
       <p className="text-[#9A9590] text-[13px] leading-relaxed mb-4 flex-1">{desc}</p>
@@ -123,36 +123,11 @@ const VALUES = [
 ]
 
 const SERVICES = [
-  {
-    icon: <Globe size={20} strokeWidth={1.5} />,
-    title: 'Websites & Web-Apps',
-    desc: 'Von der Landing Page bis zur komplexen Web-App — React, TypeScript, moderne Architektur. Sauber entwickelt, pünktlich geliefert.',
-    tags: ['React', 'TypeScript', 'Vite', 'Node.js'],
-  },
-  {
-    icon: <TrendingUp size={20} strokeWidth={1.5} />,
-    title: 'Trading-Analyse & Setups',
-    desc: 'Technische Analyse, Chart-Setups und Marktperspektiven — basierend auf eigener Erfahrung. Keine BaFin-Lizenz, keine Beratung.',
-    tags: ['TA', 'Aktien', 'Krypto', 'ETFs'],
-  },
-  {
-    icon: <GraduationCap size={20} strokeWidth={1.5} />,
-    title: 'Finance Coaching',
-    desc: 'Haushaltsbuch einrichten, Portfolio aufbauen, Grundlagen verstehen — gemeinsam statt alleine. Persönliche Meinung, kein Finanzberater.',
-    tags: ['Budgeting', 'Portfolio', 'Grundlagen'],
-  },
-  {
-    icon: <Bot size={20} strokeWidth={1.5} />,
-    title: 'Automatisierung & Scripting',
-    desc: 'Repetitive Aufgaben automatisieren, Workflows optimieren, Tools bauen die Zeit sparen. Python, Node.js, KI-Integration.',
-    tags: ['Python', 'Node.js', 'KI', 'Workflows'],
-  },
-  {
-    icon: <Briefcase size={20} strokeWidth={1.5} />,
-    title: 'Mentoring & Wissensweitergabe',
-    desc: 'Was ich gelernt habe teile ich — Webdev, Trading, Finanzen. Für Einsteiger die einen ehrlichen Ratgeber suchen.',
-    tags: ['WebDev', 'Finance', 'Karriere'],
-  },
+  { icon: <Globe size={20} strokeWidth={1.5} />, title: 'Websites & Web-Apps', desc: 'Von der Landing Page bis zur komplexen Web-App — React, TypeScript, moderne Architektur. Sauber entwickelt, pünktlich geliefert.', tags: ['React', 'TypeScript', 'Vite', 'Node.js'] },
+  { icon: <TrendingUp size={20} strokeWidth={1.5} />, title: 'Trading-Analyse & Setups', desc: 'Technische Analyse, Chart-Setups und Marktperspektiven — basierend auf eigener Erfahrung. Keine BaFin-Lizenz, keine Beratung.', tags: ['TA', 'Aktien', 'Krypto', 'ETFs'] },
+  { icon: <GraduationCap size={20} strokeWidth={1.5} />, title: 'Finance Coaching', desc: 'Haushaltsbuch einrichten, Portfolio aufbauen, Grundlagen verstehen — gemeinsam statt alleine. Persönliche Meinung, kein Finanzberater.', tags: ['Budgeting', 'Portfolio', 'Grundlagen'] },
+  { icon: <Bot size={20} strokeWidth={1.5} />, title: 'Automatisierung & Scripting', desc: 'Repetitive Aufgaben automatisieren, Workflows optimieren, Tools bauen die Zeit sparen. Python, Node.js, KI-Integration.', tags: ['Python', 'Node.js', 'KI', 'Workflows'] },
+  { icon: <Briefcase size={20} strokeWidth={1.5} />, title: 'Mentoring & Wissensweitergabe', desc: 'Was ich gelernt habe teile ich — Webdev, Trading, Finanzen. Für Einsteiger die einen ehrlichen Ratgeber suchen.', tags: ['WebDev', 'Finance', 'Karriere'] },
 ]
 
 const FUN_FACTS = [
@@ -187,6 +162,7 @@ export default function AboutPage() {
         </a>
       </PageHero>
 
+      {/* ── Foto + Story ──────────────────────────────────── */}
       <SectionWrapper id="story">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
           <div className="relative">
@@ -201,6 +177,7 @@ export default function AboutPage() {
             </div>
             <div className="absolute -inset-4 rounded-3xl bg-[radial-gradient(ellipse_at_center,rgba(201,168,76,0.06)_0%,transparent_70%)] pointer-events-none" />
           </div>
+
           <div className="flex flex-col gap-6">
             <SectionHeader eyebrow="Die Geschichte" title={<>Quereinsteiger.<br /><GradientText>Vollgas.</GradientText></>} className="mb-2" />
             <HighlightLine>„Think big — then double it."</HighlightLine>
@@ -239,6 +216,7 @@ export default function AboutPage() {
 
       <GoldDivider className="mx-8 md:mx-16 lg:mx-24" />
 
+      {/* ── Timeline ─────────────────────────────────────── */}
       <SectionWrapper id="timeline">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
           <div>
@@ -251,13 +229,14 @@ export default function AboutPage() {
             <CtaButton variant="primary" href="/contact">Lass uns arbeiten</CtaButton>
           </div>
           <div className="pt-2">
-            {TIMELINE.map((item, i) => (<TimelineItem key={i} {...item} />))}
+            {TIMELINE.map((item, i) => <TimelineItem key={i} {...item} />)}
           </div>
         </div>
       </SectionWrapper>
 
       <GoldDivider className="mx-8 md:mx-16 lg:mx-24" />
 
+      {/* ── Skills ───────────────────────────────────────── */}
       <SectionWrapper id="skills">
         <SectionHeader eyebrow="Skills" title={<>Was ich <GradientText>kann</GradientText></>} className="mb-10" />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -278,6 +257,7 @@ export default function AboutPage() {
 
       <GoldDivider className="mx-8 md:mx-16 lg:mx-24" />
 
+      {/* ── Werte ────────────────────────────────────────── */}
       <SectionWrapper id="values">
         <SectionHeader
           eyebrow="Werte & Philosophie"
@@ -286,12 +266,13 @@ export default function AboutPage() {
           className="mb-14"
         />
         <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {VALUES.map((v, i) => (<StaggerItem key={i}><ValueCard {...v} /></StaggerItem>))}
+          {VALUES.map((v, i) => <StaggerItem key={i}><ValueCard {...v} /></StaggerItem>)}
         </StaggerContainer>
       </SectionWrapper>
 
       <GoldDivider className="mx-8 md:mx-16 lg:mx-24" />
 
+      {/* ── Was ich anbiete ──────────────────────────────── */}
       <SectionWrapper id="services">
         <SectionHeader
           eyebrow="Was ich anbiete"
@@ -300,12 +281,13 @@ export default function AboutPage() {
           className="mb-14"
         />
         <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {SERVICES.map((s, i) => (<StaggerItem key={i} className="h-full"><ServiceCard {...s} /></StaggerItem>))}
+          {SERVICES.map((s, i) => <StaggerItem key={i} className="h-full"><ServiceCard {...s} /></StaggerItem>)}
         </StaggerContainer>
       </SectionWrapper>
 
       <GoldDivider className="mx-8 md:mx-16 lg:mx-24" />
 
+      {/* ── Fun Facts ────────────────────────────────────── */}
       <SectionWrapper id="fun-facts">
         <SectionHeader eyebrow="Fun Facts" title={<>Die <GradientText>persönliche Seite</GradientText></>} className="mb-10" />
         <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -322,6 +304,7 @@ export default function AboutPage() {
 
       <GoldDivider className="mx-8 md:mx-16 lg:mx-24" />
 
+      {/* ── Hire me CTA ──────────────────────────────────── */}
       <SectionWrapper id="hire">
         <div className="relative rounded-2xl border border-[#C9A84C]/20 bg-gradient-to-br from-[#0f0e0c] to-[#080808] p-10 md:p-14 overflow-hidden">
           <motion.div
