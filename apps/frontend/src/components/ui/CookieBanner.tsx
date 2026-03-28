@@ -10,9 +10,9 @@ const STORAGE_KEY = 'candlescope-cookie-consent'
 type Consent = 'accepted' | 'declined' | null
 
 export default function CookieBanner() {
-  const [consent, setConsent] = useState<Consent>(null)
+  const [consent, setConsent]   = useState<Consent>(null)
   const [expanded, setExpanded] = useState(false)
-  const [visible, setVisible] = useState(false)
+  const [visible, setVisible]   = useState(false)
 
   useEffect(() => {
     const stored = localStorage.getItem(STORAGE_KEY) as Consent
@@ -120,25 +120,28 @@ export default function CookieBanner() {
                     )}
                   </AnimatePresence>
 
-                  {/* Buttons — iOS Fix */}
-                  <div className="flex flex-col sm:flex-row gap-3">
-                    <button
+                  {/* Buttons — nebeneinander, feste Größe auf Mobile */}
+                  <div className="flex flex-row gap-3">
+                    <div
                       onClick={handleAccept}
-                      style={{ WebkitAppearance: 'none', appearance: 'none', backgroundColor: 'transparent' }}
-                      className="relative overflow-hidden group flex-1 h-12 rounded-full border border-[#C9A84C]/40 text-[11px] tracking-[0.16em] uppercase text-[#C9A84C] font-medium cursor-pointer"
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={e => e.key === 'Enter' && handleAccept()}
+                      style={{ WebkitTapHighlightColor: 'transparent', minHeight: '52px' }}
+                      className="flex-1 rounded-full border border-[#C9A84C]/40 flex items-center justify-center text-[11px] tracking-[0.16em] uppercase text-[#C9A84C] font-medium cursor-pointer select-none active:opacity-70 transition-opacity duration-150 px-4"
                     >
-                      <span className="relative z-10 group-hover:text-[#080808] transition-colors duration-300">
-                        Alle akzeptieren
-                      </span>
-                      <span className="absolute inset-0 bg-[#C9A84C] rounded-full translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
-                    </button>
-                    <button
+                      Alle akzeptieren
+                    </div>
+                    <div
                       onClick={handleDecline}
-                      style={{ WebkitAppearance: 'none', appearance: 'none', backgroundColor: 'transparent' }}
-                      className="flex-1 h-12 rounded-full border border-[#ffffff]/8 text-[11px] tracking-[0.16em] uppercase text-[#9A9590] hover:text-[#F5F0E8] hover:border-[#ffffff]/15 transition-all duration-200 cursor-pointer"
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={e => e.key === 'Enter' && handleDecline()}
+                      style={{ WebkitTapHighlightColor: 'transparent', minHeight: '52px' }}
+                      className="flex-1 rounded-full border border-[#ffffff]/8 flex items-center justify-center text-[11px] tracking-[0.16em] uppercase text-[#9A9590] cursor-pointer select-none active:opacity-70 transition-opacity duration-150 px-4"
                     >
                       Nur notwendige
-                    </button>
+                    </div>
                   </div>
                   <p className="font-mono text-[10px] tracking-[0.08em] text-center mt-4" style={{ color: '#3a3530' }}>
                     Weitere Infos in Datenschutz &amp; Impressum — nach Bestätigung zugänglich.
