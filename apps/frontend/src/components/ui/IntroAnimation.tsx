@@ -3,6 +3,7 @@
    src/components/ui/IntroAnimation.tsx
    Mobile + Desktop, 3D Globe + Moon, data streams in gold/cyan
    ============================================================ */
+import type * as THREE from 'three'
 import { useEffect, useRef, useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import csLogo from '../../assets/images/CandleScope.webp'
