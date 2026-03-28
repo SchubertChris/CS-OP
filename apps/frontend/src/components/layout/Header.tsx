@@ -4,7 +4,7 @@
    ============================================================ */
 
 import { useState, useEffect } from 'react'
-import { NavLink, Link } from 'react-router-dom'
+import { NavLink, Link, useLocation } from 'react-router-dom'
 import {
   TrendingUp, Code2, User, MessageSquare,
   Shield, ChevronRight, Mail,
@@ -19,11 +19,11 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { to: '/finance', label: 'Finance', icon: <TrendingUp size={18} strokeWidth={1.5} />, tooltip: 'Haushaltsbuch · Trading · Tools' },
-  { to: '/dev', label: 'Dev & Web', icon: <Code2 size={18} strokeWidth={1.5} />, tooltip: 'Websites · Coding · Projekte' },
-  { to: '/about', label: 'About', icon: <User size={18} strokeWidth={1.5} />, tooltip: 'Über mich · Angebote · CV' },
+  { to: '/finance',   label: 'Finance',   icon: <TrendingUp size={18} strokeWidth={1.5} />,   tooltip: 'Haushaltsbuch · Trading · Tools' },
+  { to: '/dev',       label: 'Dev & Web', icon: <Code2 size={18} strokeWidth={1.5} />,         tooltip: 'Websites · Coding · Projekte' },
+  { to: '/about',     label: 'About',     icon: <User size={18} strokeWidth={1.5} />,           tooltip: 'Über mich · Angebote · CV' },
   { to: '/community', label: 'Community', icon: <MessageSquare size={18} strokeWidth={1.5} />, tooltip: 'Discord · Community · Events' },
-  { to: '/contact', label: 'Kontakt', icon: <Mail size={18} strokeWidth={1.5} />, tooltip: 'Anfragen · Kooperationen' },
+  { to: '/contact',   label: 'Kontakt',   icon: <Mail size={18} strokeWidth={1.5} />,           tooltip: 'Anfragen · Kooperationen' },
 ]
 
 function DesktopTooltip({ text }: { text: string }) {
@@ -48,14 +48,17 @@ function SidebarTooltip({ label, tooltip }: { label: string; tooltip: string }) 
 }
 
 export default function Header() {
-  const [scrolled, setScrolled] = useState(false)
+  const [scrolled, setScrolled]       = useState(false)
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const { pathname } = useLocation()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
+
+  useEffect(() => { setSidebarOpen(false) }, [pathname])
 
   return (
     <>
