@@ -247,7 +247,7 @@ function DesktopIntro({ onDone }: { onDone: () => void }) {
       const continentMats: InstanceType<typeof THREE.LineBasicMaterial>[] = []
       CONTINENTS.forEach(poly => {
         const pts = [...poly.map(([lat,lon]) => toV(lat,lon)), toV(poly[0][0], poly[0][1])]
-        const mat = new THREE.LineBasicMaterial({ color: GOLD, transparent: true, opacity: 0.75 })
+        const mat = new THREE.LineBasicMaterial({ color: GOLD, transparent: true, opacity: 0.95 })
         continentMats.push(mat)
         globe.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), mat))
       })
@@ -354,7 +354,7 @@ function DesktopIntro({ onDone }: { onDone: () => void }) {
         if (elapsed>2800) {
           const ft=Math.min((elapsed-2800)/1100,1), e=ft*ft
           globeMat.opacity=1-e; atmMat.uniforms.opacity.value=1-e; haloMat.opacity=0.05*(1-e); pMat.opacity=0.3*(1-e); ringMat.opacity=0.3*(1-e)
-          continentMats.forEach(m => { m.opacity=0.75*(1-e) })
+          continentMats.forEach(m => { m.opacity=0.95*(1-e) })
         }
         if (t>=1) { cancelAnimationFrame(raf); complete(); return }
         renderer.render(scene,camera)
