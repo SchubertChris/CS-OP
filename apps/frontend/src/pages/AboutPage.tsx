@@ -16,7 +16,7 @@ import {
   BookOpen, Shield, Star, ArrowRight,
   Globe, Bot, GraduationCap, Briefcase,
 } from 'lucide-react'
-import chrisPhoto from '../assets/images/ChrisSchubert.jpg'
+import chrisPhoto from '../assets/images/ChrisSchubert.webp'
 
 function StaggerContainer({ children, className }: { children: React.ReactNode; className?: string }) {
   const ref = useRef<HTMLDivElement>(null)
