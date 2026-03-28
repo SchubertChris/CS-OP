@@ -184,9 +184,10 @@ function DevBg() {
                 initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: line.delay, duration: 0.4 }}>
                 <span className="text-[#3a3530] text-[9px] font-mono w-3 shrink-0 text-right">{i + 1}</span>
-                <span className={`text-[9px] font-mono leading-relaxed ${line.text.startsWith('//') ? 'text-[#5a5550]' :
-                    line.text.startsWith('const') || line.text.startsWith('await') ? 'text-[#C9A84C]/80' :
-                      'text-[#F5F0E8]/60'}`}
+                <span className={`text-[9px] font-mono leading-relaxed ${
+                  line.text.startsWith('//') ? 'text-[#5a5550]' :
+                  line.text.startsWith('const') || line.text.startsWith('await') ? 'text-[#C9A84C]/80' :
+                  'text-[#F5F0E8]/60'}`}
                   style={{ paddingLeft: `${line.indent * 12}px` }}>
                   {line.text}
                   {/* Cursor — NUR Desktop */}
@@ -221,9 +222,10 @@ function DevBg() {
                 initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: line.delay, duration: 0.5 }}>
                 <span className="text-[#2a2a2a] text-[11px] font-mono w-4 shrink-0 text-right">{i + 1}</span>
-                <span className={`text-[11px] font-mono leading-relaxed ${line.text.startsWith('//') ? 'text-[#5a5550]' :
-                    line.text.startsWith('const') || line.text.startsWith('await') ? 'text-[#C9A84C]' :
-                      'text-[#F5F0E8]/70'}`}
+                <span className={`text-[11px] font-mono leading-relaxed ${
+                  line.text.startsWith('//') ? 'text-[#5a5550]' :
+                  line.text.startsWith('const') || line.text.startsWith('await') ? 'text-[#C9A84C]' :
+                  'text-[#F5F0E8]/70'}`}
                   style={{ paddingLeft: `${line.indent * 16}px` }}>
                   {line.text}
                   {i === lines.length - 1 && (
@@ -245,9 +247,9 @@ function AboutBg() {
   const isMobile = useIsMobile()
   const mNodes = [
     { cx: 18, cy: 15, r: 2.5, delay: 0.3 }, { cx: 42, cy: 25, r: 1.8, delay: 0.6 },
-    { cx: 65, cy: 18, r: 2, delay: 0.5 }, { cx: 28, cy: 40, r: 3, delay: 0.9 },
-    { cx: 55, cy: 38, r: 1.8, delay: 1.1 }, { cx: 78, cy: 32, r: 2, delay: 0.8 },
-    { cx: 45, cy: 58, r: 2, delay: 0.7 }, { cx: 70, cy: 55, r: 1.5, delay: 1.3 },
+    { cx: 65, cy: 18, r: 2,   delay: 0.5 }, { cx: 28, cy: 40, r: 3,   delay: 0.9 },
+    { cx: 55, cy: 38, r: 1.8, delay: 1.1 }, { cx: 78, cy: 32, r: 2,   delay: 0.8 },
+    { cx: 45, cy: 58, r: 2,   delay: 0.7 }, { cx: 70, cy: 55, r: 1.5, delay: 1.3 },
   ]
   const mEdges = [
     { x1: 18, y1: 15, x2: 42, y2: 25, delay: 0.7 }, { x1: 42, y1: 25, x2: 65, y2: 18, delay: 0.8 },
@@ -257,10 +259,10 @@ function AboutBg() {
     { x1: 45, y1: 58, x2: 70, y2: 55, delay: 1.4 },
   ]
   const dNodes = [
-    { cx: 72, cy: 18, r: 2, delay: 0.3 }, { cx: 85, cy: 35, r: 1.5, delay: 0.6 },
+    { cx: 72, cy: 18, r: 2,   delay: 0.3 }, { cx: 85, cy: 35, r: 1.5, delay: 0.6 },
     { cx: 65, cy: 42, r: 2.5, delay: 0.9 }, { cx: 90, cy: 55, r: 1.5, delay: 1.2 },
-    { cx: 75, cy: 62, r: 2, delay: 0.5 }, { cx: 60, cy: 70, r: 1.5, delay: 1.4 },
-    { cx: 88, cy: 72, r: 2, delay: 0.8 },
+    { cx: 75, cy: 62, r: 2,   delay: 0.5 }, { cx: 60, cy: 70, r: 1.5, delay: 1.4 },
+    { cx: 88, cy: 72, r: 2,   delay: 0.8 },
   ]
   const dEdges = [
     { x1: 72, y1: 18, x2: 85, y2: 35, delay: 0.7 }, { x1: 85, y1: 35, x2: 65, y2: 42, delay: 0.9 },
@@ -430,22 +432,21 @@ function ContactBg() {
 
 /* ── Home: Candlestick Chart ────────────────────────────── */
 function HomeBg() {
-  const isMobile = useIsMobile()
   const candles = [
     { o: 82, c: 90, h: 93, l: 79, bull: true }, { o: 90, c: 86, h: 93, l: 83, bull: false },
-    { o: 86, c: 94, h: 97, l: 84, bull: true }, { o: 94, c: 100, h: 103, l: 91, bull: true },
-    { o: 100, c: 95, h: 104, l: 93, bull: false }, { o: 95, c: 105, h: 108, l: 93, bull: true },
-    { o: 105, c: 99, h: 109, l: 97, bull: false }, { o: 99, c: 93, h: 102, l: 90, bull: false },
-    { o: 93, c: 97, h: 100, l: 91, bull: true }, { o: 97, c: 91, h: 100, l: 88, bull: false },
+    { o: 86, c: 94, h: 97, l: 84, bull: true },  { o: 94, c: 100, h: 103, l: 91, bull: true },
+    { o: 100, c: 95, h: 104, l: 93, bull: false },{ o: 95, c: 105, h: 108, l: 93, bull: true },
+    { o: 105, c: 99, h: 109, l: 97, bull: false },{ o: 99, c: 93, h: 102, l: 90, bull: false },
+    { o: 93, c: 97, h: 100, l: 91, bull: true },  { o: 97, c: 91, h: 100, l: 88, bull: false },
     { o: 91, c: 100, h: 103, l: 89, bull: true }, { o: 100, c: 107, h: 110, l: 98, bull: true },
-    { o: 107, c: 103, h: 111, l: 101, bull: false }, { o: 103, c: 111, h: 115, l: 101, bull: true },
-    { o: 111, c: 116, h: 119, l: 109, bull: true }, { o: 116, c: 111, h: 120, l: 109, bull: false },
-    { o: 111, c: 118, h: 122, l: 109, bull: true }, { o: 118, c: 113, h: 122, l: 111, bull: false },
-    { o: 113, c: 105, h: 116, l: 102, bull: false }, { o: 105, c: 109, h: 112, l: 103, bull: true },
-    { o: 109, c: 103, h: 112, l: 100, bull: false }, { o: 103, c: 112, h: 115, l: 101, bull: true },
-    { o: 112, c: 118, h: 122, l: 110, bull: true }, { o: 118, c: 114, h: 122, l: 112, bull: false },
-    { o: 114, c: 123, h: 127, l: 112, bull: true }, { o: 123, c: 119, h: 127, l: 117, bull: false },
-    { o: 119, c: 128, h: 132, l: 117, bull: true }, { o: 128, c: 124, h: 132, l: 122, bull: false },
+    { o: 107, c: 103, h: 111, l: 101, bull: false },{ o: 103, c: 111, h: 115, l: 101, bull: true },
+    { o: 111, c: 116, h: 119, l: 109, bull: true },{ o: 116, c: 111, h: 120, l: 109, bull: false },
+    { o: 111, c: 118, h: 122, l: 109, bull: true },{ o: 118, c: 113, h: 122, l: 111, bull: false },
+    { o: 113, c: 105, h: 116, l: 102, bull: false },{ o: 105, c: 109, h: 112, l: 103, bull: true },
+    { o: 109, c: 103, h: 112, l: 100, bull: false },{ o: 103, c: 112, h: 115, l: 101, bull: true },
+    { o: 112, c: 118, h: 122, l: 110, bull: true },{ o: 118, c: 114, h: 122, l: 112, bull: false },
+    { o: 114, c: 123, h: 127, l: 112, bull: true },{ o: 123, c: 119, h: 127, l: 117, bull: false },
+    { o: 119, c: 128, h: 132, l: 117, bull: true },{ o: 128, c: 124, h: 132, l: 122, bull: false },
     { o: 124, c: 133, h: 137, l: 122, bull: true },
   ]
 
@@ -597,12 +598,12 @@ function HomeBg() {
 /* ─── Theme selector ────────────────────────────────────── */
 function ThemeBg({ theme }: { theme: HeroTheme }) {
   switch (theme) {
-    case 'finance': return <FinanceBg />
-    case 'dev': return <DevBg />
-    case 'about': return <AboutBg />
+    case 'finance':   return <FinanceBg />
+    case 'dev':       return <DevBg />
+    case 'about':     return <AboutBg />
     case 'community': return <CommunityBg />
-    case 'contact': return <ContactBg />
-    default: return <HomeBg />
+    case 'contact':   return <ContactBg />
+    default:          return <HomeBg />
   }
 }
 
