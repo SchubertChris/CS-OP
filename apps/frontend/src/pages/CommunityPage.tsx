@@ -50,8 +50,8 @@ function StaggerContainer({ children, className }: { children: React.ReactNode; 
 function StaggerItem({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
     <motion.div variants={{
-      hidden:  { opacity: 0, y: 28, filter: 'blur(6px)' },
-      visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.55, ease: [0.22,1,0.36,1] as const } },
+      hidden: { opacity: 0, y: 28, filter: 'blur(6px)' },
+      visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] as const } },
     }} className={className}>
       {children}
     </motion.div>
@@ -82,41 +82,41 @@ const DISCORD_STRUCTURE = [
     name: '| START',
     emoji: '📌',
     channels: [
-      { name: 'willkommen',  emoji: '👋', type: 'text' },
-      { name: 'regeln',      emoji: '📋', type: 'text' },
-      { name: 'forum',       emoji: '💬', type: 'forum' },
-      { name: 'neues',       emoji: '🆕', type: 'text' },
+      { name: 'willkommen', emoji: '👋', type: 'text' },
+      { name: 'regeln', emoji: '📋', type: 'text' },
+      { name: 'forum', emoji: '💬', type: 'forum' },
+      { name: 'neues', emoji: '🆕', type: 'text' },
     ],
   },
   {
     name: '| Community',
     emoji: '💡',
     channels: [
-      { name: 'global',      emoji: '🌍', type: 'text' },
-      { name: 'long',        emoji: '📈', type: 'text' },
-      { name: 'short',       emoji: '📉', type: 'text' },
-      { name: 'setups',      emoji: '🎯', type: 'text' },
-      { name: 'scam-alarm',  emoji: '🚨', type: 'text' },
+      { name: 'global', emoji: '🌍', type: 'text' },
+      { name: 'long', emoji: '📈', type: 'text' },
+      { name: 'short', emoji: '📉', type: 'text' },
+      { name: 'setups', emoji: '🎯', type: 'text' },
+      { name: 'scam-alarm', emoji: '🚨', type: 'text' },
     ],
   },
   {
     name: '| Anlage & Vorsorge',
     emoji: '💰',
     channels: [
-      { name: 'aktien',               emoji: '📊', type: 'text' },
-      { name: 'anleihen',             emoji: '🏦', type: 'text' },
-      { name: 'depotvorstellung',     emoji: '💼', type: 'text' },
-      { name: 'devisen',              emoji: '💱', type: 'text' },
-      { name: 'exchange-traded-funds',emoji: '📦', type: 'text' },
-      { name: 'rohstoffe',            emoji: '🪙', type: 'text' },
+      { name: 'aktien', emoji: '📊', type: 'text' },
+      { name: 'anleihen', emoji: '🏦', type: 'text' },
+      { name: 'depotvorstellung', emoji: '💼', type: 'text' },
+      { name: 'devisen', emoji: '💱', type: 'text' },
+      { name: 'exchange-traded-funds', emoji: '📦', type: 'text' },
+      { name: 'rohstoffe', emoji: '🪙', type: 'text' },
     ],
   },
   {
     name: '| Speak',
     emoji: '🎙️',
     channels: [
-      { name: 'CandleScope |',   emoji: '', type: 'voice' },
-      { name: 'CandleScope ||',  emoji: '', type: 'voice' },
+      { name: 'CandleScope |', emoji: '', type: 'voice' },
+      { name: 'CandleScope ||', emoji: '', type: 'voice' },
       { name: 'CandleScope |||', emoji: '', type: 'voice' },
     ],
   },
@@ -127,7 +127,7 @@ function ChannelRow({ ch, delay }: { ch: { name: string; emoji: string; type: st
     <motion.div
       initial={{ opacity: 0, x: -12 }}
       animate={{ opacity: 1, x: 0 }}
-      transition={{ delay, duration: 0.4, ease: [0.22,1,0.36,1] }}
+      transition={{ delay, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
       className="flex items-center gap-2 px-2 py-[5px] rounded-md hover:bg-[#ffffff]/5 transition-colors cursor-default group"
     >
       {ch.type === 'voice' ? (
@@ -157,7 +157,7 @@ function ServerPreview() {
     <motion.div ref={ref}
       initial={{ opacity: 0, y: 24, scale: 0.97 }}
       animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
-      transition={{ duration: 0.7, ease: [0.22,1,0.36,1] }}
+      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
       className="rounded-2xl border border-[#C9A84C]/15 bg-[#0d0d0d] overflow-hidden shadow-2xl shadow-black/60"
     >
       {/* Gold top bar */}
@@ -205,12 +205,11 @@ function ServerPreview() {
                   <motion.div
                     initial={{ opacity: 0, x: -10 }}
                     animate={isInView ? { opacity: 1, x: 0 } : {}}
-                    transition={{ delay: d, duration: 0.35, ease: [0.22,1,0.36,1] }}
-                    className={`flex items-center gap-2 px-2 py-[5px] rounded-md transition-colors cursor-pointer group ${
-                      activeChannel === ch.name
+                    transition={{ delay: d, duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                    className={`flex items-center gap-2 px-2 py-[5px] rounded-md transition-colors cursor-pointer group ${activeChannel === ch.name
                         ? 'bg-[#C9A84C]/12 text-[#C9A84C]'
                         : 'hover:bg-[#ffffff]/5'
-                    }`}
+                      }`}
                   >
                     {ch.type === 'voice' ? (
                       <Volume2 size={12} strokeWidth={1.5} className="text-[#5a5550] group-hover:text-[#9A9590] shrink-0" />
@@ -220,11 +219,10 @@ function ServerPreview() {
                       <span className="font-mono text-[12px] text-[#5a5550] group-hover:text-[#9A9590]">#</span>
                     )}
                     {ch.emoji && <span className="text-[11px]">{ch.emoji}</span>}
-                    <span className={`font-mono text-[11px] truncate transition-colors ${
-                      activeChannel === ch.name
+                    <span className={`font-mono text-[11px] truncate transition-colors ${activeChannel === ch.name
                         ? 'text-[#C9A84C]'
                         : 'text-[#6a6460] group-hover:text-[#F5F0E8]'
-                    }`}>
+                      }`}>
                       {ch.name}
                     </span>
                     {activeChannel === ch.name && (
@@ -294,9 +292,8 @@ function WaitlistForm() {
         <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
           <input type="email" value={email} onChange={e => setEmail(e.target.value)}
             placeholder="deine@email.de"
-            className={`flex-1 px-4 py-3 rounded-xl bg-[#080808] border text-sm text-[#F5F0E8] placeholder-[#5a5550] outline-none transition-colors ${
-              status === 'error' ? 'border-[#FF4444]/50' : 'border-[#ffffff]/10 focus:border-[#C9A84C]/40'
-            }`} />
+            className={`flex-1 px-4 py-3 rounded-xl bg-[#080808] border text-sm text-[#F5F0E8] placeholder-[#5a5550] outline-none transition-colors ${status === 'error' ? 'border-[#FF4444]/50' : 'border-[#ffffff]/10 focus:border-[#C9A84C]/40'
+              }`} />
           <button type="submit"
             className="relative overflow-hidden group px-6 py-3 rounded-xl border border-[#C9A84C]/35 text-[11px] tracking-[0.14em] uppercase text-[#C9A84C] whitespace-nowrap">
             <span className="relative z-10 group-hover:text-[#080808] transition-colors duration-300">Eintragen</span>

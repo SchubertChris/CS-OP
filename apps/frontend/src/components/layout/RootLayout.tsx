@@ -2,7 +2,7 @@
    CandleScope — Root Layout
    src/components/layout/RootLayout.tsx
    ============================================================ */
-import { useState, useEffect, lazy, Suspense } from 'react'
+import { useState, useEffect } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import Header from './Header'
 import Footer from './Footer'
