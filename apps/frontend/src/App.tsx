@@ -3,7 +3,7 @@ import { Routes, Route } from 'react-router-dom'
 import RootLayout from './components/layout/RootLayout'
 import AdminGuard from './admin/AdminGuard'
 
-/* ── Admin — eager (nur geladen wenn /admin besucht) ── */
+/* ── Lazy imports ──────────────────────────────────── */
 const AdminLayout = lazy(() => import('./admin/AdminLayout'))
 const AdminLogin = lazy(() => import('./admin/AdminLogin'))
 const AdminDashboard = lazy(() => import('./admin/AdminDashboard'))
@@ -12,7 +12,6 @@ const PageList = lazy(() => import('./admin/PageList'))
 const PageEditor = lazy(() => import('./admin/PageEditor'))
 const NewPage = lazy(() => import('./admin/NewPage'))
 
-/* ── Public Pages — lazy ───────────────────────────── */
 const HomePage = lazy(() => import('./pages/HomePage'))
 const FinancePage = lazy(() => import('./pages/FinancePage'))
 const DevPage = lazy(() => import('./pages/DevPage'))
@@ -36,56 +35,48 @@ function PageLoader() {
   )
 }
 
+const S = ({ children }: { children: React.ReactNode }) => (
+  <Suspense fallback={<PageLoader />}>{children}</Suspense>
+)
+
 export default function App() {
   return (
     <Routes>
 
       {/* ── Public Website ─────────────────────────────── */}
       <Route element={<RootLayout />}>
-        <Suspense fallback={<PageLoader />}>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/finance" element={<FinancePage />} />
-          <Route path="/dev" element={<DevPage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/community" element={<CommunityPage />} />
-          <Route path="/contact" element={<ContactPage />} />
-          <Route path="/impressum" element={<ImpressumPage />} />
-          <Route path="/datenschutz" element={<DatenschutzPage />} />
-          <Route path="/404" element={<NotFoundPage />} />
-          <Route path="/:slug" element={<DynamicPage />} />
-        </Suspense>
+        <Route path="/" element={<S><HomePage /></S>} />
+        <Route path="/finance" element={<S><FinancePage /></S>} />
+        <Route path="/dev" element={<S><DevPage /></S>} />
+        <Route path="/about" element={<S><AboutPage /></S>} />
+        <Route path="/community" element={<S><CommunityPage /></S>} />
+        <Route path="/contact" element={<S><ContactPage /></S>} />
+        <Route path="/impressum" element={<S><ImpressumPage /></S>} />
+        <Route path="/datenschutz" element={<S><DatenschutzPage /></S>} />
+        <Route path="/404" element={<S><NotFoundPage /></S>} />
+        <Route path="/:slug" element={<S><DynamicPage /></S>} />
       </Route>
 
       {/* ── 404 ────────────────────────────────────────── */}
-      <Route path="*" element={
-        <Suspense fallback={<PageLoader />}>
-          <NotFoundPage />
-        </Suspense>
-      } />
+      <Route path="*" element={<S><NotFoundPage /></S>} />
 
       {/* ── Admin Login ────────────────────────────────── */}
-      <Route path="/admin/login" element={
-        <Suspense fallback={<PageLoader />}>
-          <AdminLogin />
-        </Suspense>
-      } />
+      <Route path="/admin/login" element={<S><AdminLogin /></S>} />
 
       {/* ── Admin Panel ────────────────────────────────── */}
       <Route
         path="/admin"
         element={
           <AdminGuard>
-            <Suspense fallback={<PageLoader />}>
-              <AdminLayout />
-            </Suspense>
+            <S><AdminLayout /></S>
           </AdminGuard>
         }
       >
-        <Route index element={<Suspense fallback={<PageLoader />}><AdminDashboard /></Suspense>} />
-        <Route path="pages" element={<Suspense fallback={<PageLoader />}><PageList /></Suspense>} />
-        <Route path="pages/new" element={<Suspense fallback={<PageLoader />}><NewPage /></Suspense>} />
-        <Route path="pages/:id" element={<Suspense fallback={<PageLoader />}><PageEditor /></Suspense>} />
-        <Route path="settings" element={<Suspense fallback={<PageLoader />}><AdminSettings /></Suspense>} />
+        <Route index element={<S><AdminDashboard /></S>} />
+        <Route path="pages" element={<S><PageList /></S>} />
+        <Route path="pages/new" element={<S><NewPage /></S>} />
+        <Route path="pages/:id" element={<S><PageEditor /></S>} />
+        <Route path="settings" element={<S><AdminSettings /></S>} />
       </Route>
 
     </Routes>
