@@ -12,12 +12,10 @@ import {
 import {
   MessageSquare, TrendingUp,
   Shield, BarChart2, Code2, Video,
-  CheckCircle2, ArrowRight,
+  CheckCircle2, ArrowRight, Volume2,
 } from 'lucide-react'
 
-/* ════════════════════════════════════════════════════════════════
-   DISCORD INVITE HOOK — live Member Count
-   ════════════════════════════════════════════════════════════════ */
+/* ── Discord Invite Hook ─────────────────────────────────── */
 interface DiscordInvite {
   approximate_member_count: number
   approximate_presence_count: number
@@ -27,20 +25,16 @@ interface DiscordInvite {
 function useDiscordInvite(code: string) {
   const [data, setData] = useState<DiscordInvite | null>(null)
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading')
-
   useEffect(() => {
     fetch(`https://discord.com/api/v9/invites/${code}?with_counts=true`)
       .then(r => { if (!r.ok) throw new Error(); return r.json() as Promise<DiscordInvite> })
       .then(d => { setData(d); setStatus('success') })
       .catch(() => setStatus('error'))
   }, [code])
-
   return { data, status }
 }
 
-/* ════════════════════════════════════════════════════════════════
-   ANIMATION HELPERS
-   ════════════════════════════════════════════════════════════════ */
+/* ── Animation helpers ───────────────────────────────────── */
 function StaggerContainer({ children, className }: { children: React.ReactNode; className?: string }) {
   const ref = useRef<HTMLDivElement>(null)
   const isInView = useInView(ref, { once: true, margin: '-60px' })
@@ -57,16 +51,14 @@ function StaggerItem({ children, className }: { children: React.ReactNode; class
   return (
     <motion.div variants={{
       hidden:  { opacity: 0, y: 28, filter: 'blur(6px)' },
-      visible: { opacity: 1, y: 0,  filter: 'blur(0px)', transition: { duration: 0.55, ease: [0.22,1,0.36,1] as const } },
+      visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.55, ease: [0.22,1,0.36,1] as const } },
     }} className={className}>
       {children}
     </motion.div>
   )
 }
 
-/* ════════════════════════════════════════════════════════════════
-   STAT CARD
-   ════════════════════════════════════════════════════════════════ */
+/* ── Stat Card ───────────────────────────────────────────── */
 function StatCard({ value, label, sub, loading }: {
   value: string; label: string; sub?: string; loading?: boolean
 }) {
@@ -82,71 +74,194 @@ function StatCard({ value, label, sub, loading }: {
   )
 }
 
-/* ════════════════════════════════════════════════════════════════
-   DISCORD SERVER PREVIEW
-   ════════════════════════════════════════════════════════════════ */
+/* ════════════════════════════════════════════════════════════
+   DISCORD SERVER PREVIEW — animiert, versetzt, mit Emojis
+════════════════════════════════════════════════════════════ */
+const DISCORD_STRUCTURE = [
+  {
+    name: '| START',
+    emoji: '📌',
+    channels: [
+      { name: 'willkommen',  emoji: '👋', type: 'text' },
+      { name: 'regeln',      emoji: '📋', type: 'text' },
+      { name: 'forum',       emoji: '💬', type: 'forum' },
+      { name: 'neues',       emoji: '🆕', type: 'text' },
+    ],
+  },
+  {
+    name: '| Community',
+    emoji: '💡',
+    channels: [
+      { name: 'global',      emoji: '🌍', type: 'text' },
+      { name: 'long',        emoji: '📈', type: 'text' },
+      { name: 'short',       emoji: '📉', type: 'text' },
+      { name: 'setups',      emoji: '🎯', type: 'text' },
+      { name: 'scam-alarm',  emoji: '🚨', type: 'text' },
+    ],
+  },
+  {
+    name: '| Anlage & Vorsorge',
+    emoji: '💰',
+    channels: [
+      { name: 'aktien',               emoji: '📊', type: 'text' },
+      { name: 'anleihen',             emoji: '🏦', type: 'text' },
+      { name: 'depotvorstellung',     emoji: '💼', type: 'text' },
+      { name: 'devisen',              emoji: '💱', type: 'text' },
+      { name: 'exchange-traded-funds',emoji: '📦', type: 'text' },
+      { name: 'rohstoffe',            emoji: '🪙', type: 'text' },
+    ],
+  },
+  {
+    name: '| Speak',
+    emoji: '🎙️',
+    channels: [
+      { name: 'CandleScope |',   emoji: '', type: 'voice' },
+      { name: 'CandleScope ||',  emoji: '', type: 'voice' },
+      { name: 'CandleScope |||', emoji: '', type: 'voice' },
+    ],
+  },
+]
+
+function ChannelRow({ ch, delay }: { ch: { name: string; emoji: string; type: string }; delay: number }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: -12 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ delay, duration: 0.4, ease: [0.22,1,0.36,1] }}
+      className="flex items-center gap-2 px-2 py-[5px] rounded-md hover:bg-[#ffffff]/5 transition-colors cursor-default group"
+    >
+      {ch.type === 'voice' ? (
+        <Volume2 size={12} strokeWidth={1.5} className="text-[#5a5550] group-hover:text-[#9A9590] transition-colors shrink-0" />
+      ) : ch.type === 'forum' ? (
+        <span className="text-[11px] text-[#5a5550] group-hover:text-[#9A9590] transition-colors">≡</span>
+      ) : (
+        <span className="font-mono text-[12px] text-[#5a5550] group-hover:text-[#9A9590] transition-colors">#</span>
+      )}
+      {ch.emoji && <span className="text-[11px]">{ch.emoji}</span>}
+      <span className="font-mono text-[11px] text-[#6a6460] group-hover:text-[#C9A84C] transition-colors truncate">
+        {ch.name}
+      </span>
+    </motion.div>
+  )
+}
+
 function ServerPreview() {
-  const categories = [
-    {
-      name: 'START',
-      channels: ['willkommen', 'regeln', 'forum', 'neues'],
-    },
-    {
-      name: 'COMMUNITY',
-      channels: ['global', 'long', 'short', 'setups', 'scam-alarm'],
-    },
-    {
-      name: 'ANLAGE & VORSORGE',
-      channels: ['aktien', 'anleihen', 'devisen', 'exchange-traded-funds', 'rohstoffe'],
-    },
-    {
-      name: 'SPEAK',
-      channels: ['CandleScope I', 'CandleScope II', 'CandleScope III'],
-      voice: true,
-    },
-  ]
+  const ref = useRef<HTMLDivElement>(null)
+  const isInView = useInView(ref, { once: true, margin: '-40px' })
+  const [activeChannel, setActiveChannel] = useState('global')
+
+  // Flatten all channels for delay calculation
+  let globalDelay = 0.3
 
   return (
-    <div className="rounded-xl border border-[#ffffff]/8 bg-[#0d0d0d] overflow-hidden">
+    <motion.div ref={ref}
+      initial={{ opacity: 0, y: 24, scale: 0.97 }}
+      animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+      transition={{ duration: 0.7, ease: [0.22,1,0.36,1] }}
+      className="rounded-2xl border border-[#C9A84C]/15 bg-[#0d0d0d] overflow-hidden shadow-2xl shadow-black/60"
+    >
+      {/* Gold top bar */}
+      <div className="h-px bg-gradient-to-r from-transparent via-[#C9A84C]/40 to-transparent" />
+
       {/* Server Header */}
-      <div className="px-4 py-3 border-b border-[#ffffff]/6 flex items-center justify-between">
+      <div className="px-4 py-3 border-b border-[#ffffff]/6 flex items-center justify-between bg-[#0a0a0a]">
+        <div className="flex items-center gap-2.5">
+          <div className="w-7 h-7 rounded-xl bg-[#C9A84C]/10 border border-[#C9A84C]/25 flex items-center justify-center">
+            <span className="text-[10px] font-bold text-[#C9A84C]">CS</span>
+          </div>
+          <span className="font-display text-sm text-[#F5F0E8] tracking-[0.1em]">CANDLESCOPE</span>
+        </div>
+        <motion.div className="flex items-center gap-1.5"
+          initial={{ opacity: 0 }} animate={isInView ? { opacity: 1 } : {}}
+          transition={{ delay: 0.5 }}>
+          <motion.div className="w-2 h-2 rounded-full bg-[#00C896]"
+            animate={{ scale: [1, 1.3, 1], opacity: [1, 0.7, 1] }}
+            transition={{ duration: 2, repeat: Infinity }} />
+          <span className="font-mono text-[9px] text-[#5a5550]">online</span>
+        </motion.div>
+      </div>
+
+      {/* Channel list */}
+      <div className="p-3 max-h-80 overflow-y-auto scrollbar-thin">
+        {DISCORD_STRUCTURE.map((cat) => (
+          <div key={cat.name} className="mb-3">
+            {/* Category header */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={isInView ? { opacity: 1 } : {}}
+              transition={{ delay: globalDelay - 0.1 }}
+              className="flex items-center gap-1.5 px-2 mb-1"
+            >
+              <span className="text-[10px]">{cat.emoji}</span>
+              <span className="font-mono text-[9px] tracking-[0.14em] text-[#5a5550] uppercase">{cat.name}</span>
+            </motion.div>
+
+            {/* Channels — each with increasing delay */}
+            {cat.channels.map((ch) => {
+              const d = globalDelay
+              globalDelay += 0.06
+              return (
+                <div key={ch.name} onClick={() => setActiveChannel(ch.name)}>
+                  <motion.div
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={isInView ? { opacity: 1, x: 0 } : {}}
+                    transition={{ delay: d, duration: 0.35, ease: [0.22,1,0.36,1] }}
+                    className={`flex items-center gap-2 px-2 py-[5px] rounded-md transition-colors cursor-pointer group ${
+                      activeChannel === ch.name
+                        ? 'bg-[#C9A84C]/12 text-[#C9A84C]'
+                        : 'hover:bg-[#ffffff]/5'
+                    }`}
+                  >
+                    {ch.type === 'voice' ? (
+                      <Volume2 size={12} strokeWidth={1.5} className="text-[#5a5550] group-hover:text-[#9A9590] shrink-0" />
+                    ) : ch.type === 'forum' ? (
+                      <span className="font-mono text-[11px] text-[#5a5550]">≡</span>
+                    ) : (
+                      <span className="font-mono text-[12px] text-[#5a5550] group-hover:text-[#9A9590]">#</span>
+                    )}
+                    {ch.emoji && <span className="text-[11px]">{ch.emoji}</span>}
+                    <span className={`font-mono text-[11px] truncate transition-colors ${
+                      activeChannel === ch.name
+                        ? 'text-[#C9A84C]'
+                        : 'text-[#6a6460] group-hover:text-[#F5F0E8]'
+                    }`}>
+                      {ch.name}
+                    </span>
+                    {activeChannel === ch.name && (
+                      <motion.div layoutId="activeIndicator"
+                        className="ml-auto w-1 h-4 rounded-full bg-[#C9A84C]" />
+                    )}
+                  </motion.div>
+                </div>
+              )
+            })}
+          </div>
+        ))}
+      </div>
+
+      {/* Bottom online bar */}
+      <div className="px-4 py-3 border-t border-[#ffffff]/6 bg-[#0a0a0a] flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="w-5 h-5 rounded-full bg-[#C9A84C]/20 flex items-center justify-center">
+          <div className="w-6 h-6 rounded-full bg-[#C9A84C]/20 border border-[#C9A84C]/30 flex items-center justify-center">
             <span className="text-[8px] font-bold text-[#C9A84C]">CS</span>
           </div>
-          <span className="font-display text-sm text-[#F5F0E8] tracking-wide">CANDLESCOPE</span>
+          <div>
+            <p className="font-mono text-[9px] text-[#F5F0E8]">Chris Schubert</p>
+            <p className="font-mono text-[8px] text-[#5a5550]">👑 Admin</p>
+          </div>
         </div>
         <div className="flex items-center gap-1">
-          <div className="w-2 h-2 rounded-full bg-[#00C896]" />
+          <div className="w-1.5 h-1.5 rounded-full bg-[#00C896]" />
           <span className="font-mono text-[9px] text-[#5a5550]">online</span>
         </div>
       </div>
 
-      {/* Channels */}
-      <div className="p-3 flex flex-col gap-1 max-h-72 overflow-y-auto">
-        {categories.map(cat => (
-          <div key={cat.name} className="mb-2">
-            <p className="font-mono text-[9px] tracking-[0.16em] text-[#5a5550] px-2 mb-1">{cat.name}</p>
-            {cat.channels.map(ch => (
-              <div key={ch}
-                className="flex items-center gap-2 px-2 py-1 rounded hover:bg-[#ffffff]/4 transition-colors cursor-default group">
-                {cat.voice
-                  ? <span className="text-[#5a5550] text-[12px] group-hover:text-[#9A9590]">🔊</span>
-                  : <span className="text-[#5a5550] text-[12px] group-hover:text-[#9A9590]">#</span>
-                }
-                <span className="font-mono text-[11px] text-[#9A9590] group-hover:text-[#F5F0E8] transition-colors">{ch}</span>
-              </div>
-            ))}
-          </div>
-        ))}
-      </div>
-    </div>
+      <div className="h-px bg-gradient-to-r from-transparent via-[#C9A84C]/20 to-transparent" />
+    </motion.div>
   )
 }
 
-/* ════════════════════════════════════════════════════════════════
-   EMAIL WAITLIST
-   ════════════════════════════════════════════════════════════════ */
+/* ── Waitlist Form ────────────────────────────────────────── */
 function WaitlistForm() {
   const [email, setEmail] = useState('')
   const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle')
@@ -154,7 +269,6 @@ function WaitlistForm() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (!email || !email.includes('@')) { setStatus('error'); return }
-    // Hier später echten API-Call einfügen
     setStatus('success')
     setEmail('')
   }
@@ -171,7 +285,6 @@ function WaitlistForm() {
       <p className="text-[#9A9590] text-sm leading-relaxed mb-6">
         Trag dich ein und erhalte als Erstes Zugang zu exklusiven Features, Member-only Inhalten und Live-Events.
       </p>
-
       {status === 'success' ? (
         <div className="flex items-center gap-3 p-4 rounded-xl border border-[#00C896]/20 bg-[#00C896]/5">
           <CheckCircle2 size={18} strokeWidth={1.5} className="text-[#00C896] shrink-0" />
@@ -179,15 +292,11 @@ function WaitlistForm() {
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
-          <input
-            type="email"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
+          <input type="email" value={email} onChange={e => setEmail(e.target.value)}
             placeholder="deine@email.de"
             className={`flex-1 px-4 py-3 rounded-xl bg-[#080808] border text-sm text-[#F5F0E8] placeholder-[#5a5550] outline-none transition-colors ${
               status === 'error' ? 'border-[#FF4444]/50' : 'border-[#ffffff]/10 focus:border-[#C9A84C]/40'
-            }`}
-          />
+            }`} />
           <button type="submit"
             className="relative overflow-hidden group px-6 py-3 rounded-xl border border-[#C9A84C]/35 text-[11px] tracking-[0.14em] uppercase text-[#C9A84C] whitespace-nowrap">
             <span className="relative z-10 group-hover:text-[#080808] transition-colors duration-300">Eintragen</span>
@@ -199,47 +308,22 @@ function WaitlistForm() {
   )
 }
 
-/* ════════════════════════════════════════════════════════════════
+/* ════════════════════════════════════════════════════════════
    PAGE
-   ════════════════════════════════════════════════════════════════ */
+════════════════════════════════════════════════════════════ */
 const INVITE_CODE = 'HRxbTW4ujT'
 
 const FEATURES = [
-  {
-    icon: <TrendingUp size={20} strokeWidth={1.5} />,
-    title: 'Trading Setups & Signale',
-    desc: 'Täglich frische Setups, Entry-Punkte und Marktanalysen von der Community.',
-  },
-  {
-    icon: <Video size={20} strokeWidth={1.5} />,
-    title: 'Live Q&A Sessions',
-    desc: 'Regelmäßige Live-Sessions mit Chart-Analysen, Fragen und direktem Austausch.',
-  },
-  {
-    icon: <Shield size={20} strokeWidth={1.5} />,
-    title: 'Scam-Alarm & Warnungen',
-    desc: 'Community-geprüfte Warnungen vor Betrug, Pump & Dump und unseriösen Angeboten.',
-  },
-  {
-    icon: <BarChart2 size={20} strokeWidth={1.5} />,
-    title: 'Depot-Vorstellungen',
-    desc: 'Zeig dein Portfolio, hol dir Feedback und lern von den Strategien anderer.',
-  },
-  {
-    icon: <Code2 size={20} strokeWidth={1.5} />,
-    title: 'Dev & Tech Talk',
-    desc: 'Webentwicklung, Automatisierung, Trading-Bots — Tech-Austausch auf Augenhöhe.',
-  },
-  {
-    icon: <MessageSquare size={20} strokeWidth={1.5} />,
-    title: 'Gemeinsame Chartanalysen',
-    desc: 'Technische Analyse im Team — mehrere Augen sehen mehr als eines.',
-  },
+  { icon: <TrendingUp size={20} strokeWidth={1.5} />, title: 'Trading Setups & Signale', desc: 'Täglich frische Setups, Entry-Punkte und Marktanalysen von der Community.' },
+  { icon: <Video size={20} strokeWidth={1.5} />, title: 'Live Q&A Sessions', desc: 'Regelmäßige Live-Sessions mit Chart-Analysen, Fragen und direktem Austausch.' },
+  { icon: <Shield size={20} strokeWidth={1.5} />, title: 'Scam-Alarm & Warnungen', desc: 'Community-geprüfte Warnungen vor Betrug, Pump & Dump und unseriösen Angeboten.' },
+  { icon: <BarChart2 size={20} strokeWidth={1.5} />, title: 'Depot-Vorstellungen', desc: 'Zeig dein Portfolio, hol dir Feedback und lern von den Strategien anderer.' },
+  { icon: <Code2 size={20} strokeWidth={1.5} />, title: 'Dev & Tech Talk', desc: 'Webentwicklung, Automatisierung, Trading-Bots — Tech-Austausch auf Augenhöhe.' },
+  { icon: <MessageSquare size={20} strokeWidth={1.5} />, title: 'Gemeinsame Chartanalysen', desc: 'Technische Analyse im Team — mehrere Augen sehen mehr als eines.' },
 ]
 
 export default function CommunityPage() {
   const { data: discord, status: discordStatus } = useDiscordInvite(INVITE_CODE)
-
   const memberCount = discord?.approximate_member_count
   const onlineCount = discord?.approximate_presence_count
 
@@ -266,37 +350,19 @@ export default function CommunityPage() {
         </a>
       </PageHero>
 
-      {/* ── Live Stats ───────────────────────────────────── */}
+      {/* Stats */}
       <SectionWrapper id="stats" maxWidth="lg">
         <StaggerContainer className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <StaggerItem>
-            <StatCard
-              value={memberCount ? String(memberCount) : '—'}
-              label="Member"
-              sub="gesamt"
-              loading={discordStatus === 'loading'}
-            />
-          </StaggerItem>
-          <StaggerItem>
-            <StatCard
-              value={onlineCount ? String(onlineCount) : '—'}
-              label="Online"
-              sub="gerade aktiv"
-              loading={discordStatus === 'loading'}
-            />
-          </StaggerItem>
-          <StaggerItem>
-            <StatCard value="6" label="Kategorien" sub="im Server" />
-          </StaggerItem>
-          <StaggerItem>
-            <StatCard value="24/7" label="Aktiv" sub="immer offen" />
-          </StaggerItem>
+          <StaggerItem><StatCard value={memberCount ? String(memberCount) : '—'} label="Member" sub="gesamt" loading={discordStatus === 'loading'} /></StaggerItem>
+          <StaggerItem><StatCard value={onlineCount ? String(onlineCount) : '—'} label="Online" sub="gerade aktiv" loading={discordStatus === 'loading'} /></StaggerItem>
+          <StaggerItem><StatCard value="6" label="Kategorien" sub="im Server" /></StaggerItem>
+          <StaggerItem><StatCard value="24/7" label="Aktiv" sub="immer offen" /></StaggerItem>
         </StaggerContainer>
       </SectionWrapper>
 
       <GoldDivider className="mx-8 md:mx-16 lg:mx-24" />
 
-      {/* ── Was die Community bietet ─────────────────────── */}
+      {/* Features */}
       <SectionWrapper id="features">
         <SectionHeader
           eyebrow="Was dich erwartet"
@@ -321,7 +387,7 @@ export default function CommunityPage() {
 
       <GoldDivider className="mx-8 md:mx-16 lg:mx-24" />
 
-      {/* ── Server Vorschau + Discord CTA ────────────────── */}
+      {/* Server Preview */}
       <SectionWrapper id="server">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div>
@@ -333,16 +399,16 @@ export default function CommunityPage() {
             />
             <StaggerContainer className="flex flex-col gap-3 mb-8">
               {[
-                'Trading Setups · Long & Short Channels',
-                'Anlage & Vorsorge — Aktien · ETFs · Devisen · Rohstoffe',
-                'Scam-Alarm für die Community',
-                '3 Voice Channels für Live-Sessions',
-                'Organisierte Moderationsstruktur',
+                { icon: '📈', text: 'Trading Setups · Long & Short Channels' },
+                { icon: '💰', text: 'Anlage & Vorsorge — Aktien · ETFs · Devisen · Rohstoffe' },
+                { icon: '🚨', text: 'Scam-Alarm für die Community' },
+                { icon: '🎙️', text: '3 Voice Channels für Live-Sessions' },
+                { icon: '🛡️', text: 'Organisierte Moderationsstruktur' },
               ].map((item, i) => (
                 <StaggerItem key={i}>
                   <div className="flex items-start gap-3">
-                    <CheckCircle2 size={15} strokeWidth={1.5} className="text-[#00C896] shrink-0 mt-0.5" />
-                    <span className="text-[#9A9590] text-sm">{item}</span>
+                    <span className="text-base shrink-0 mt-0.5">{item.icon}</span>
+                    <span className="text-[#9A9590] text-sm">{item.text}</span>
                   </div>
                 </StaggerItem>
               ))}
@@ -359,7 +425,7 @@ export default function CommunityPage() {
 
       <GoldDivider className="mx-8 md:mx-16 lg:mx-24" />
 
-      {/* ── Tags ─────────────────────────────────────────── */}
+      {/* Tags */}
       <SectionWrapper id="topics">
         <SectionHeader
           eyebrow="Themen"
@@ -376,14 +442,14 @@ export default function CommunityPage() {
 
       <GoldDivider className="mx-8 md:mx-16 lg:mx-24" />
 
-      {/* ── Waitlist ─────────────────────────────────────── */}
+      {/* Waitlist */}
       <SectionWrapper id="waitlist" maxWidth="lg">
         <WaitlistForm />
       </SectionWrapper>
 
       <GoldDivider className="mx-8 md:mx-16 lg:mx-24" />
 
-      {/* ── Final CTA ────────────────────────────────────── */}
+      {/* Final CTA */}
       <SectionWrapper maxWidth="md">
         <div className="text-center flex flex-col items-center gap-6">
           <SectionHeader

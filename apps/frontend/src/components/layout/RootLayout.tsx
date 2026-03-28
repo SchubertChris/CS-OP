@@ -9,7 +9,8 @@ import Footer from './Footer'
 import BackgroundEffect from '../ui/BackgroundEffect'
 import CookieBanner from '../ui/CookieBanner'
 
-const IntroAnimation = lazy(() => import('../ui/IntroAnimation'))
+// Nicht lazy — sofort laden damit kein Flash
+import IntroAnimation from '../ui/IntroAnimation'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -23,21 +24,22 @@ export default function RootLayout() {
   return (
     <div className="min-h-screen bg-[#080808] text-[#F5F0E8] flex flex-col relative">
 
-      {/* Intro Animation — bei jedem Seitenaufruf */}
+      {/* Intro — sofort, kein lazy, kein Flash */}
       {!introComplete && (
-        <Suspense fallback={null}>
-          <IntroAnimation onComplete={() => setIntroComplete(true)} />
-        </Suspense>
+        <IntroAnimation onComplete={() => setIntroComplete(true)} />
       )}
 
-      <BackgroundEffect />
-      <ScrollToTop />
-      <Header />
-      <main className="flex-1 relative z-10">
-        <Outlet />
-      </main>
-      <Footer />
-      <CookieBanner />
+      {/* Seite komplett versteckt bis Intro fertig */}
+      <div style={{ visibility: introComplete ? 'visible' : 'hidden' }}>
+        <BackgroundEffect />
+        <ScrollToTop />
+        <Header />
+        <main className="flex-1 relative z-10">
+          <Outlet />
+        </main>
+        <Footer />
+        <CookieBanner />
+      </div>
     </div>
   )
 }
