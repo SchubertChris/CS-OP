@@ -124,21 +124,125 @@ function Marquee() {
   )
 }
 
-/* ══════════════════════════════════════════════════════════════
-   PAGE
-══════════════════════════════════════════════════════════════ */
-export default function HomePage() {
-  const videoRef = useRef<HTMLVideoElement>(null)
+/* ── Video Player (lädt erst beim Klick) ───────────────────── */
+function LazyVideoPlayer() {
+  const [clicked, setClicked] = useState(false)
   const [playing, setPlaying] = useState(false)
+  const videoRef = useRef<HTMLVideoElement>(null)
 
-  const handlePlay = () => {
-    videoRef.current?.play()
+  const handleClick = () => {
+    setClicked(true)
+    // Video wird erst jetzt ins DOM eingesetzt — kurz warten bis mounted
+    setTimeout(() => {
+      videoRef.current?.play()
+    }, 100)
   }
 
   const handleVideoPlay = () => {
     setPlaying(true)
   }
 
+  return (
+    <div className="relative group">
+      {/* Äußerer Glow */}
+      <motion.div
+        className="absolute -inset-3 rounded-3xl pointer-events-none"
+        style={{ background: 'radial-gradient(ellipse at center, rgba(201,168,76,0.08) 0%, transparent 70%)' }}
+        animate={{ opacity: [0.4, 0.9, 0.4] }}
+        transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+      />
+
+      {/* Video Container */}
+      <div className="relative rounded-2xl overflow-hidden border border-[#C9A84C]/20 shadow-2xl shadow-black/70 aspect-video bg-[#0d0d0d]">
+
+        {/* Shine sweep */}
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -skew-x-12 pointer-events-none z-10"
+          initial={{ x: '-100%' }} whileInView={{ x: '200%' }} viewport={{ once: true }}
+          transition={{ duration: 1.4, delay: 0.3, ease: 'easeInOut' }}
+        />
+
+        {/* Placeholder / Play Button — solange nicht geklickt */}
+        {!clicked && (
+          <motion.div
+            onClick={handleClick}
+            className="absolute inset-0 flex flex-col items-center justify-center cursor-pointer z-30 bg-[#0d0d0d]"
+          >
+            {/* Hintergrund Grid-Pattern */}
+            <div className="absolute inset-0 opacity-10"
+              style={{
+                backgroundImage: 'linear-gradient(#C9A84C 1px, transparent 1px), linear-gradient(90deg, #C9A84C 1px, transparent 1px)',
+                backgroundSize: '40px 40px',
+              }}
+            />
+            <motion.div
+              className="relative w-20 h-20 rounded-full border-2 border-[#C9A84C]/60 flex items-center justify-center bg-[#080808]/80 backdrop-blur-sm"
+              animate={{
+                scale: [1, 1.08, 1],
+                borderColor: ['rgba(201,168,76,0.4)', 'rgba(201,168,76,0.8)', 'rgba(201,168,76,0.4)'],
+              }}
+              transition={{ duration: 2.5, repeat: Infinity }}
+            >
+              <Play size={28} strokeWidth={1.5} className="text-[#C9A84C] ml-1.5" />
+            </motion.div>
+            <p className="relative mt-5 font-mono text-[11px] tracking-[0.18em] uppercase text-[#5a5550]">
+              Video abspielen
+            </p>
+          </motion.div>
+        )}
+
+        {/* Video — erst nach Klick im DOM */}
+        {clicked && (
+          <>
+            <video
+              ref={videoRef}
+              muted
+              loop
+              playsInline
+              onPlay={handleVideoPlay}
+              className="w-full h-full object-cover block"
+            >
+              <source src="/video/CandleScope.webm" type="video/webm" />
+              <source src="/video/CandleScope.mp4" type="video/mp4" />
+            </video>
+
+            {/* Fade-in von schwarz */}
+            {playing && (
+              <motion.div
+                className="absolute inset-0 bg-black pointer-events-none z-20"
+                initial={{ opacity: 1 }}
+                animate={{ opacity: 0 }}
+                transition={{ duration: 1.5, ease: 'easeOut' }}
+              />
+            )}
+
+            {/* Fade-out zu schwarz im Loop */}
+            {playing && (
+              <motion.div
+                className="absolute inset-0 bg-black pointer-events-none z-20"
+                animate={{ opacity: [0, 0, 0, 0, 0, 0, 0, 0, 1] }}
+                transition={{
+                  duration: 10,
+                  ease: 'linear',
+                  repeat: Infinity,
+                  times: [0, 0.1, 0.3, 0.5, 0.6, 0.7, 0.75, 0.85, 1],
+                }}
+              />
+            )}
+          </>
+        )}
+
+        {/* Unten Gradient */}
+        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-[#080808]/60 to-transparent pointer-events-none z-10" />
+      </div>
+    </div>
+  )
+}
+
+/* ══════════════════════════════════════════════════════════════
+   PAGE
+══════════════════════════════════════════════════════════════ */
+export default function HomePage() {
   return (
     <>
       {/* ── 1. Hero ───────────────────────────────────────── */}
@@ -265,7 +369,6 @@ export default function HomePage() {
       {/* ── Video — Produkt in Aktion ─────────────────────── */}
       <section className="px-8 md:px-16 lg:px-24 py-12 pb-24">
         <div className="max-w-6xl mx-auto">
-
           <Reveal direction="up" className="mb-8">
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2.5">
@@ -281,85 +384,7 @@ export default function HomePage() {
           </Reveal>
 
           <Reveal direction="scale" delay={0.1}>
-            <div className="relative group">
-
-              {/* Äußerer Glow */}
-              <motion.div
-                className="absolute -inset-3 rounded-3xl pointer-events-none"
-                style={{ background: 'radial-gradient(ellipse at center, rgba(201,168,76,0.08) 0%, transparent 70%)' }}
-                animate={{ opacity: [0.4, 0.9, 0.4] }}
-                transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-              />
-
-              {/* Video Container */}
-              <div className="relative rounded-2xl overflow-hidden border border-[#C9A84C]/20 shadow-2xl shadow-black/70">
-
-                {/* Shine sweep */}
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -skew-x-12 pointer-events-none z-10"
-                  initial={{ x: '-100%' }} whileInView={{ x: '200%' }} viewport={{ once: true }}
-                  transition={{ duration: 1.4, delay: 0.3, ease: 'easeInOut' }}
-                />
-
-                <video
-                  ref={videoRef}
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  onPlay={handleVideoPlay}
-                  className="w-full h-auto block"
-                >
-                  <source src="/video/CandleScope.mp4" type="video/mp4" />
-                  <source src="/video/CandleScope.webm" type="video/webm" />
-                </video>
-
-                {/* Play Button — nur auf Mobile sichtbar wenn nicht gestartet */}
-                {!playing && (
-                  <motion.div
-                    onClick={handlePlay}
-                    className="absolute inset-0 flex items-center justify-center bg-black/70 cursor-pointer z-30"
-                    initial={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                  >
-                    <motion.div
-                      className="w-20 h-20 rounded-full border-2 border-[#C9A84C]/60 flex items-center justify-center bg-[#080808]/60 backdrop-blur-sm"
-                      animate={{ scale: [1, 1.08, 1], borderColor: ['rgba(201,168,76,0.4)', 'rgba(201,168,76,0.8)', 'rgba(201,168,76,0.4)'] }}
-                      transition={{ duration: 2.5, repeat: Infinity }}
-                    >
-                      <Play size={28} strokeWidth={1.5} className="text-[#C9A84C] ml-1.5" />
-                    </motion.div>
-                  </motion.div>
-                )}
-
-                {/* Fade-in von schwarz — startet wenn Video läuft */}
-                {playing && (
-                  <motion.div
-                    className="absolute inset-0 bg-black pointer-events-none z-20"
-                    initial={{ opacity: 1 }}
-                    animate={{ opacity: 0 }}
-                    transition={{ duration: 1.5, ease: 'easeOut' }}
-                  />
-                )}
-
-                {/* Fade-out zu schwarz — exakt im 10s Takt mit Video */}
-                {playing && (
-                  <motion.div
-                    className="absolute inset-0 bg-black pointer-events-none z-20"
-                    animate={{ opacity: [0, 0, 0, 0, 0, 0, 0, 0, 1] }}
-                    transition={{
-                      duration: 10,
-                      ease: 'linear',
-                      repeat: Infinity,
-                      times: [0, 0.1, 0.3, 0.5, 0.6, 0.7, 0.75, 0.85, 1],
-                    }}
-                  />
-                )}
-
-                {/* Unten Gradient */}
-                <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-[#080808]/60 to-transparent pointer-events-none z-10" />
-              </div>
-            </div>
+            <LazyVideoPlayer />
           </Reveal>
         </div>
       </section>
