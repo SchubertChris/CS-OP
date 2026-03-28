@@ -122,29 +122,6 @@ const DISCORD_STRUCTURE = [
   },
 ]
 
-function ChannelRow({ ch, delay }: { ch: { name: string; emoji: string; type: string }; delay: number }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, x: -12 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ delay, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-      className="flex items-center gap-2 px-2 py-[5px] rounded-md hover:bg-[#ffffff]/5 transition-colors cursor-default group"
-    >
-      {ch.type === 'voice' ? (
-        <Volume2 size={12} strokeWidth={1.5} className="text-[#5a5550] group-hover:text-[#9A9590] transition-colors shrink-0" />
-      ) : ch.type === 'forum' ? (
-        <span className="text-[11px] text-[#5a5550] group-hover:text-[#9A9590] transition-colors">≡</span>
-      ) : (
-        <span className="font-mono text-[12px] text-[#5a5550] group-hover:text-[#9A9590] transition-colors">#</span>
-      )}
-      {ch.emoji && <span className="text-[11px]">{ch.emoji}</span>}
-      <span className="font-mono text-[11px] text-[#6a6460] group-hover:text-[#C9A84C] transition-colors truncate">
-        {ch.name}
-      </span>
-    </motion.div>
-  )
-}
-
 function ServerPreview() {
   const ref = useRef<HTMLDivElement>(null)
   const isInView = useInView(ref, { once: true, margin: '-40px' })
