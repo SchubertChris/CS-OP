@@ -1,9 +1,13 @@
+/* ============================================================
+   CandleScope — Root Layout
+   src/components/layout/RootLayout.tsx
+   ============================================================ */
 import { useEffect } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import Header from './Header'
 import Footer from './Footer'
 import BackgroundEffect from '../ui/BackgroundEffect'
-import CookieBanner from '../ui/Cookiebanner'
+import CookieBanner from '../ui/CookieBanner'
 
 function ScrollToTop() {
   const { pathname } = useLocation()

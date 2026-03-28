@@ -15,18 +15,18 @@ const STORAGE_KEY = 'candlescope-cookie-consent'
 type Consent = 'accepted' | 'declined' | null
 
 export default function CookieBanner() {
-  const [consent, setConsent]     = useState<Consent>(null)
-  const [expanded, setExpanded]   = useState(false)
-  const [visible, setVisible]     = useState(false)
+  const [consent, setConsent] = useState<Consent>(null)
+  const [expanded, setExpanded] = useState(false)
+  const [visible, setVisible] = useState(false)
 
   useEffect(() => {
     const stored = localStorage.getItem(STORAGE_KEY) as Consent
-    if (!stored) {
-      const t = setTimeout(() => setVisible(true), 800)
-      return () => clearTimeout(t)
-    } else {
-      setConsent(stored)
+    if (stored) {
+      setTimeout(() => setConsent(stored), 0)
+      return
     }
+    const t = setTimeout(() => setVisible(true), 800)
+    return () => clearTimeout(t)
   }, [])
 
   const handleAccept = () => {
@@ -95,8 +95,8 @@ export default function CookieBanner() {
 
                   {/* Text */}
                   <p className="text-[#9A9590] text-sm leading-relaxed mb-5">
-                    Diese Website verwendet ausschließlich <span className="text-[#F5F0E8]">technisch notwendige Cookies</span> — 
-                    keine Tracking-, Werbe- oder Analyse-Cookies. 
+                    Diese Website verwendet ausschließlich <span className="text-[#F5F0E8]">technisch notwendige Cookies</span> —
+                    keine Tracking-, Werbe- oder Analyse-Cookies.
                     Deine Daten verlassen nicht deinen Browser.
                   </p>
 
@@ -124,7 +124,7 @@ export default function CookieBanner() {
                             <div>
                               <p className="font-mono text-[11px] tracking-[0.1em] uppercase text-[#F5F0E8] mb-1">Technisch notwendig</p>
                               <p className="text-[#9A9590] text-[12px] leading-relaxed">
-                                Session-Cookies für das Admin-Panel, Cookie-Consent Speicherung im localStorage. 
+                                Session-Cookies für das Admin-Panel, Cookie-Consent Speicherung im localStorage.
                                 Keine externen Dienste, kein Tracking, keine Weitergabe an Dritte.
                               </p>
                             </div>
@@ -163,7 +163,7 @@ export default function CookieBanner() {
                   </div>
 
                   {/* Legal Info — kein Link, verhindert Umgehung des Banners */}
-                  <p className="font-mono text-[10px] tracking-[0.08em] text-center mt-4" style={{color: "#3a3530"}}>
+                  <p className="font-mono text-[10px] tracking-[0.08em] text-center mt-4" style={{ color: "#3a3530" }}>
                     Weitere Infos in Datenschutz &amp; Impressum — nach Bestätigung zugänglich.
                   </p>
                 </div>
