@@ -5,7 +5,7 @@
 
 import { Link } from 'react-router-dom'
 import { Github, TrendingUp, Code2, User, Users, MessageSquare, Mail, ExternalLink } from 'lucide-react'
-import csLogo from '../../assets/images/CandleScope.webp'
+import csLogo from '../../assets/images/CandleScopeLogo.png'
 import { SOCIALS } from '../../data/socials'
 
 const footerNav = [

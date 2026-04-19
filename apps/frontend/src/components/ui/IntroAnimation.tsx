@@ -6,7 +6,7 @@
 import type * as THREE from 'three'
 import { useEffect, useRef, useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import csLogo from '../../assets/images/CandleScope.webp'
+import csLogo from '../../assets/images/CandleScopeLogo.png'
 
 const DURATION = 5800      // Gesamt‑Intro‑Dauer
 const RADIUS = 0.84
