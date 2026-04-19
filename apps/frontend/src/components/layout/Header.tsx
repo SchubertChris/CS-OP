@@ -9,7 +9,7 @@ import {
   TrendingUp, Code2, User, MessageSquare,
   Shield, ChevronRight, Mail,
 } from 'lucide-react'
-import csLogo from '../../assets/images/CandleScope.webp'
+import csLogo from '../../assets/images/CandleScopeLogo.png'
 
 interface NavItem {
   to: string
@@ -81,37 +81,40 @@ export default function Header() {
           </span>
         </Link>
 
-        <nav className="flex items-center gap-2">
+        {/* Pill-Nav */}
+        <nav className="flex items-center bg-[#111111] border border-[#C9A84C]/12 rounded-full px-5 py-1.5 gap-1">
           {navItems.map(({ to, label, tooltip }) => (
             <div key={to} className="relative group">
               <NavLink to={to} className={({ isActive }) => `
-                relative px-4 py-2 text-[11px] tracking-[0.12em] uppercase font-medium transition-colors duration-300
-                ${isActive ? 'text-[#C9A84C]' : 'text-[#9A9590] hover:text-[#F5F0E8]'}
+                relative px-4 py-2 text-[11px] tracking-[0.12em] uppercase font-medium
+                transition-colors duration-200 rounded-full
+                ${isActive
+                  ? 'text-[#C9A84C] font-semibold'
+                  : 'text-[#9A9590] hover:text-[#F5F0E8]'
+                }
               `}>
-                {({ isActive }) => (
-                  <>
-                    {label}
-                    <span className={`absolute bottom-0 left-4 right-4 h-px bg-gradient-to-r from-transparent via-[#C9A84C] to-transparent transition-opacity duration-300 ${isActive ? 'opacity-100' : 'opacity-0'}`} />
-                  </>
-                )}
+                {label}
               </NavLink>
               <DesktopTooltip text={tooltip} />
             </div>
           ))}
         </nav>
 
-        <div className="flex items-center gap-4 shrink-0">
+        <div className="flex items-center gap-3 shrink-0">
           <Link to="/admin" aria-label="Admin Panel"
             className="group flex items-center gap-1.5 text-[11px] tracking-[0.12em] uppercase text-[#9A9590] hover:text-[#C9A84C] transition-colors duration-250">
             <Shield size={13} strokeWidth={1.5} className="group-hover:scale-110 transition-transform shrink-0" />
             Admin
           </Link>
           <div className="w-px h-4 bg-[#C9A84C]/15" />
-          <Link to="/contact" aria-label="Hire me – Kontakt aufnehmen"
-            className="relative overflow-hidden group text-[11px] tracking-[0.15em] uppercase border border-[#C9A84C]/35 text-[#C9A84C] px-5 py-2.5 rounded-full transition-colors duration-300">
-            <span className="relative z-10 group-hover:text-[#080808] transition-colors duration-300">Hire me</span>
-            <span className="absolute inset-0 bg-[#C9A84C] rounded-full translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
-          </Link>
+          <a
+            href="/downloads/FinanceBoard-Setup.exe"
+            download
+            aria-label="FinanceBoard herunterladen"
+            className="relative overflow-hidden group text-[11px] tracking-[0.15em] uppercase bg-[#C9A84C] text-[#080808] font-bold px-5 py-2.5 rounded-full transition-opacity duration-200 hover:opacity-90"
+          >
+            ↓ Gratis laden
+          </a>
         </div>
       </header>
 
