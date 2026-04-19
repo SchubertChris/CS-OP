@@ -93,7 +93,7 @@ export const INITIAL_PAGES: Page[] = [
       id: 'community-hero', type: 'hero', order: 0,
       props: {
         eyebrow: 'Community', titleLine1: 'Discord &', titleLine2: 'Community',
-        titleAccent: 'line2', theme: 'community', badge: 'Coming soon',
+        titleAccent: 'line2', theme: 'community', badge: 'Jetzt live',
         description: 'Trading · Tech · Gaming · Austausch.',
         ctas: [{ label: 'Discord beitreten', href: 'https://discord.gg/', variant: 'primary' }],
       },

@@ -417,8 +417,8 @@ export default function DevPage() {
           <StaggerItem>
             <ProjectCard
               title="Candlescope FinanceBoard"
-              description="Lokales Haushaltsbuch mit Kategorien, Charts, Dokumentenarchiv und vollständigem Design-System."
-              tags={['React', 'TypeScript', 'Recharts', 'Zustand']}
+              description="Vollständige Desktop-App für Windows. Offline-first, kein Framework, kein Cloud-Zwang."
+              tags={['Electron', 'Vanilla JS', 'Chart.js', 'CSS']}
               status="wip"
               locked
             />
