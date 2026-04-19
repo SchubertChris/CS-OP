@@ -240,7 +240,7 @@ Letzte Sektion vor Footer: `py-20 text-center`
 
 1. Community-Link in `footerNav` ergänzen: `{ label: 'Community', href: '/community' }`
 2. Discord-Link: `href={SOCIALS.discord}` (via `socials.ts`)
-3. E-Mail: `hello@candlescope.de` (einheitlich)
+3. E-Mail: `info@candlescope.de` (einheitlich)
 
 ---
 
@@ -254,7 +254,7 @@ export const SOCIALS = {
   github:    'https://github.com/SchubertChris',
   instagram: 'https://www.instagram.com/candlescope',
   kofi:      'https://ko-fi.com/candlescope',   // nach Account-Erstellung setzen
-  email:     'hello@candlescope.de',
+  email:     'info@candlescope.de',
   calendly:  '',  // leer bis Link vorhanden, dann Card einblenden
 } as const
 ```
@@ -310,7 +310,7 @@ Diese Fixes laufen parallel zur Neustrukturierung:
 | `FinancePage.tsx:362` | Theme-Name "Nacht-Blau" | → `['Gold', 'Mono', 'Dunkel', 'Crimson', 'Hell', 'Ivory']` |
 | `FinancePage.tsx:243` | Stats: "8+ Module" | → `10` |
 | `data/pages.ts:97` | Community Badge "Coming soon" | → `'Jetzt live'` |
-| `docs.js` (FinanceBoard) | `info@candlescope.de` | → `hello@candlescope.de` |
+| `docs.js` (FinanceBoard) | `info@candlescope.de` | → `info@candlescope.de` |
 
 ---
 

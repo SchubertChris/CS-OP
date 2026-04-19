@@ -56,7 +56,7 @@ export const SOCIALS = {
   github:    'https://github.com/SchubertChris',
   instagram: 'https://www.instagram.com/candlescope',
   kofi:      'https://ko-fi.com/candlescope',
-  email:     'hello@candlescope.de',
+  email:     'info@candlescope.de',
   calendly:  '',
 } as const
 ```
@@ -1090,7 +1090,7 @@ Die Datenschutzerklärung muss mindestens enthalten (nach DSGVO / TDDDG Stand 20
 1. Verantwortlicher
    Name: [Vollständiger Name]
    Adresse: [Anschrift]
-   E-Mail: hello@candlescope.de
+   E-Mail: info@candlescope.de
 
 2. Hosting
    Vercel Inc., 340 Pine Street, Suite 603, San Francisco, CA 94104, USA
@@ -1117,7 +1117,7 @@ Die Datenschutzerklärung muss mindestens enthalten (nach DSGVO / TDDDG Stand 20
 
 7. Betroffenenrechte
    Auskunft (Art. 15), Löschung (Art. 17), Widerspruch (Art. 21)
-   Kontakt: hello@candlescope.de
+   Kontakt: info@candlescope.de
    Beschwerderecht: Zuständige Datenschutzbehörde deines Bundeslandes
 ```
 
@@ -1130,7 +1130,7 @@ Mindestinhalt nach §5 TMG:
 ```
 Name: [Vorname Nachname]
 Anschrift: [Straße, PLZ Stadt]
-E-Mail: hello@candlescope.de
+E-Mail: info@candlescope.de
 Verantwortlich für den Inhalt nach §18 Abs. 2 MStV: [Name]
 ```
 
