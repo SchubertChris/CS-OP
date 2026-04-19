@@ -23,40 +23,17 @@ export default function ImpressumPage() {
 
         {/* Angaben gemäß § 5 TMG */}
         <section>
-          <h2 className="font-display text-xl text-[#F5F0E8] mb-4">Angaben gemäß § 5 TMG</h2>
+          <h2 className="font-display text-xl text-[#F5F0E8] mb-4">§ 5 TMG — Angaben gemäß § 5 TMG</h2>
           <div className="flex flex-col gap-1 text-[15px]">
             <p className="text-[#F5F0E8] font-medium">Chris Schubert</p>
-            <p>Hans-Marchwitza-Ring 19</p>
-            <p>14473 Potsdam</p>
-            <p>Deutschland</p>
-          </div>
-        </section>
-
-        {/* Kontakt */}
-        <section>
-          <h2 className="font-display text-xl text-[#F5F0E8] mb-4">Kontakt</h2>
-          <div className="flex flex-col gap-2 text-[15px]">
-            <p>
-              <span className="text-[#F5F0E8]">Telefon:</span>{' '}
-              Nur auf Anfrage per E-Mail
-            </p>
-            <p>
-              <span className="text-[#F5F0E8]">E-Mail:</span>{' '}
+            <p className="mt-2">
+              E-Mail:{' '}
               <a href="mailto:info@candlescope.de"
                 className="text-[#C9A84C]/70 hover:text-[#C9A84C] transition-colors">
                 info@candlescope.de
               </a>
             </p>
           </div>
-        </section>
-
-        {/* Hinweis Privatperson */}
-        <section className="border border-[#C9A84C]/15 rounded-2xl p-6 bg-[#0d0d0d]">
-          <h2 className="font-display text-lg text-[#F5F0E8] mb-3">Hinweis</h2>
-          <p className="text-[14px]">
-            Diese Website wird von einer Privatperson betrieben. Es besteht keine Umsatzsteuer-Identifikationsnummer,
-            da keine gewerbliche Tätigkeit im Sinne des Umsatzsteuergesetzes ausgeübt wird.
-          </p>
         </section>
 
         {/* Verantwortlich für den Inhalt */}
@@ -66,9 +43,17 @@ export default function ImpressumPage() {
           </h2>
           <div className="flex flex-col gap-1 text-[15px]">
             <p className="text-[#F5F0E8] font-medium">Chris Schubert</p>
-            <p>Hans-Marchwitza-Ring 19</p>
-            <p>14473 Potsdam</p>
           </div>
+        </section>
+
+        {/* Hinweis Privatperson */}
+        <section className="border border-[#C9A84C]/15 rounded-2xl p-6 bg-[#0d0d0d]">
+          <h2 className="font-display text-lg text-[#F5F0E8] mb-3">Hinweis</h2>
+          <p className="text-[14px]">
+            Als Privatperson ist keine Gewerberegistrierung erforderlich. Es besteht keine
+            Umsatzsteuer-Identifikationsnummer, da keine gewerbliche Tätigkeit im Sinne des
+            Umsatzsteuergesetzes ausgeübt wird.
+          </p>
         </section>
 
         {/* Haftung für Inhalte */}

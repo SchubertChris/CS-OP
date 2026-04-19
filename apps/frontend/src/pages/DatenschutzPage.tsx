@@ -1,7 +1,7 @@
 /* ============================================================
    CandleScope — Datenschutzerklärung
    src/pages/DatenschutzPage.tsx
-   DSGVO-konform für Deutschland · Stand: 2025
+   DSGVO-konform für Deutschland · Stand: 2026
    ============================================================ */
 
 import { Link } from 'react-router-dom'
@@ -19,7 +19,7 @@ export default function DatenschutzPage() {
         <h1 className="font-display text-4xl md:text-5xl text-[#F5F0E8] tracking-tight mb-4">
           Datenschutzerklärung
         </h1>
-        <p className="text-[#5a5550] font-mono text-[12px]">Stand: März 2025</p>
+        <p className="text-[#5a5550] font-mono text-[12px]">Stand: April 2026</p>
         <div className="h-px bg-gradient-to-r from-[#C9A84C]/30 to-transparent mt-4" />
       </div>
 
@@ -33,9 +33,6 @@ export default function DatenschutzPage() {
           </p>
           <div className="flex flex-col gap-1 text-[15px] mt-4 pl-4 border-l border-[#C9A84C]/20">
             <p className="text-[#F5F0E8] font-medium">Chris Schubert</p>
-            <p>Hans-Marchwitza-Ring 19</p>
-            <p>14473 Potsdam</p>
-            <p>Deutschland</p>
             <p className="mt-2">
               E-Mail:{' '}
               <a href="mailto:info@candlescope.de"
@@ -51,14 +48,14 @@ export default function DatenschutzPage() {
           <h2 className="font-display text-xl text-[#F5F0E8] mb-4">2. Hosting</h2>
           <p className="text-[14px]">
             Diese Website wird bei <strong className="text-[#F5F0E8]">Vercel Inc.</strong> gehostet
-            (440 N Barranca Ave #4133, Covina, CA 91723, USA). Beim Aufruf der Website werden automatisch
-            Verbindungsdaten an Vercel übermittelt, darunter IP-Adresse, Browsertyp, Betriebssystem,
-            Referrer-URL sowie Datum und Uhrzeit des Zugriffs.
+            (340 Pine Street, Suite 603, San Francisco, CA 94104, USA). Beim Aufruf der Website werden
+            automatisch Verbindungsdaten an Vercel übermittelt, darunter IP-Adresse, Browsertyp,
+            Betriebssystem, Referrer-URL sowie Datum und Uhrzeit des Zugriffs.
           </p>
           <p className="text-[14px] mt-3">
             Die Verarbeitung erfolgt auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse
-            an einem sicheren und effizienten Betrieb der Website). Vercel ist unter dem EU-US Data Privacy
-            Framework zertifiziert.
+            an einem sicheren und effizienten Betrieb der Website). Vercel hat Standardvertragsklauseln
+            (SCCs) gemäß Art. 46 Abs. 2 lit. c DSGVO abgeschlossen.
           </p>
           <p className="text-[14px] mt-3">
             Weitere Informationen:{' '}
@@ -74,17 +71,18 @@ export default function DatenschutzPage() {
           <h2 className="font-display text-xl text-[#F5F0E8] mb-4">3. Kontaktformular</h2>
           <p className="text-[14px]">
             Wenn Sie das Kontaktformular auf dieser Website nutzen, werden die eingegebenen Daten
-            (Name, E-Mail-Adresse, Nachricht) über den Dienst <strong className="text-[#F5F0E8]">Formspree</strong>
-            {' '}(Formspree Inc., USA) verarbeitet und per E-Mail an uns weitergeleitet.
+            (Name, E-Mail-Adresse, Nachricht) über den Dienst{' '}
+            <strong className="text-[#F5F0E8]">Formspree Inc.</strong> (Auftragsverarbeiter, USA)
+            verarbeitet und per E-Mail an uns weitergeleitet.
           </p>
           <p className="text-[14px] mt-3">
             Die Verarbeitung erfolgt auf Grundlage von Art. 6 Abs. 1 lit. b DSGVO (Vertragsanbahnung)
             bzw. Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an der Beantwortung von Anfragen).
+            Zweck der Verarbeitung ist ausschließlich die Bearbeitung Ihrer Anfrage.
           </p>
           <p className="text-[14px] mt-3">
-            Die übermittelten Daten werden ausschließlich zur Bearbeitung Ihrer Anfrage verwendet und
-            nicht an Dritte weitergegeben. Formspree verarbeitet die Daten auf US-amerikanischen Servern.
-            Weitere Informationen:{' '}
+            Die übermittelten Daten werden nicht an weitere Dritte weitergegeben und nach vollständiger
+            Erledigung Ihrer Anfrage, spätestens nach 6 Monaten, gelöscht. Weitere Informationen:{' '}
             <a href="https://formspree.io/legal/privacy-policy" target="_blank" rel="noopener noreferrer"
               className="text-[#C9A84C]/70 hover:text-[#C9A84C] transition-colors">
               formspree.io/legal/privacy-policy
@@ -92,51 +90,81 @@ export default function DatenschutzPage() {
           </p>
         </section>
 
-        {/* 4. Cookies & Lokaler Speicher */}
+        {/* 4. Externe Dienste */}
         <section>
-          <h2 className="font-display text-xl text-[#F5F0E8] mb-4">4. Cookies & Lokaler Speicher</h2>
+          <h2 className="font-display text-xl text-[#F5F0E8] mb-4">4. Externe Dienste</h2>
           <p className="text-[14px]">
-            Diese Website verwendet keine Tracking-Cookies und keine Analyse-Tools wie Google Analytics.
-            Es werden lediglich technisch notwendige Daten im lokalen Speicher (localStorage) des Browsers
-            gespeichert, um die Funktionalität der Website sicherzustellen (z. B. Einstellungen des
-            Admin-Bereichs).
+            Diese Website ruft öffentliche Daten von externen APIs ab. Dabei werden keine
+            personenbezogenen Daten übermittelt oder gespeichert:
           </p>
-          <p className="text-[14px] mt-3">
-            Diese Speicherung erfolgt auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO und erfordert keine
-            gesonderte Einwilligung.
-          </p>
-        </section>
-
-        {/* 5. Externe Links */}
-        <section>
-          <h2 className="font-display text-xl text-[#F5F0E8] mb-4">5. Externe Dienste & Links</h2>
-          <p className="text-[14px]">
-            Diese Website enthält Links zu externen Diensten wie GitHub und Discord. Beim Anklicken dieser
-            Links verlassen Sie unsere Website. Für die Datenschutzpraktiken dieser Drittanbieter sind wir
-            nicht verantwortlich.
-          </p>
-          <div className="flex flex-col gap-2 mt-4 text-[14px]">
-            <p>
-              <strong className="text-[#F5F0E8]">GitHub:</strong>{' '}
-              <a href="https://docs.github.com/en/site-policy/privacy-policies/github-privacy-statement"
-                target="_blank" rel="noopener noreferrer"
-                className="text-[#C9A84C]/70 hover:text-[#C9A84C] transition-colors">
-                GitHub Privacy Statement
-              </a>
-            </p>
-            <p>
-              <strong className="text-[#F5F0E8]">Discord:</strong>{' '}
-              <a href="https://discord.com/privacy" target="_blank" rel="noopener noreferrer"
-                className="text-[#C9A84C]/70 hover:text-[#C9A84C] transition-colors">
-                Discord Privacy Policy
-              </a>
-            </p>
+          <div className="flex flex-col gap-3 mt-4 text-[14px]">
+            <div className="flex items-start gap-3">
+              <div className="w-1.5 h-1.5 rounded-full bg-[#C9A84C]/50 mt-2 shrink-0" />
+              <p>
+                <strong className="text-[#F5F0E8]">GitHub API:</strong>{' '}
+                Abruf öffentlicher Repository-Daten (Sterne, Commits). Es werden keine
+                personenbezogenen Daten gespeichert oder weitergegeben.{' '}
+                <a href="https://docs.github.com/en/site-policy/privacy-policies/github-privacy-statement"
+                  target="_blank" rel="noopener noreferrer"
+                  className="text-[#C9A84C]/70 hover:text-[#C9A84C] transition-colors">
+                  GitHub Privacy Statement
+                </a>
+              </p>
+            </div>
+            <div className="flex items-start gap-3">
+              <div className="w-1.5 h-1.5 rounded-full bg-[#C9A84C]/50 mt-2 shrink-0" />
+              <p>
+                <strong className="text-[#F5F0E8]">Discord API:</strong>{' '}
+                Abruf öffentlicher Serverstatistiken (Mitgliederzahl). Es werden keine
+                personenbezogenen Daten gespeichert oder weitergegeben.{' '}
+                <a href="https://discord.com/privacy" target="_blank" rel="noopener noreferrer"
+                  className="text-[#C9A84C]/70 hover:text-[#C9A84C] transition-colors">
+                  Discord Privacy Policy
+                </a>
+              </p>
+            </div>
           </div>
         </section>
 
-        {/* 6. Ihre Rechte */}
+        {/* 5. localStorage */}
         <section>
-          <h2 className="font-display text-xl text-[#F5F0E8] mb-4">6. Ihre Rechte</h2>
+          <h2 className="font-display text-xl text-[#F5F0E8] mb-4">5. Lokaler Speicher (localStorage)</h2>
+          <p className="text-[14px]">
+            Diese Website speichert technisch notwendige Daten im lokalen Speicher (localStorage) des
+            Browsers. Gespeichert werden ausschließlich Daten für folgende Zwecke:
+          </p>
+          <div className="flex flex-col gap-2 mt-4 text-[14px]">
+            {[
+              'Admin-Panel Session (Authentifizierungsstatus)',
+              'Cookie-Consent-Einstellungen',
+              'Page-Builder-Daten',
+            ].map((item, i) => (
+              <div key={i} className="flex items-start gap-3">
+                <div className="w-1.5 h-1.5 rounded-full bg-[#C9A84C]/50 mt-2 shrink-0" />
+                <p>{item}</p>
+              </div>
+            ))}
+          </div>
+          <p className="text-[14px] mt-3">
+            Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (technisch notwendig; kein Consent
+            erforderlich). Die gespeicherten Daten verbleiben ausschließlich im Browser des Nutzers
+            und werden nicht an Dritte weitergegeben.
+          </p>
+        </section>
+
+        {/* 6. Keine Tracking-Dienste */}
+        <section>
+          <h2 className="font-display text-xl text-[#F5F0E8] mb-4">6. Keine Tracking-Dienste</h2>
+          <p className="text-[14px]">
+            Diese Website verwendet <strong className="text-[#F5F0E8]">keine</strong> Analytics-,
+            Werbe- oder Tracking-Skripte. Es werden weder Google Analytics, Meta Pixel noch
+            vergleichbare Dienste eingesetzt.
+          </p>
+        </section>
+
+        {/* 7. Betroffenenrechte */}
+        <section>
+          <h2 className="font-display text-xl text-[#F5F0E8] mb-4">7. Ihre Rechte</h2>
           <p className="text-[14px] mb-4">
             Sie haben gegenüber uns folgende Rechte hinsichtlich der Sie betreffenden personenbezogenen Daten:
           </p>
@@ -164,27 +192,10 @@ export default function DatenschutzPage() {
               info@candlescope.de
             </a>
           </p>
-        </section>
-
-        {/* 7. Beschwerderecht */}
-        <section>
-          <h2 className="font-display text-xl text-[#F5F0E8] mb-4">7. Beschwerderecht bei der Aufsichtsbehörde</h2>
-          <p className="text-[14px]">
-            Sie haben das Recht, sich bei einer Datenschutz-Aufsichtsbehörde über die Verarbeitung
-            Ihrer personenbezogenen Daten zu beschweren. Zuständige Aufsichtsbehörde für Brandenburg ist:
+          <p className="text-[14px] mt-3">
+            Sie haben zudem das Recht, sich bei der zuständigen Datenschutz-Aufsichtsbehörde
+            Ihres Bundeslandes über die Verarbeitung Ihrer personenbezogenen Daten zu beschweren.
           </p>
-          <div className="flex flex-col gap-1 text-[14px] mt-4 pl-4 border-l border-[#C9A84C]/20">
-            <p className="text-[#F5F0E8]">Landesbeauftragte für den Datenschutz und das Recht auf Akteneinsicht Brandenburg</p>
-            <p>Stahnsdorfer Damm 77</p>
-            <p>14532 Kleinmachnow</p>
-            <p>
-              Website:{' '}
-              <a href="https://www.lda.brandenburg.de" target="_blank" rel="noopener noreferrer"
-                className="text-[#C9A84C]/70 hover:text-[#C9A84C] transition-colors">
-                www.lda.brandenburg.de
-              </a>
-            </p>
-          </div>
         </section>
 
         {/* 8. Aktualität */}
