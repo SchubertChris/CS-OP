@@ -93,7 +93,7 @@ export default function Footer() {
                 github.com/SchubertChris
                 <ExternalLink size={10} strokeWidth={1.5} className="text-[#3a3530] group-hover:text-[#5a5550] transition-colors" />
               </a>
-              <a href="https://discord.gg/" target="_blank" rel="noopener noreferrer"
+              <a href={SOCIALS.discord} target="_blank" rel="noopener noreferrer"
                 className="group flex items-center gap-2 text-sm text-[#9A9590] hover:text-[#F5F0E8] transition-colors duration-300">
                 <span className="text-[#5a5550] group-hover:text-[#C9A84C] transition-colors shrink-0"><DiscordIcon /></span>
                 Discord Community
