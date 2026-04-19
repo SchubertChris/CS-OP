@@ -1,0 +1,73 @@
+// src/components/finance/FaqAccordion.tsx
+import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Plus, Minus } from 'lucide-react'
+
+const FAQ = [
+  {
+    q: 'Läuft die App auf Mac oder Linux?',
+    a: 'Nein — aktuell ausschließlich Windows 10 und Windows 11 (64-Bit). Mac- und Linux-Versionen sind für eine spätere Version geplant.',
+  },
+  {
+    q: 'Wo werden meine Daten gespeichert?',
+    a: 'Alles lokal auf deinem PC unter %APPDATA%/candlescope-financeboard/. Keine Cloud, keine Server, keine Weitergabe an Dritte.',
+  },
+  {
+    q: 'Was passiert wenn ich die App deinstalliere?',
+    a: 'Die Daten bleiben im AppData-Ordner erhalten und gehen nicht verloren. Du kannst sie dort manuell löschen oder vor der Deinstallation per Export sichern.',
+  },
+  {
+    q: 'Gibt es automatische Updates?',
+    a: 'Noch nicht — neue Versionen werden auf candlescope.de bekannt gegeben. Der Auto-Updater ist für eine der nächsten Versionen geplant.',
+  },
+  {
+    q: 'Was bedeutet "für begrenzte Zeit kostenlos"?',
+    a: 'Sobald das Produkt offiziell verkauft wird, gilt der reguläre Preis (39 €) für neue Downloads. Wer jetzt lädt, behält die App dauerhaft und kostenlos.',
+  },
+]
+
+export default function FaqAccordion() {
+  const [open, setOpen] = useState<number | null>(null)
+
+  return (
+    <section className="py-20 px-8 max-w-2xl mx-auto">
+      <div className="text-center mb-12">
+        <p className="text-[#C9A84C] text-xs tracking-[0.2em] uppercase mb-3">FAQ</p>
+        <h2 className="text-3xl font-bold text-[#F5F0E8]">Häufige Fragen</h2>
+      </div>
+      <div className="flex flex-col gap-2">
+        {FAQ.map(({ q, a }, i) => (
+          <div
+            key={i}
+            className="bg-[#111111] border border-[#C9A84C]/8 rounded-xl overflow-hidden
+                       hover:border-[#C9A84C]/15 transition-colors duration-200"
+          >
+            <button
+              onClick={() => setOpen(open === i ? null : i)}
+              className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left cursor-pointer"
+            >
+              <span className="text-[#F5F0E8] text-sm font-medium">{q}</span>
+              {open === i
+                ? <Minus size={16} strokeWidth={1.5} className="text-[#C9A84C] shrink-0" />
+                : <Plus  size={16} strokeWidth={1.5} className="text-[#9A9590] shrink-0" />
+              }
+            </button>
+            <AnimatePresence>
+              {open === i && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: 'auto', opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
+                  className="overflow-hidden"
+                >
+                  <p className="px-6 pb-5 text-[#9A9590] text-sm leading-relaxed">{a}</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        ))}
+      </div>
+    </section>
+  )
+}
