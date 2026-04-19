@@ -14,7 +14,7 @@ const MODULES = [
   { icon: Target,            title: 'Sparziele',         desc: 'Tracker mit Live-Feedback und automatischer Rate' },
   { icon: Layers,            title: 'Vision Board',      desc: 'Freier Canvas für finanzielle Ziele und Ideen' },
   { icon: Archive,           title: 'Archiv',            desc: 'Dokumentenverwaltung mit Kategorien und Suche' },
-  { icon: Settings,          title: 'Einstellungen',     desc: '6 Themes, Schriftarten, Privacy Lock' },
+  { icon: Settings,          title: 'Einstellungen',     desc: '4 Themes, Schriftarten, Privacy Lock' },
   { icon: Download,          title: 'Import / Export',   desc: '.fbs Format, CSV-Export, Auto-Safepoints' },
 ]
 

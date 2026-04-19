@@ -44,7 +44,7 @@ function AnimatedCounter({ value, suffix = '' }: { value: number; suffix?: strin
 
 const STATS = [
   { value: 10,   suffix: '',  label: 'Module'    },
-  { value: 6,    suffix: '',  label: 'Themes'    },
+  { value: 4,    suffix: '',  label: 'Themes'    },
   { value: 100,  suffix: '%', label: 'Offline'   },
   { value: 0,    suffix: '',  label: 'Abos'      },
 ]

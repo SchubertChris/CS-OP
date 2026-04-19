@@ -4,7 +4,7 @@ import { SOCIALS } from '../../data/socials'
 
 const INCLUDED = [
   '10 integrierte Module',
-  '6 Themes inkl. Hell- und Dunkel-Modi',
+  '4 Themes inkl. Hell- und Dunkel-Modi',
   'Lokale Datensicherheit — kein Cloud-Upload',
   'Auto-Safepoints (stündlich)',
   'Import / Export (.fbs + CSV)',
