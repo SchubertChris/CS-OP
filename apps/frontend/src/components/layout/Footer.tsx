@@ -4,14 +4,16 @@
    ============================================================ */
 
 import { Link } from 'react-router-dom'
-import { Github, TrendingUp, Code2, User, MessageSquare, Mail, ExternalLink } from 'lucide-react'
+import { Github, TrendingUp, Code2, User, Users, MessageSquare, Mail, ExternalLink } from 'lucide-react'
 import csLogo from '../../assets/images/CandleScope.webp'
+import { SOCIALS } from '../../data/socials'
 
 const footerNav = [
   { to: '/finance', label: 'Finance', icon: <TrendingUp size={14} strokeWidth={1.5} /> },
   { to: '/dev', label: 'Dev & Web-Projekte', icon: <Code2 size={14} strokeWidth={1.5} /> },
   { to: '/about', label: 'About', icon: <User size={14} strokeWidth={1.5} /> },
   { to: '/contact', label: 'Kontakt', icon: <MessageSquare size={14} strokeWidth={1.5} /> },
+  { to: '/community', label: 'Community', icon: <Users size={14} strokeWidth={1.5} /> },
 ]
 
 const legalLinks = [
@@ -51,7 +53,7 @@ export default function Footer() {
                 className="w-9 h-9 flex items-center justify-center rounded-full border border-[#ffffff]/8 text-[#9A9590] hover:text-[#C9A84C] hover:border-[#C9A84C]/30 transition-all duration-300" aria-label="GitHub">
                 <Github size={15} strokeWidth={1.5} />
               </a>
-              <a href="https://discord.gg/" target="_blank" rel="noopener noreferrer"
+              <a href={SOCIALS.discord} target="_blank" rel="noopener noreferrer"
                 className="w-9 h-9 flex items-center justify-center rounded-full border border-[#ffffff]/8 text-[#9A9590] hover:text-[#C9A84C] hover:border-[#C9A84C]/30 transition-all duration-300" aria-label="Discord">
                 <DiscordIcon />
               </a>
