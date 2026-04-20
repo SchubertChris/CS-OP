@@ -22,26 +22,6 @@ const SCREENSHOTS = [
 
 const AUTOPLAY_MS = 4500
 
-function getCardStyle(offset: number) {
-  const abs = Math.abs(offset)
-  if (abs > 2) return { display: 'none' }
-
-  const rotateY  = offset * -38
-  const translateX = offset * 58   // percent
-  const scale    = 1 - abs * 0.14
-  const opacity  = 1 - abs * 0.55
-  const zIndex   = 10 - abs * 5
-  const blur     = abs * 1.5
-
-  return {
-    transform: `perspective(1100px) translateX(${translateX}%) rotateY(${rotateY}deg) scale(${scale})`,
-    opacity,
-    zIndex,
-    filter: blur > 0 ? `blur(${blur}px)` : undefined,
-    pointerEvents: (abs === 0 ? 'auto' : 'none') as React.CSSProperties['pointerEvents'],
-  }
-}
-
 export default function ScreenshotSlider() {
   const [active, setActive] = useState(0)
   const [paused, setPaused] = useState(false)
@@ -102,25 +82,34 @@ export default function ScreenshotSlider() {
                         bg-[radial-gradient(ellipse_at_50%_50%,rgba(201,168,76,0.06)_0%,transparent_70%)]
                         pointer-events-none" />
 
-        {SCREENSHOTS.map(({ src, label }, i) => {
-          const offset = ((i - active + total) % total + total) % total
-          const normalized = offset > total / 2 ? offset - total : offset
+        {[-1, 0, 1].map(offset => {
+          const i = ((active + offset) + total) % total
+          const { src, label } = SCREENSHOTS[i]
+
+          const rotateY    = offset * -38
+          const translateX = offset * 58
+          const scale      = 1 - Math.abs(offset) * 0.14
+          const opacity    = 1 - Math.abs(offset) * 0.55
+          const zIndex     = offset === 0 ? 10 : 5
 
           return (
             <motion.div
-              key={i}
+              key={`slot-${offset}`}
               className="absolute inset-0 flex items-center justify-center"
-              animate={getCardStyle(normalized)}
-              transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
-              onClick={() => normalized !== 0 && go(i)}
-              style={{ cursor: normalized !== 0 ? 'pointer' : 'default' }}
+              animate={{
+                transform: `perspective(1100px) translateX(${translateX}%) rotateY(${rotateY}deg) scale(${scale})`,
+                opacity,
+                zIndex,
+              }}
+              transition={{ duration: 0.48, ease: [0.4, 0, 0.2, 1] }}
+              onClick={() => offset !== 0 && go(i)}
+              style={{ cursor: offset !== 0 ? 'pointer' : 'default' }}
             >
               <div
                 className="rounded-xl overflow-hidden border border-[#C9A84C]/15
                             shadow-[0_0_60px_rgba(201,168,76,0.08)]"
                 style={{ width: 'clamp(340px, 52vw, 760px)' }}
               >
-                {/* Titlebar */}
                 <div className="bg-[#141414] px-4 py-2 flex items-center gap-2 border-b border-[#C9A84C]/8">
                   <div className="w-2.5 h-2.5 rounded-full bg-[#ef4444]/70" />
                   <div className="w-2.5 h-2.5 rounded-full bg-[#eab308]/70" />
