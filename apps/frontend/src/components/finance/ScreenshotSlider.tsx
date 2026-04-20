@@ -21,16 +21,21 @@ const SCREENSHOTS = [
 ]
 
 const AUTOPLAY_MS = 4500
+const TOTAL       = SCREENSHOTS.length
+
+function normalizeOffset(i: number, active: number) {
+  let off = i - active
+  if (off >  TOTAL / 2) off -= TOTAL
+  if (off < -TOTAL / 2) off += TOTAL
+  return off
+}
 
 export default function ScreenshotSlider() {
   const [active, setActive] = useState(0)
   const [paused, setPaused] = useState(false)
   const dragStart            = useRef<number>(0)
-  const total                = SCREENSHOTS.length
 
-  const go = useCallback((i: number) => setActive((i + total) % total), [total])
-  const prev = () => go(active - 1)
-  const next = () => go(active + 1)
+  const go = useCallback((i: number) => setActive((i + TOTAL) % TOTAL), [])
 
   useEffect(() => {
     if (paused) return
@@ -50,7 +55,7 @@ export default function ScreenshotSlider() {
         <h2 className="text-3xl font-bold text-[#F5F0E8]">Sieh selbst</h2>
       </div>
 
-      {/* Tab-Navigation (original) */}
+      {/* Tab-Navigation */}
       <div className="flex items-center justify-center gap-2 px-8 mb-10 flex-wrap">
         {SCREENSHOTS.map(({ label }, i) => (
           <button
@@ -67,48 +72,53 @@ export default function ScreenshotSlider() {
         ))}
       </div>
 
-      {/* 3D Carousel stage */}
+      {/* 3D Carousel — key=i so framer tracks real element positions */}
       <div
-        className="relative overflow-hidden"
+        className="relative"
         style={{ height: 'clamp(280px, 36vw, 520px)' }}
         onPointerDown={e => { dragStart.current = e.clientX }}
         onPointerUp={e => {
           const d = e.clientX - dragStart.current
-          if (Math.abs(d) > 40) d < 0 ? next() : prev()
+          if (Math.abs(d) > 40) d < 0 ? go(active + 1) : go(active - 1)
         }}
       >
         {/* Ambient glow */}
-        <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-40
-                        bg-[radial-gradient(ellipse_at_50%_50%,rgba(201,168,76,0.06)_0%,transparent_70%)]
-                        pointer-events-none" />
+        <div className="absolute inset-0 pointer-events-none
+                        bg-[radial-gradient(ellipse_60%_40%_at_50%_50%,rgba(201,168,76,0.05)_0%,transparent_100%)]" />
 
-        {[-1, 0, 1].map(offset => {
-          const i = ((active + offset) + total) % total
-          const { src, label } = SCREENSHOTS[i]
-
-          const rotateY    = offset * -38
-          const translateX = offset * 58
-          const scale      = 1 - Math.abs(offset) * 0.14
-          const opacity    = 1 - Math.abs(offset) * 0.55
-          const zIndex     = offset === 0 ? 10 : 5
+        {SCREENSHOTS.map(({ src, label }, i) => {
+          const off    = normalizeOffset(i, active)
+          const abs    = Math.abs(off)
+          const visible = abs <= 1
 
           return (
             <motion.div
-              key={`slot-${offset}`}
+              key={i}
               className="absolute inset-0 flex items-center justify-center"
+              onClick={() => off !== 0 && go(i)}
               animate={{
-                transform: `perspective(1100px) translateX(${translateX}%) rotateY(${rotateY}deg) scale(${scale})`,
-                opacity,
-                zIndex,
+                x:        `${off * 58}%`,
+                rotateY:  off * -38,
+                scale:    1 - abs * 0.14,
+                opacity:  visible ? 1 - abs * 0.52 : 0,
+                zIndex:   off === 0 ? 10 : 5,
               }}
-              transition={{ duration: 0.48, ease: [0.4, 0, 0.2, 1] }}
-              onClick={() => offset !== 0 && go(i)}
-              style={{ cursor: offset !== 0 ? 'pointer' : 'default' }}
+              transition={
+                visible
+                  ? { type: 'spring', stiffness: 220, damping: 28, mass: 0.8 }
+                  : { duration: 0 }
+              }
+              style={{
+                perspective: '1100px',
+                transformStyle: 'preserve-3d',
+                cursor: off !== 0 ? 'pointer' : 'default',
+                pointerEvents: abs > 1 ? 'none' : 'auto',
+              }}
             >
               <div
                 className="rounded-xl overflow-hidden border border-[#C9A84C]/15
                             shadow-[0_0_60px_rgba(201,168,76,0.08)]"
-                style={{ width: 'clamp(340px, 52vw, 760px)' }}
+                style={{ width: 'clamp(300px, 52vw, 760px)' }}
               >
                 <div className="bg-[#141414] px-4 py-2 flex items-center gap-2 border-b border-[#C9A84C]/8">
                   <div className="w-2.5 h-2.5 rounded-full bg-[#ef4444]/70" />
@@ -131,15 +141,10 @@ export default function ScreenshotSlider() {
         })}
       </div>
 
-      {/* Dot indicators */}
+      {/* Dots */}
       <div className="flex items-center justify-center gap-2 mt-8">
         {SCREENSHOTS.map(({ label }, i) => (
-          <button
-            key={label}
-            onClick={() => go(i)}
-            aria-label={label}
-            className="cursor-pointer"
-          >
+          <button key={label} onClick={() => go(i)} aria-label={label} className="cursor-pointer">
             <span className={`block rounded-full transition-all duration-300
               ${active === i
                 ? 'w-6 h-1.5 bg-[#C9A84C]'
