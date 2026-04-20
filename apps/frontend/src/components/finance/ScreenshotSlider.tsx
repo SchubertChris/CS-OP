@@ -2,18 +2,22 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 
-import imgDashboard    from '../../assets/images/Übersicht.webp'
-import imgJahr         from '../../assets/images/Jahresüberblick.webp'
-import imgModal        from '../../assets/images/Modalbeispiel.webp'
-import imgArchiv       from '../../assets/images/Dokumentenarchiv.webp'
-import imgDesign       from '../../assets/images/CostumDesign.webp'
+import imgDashboard     from '../../assets/images/ÜbersichtUndTutorial.webp'
+import imgJahr          from '../../assets/images/Jahresübersicht.webp'
+import imgTransaktionen from '../../assets/images/Transaktionen.webp'
+import imgSparziele     from '../../assets/images/Sparziele.webp'
+import imgArchiv        from '../../assets/images/Archiv.webp'
+import imgVision        from '../../assets/images/VisionBoard.webp'
+import imgModals        from '../../assets/images/Modals.webp'
 
 const SCREENSHOTS = [
-  { label: 'Dashboard',      src: imgDashboard },
-  { label: 'Jahresanalyse',  src: imgJahr      },
-  { label: 'Transaktionen',  src: imgModal     },
-  { label: 'Archiv',         src: imgArchiv    },
-  { label: 'Custom Design',  src: imgDesign    },
+  { label: 'Dashboard',      src: imgDashboard     },
+  { label: 'Jahresanalyse',  src: imgJahr          },
+  { label: 'Transaktionen',  src: imgTransaktionen },
+  { label: 'Sparziele',      src: imgSparziele     },
+  { label: 'Archiv',         src: imgArchiv        },
+  { label: 'Vision Board',   src: imgVision        },
+  { label: 'Modals',         src: imgModals        },
 ]
 
 export default function ScreenshotSlider() {

@@ -1,7 +1,7 @@
 // src/pages/FinancePage.tsx
 import { motion } from 'framer-motion'
 import { Check } from 'lucide-react'
-import imgDashboard from '../assets/images/Übersicht.webp'
+import imgDashboard from '../assets/images/Präsentation-WebsiteBild.webp'
 import UspStrip from '../components/finance/UspStrip'
 import ScreenshotSlider from '../components/finance/ScreenshotSlider'
 import FeatureGrid from '../components/finance/FeatureGrid'

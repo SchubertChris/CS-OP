@@ -17,7 +17,7 @@ import {
   Zap, Star, Play,
 } from 'lucide-react'
 
-import imgUebersicht from '../assets/images/Übersicht.webp'
+import imgUebersicht from '../assets/images/Präsentation-WebsiteBild.webp'
 
 /* ── Animation Helpers ─────────────────────────────────────── */
 function Reveal({ children, direction = 'up', delay = 0, className }: {
