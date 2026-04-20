@@ -1,6 +1,7 @@
 // src/pages/FinancePage.tsx
 import { motion } from 'framer-motion'
 import { Check } from 'lucide-react'
+import imgDashboard from '../assets/images/Übersicht.webp'
 import UspStrip from '../components/finance/UspStrip'
 import ScreenshotSlider from '../components/finance/ScreenshotSlider'
 import FeatureGrid from '../components/finance/FeatureGrid'
@@ -124,7 +125,7 @@ export default function FinancePage() {
             </StaggerItem>
           </StaggerContainer>
 
-          {/* App-Fenster-Mockup */}
+          {/* App-Screenshot */}
           <motion.div
             initial={{ opacity: 0, x: 24 }}
             animate={{ opacity: 1, x: 0 }}
@@ -140,39 +141,12 @@ export default function FinancePage() {
                 <div className="w-3 h-3 rounded-full bg-[#22c55e]/70" />
                 <span className="text-[#5a5550] text-[10px] ml-2 font-mono">Candlescope FinanceBoard v10.6</span>
               </div>
-              <div className="bg-[#0e0e0e] h-[340px] flex">
-                <div className="w-14 bg-[#090909] border-r border-[#C9A84C]/6 flex flex-col items-center gap-3 pt-4">
-                  {[1,2,3,4,5].map(i => (
-                    <div key={i} className={`w-6 h-1 rounded-full ${i === 1 ? 'bg-[#C9A84C]' : 'bg-[#C9A84C]/15'}`} />
-                  ))}
-                </div>
-                <div className="flex-1 p-5 flex flex-col gap-4">
-                  <div className="grid grid-cols-3 gap-3">
-                    {['+ 2.840 €', '− 1.240 €', '+ 1.600 €'].map((v, i) => (
-                      <div key={i} className="bg-[#141414] border border-[#C9A84C]/8 rounded-lg p-3">
-                        <div className={`text-xs font-bold ${i === 2 ? 'text-[#22c55e]' : i === 0 ? 'text-[#C9A84C]' : 'text-[#9A9590]'}`}>
-                          {v}
-                        </div>
-                        <div className="text-[#5a5550] text-[9px] mt-1">
-                          {['Einnahmen', 'Ausgaben', 'Netto'][i]}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="flex-1 bg-[#141414] border border-[#C9A84C]/8 rounded-lg p-4 flex items-end gap-2">
-                    {[35, 60, 42, 78, 55, 88, 40, 70, 62, 95, 50, 75].map((h, i) => (
-                      <div
-                        key={i}
-                        className="flex-1 rounded-sm"
-                        style={{
-                          height: `${h}%`,
-                          background: i % 3 === 1 ? '#C9A84C' : `rgba(201,168,76,${0.2 + (i % 3) * 0.15})`,
-                        }}
-                      />
-                    ))}
-                  </div>
-                </div>
-              </div>
+              <img
+                src={imgDashboard}
+                alt="FinanceBoard Dashboard"
+                className="w-full object-cover"
+                loading="eager"
+              />
             </div>
           </motion.div>
         </div>
