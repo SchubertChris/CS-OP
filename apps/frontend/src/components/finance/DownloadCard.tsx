@@ -1,6 +1,7 @@
 // src/components/finance/DownloadCard.tsx
 import { Check } from 'lucide-react'
 import { SOCIALS } from '../../data/socials'
+import { useDownloadCount } from '../../hooks/useDownloadCount'
 
 const INCLUDED = [
   '10 integrierte Module',
@@ -16,6 +17,8 @@ interface DownloadCardProps {
 }
 
 export default function DownloadCard({ downloadUrl = '/downloads/FinanceBoard-Setup.exe' }: DownloadCardProps) {
+  const downloads = useDownloadCount()
+
   return (
     <section className="py-20 px-8 max-w-4xl mx-auto">
       <div className="text-center mb-12">
@@ -68,6 +71,11 @@ export default function DownloadCard({ downloadUrl = '/downloads/FinanceBoard-Se
             )}
           </div>
           <p className="text-[#5a5550] text-[10px]">Freiwillig · via Ko-fi</p>
+          {downloads !== null && downloads > 0 && (
+            <p className="text-[#5a5550] text-[10px] mt-1">
+              ↓ {downloads.toLocaleString('de-DE')} Downloads
+            </p>
+          )}
         </div>
       </div>
     </section>

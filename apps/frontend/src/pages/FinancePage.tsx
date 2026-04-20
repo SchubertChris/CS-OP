@@ -6,6 +6,7 @@ import ScreenshotSlider from '../components/finance/ScreenshotSlider'
 import FeatureGrid from '../components/finance/FeatureGrid'
 import DownloadCard from '../components/finance/DownloadCard'
 import FaqAccordion from '../components/finance/FaqAccordion'
+import TestimonialsSection from '../components/finance/TestimonialsSection'
 
 function StaggerContainer({ children, className = '' }: { children: React.ReactNode; className?: string }) {
   return (
@@ -208,7 +209,12 @@ export default function FinancePage() {
       {/* ⑦ FAQ */}
       <FaqAccordion />
 
-      {/* ⑧ FOOTER-CTA */}
+      {/* ⑧ TESTIMONIALS */}
+      <div className="border-t border-[#C9A84C]/8">
+        <TestimonialsSection />
+      </div>
+
+      {/* ⑨ FOOTER-CTA */}
       <section className="py-24 text-center px-8">
         <div className="h-px bg-gradient-to-r from-transparent via-[#C9A84C]/10 to-transparent mb-20" />
         <motion.div

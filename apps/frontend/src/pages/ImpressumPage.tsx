@@ -26,6 +26,8 @@ export default function ImpressumPage() {
           <h2 className="font-display text-xl text-[#F5F0E8] mb-4">§ 5 TMG — Angaben gemäß § 5 TMG</h2>
           <div className="flex flex-col gap-1 text-[15px]">
             <p className="text-[#F5F0E8] font-medium">Chris Schubert</p>
+            <p>Hans-Marchwitza-Ring 19</p>
+            <p>14473 Potsdam</p>
             <p className="mt-2">
               E-Mail:{' '}
               <a href="mailto:info@candlescope.de"
@@ -43,6 +45,7 @@ export default function ImpressumPage() {
           </h2>
           <div className="flex flex-col gap-1 text-[15px]">
             <p className="text-[#F5F0E8] font-medium">Chris Schubert</p>
+            <p>Hans-Marchwitza-Ring 19, 14473 Potsdam</p>
           </div>
         </section>
 
