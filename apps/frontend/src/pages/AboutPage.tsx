@@ -105,7 +105,7 @@ const SKILLS_OTHER = ['Automatisierung', 'KI-Tools', 'Claude AI', 'ChatGPT', 'Di
 const TIMELINE = [
   { year: '1994', title: 'Potsdam — Aufgewachsen', desc: 'In Potsdam geboren und aufgewachsen — seit dem zehnten Lebensjahr am PC, immer neugierig auf Technik, Hardware und wie Dinge funktionieren. Mit 13 nach Stahnsdorf gezogen.' },
   { year: '2007', title: 'Stahnsdorf — Neustart', desc: 'Mit 13 nach Stahnsdorf gezogen. Mit 15 erste Jobs in der Gastronomie, mit 17 den Führerschein selbst bezahlt. Selbstständigkeit war von Anfang an kein Konzept — es war Notwendigkeit.' },
-  { year: '2010', title: 'Gastronomie — Hotelfach bis Bundestag', desc: 'Ausbildung zum Hotelfachmann und 13 Jahre Gastronomie auf verschiedenen Levels — Juliette Potsdam, Käfer im Bundestag Berlin und mehr. Verlässlichkeit und Qualität unter Druck.' },
+  { year: '2010', title: 'Gastronomie — Hotelfach bis Bundestag', desc: 'Ausbildung zum Hotelfachmann und 13 Jahre Gastronomie auf verschiedenen Levels — Das Juliette Potsdam, Käfer im Bundestag Berlin und mehr. Verlässlichkeit und Qualität unter Druck.' },
   { year: '2019', title: 'BBU — Vorstandsfahrer', desc: 'Vertrauensposition als Vorstandsfahrer für Maren Kern bei der BBU. Diskretion, Zuverlässigkeit und Professionalität auf höchstem Level.' },
   { year: '2022', title: 'CandleScope — Die Marke entsteht', desc: 'Gründung der Marke CandleScope. Finance-Dashboard, eigene Website, Community — alles aus einer Hand. Krypto und Finanzen nicht als Hobby sondern als echtes Interessensfeld mit eigenem Tool-Stack.' },
   { year: '2023', title: 'DCI Berlin — Webentwicklung', desc: 'Weiterbildung zum Webentwickler beim Digital Career Institute Berlin — kombiniert mit allem was vorher und nachher selbst beigebracht wurde. Seit dem zehnten Lebensjahr am PC, Technik war immer da.' },
@@ -206,7 +206,7 @@ export default function AboutPage() {
               Mit 15 ersten eigenen Lohn verdient, mit 17 den Führerschein selbst bezahlt.
             </p>
             <p className="text-[#9A9590] leading-relaxed">
-              13 Jahre Gastronomie auf verschiedenen Levels — vom Hotelfach über die Juliette Potsdam
+              13 Jahre Gastronomie auf verschiedenen Levels — vom Hotelfach über das Juliette Potsdam
               bis hin zum Käfer im Bundestag Berlin. Das hat mich gelehrt was wirklich zählt:
               Verlässlichkeit, Qualität unter Druck und echte Kommunikation.
             </p>
