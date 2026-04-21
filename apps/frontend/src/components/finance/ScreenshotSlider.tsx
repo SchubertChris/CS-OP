@@ -52,7 +52,7 @@ export default function ScreenshotSlider() {
       {/* Header */}
       <div className="text-center mb-10 px-8">
         <p className="text-[#C9A84C] text-xs tracking-[0.2em] uppercase mb-3">App in Aktion</p>
-        <h2 className="text-3xl font-bold text-[#F5F0E8]">Sieh selbst</h2>
+        <h2 className="text-3xl font-bold text-[var(--cs-text)]">Sieh selbst</h2>
       </div>
 
       {/* Tab-Navigation */}
@@ -64,7 +64,7 @@ export default function ScreenshotSlider() {
             className={`px-4 py-1.5 rounded-full text-xs tracking-[0.1em] uppercase transition-all duration-200 cursor-pointer
               ${active === i
                 ? 'bg-[#C9A84C]/15 border border-[#C9A84C]/30 text-[#C9A84C]'
-                : 'border border-transparent text-[#9A9590] hover:text-[#F5F0E8]'
+                : 'border border-transparent text-[var(--cs-text-2)] hover:text-[var(--cs-text)]'
               }`}
           >
             {label}
@@ -120,11 +120,11 @@ export default function ScreenshotSlider() {
                             shadow-[0_0_60px_rgba(201,168,76,0.08)]"
                 style={{ width: 'clamp(300px, 52vw, 760px)' }}
               >
-                <div className="bg-[#141414] px-4 py-2 flex items-center gap-2 border-b border-[#C9A84C]/8">
+                <div className="bg-[var(--cs-s4)] px-4 py-2 flex items-center gap-2 border-b border-[#C9A84C]/8">
                   <div className="w-2.5 h-2.5 rounded-full bg-[#ef4444]/70" />
                   <div className="w-2.5 h-2.5 rounded-full bg-[#eab308]/70" />
                   <div className="w-2.5 h-2.5 rounded-full bg-[#22c55e]/70" />
-                  <span className="text-[#5a5550] text-[9px] ml-2 font-mono">
+                  <span className="text-[var(--cs-text-3)] text-[9px] ml-2 font-mono">
                     FinanceBoard v10.6 — {label}
                   </span>
                 </div>

@@ -8,6 +8,7 @@ import Header from './Header'
 import Footer from './Footer'
 import BackgroundEffect from '../ui/BackgroundEffect'
 import CookieBanner from '../ui/CookieBanner'
+import { ThemeProvider } from '../../contexts/ThemeContext'
 
 // Nicht lazy — sofort laden damit kein Flash
 import IntroAnimation from '../ui/IntroAnimation'
@@ -31,7 +32,8 @@ export default function RootLayout() {
   }
 
   return (
-    <div className="min-h-screen bg-[#080808] text-[#F5F0E8] flex flex-col relative">
+    <ThemeProvider>
+    <div className="min-h-screen bg-[var(--cs-bg)] text-[var(--cs-text)] flex flex-col relative transition-colors duration-300">
 
       {/* Intro — nur einmal pro Session */}
       {!introComplete && (
@@ -50,5 +52,6 @@ export default function RootLayout() {
         <CookieBanner />
       </div>
     </div>
+    </ThemeProvider>
   )
 }

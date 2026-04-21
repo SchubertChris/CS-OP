@@ -64,13 +64,13 @@ function StatCard({ value, label, sub, loading }: {
   value: string; label: string; sub?: string; loading?: boolean
 }) {
   return (
-    <div className="flex flex-col gap-1 p-6 rounded-xl border border-[#ffffff]/8 bg-[#0d0d0d]">
+    <div className="flex flex-col gap-1 p-6 rounded-xl border border-[#ffffff]/8 bg-[var(--cs-s1)]">
       {loading
         ? <div className="w-16 h-8 rounded bg-[#ffffff]/10 animate-pulse mb-1" />
         : <span className="font-display text-4xl text-[#C9A84C] leading-none">{value}</span>
       }
-      <span className="font-mono text-[11px] tracking-[0.14em] uppercase text-[#F5F0E8]">{label}</span>
-      {sub && <span className="font-mono text-[10px] text-[#5a5550]">{sub}</span>}
+      <span className="font-mono text-[11px] tracking-[0.14em] uppercase text-[var(--cs-text)]">{label}</span>
+      {sub && <span className="font-mono text-[10px] text-[var(--cs-text-3)]">{sub}</span>}
     </div>
   )
 }
@@ -136,18 +136,18 @@ function ServerPreview() {
       initial={{ opacity: 0, y: 24, scale: 0.97 }}
       animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
       transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-      className="rounded-2xl border border-[#C9A84C]/15 bg-[#0d0d0d] overflow-hidden shadow-2xl shadow-black/60"
+      className="rounded-2xl border border-[#C9A84C]/15 bg-[var(--cs-s1)] overflow-hidden shadow-2xl shadow-black/60"
     >
       {/* Gold top bar */}
       <div className="h-px bg-gradient-to-r from-transparent via-[#C9A84C]/40 to-transparent" />
 
       {/* Server Header */}
-      <div className="px-4 py-3 border-b border-[#ffffff]/6 flex items-center justify-between bg-[#0a0a0a]">
+      <div className="px-4 py-3 border-b border-[#ffffff]/6 flex items-center justify-between bg-[var(--cs-input)]">
         <div className="flex items-center gap-2.5">
           <div className="w-7 h-7 rounded-xl bg-[#C9A84C]/10 border border-[#C9A84C]/25 flex items-center justify-center">
             <span className="text-[10px] font-bold text-[#C9A84C]">CS</span>
           </div>
-          <span className="font-display text-sm text-[#F5F0E8] tracking-[0.1em]">CANDLESCOPE</span>
+          <span className="font-display text-sm text-[var(--cs-text)] tracking-[0.1em]">CANDLESCOPE</span>
         </div>
         <motion.div className="flex items-center gap-1.5"
           initial={{ opacity: 0 }} animate={isInView ? { opacity: 1 } : {}}
@@ -155,7 +155,7 @@ function ServerPreview() {
           <motion.div className="w-2 h-2 rounded-full bg-[#00C896]"
             animate={{ scale: [1, 1.3, 1], opacity: [1, 0.7, 1] }}
             transition={{ duration: 2, repeat: Infinity }} />
-          <span className="font-mono text-[9px] text-[#5a5550]">online</span>
+          <span className="font-mono text-[9px] text-[var(--cs-text-3)]">online</span>
         </motion.div>
       </div>
 
@@ -171,7 +171,7 @@ function ServerPreview() {
               className="flex items-center gap-1.5 px-2 mb-1"
             >
               <span className="text-[10px]">{cat.emoji}</span>
-              <span className="font-mono text-[9px] tracking-[0.14em] text-[#5a5550] uppercase">{cat.name}</span>
+              <span className="font-mono text-[9px] tracking-[0.14em] text-[var(--cs-text-3)] uppercase">{cat.name}</span>
             </motion.div>
 
             {/* Channels — each with increasing delay */}
@@ -191,16 +191,16 @@ function ServerPreview() {
                       }`}
                   >
                     {ch.type === 'voice' ? (
-                      <Volume2 size={12} strokeWidth={1.5} className="text-[#5a5550] group-hover:text-[#9A9590] shrink-0" />
+                      <Volume2 size={12} strokeWidth={1.5} className="text-[var(--cs-text-3)] group-hover:text-[var(--cs-text-2)] shrink-0" />
                     ) : ch.type === 'forum' ? (
-                      <span className="font-mono text-[11px] text-[#5a5550]">≡</span>
+                      <span className="font-mono text-[11px] text-[var(--cs-text-3)]">≡</span>
                     ) : (
-                      <span className="font-mono text-[12px] text-[#5a5550] group-hover:text-[#9A9590]">#</span>
+                      <span className="font-mono text-[12px] text-[var(--cs-text-3)] group-hover:text-[var(--cs-text-2)]">#</span>
                     )}
                     {ch.emoji && <span className="text-[11px]">{ch.emoji}</span>}
                     <span className={`font-mono text-[11px] truncate transition-colors ${activeChannel === ch.name
                         ? 'text-[#C9A84C]'
-                        : 'text-[#6a6460] group-hover:text-[#F5F0E8]'
+                        : 'text-[#6a6460] group-hover:text-[var(--cs-text)]'
                       }`}>
                       {ch.name}
                     </span>
@@ -217,19 +217,19 @@ function ServerPreview() {
       </div>
 
       {/* Bottom online bar */}
-      <div className="px-4 py-3 border-t border-[#ffffff]/6 bg-[#0a0a0a] flex items-center justify-between">
+      <div className="px-4 py-3 border-t border-[#ffffff]/6 bg-[var(--cs-input)] flex items-center justify-between">
         <div className="flex items-center gap-2">
           <div className="w-6 h-6 rounded-full bg-[#C9A84C]/20 border border-[#C9A84C]/30 flex items-center justify-center">
             <span className="text-[8px] font-bold text-[#C9A84C]">CS</span>
           </div>
           <div>
-            <p className="font-mono text-[9px] text-[#F5F0E8]">Chris Schubert</p>
-            <p className="font-mono text-[8px] text-[#5a5550]">👑 Admin</p>
+            <p className="font-mono text-[9px] text-[var(--cs-text)]">Chris Schubert</p>
+            <p className="font-mono text-[8px] text-[var(--cs-text-3)]">👑 Admin</p>
           </div>
         </div>
         <div className="flex items-center gap-1">
           <div className="w-1.5 h-1.5 rounded-full bg-[#00C896]" />
-          <span className="font-mono text-[9px] text-[#5a5550]">online</span>
+          <span className="font-mono text-[9px] text-[var(--cs-text-3)]">online</span>
         </div>
       </div>
 
@@ -256,22 +256,22 @@ function WaitlistForm() {
         <div className="w-1.5 h-1.5 rounded-full bg-[#C9A84C] animate-pulse" />
         <span className="font-mono text-[10px] tracking-[0.18em] uppercase text-[#C9A84C]/70">Early Access</span>
       </div>
-      <h3 className="font-display text-xl text-[#F5F0E8] mb-2">
+      <h3 className="font-display text-xl text-[var(--cs-text)] mb-2">
         Sei dabei wenn es <GradientText>richtig losgeht</GradientText>
       </h3>
-      <p className="text-[#9A9590] text-sm leading-relaxed mb-6">
+      <p className="text-[var(--cs-text-2)] text-sm leading-relaxed mb-6">
         Trag dich ein und erhalte als Erstes Zugang zu exklusiven Features, Member-only Inhalten und Live-Events.
       </p>
       {status === 'success' ? (
         <div className="flex items-center gap-3 p-4 rounded-xl border border-[#00C896]/20 bg-[#00C896]/5">
           <CheckCircle2 size={18} strokeWidth={1.5} className="text-[#00C896] shrink-0" />
-          <span className="text-sm text-[#F5F0E8]">Du bist auf der Liste — wir melden uns!</span>
+          <span className="text-sm text-[var(--cs-text)]">Du bist auf der Liste — wir melden uns!</span>
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
           <input type="email" value={email} onChange={e => setEmail(e.target.value)}
             placeholder="deine@email.de"
-            className={`flex-1 px-4 py-3 rounded-xl bg-[#080808] border text-sm text-[#F5F0E8] placeholder-[#5a5550] outline-none transition-colors ${status === 'error' ? 'border-[#FF4444]/50' : 'border-[#ffffff]/10 focus:border-[#C9A84C]/40'
+            className={`flex-1 px-4 py-3 rounded-xl bg-[var(--cs-bg)] border text-sm text-[var(--cs-text)] placeholder-[var(--cs-text-3)] outline-none transition-colors ${status === 'error' ? 'border-[#FF4444]/50' : 'border-[#ffffff]/10 focus:border-[#C9A84C]/40'
               }`} />
           <button type="submit"
             className="relative overflow-hidden group px-6 py-3 rounded-xl border border-[#C9A84C]/35 text-[11px] tracking-[0.14em] uppercase text-[#C9A84C] whitespace-nowrap">
@@ -323,7 +323,7 @@ export default function CommunityPage() {
 
         {/* Sekundär-CTA */}
         <a href="#features"
-          className="text-[11px] tracking-[0.16em] uppercase text-[#5a5550] hover:text-[#F5F0E8] transition-colors duration-300 flex items-center gap-2 group">
+          className="text-[11px] tracking-[0.16em] uppercase text-[var(--cs-text-3)] hover:text-[var(--cs-text)] transition-colors duration-300 flex items-center gap-2 group">
           Was dich erwartet
           <span className="w-4 h-px bg-current transition-all duration-300 group-hover:w-6" />
         </a>
@@ -333,7 +333,7 @@ export default function CommunityPage() {
           <div className="flex flex-wrap items-center gap-4">
             <div className="flex items-center gap-2">
               <div className="w-1.5 h-1.5 rounded-full bg-[#22c55e] animate-pulse" />
-              <span className="font-mono text-[9px] tracking-[0.14em] uppercase text-[#3a3530]">
+              <span className="font-mono text-[9px] tracking-[0.14em] uppercase text-[var(--cs-text-4)]">
                 {memberCount ? `${memberCount} Member` : 'Server aktiv'}
               </span>
             </div>
@@ -343,7 +343,7 @@ export default function CommunityPage() {
               <span className="font-mono text-[9px] tracking-[0.12em] uppercase text-[#C9A84C]/70 group-hover:text-[#C9A84C] transition-colors">FinanceBoard · Gratis</span>
               <ArrowRight size={9} strokeWidth={1.5} className="text-[#C9A84C]/40 group-hover:text-[#C9A84C] transition-colors" />
             </Link>
-            <span className="font-mono text-[9px] text-[#3a3530]">100% offline · kein Abo</span>
+            <span className="font-mono text-[9px] text-[var(--cs-text-4)]">100% offline · kein Abo</span>
           </div>
         </div>
       </PageHero>
@@ -374,8 +374,8 @@ export default function CommunityPage() {
               <motion.div whileHover={{ y: -4 }} transition={{ duration: 0.2 }} className="h-full">
                 <Card variant="elevated" className="h-full">
                   <CardIcon>{f.icon}</CardIcon>
-                  <h3 className="font-display text-lg text-[#F5F0E8] mb-2">{f.title}</h3>
-                  <p className="text-[#9A9590] text-sm leading-relaxed">{f.desc}</p>
+                  <h3 className="font-display text-lg text-[var(--cs-text)] mb-2">{f.title}</h3>
+                  <p className="text-[var(--cs-text-2)] text-sm leading-relaxed">{f.desc}</p>
                 </Card>
               </motion.div>
             </StaggerItem>
@@ -406,7 +406,7 @@ export default function CommunityPage() {
                 <StaggerItem key={i}>
                   <div className="flex items-start gap-3">
                     <span className="text-base shrink-0 mt-0.5">{item.icon}</span>
-                    <span className="text-[#9A9590] text-sm">{item.text}</span>
+                    <span className="text-[var(--cs-text-2)] text-sm">{item.text}</span>
                   </div>
                 </StaggerItem>
               ))}
@@ -463,12 +463,12 @@ export default function CommunityPage() {
               </CtaButton>
             </a>
             <a href="#waitlist"
-              className="flex items-center gap-2 text-[11px] tracking-[0.14em] uppercase text-[#5a5550] hover:text-[#F5F0E8] transition-colors duration-200">
+              className="flex items-center gap-2 text-[11px] tracking-[0.14em] uppercase text-[var(--cs-text-3)] hover:text-[var(--cs-text)] transition-colors duration-200">
               Early Access <ArrowRight size={13} strokeWidth={1.5} />
             </a>
           </div>
           {discordStatus === 'success' && memberCount && (
-            <p className="font-mono text-[11px] text-[#5a5550]">
+            <p className="font-mono text-[11px] text-[var(--cs-text-3)]">
               {memberCount} Member · {onlineCount} gerade online
             </p>
           )}

@@ -41,24 +41,24 @@ export default function Footer() {
                 alt="CandleScope"
                 className="w-9 h-9 object-contain group-hover:scale-105 transition-transform duration-300"
               />
-              <span className="font-display text-lg tracking-[0.14em] text-[#F5F0E8] uppercase">
+              <span className="font-display text-lg tracking-[0.14em] text-[var(--cs-text)] uppercase">
                 Candle<span className="text-[#C9A84C]">Scope</span>
               </span>
             </Link>
-            <p className="text-sm text-[#9A9590] leading-loose max-w-[220px]">
+            <p className="text-sm text-[var(--cs-text-2)] leading-loose max-w-[220px]">
               Trading · WebDev · Finance · Gaming.<br />Alles unter einer Marke.
             </p>
             <div className="flex items-center gap-3">
               <a href="https://github.com/SchubertChris" target="_blank" rel="noopener noreferrer"
-                className="w-9 h-9 flex items-center justify-center rounded-full border border-[#ffffff]/8 text-[#9A9590] hover:text-[#C9A84C] hover:border-[#C9A84C]/30 transition-all duration-300" aria-label="GitHub">
+                className="w-9 h-9 flex items-center justify-center rounded-full border border-[var(--cs-border-w2)] text-[var(--cs-text-2)] hover:text-[#C9A84C] hover:border-[#C9A84C]/30 transition-all duration-300" aria-label="GitHub">
                 <Github size={15} strokeWidth={1.5} />
               </a>
               <a href={SOCIALS.discord} target="_blank" rel="noopener noreferrer"
-                className="w-9 h-9 flex items-center justify-center rounded-full border border-[#ffffff]/8 text-[#9A9590] hover:text-[#C9A84C] hover:border-[#C9A84C]/30 transition-all duration-300" aria-label="Discord">
+                className="w-9 h-9 flex items-center justify-center rounded-full border border-[var(--cs-border-w2)] text-[var(--cs-text-2)] hover:text-[#C9A84C] hover:border-[#C9A84C]/30 transition-all duration-300" aria-label="Discord">
                 <DiscordIcon />
               </a>
               <a href="mailto:info@candlescope.de"
-                className="w-9 h-9 flex items-center justify-center rounded-full border border-[#ffffff]/8 text-[#9A9590] hover:text-[#C9A84C] hover:border-[#C9A84C]/30 transition-all duration-300" aria-label="E-Mail">
+                className="w-9 h-9 flex items-center justify-center rounded-full border border-[var(--cs-border-w2)] text-[var(--cs-text-2)] hover:text-[#C9A84C] hover:border-[#C9A84C]/30 transition-all duration-300" aria-label="E-Mail">
                 <Mail size={15} strokeWidth={1.5} />
               </a>
             </div>
@@ -70,8 +70,8 @@ export default function Footer() {
             <nav className="flex flex-col gap-3">
               {footerNav.map(({ to, label, icon }) => (
                 <Link key={to} to={to}
-                  className="group flex items-center gap-3 text-[#9A9590] hover:text-[#F5F0E8] transition-colors duration-300">
-                  <span className="text-[#5a5550] group-hover:text-[#C9A84C] transition-colors">{icon}</span>
+                  className="group flex items-center gap-3 text-[var(--cs-text-2)] hover:text-[var(--cs-text)] transition-colors duration-300">
+                  <span className="text-[var(--cs-text-3)] group-hover:text-[#C9A84C] transition-colors">{icon}</span>
                   <span className="text-sm">{label}</span>
                 </Link>
               ))}
@@ -83,21 +83,21 @@ export default function Footer() {
             <span className="text-[11px] tracking-[0.16em] uppercase text-[#C9A84C]/70 font-medium">Kontakt</span>
             <div className="flex flex-col gap-3">
               <a href="mailto:info@candlescope.de"
-                className="group flex items-center gap-2 text-sm text-[#9A9590] hover:text-[#F5F0E8] transition-colors duration-300">
-                <Mail size={14} strokeWidth={1.5} className="text-[#5a5550] group-hover:text-[#C9A84C] transition-colors shrink-0" />
+                className="group flex items-center gap-2 text-sm text-[var(--cs-text-2)] hover:text-[var(--cs-text)] transition-colors duration-300">
+                <Mail size={14} strokeWidth={1.5} className="text-[var(--cs-text-3)] group-hover:text-[#C9A84C] transition-colors shrink-0" />
                 info@candlescope.de
               </a>
               <a href="https://github.com/SchubertChris" target="_blank" rel="noopener noreferrer"
-                className="group flex items-center gap-2 text-sm text-[#9A9590] hover:text-[#F5F0E8] transition-colors duration-300">
-                <Github size={14} strokeWidth={1.5} className="text-[#5a5550] group-hover:text-[#C9A84C] transition-colors shrink-0" />
+                className="group flex items-center gap-2 text-sm text-[var(--cs-text-2)] hover:text-[var(--cs-text)] transition-colors duration-300">
+                <Github size={14} strokeWidth={1.5} className="text-[var(--cs-text-3)] group-hover:text-[#C9A84C] transition-colors shrink-0" />
                 github.com/SchubertChris
-                <ExternalLink size={10} strokeWidth={1.5} className="text-[#3a3530] group-hover:text-[#5a5550] transition-colors" />
+                <ExternalLink size={10} strokeWidth={1.5} className="text-[var(--cs-text-4)] group-hover:text-[var(--cs-text-3)] transition-colors" />
               </a>
               <a href={SOCIALS.discord} target="_blank" rel="noopener noreferrer"
-                className="group flex items-center gap-2 text-sm text-[#9A9590] hover:text-[#F5F0E8] transition-colors duration-300">
-                <span className="text-[#5a5550] group-hover:text-[#C9A84C] transition-colors shrink-0"><DiscordIcon /></span>
+                className="group flex items-center gap-2 text-sm text-[var(--cs-text-2)] hover:text-[var(--cs-text)] transition-colors duration-300">
+                <span className="text-[var(--cs-text-3)] group-hover:text-[#C9A84C] transition-colors shrink-0"><DiscordIcon /></span>
                 Discord Community
-                <ExternalLink size={10} strokeWidth={1.5} className="text-[#3a3530] group-hover:text-[#5a5550] transition-colors" />
+                <ExternalLink size={10} strokeWidth={1.5} className="text-[var(--cs-text-4)] group-hover:text-[var(--cs-text-3)] transition-colors" />
               </a>
             </div>
           </div>
@@ -105,7 +105,7 @@ export default function Footer() {
           {/* CTA */}
           <div className="flex flex-col gap-5">
             <span className="text-[11px] tracking-[0.16em] uppercase text-[#C9A84C]/70 font-medium">Zusammenarbeit</span>
-            <p className="text-sm text-[#9A9590] leading-relaxed">
+            <p className="text-sm text-[var(--cs-text-2)] leading-relaxed">
               Projekt · Kooperation · Beratung.<br />Ich antworte innerhalb von 24h.
             </p>
             {/* Kontakt aufnehmen → Kontaktformular */}
@@ -121,17 +121,17 @@ export default function Footer() {
       {/* Bottom Bar */}
       <div className="border-t border-[#C9A84C]/8 px-8 md:px-14 lg:px-20 py-6">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <span className="text-[12px] text-[#9A9590] tracking-[0.08em]">
+          <span className="text-[12px] text-[var(--cs-text-2)] tracking-[0.08em]">
             © {new Date().getFullYear()} CandleScope · Chris Schubert
           </span>
           <div className="flex items-center gap-6">
             {legalLinks.map(({ to, label }) => (
               <Link key={to} to={to}
-                className="text-[12px] text-[#9A9590] hover:text-[#F5F0E8] tracking-[0.08em] transition-colors duration-300">
+                className="text-[12px] text-[var(--cs-text-2)] hover:text-[var(--cs-text)] tracking-[0.08em] transition-colors duration-300">
                 {label}
               </Link>
             ))}
-            <span className="text-[12px] text-[#5a5550] tracking-[0.08em]">Built with React · Vite · TS</span>
+            <span className="text-[12px] text-[var(--cs-text-3)] tracking-[0.08em]">Built with React · Vite · TS</span>
           </div>
         </div>
       </div>

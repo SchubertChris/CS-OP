@@ -39,7 +39,7 @@ function StaggerItem({ children, className = '' }: { children: React.ReactNode; 
 
 function AnimatedCounter({ value, suffix = '' }: { value: number; suffix?: string }) {
   return (
-    <span className="font-bold text-4xl text-[#F5F0E8] tabular-nums">
+    <span className="font-bold text-4xl text-[var(--cs-text)] tabular-nums">
       {value}{suffix}
     </span>
   )
@@ -70,12 +70,12 @@ function ComingSoonModal({ onClose }: { onClose: () => void }) {
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.96, y: 12 }}
         transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
-        className="w-full max-w-sm bg-[#0e0e0e] border border-[#C9A84C]/20 rounded-2xl p-8
+        className="w-full max-w-sm bg-[var(--cs-s2)] border border-[#C9A84C]/20 rounded-2xl p-8
                    flex flex-col items-center text-center gap-5 shadow-2xl"
       >
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-[#5a5550] hover:text-[#F5F0E8] transition-colors cursor-pointer"
+          className="absolute top-4 right-4 text-[var(--cs-text-3)] hover:text-[var(--cs-text)] transition-colors cursor-pointer"
         >
           <X size={16} />
         </button>
@@ -85,10 +85,10 @@ function ComingSoonModal({ onClose }: { onClose: () => void }) {
         </div>
         <div>
           <p className="text-[#C9A84C] text-xs tracking-[0.15em] uppercase mb-2">Bald verfügbar</p>
-          <h3 className="text-[#F5F0E8] font-bold text-xl mb-2">Download startet am</h3>
+          <h3 className="text-[var(--cs-text)] font-bold text-xl mb-2">Download startet am</h3>
           <p className="text-[#C9A84C] text-3xl font-black">8. Juni 2026</p>
         </div>
-        <p className="text-[#9A9590] text-sm leading-relaxed">
+        <p className="text-[var(--cs-text-2)] text-sm leading-relaxed">
           Das FinanceBoard ist fertig — der offizielle Release folgt am 8.6.2026.
           Bis dahin kannst du dich schon mal auf Discord melden.
         </p>
@@ -108,7 +108,7 @@ export default function FinancePage() {
   const [dlOpen, setDlOpen] = useState(false)
 
   return (
-    <div className="min-h-screen bg-[#080808] pt-20">
+    <div className="min-h-screen bg-[var(--cs-bg)] pt-20">
 
       {/* ① HERO — Split Layout */}
       <section className="relative overflow-hidden">
@@ -129,7 +129,7 @@ export default function FinancePage() {
             </StaggerItem>
 
             <StaggerItem>
-              <h1 className="text-5xl md:text-6xl font-black leading-[1.05] text-[#F5F0E8]">
+              <h1 className="text-5xl md:text-6xl font-black leading-[1.05] text-[var(--cs-text)]">
                 Finance<span className="text-[#C9A84C]">Board.</span>
                 <br />Offline.
                 <br />Unter Kontrolle.
@@ -137,7 +137,7 @@ export default function FinancePage() {
             </StaggerItem>
 
             <StaggerItem>
-              <p className="text-[#9A9590] text-base leading-relaxed max-w-sm">
+              <p className="text-[var(--cs-text-2)] text-base leading-relaxed max-w-sm">
                 Kein Cloud-Zwang. Keine Abo-Falle. Deine Finanzen bleiben auf deinem Gerät — für immer.
               </p>
             </StaggerItem>
@@ -147,7 +147,7 @@ export default function FinancePage() {
                 {BENEFITS.map(b => (
                   <li key={b} className="flex items-center gap-3">
                     <Check size={15} strokeWidth={2} className="text-[#C9A84C] shrink-0" />
-                    <span className="text-[#9A9590] text-sm">{b}</span>
+                    <span className="text-[var(--cs-text-2)] text-sm">{b}</span>
                   </li>
                 ))}
               </ul>
@@ -164,8 +164,8 @@ export default function FinancePage() {
                 </button>
                 <button
                   onClick={() => document.getElementById('screenshots')?.scrollIntoView({ behavior: 'smooth' })}
-                  className="border border-[#C9A84C]/25 text-[#9A9590] px-5 py-3.5 rounded-lg
-                             hover:border-[#C9A84C]/40 hover:text-[#F5F0E8] transition-all duration-200 text-sm"
+                  className="border border-[#C9A84C]/25 text-[var(--cs-text-2)] px-5 py-3.5 rounded-lg
+                             hover:border-[#C9A84C]/40 hover:text-[var(--cs-text)] transition-all duration-200 text-sm"
                 >
                   Demo ansehen →
                 </button>
@@ -183,11 +183,11 @@ export default function FinancePage() {
             <div className="absolute -inset-4 rounded-2xl bg-[#C9A84C]/3 blur-3xl pointer-events-none" />
             <div className="relative rounded-xl overflow-hidden border border-[#C9A84C]/15
                             shadow-[0_0_60px_rgba(201,168,76,0.08)]">
-              <div className="bg-[#161616] px-4 py-2.5 flex items-center gap-2 border-b border-[#C9A84C]/8">
+              <div className="bg-[var(--cs-s4)] px-4 py-2.5 flex items-center gap-2 border-b border-[#C9A84C]/8">
                 <div className="w-3 h-3 rounded-full bg-[#ef4444]/70" />
                 <div className="w-3 h-3 rounded-full bg-[#eab308]/70" />
                 <div className="w-3 h-3 rounded-full bg-[#22c55e]/70" />
-                <span className="text-[#5a5550] text-[10px] ml-2 font-mono">Candlescope FinanceBoard v10.6</span>
+                <span className="text-[var(--cs-text-3)] text-[10px] ml-2 font-mono">Candlescope FinanceBoard v10.6</span>
               </div>
               <img
                 src={imgDashboard}
@@ -219,7 +219,7 @@ export default function FinancePage() {
           {STATS.map(({ value, suffix, label }) => (
             <div key={label} className="flex flex-col items-center gap-2">
               <AnimatedCounter value={value} suffix={suffix} />
-              <p className="text-[#9A9590] text-xs tracking-[0.1em] uppercase">{label}</p>
+              <p className="text-[var(--cs-text-2)] text-xs tracking-[0.1em] uppercase">{label}</p>
             </div>
           ))}
         </div>
@@ -245,10 +245,10 @@ export default function FinancePage() {
           viewport={{ once: true }}
           transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-[#F5F0E8] mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-[var(--cs-text)] mb-4">
             Deine Finanzen. Dein Gerät.
           </h2>
-          <p className="text-[#9A9590] mb-8 text-sm">
+          <p className="text-[var(--cs-text-2)] mb-8 text-sm">
             Kostenlos starten — kein Konto, kein Abo, keine Cloud.
           </p>
           <button

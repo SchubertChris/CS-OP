@@ -34,8 +34,8 @@ export default function UspStrip() {
               {icon}
             </div>
             <div>
-              <p className="text-[#F5F0E8] font-semibold text-sm">{title}</p>
-              <p className="text-[#9A9590] text-xs mt-0.5 leading-relaxed">{sub}</p>
+              <p className="text-[var(--cs-text)] font-semibold text-sm">{title}</p>
+              <p className="text-[var(--cs-text-2)] text-xs mt-0.5 leading-relaxed">{sub}</p>
             </div>
           </div>
         ))}

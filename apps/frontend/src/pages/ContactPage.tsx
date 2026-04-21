@@ -106,7 +106,7 @@ export default function ContactPage() {
 
         {/* Sekundär-CTA */}
         <a href="#form"
-          className="text-[11px] tracking-[0.16em] uppercase text-[#5a5550] hover:text-[#F5F0E8] transition-colors duration-300 flex items-center gap-2 group">
+          className="text-[11px] tracking-[0.16em] uppercase text-[var(--cs-text-3)] hover:text-[var(--cs-text)] transition-colors duration-300 flex items-center gap-2 group">
           Formular nutzen
           <span className="w-4 h-px bg-current transition-all duration-300 group-hover:w-6" />
         </a>
@@ -121,12 +121,12 @@ export default function ContactPage() {
             ].map(({ val, label }) => (
               <div key={label} className="flex flex-col gap-0.5">
                 <span className="font-mono text-[13px] text-[#C9A84C] leading-none">{val}</span>
-                <span className="font-mono text-[8px] tracking-[0.18em] uppercase text-[#3a3530]">{label}</span>
+                <span className="font-mono text-[8px] tracking-[0.18em] uppercase text-[var(--cs-text-4)]">{label}</span>
               </div>
             ))}
             <div className="ml-auto flex items-center gap-2">
               <div className="w-1.5 h-1.5 rounded-full bg-[#22c55e] animate-pulse" />
-              <span className="font-mono text-[9px] tracking-[0.12em] uppercase text-[#3a3530]">info@candlescope.de</span>
+              <span className="font-mono text-[9px] tracking-[0.12em] uppercase text-[var(--cs-text-4)]">info@candlescope.de</span>
             </div>
           </div>
         </div>
@@ -139,9 +139,9 @@ export default function ContactPage() {
             <SectionHeader eyebrow="Wofür" title={<>Ich helfe dir <GradientText>dabei</GradientText></>} className="mb-8" />
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
               {TOPICS.map(t => (
-                <div key={t.value} className="flex items-center gap-2.5 px-4 py-3 border border-[#ffffff]/6 rounded-xl bg-[#0d0d0d]">
+                <div key={t.value} className="flex items-center gap-2.5 px-4 py-3 border border-[#ffffff]/6 rounded-xl bg-[var(--cs-s1)]">
                   <span className="text-[#C9A84C]/60 shrink-0">{t.icon}</span>
-                  <span className="text-[13px] text-[#9A9590]">{t.label}</span>
+                  <span className="text-[13px] text-[var(--cs-text-2)]">{t.label}</span>
                 </div>
               ))}
             </div>
@@ -149,19 +149,19 @@ export default function ContactPage() {
           <div>
             <SectionHeader eyebrow="Verfügbarkeit" title={<><GradientText>Wann</GradientText> & Wie</>} className="mb-8" />
             <div className="flex flex-col gap-4">
-              <div className="flex items-start gap-4 p-4 border border-[#ffffff]/6 rounded-xl bg-[#0d0d0d]">
+              <div className="flex items-start gap-4 p-4 border border-[#ffffff]/6 rounded-xl bg-[var(--cs-s1)]">
                 <div className="w-10 h-10 rounded-lg bg-[#C9A84C]/8 border border-[#C9A84C]/20 flex items-center justify-center text-[#C9A84C] shrink-0">
                   <Clock size={17} strokeWidth={1.5} />
                 </div>
                 <div>
-                  <p className="text-[14px] text-[#F5F0E8] mb-1">Antwortzeit: 24 Stunden</p>
-                  <p className="text-[12px] text-[#9A9590]">Werktags · Deutsch oder Englisch</p>
+                  <p className="text-[14px] text-[var(--cs-text)] mb-1">Antwortzeit: 24 Stunden</p>
+                  <p className="text-[12px] text-[var(--cs-text-2)]">Werktags · Deutsch oder Englisch</p>
                 </div>
               </div>
               <HighlightLine>Kein automatisches System — ich antworte persönlich auf jede Anfrage.</HighlightLine>
               <div className="flex items-center gap-2 mt-1">
                 <div className="w-2 h-2 rounded-full bg-[#00C896] animate-pulse" />
-                <span className="font-mono text-[12px] text-[#9A9590]">Aktuell verfügbar für neue Projekte</span>
+                <span className="font-mono text-[12px] text-[var(--cs-text-2)]">Aktuell verfügbar für neue Projekte</span>
               </div>
             </div>
           </div>
@@ -180,10 +180,10 @@ export default function ContactPage() {
               <div className="flex flex-col items-start gap-4 p-8 border border-[#00C896]/25 rounded-2xl bg-[#00C896]/5">
                 <CheckCircle2 size={32} strokeWidth={1.5} className="text-[#00C896]" />
                 <div>
-                  <p className="font-display text-xl text-[#F5F0E8] mb-1">Nachricht gesendet!</p>
-                  <p className="text-[#9A9590] text-sm">Ich melde mich innerhalb von 24 Stunden bei dir.</p>
+                  <p className="font-display text-xl text-[var(--cs-text)] mb-1">Nachricht gesendet!</p>
+                  <p className="text-[var(--cs-text-2)] text-sm">Ich melde mich innerhalb von 24 Stunden bei dir.</p>
                 </div>
-                <button onClick={() => setStatus('idle')} className="font-mono text-[11px] tracking-[0.1em] uppercase text-[#9A9590] hover:text-[#F5F0E8] transition-colors">
+                <button onClick={() => setStatus('idle')} className="font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--cs-text-2)] hover:text-[var(--cs-text)] transition-colors">
                   Neue Nachricht schreiben
                 </button>
               </div>
@@ -191,26 +191,26 @@ export default function ContactPage() {
               <form onSubmit={handleSubmit} className="flex flex-col gap-5" noValidate>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="font-mono text-[11px] tracking-[0.12em] text-[#9A9590] uppercase block mb-2">Name *</label>
+                    <label className="font-mono text-[11px] tracking-[0.12em] text-[var(--cs-text-2)] uppercase block mb-2">Name *</label>
                     <input type="text" value={form.name} onChange={e => update('name', e.target.value)} placeholder="Chris Mustermann"
-                      className={`w-full bg-[#0d0d0d] border rounded-xl px-4 py-3.5 text-[14px] text-[#F5F0E8] placeholder:text-[#3a3530] focus:outline-none transition-colors ${errors.name ? 'border-[#FF4444]/50' : 'border-[#ffffff]/8 focus:border-[#C9A84C]/40'}`} />
+                      className={`w-full bg-[var(--cs-s1)] border rounded-xl px-4 py-3.5 text-[14px] text-[var(--cs-text)] placeholder:text-[var(--cs-text-4)] focus:outline-none transition-colors ${errors.name ? 'border-[#FF4444]/50' : 'border-[#ffffff]/8 focus:border-[#C9A84C]/40'}`} />
                     {errors.name && <p className="font-mono text-[11px] text-[#FF4444] mt-1.5">{errors.name}</p>}
                   </div>
                   <div>
-                    <label className="font-mono text-[11px] tracking-[0.12em] text-[#9A9590] uppercase block mb-2">E-Mail *</label>
+                    <label className="font-mono text-[11px] tracking-[0.12em] text-[var(--cs-text-2)] uppercase block mb-2">E-Mail *</label>
                     <input type="email" value={form.email} onChange={e => update('email', e.target.value)} placeholder="deine@email.de"
-                      className={`w-full bg-[#0d0d0d] border rounded-xl px-4 py-3.5 text-[14px] text-[#F5F0E8] placeholder:text-[#3a3530] focus:outline-none transition-colors ${errors.email ? 'border-[#FF4444]/50' : 'border-[#ffffff]/8 focus:border-[#C9A84C]/40'}`} />
+                      className={`w-full bg-[var(--cs-s1)] border rounded-xl px-4 py-3.5 text-[14px] text-[var(--cs-text)] placeholder:text-[var(--cs-text-4)] focus:outline-none transition-colors ${errors.email ? 'border-[#FF4444]/50' : 'border-[#ffffff]/8 focus:border-[#C9A84C]/40'}`} />
                     {errors.email && <p className="font-mono text-[11px] text-[#FF4444] mt-1.5">{errors.email}</p>}
                   </div>
                 </div>
 
                 <div>
-                  <label className="font-mono text-[11px] tracking-[0.12em] text-[#9A9590] uppercase block mb-2">Thema *</label>
+                  <label className="font-mono text-[11px] tracking-[0.12em] text-[var(--cs-text-2)] uppercase block mb-2">Thema *</label>
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                     {TOPICS.map(t => (
                       <button key={t.value} type="button" onClick={() => update('topic', t.label)}
-                        className={`flex items-center gap-2 px-3.5 py-2.5 rounded-xl border text-[13px] transition-all duration-150 ${form.topic === t.label ? 'border-[#C9A84C]/50 bg-[#C9A84C]/10 text-[#C9A84C]' : 'border-[#ffffff]/6 bg-[#0d0d0d] text-[#9A9590] hover:border-[#C9A84C]/20 hover:text-[#F5F0E8]'}`}>
-                        <span className={form.topic === t.label ? 'text-[#C9A84C]' : 'text-[#5a5550]'}>{t.icon}</span>
+                        className={`flex items-center gap-2 px-3.5 py-2.5 rounded-xl border text-[13px] transition-all duration-150 ${form.topic === t.label ? 'border-[#C9A84C]/50 bg-[#C9A84C]/10 text-[#C9A84C]' : 'border-[#ffffff]/6 bg-[var(--cs-s1)] text-[var(--cs-text-2)] hover:border-[#C9A84C]/20 hover:text-[var(--cs-text)]'}`}>
+                        <span className={form.topic === t.label ? 'text-[#C9A84C]' : 'text-[var(--cs-text-3)]'}>{t.icon}</span>
                         {t.label}
                       </button>
                     ))}
@@ -219,13 +219,13 @@ export default function ContactPage() {
                 </div>
 
                 <div>
-                  <label className="font-mono text-[11px] tracking-[0.12em] text-[#9A9590] uppercase block mb-2">Nachricht *</label>
+                  <label className="font-mono text-[11px] tracking-[0.12em] text-[var(--cs-text-2)] uppercase block mb-2">Nachricht *</label>
                   <textarea value={form.message} onChange={e => update('message', e.target.value)}
                     placeholder="Beschreib dein Projekt, deine Frage oder was du im Kopf hast..." rows={5}
-                    className={`w-full bg-[#0d0d0d] border rounded-xl px-4 py-3.5 text-[14px] text-[#F5F0E8] placeholder:text-[#3a3530] focus:outline-none transition-colors resize-none ${errors.message ? 'border-[#FF4444]/50' : 'border-[#ffffff]/8 focus:border-[#C9A84C]/40'}`} />
+                    className={`w-full bg-[var(--cs-s1)] border rounded-xl px-4 py-3.5 text-[14px] text-[var(--cs-text)] placeholder:text-[var(--cs-text-4)] focus:outline-none transition-colors resize-none ${errors.message ? 'border-[#FF4444]/50' : 'border-[#ffffff]/8 focus:border-[#C9A84C]/40'}`} />
                   <div className="flex items-center justify-between mt-1">
                     {errors.message ? <p className="font-mono text-[11px] text-[#FF4444]">{errors.message}</p> : <span />}
-                    <span className="font-mono text-[11px] text-[#3a3530]">{form.message.length} Zeichen</span>
+                    <span className="font-mono text-[11px] text-[var(--cs-text-4)]">{form.message.length} Zeichen</span>
                   </div>
                 </div>
 
@@ -251,35 +251,35 @@ export default function ContactPage() {
           {/* Rechte Spalte */}
           <div className="flex flex-col gap-6">
             <div>
-              <p className="font-mono text-[11px] tracking-[0.18em] text-[#9A9590] uppercase mb-4">── Direkt erreichen</p>
+              <p className="font-mono text-[11px] tracking-[0.18em] text-[var(--cs-text-2)] uppercase mb-4">── Direkt erreichen</p>
               <div className="flex flex-col gap-3">
                 {CONTACTS.map((c, i) => (
                   <a key={i} href={c.href} {...('external' in c && c.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                    className="group flex items-center gap-4 p-4 border border-[#ffffff]/6 rounded-xl bg-[#0d0d0d] hover:border-[#C9A84C]/25 hover:bg-[#C9A84C]/3 transition-all duration-200">
-                    <div className="w-10 h-10 rounded-lg bg-[#1a1a1a] border border-[#ffffff]/6 flex items-center justify-center text-[#9A9590] group-hover:text-[#C9A84C] group-hover:border-[#C9A84C]/20 transition-all shrink-0">
+                    className="group flex items-center gap-4 p-4 border border-[#ffffff]/6 rounded-xl bg-[var(--cs-s1)] hover:border-[#C9A84C]/25 hover:bg-[#C9A84C]/3 transition-all duration-200">
+                    <div className="w-10 h-10 rounded-lg bg-[var(--cs-s5)] border border-[#ffffff]/6 flex items-center justify-center text-[var(--cs-text-2)] group-hover:text-[#C9A84C] group-hover:border-[#C9A84C]/20 transition-all shrink-0">
                       {c.icon}
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="text-[13px] font-medium text-[#F5F0E8] group-hover:text-[#C9A84C] transition-colors">{c.title}</p>
-                      <p className="font-mono text-[11px] text-[#9A9590] truncate">{c.desc}</p>
+                      <p className="text-[13px] font-medium text-[var(--cs-text)] group-hover:text-[#C9A84C] transition-colors">{c.title}</p>
+                      <p className="font-mono text-[11px] text-[var(--cs-text-2)] truncate">{c.desc}</p>
                     </div>
-                    {'external' in c && c.external && <ExternalLink size={13} strokeWidth={1.5} className="text-[#3a3530] group-hover:text-[#C9A84C]/50 transition-colors shrink-0 ml-auto" />}
+                    {'external' in c && c.external && <ExternalLink size={13} strokeWidth={1.5} className="text-[var(--cs-text-4)] group-hover:text-[#C9A84C]/50 transition-colors shrink-0 ml-auto" />}
                   </a>
                 ))}
               </div>
             </div>
 
-            <div className="p-5 border border-[#C9A84C]/15 rounded-2xl bg-[#0d0d0d]">
+            <div className="p-5 border border-[#C9A84C]/15 rounded-2xl bg-[var(--cs-s1)]">
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-9 h-9 rounded-lg bg-[#C9A84C]/8 border border-[#C9A84C]/20 flex items-center justify-center text-[#C9A84C]">
                   <Calendar size={16} strokeWidth={1.5} />
                 </div>
                 <div>
-                  <p className="text-[14px] font-medium text-[#F5F0E8]">Termin buchen</p>
-                  <p className="font-mono text-[11px] text-[#9A9590]">15 oder 30 Minuten</p>
+                  <p className="text-[14px] font-medium text-[var(--cs-text)]">Termin buchen</p>
+                  <p className="font-mono text-[11px] text-[var(--cs-text-2)]">15 oder 30 Minuten</p>
                 </div>
               </div>
-              <p className="text-[13px] text-[#9A9590] leading-relaxed mb-4">Lieber direkt sprechen? Buch dir einen kostenlosen Slot.</p>
+              <p className="text-[13px] text-[var(--cs-text-2)] leading-relaxed mb-4">Lieber direkt sprechen? Buch dir einen kostenlosen Slot.</p>
               <a href="https://calendly.com/" target="_blank" rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2 w-full py-2.5 border border-[#C9A84C]/25 rounded-xl font-mono text-[12px] tracking-[0.1em] uppercase text-[#C9A84C]/70 hover:text-[#C9A84C] hover:border-[#C9A84C]/45 hover:bg-[#C9A84C]/5 transition-all">
                 <Calendar size={13} strokeWidth={1.5} />

@@ -59,7 +59,7 @@ function BlockRenderer({ block }: { block: { id: string; type: string; props: un
                   </a>
                 ) : (
                   <a key={i} href={cta.href}
-                    className="text-[11px] tracking-[0.16em] uppercase text-[#5a5550] hover:text-[#F5F0E8] transition-colors duration-300 flex items-center gap-2 group">
+                    className="text-[11px] tracking-[0.16em] uppercase text-[var(--cs-text-3)] hover:text-[var(--cs-text)] transition-colors duration-300 flex items-center gap-2 group">
                     {cta.label}
                     <span className="w-4 h-px bg-current transition-all duration-300 group-hover:w-6" />
                   </a>
@@ -78,7 +78,7 @@ function BlockRenderer({ block }: { block: { id: string; type: string; props: un
       return (
         <section className={`px-8 md:px-16 lg:px-24 py-16 ${align}`}>
           <div className={`${maxW} ${p.alignment === 'center' ? 'mx-auto' : ''}`}>
-            <p className="text-[#9A9590] text-base leading-relaxed whitespace-pre-wrap">{p.content}</p>
+            <p className="text-[var(--cs-text-2)] text-base leading-relaxed whitespace-pre-wrap">{p.content}</p>
           </div>
         </section>
       )
@@ -92,7 +92,7 @@ function BlockRenderer({ block }: { block: { id: string; type: string; props: un
             {p.items.map(item => (
               <div key={item.id} className="flex flex-col gap-2">
                 <span className="font-display text-5xl text-[#C9A84C]">{item.value}</span>
-                <span className="text-[11px] tracking-[0.12em] uppercase text-[#5a5550]">{item.label}</span>
+                <span className="text-[11px] tracking-[0.12em] uppercase text-[var(--cs-text-3)]">{item.label}</span>
               </div>
             ))}
           </div>
@@ -106,8 +106,8 @@ function BlockRenderer({ block }: { block: { id: string; type: string; props: un
         <section className="px-8 md:px-16 lg:px-24 py-20">
           <div className="border border-[#C9A84C]/20 rounded-2xl p-10 md:p-16 flex flex-col md:flex-row items-center justify-between gap-8">
             <div>
-              <h2 className="font-display text-3xl text-[#F5F0E8] mb-2">{p.title}</h2>
-              {p.description && <p className="text-[#5a5550] text-sm">{p.description}</p>}
+              <h2 className="font-display text-3xl text-[var(--cs-text)] mb-2">{p.title}</h2>
+              {p.description && <p className="text-[var(--cs-text-3)] text-sm">{p.description}</p>}
             </div>
             <a href={p.buttonHref}
               className="relative overflow-hidden group text-[11px] tracking-[0.16em] uppercase border border-[#C9A84C]/35 text-[#C9A84C] px-8 py-4 rounded-full shrink-0">
@@ -139,7 +139,7 @@ function BlockRenderer({ block }: { block: { id: string; type: string; props: un
           <figure>
             <img src={p.src} alt={p.alt} className={`w-full object-cover ${p.rounded ? 'rounded-2xl' : ''}`} />
             {p.caption && (
-              <figcaption className="text-[11px] text-[#5a5550] mt-3 text-center tracking-[0.06em]">{p.caption}</figcaption>
+              <figcaption className="text-[11px] text-[var(--cs-text-3)] mt-3 text-center tracking-[0.06em]">{p.caption}</figcaption>
             )}
           </figure>
         </section>
@@ -150,14 +150,14 @@ function BlockRenderer({ block }: { block: { id: string; type: string; props: un
       const p = block.props as { title?: string; items: Array<{ id: string; text: string; subtext?: string }> }
       return (
         <section className="px-8 md:px-16 lg:px-24 py-12 max-w-3xl">
-          {p.title && <h2 className="font-display text-2xl text-[#F5F0E8] mb-6">{p.title}</h2>}
+          {p.title && <h2 className="font-display text-2xl text-[var(--cs-text)] mb-6">{p.title}</h2>}
           <ul className="flex flex-col gap-3">
             {p.items.map(item => (
               <li key={item.id} className="flex items-start gap-3">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#C9A84C] mt-2 shrink-0" />
                 <div>
-                  <p className="text-[#9A9590] text-sm">{item.text}</p>
-                  {item.subtext && <p className="text-[#5a5550] text-xs mt-0.5">{item.subtext}</p>}
+                  <p className="text-[var(--cs-text-2)] text-sm">{item.text}</p>
+                  {item.subtext && <p className="text-[var(--cs-text-3)] text-xs mt-0.5">{item.subtext}</p>}
                 </div>
               </li>
             ))}
@@ -170,7 +170,7 @@ function BlockRenderer({ block }: { block: { id: string; type: string; props: un
       const p = block.props as { title?: string; items: Array<{ id: string; date: string; title: string; description: string; status?: string }> }
       return (
         <section className="px-8 md:px-16 lg:px-24 py-16 max-w-3xl">
-          {p.title && <h2 className="font-display text-2xl text-[#F5F0E8] mb-10">{p.title}</h2>}
+          {p.title && <h2 className="font-display text-2xl text-[var(--cs-text)] mb-10">{p.title}</h2>}
           <div className="flex flex-col gap-8">
             {p.items.map(item => (
               <div key={item.id} className="flex gap-6">
@@ -179,9 +179,9 @@ function BlockRenderer({ block }: { block: { id: string; type: string; props: un
                   <div className="w-px flex-1 bg-[#C9A84C]/10 mt-2" />
                 </div>
                 <div className="pb-8">
-                  <p className="font-mono text-[10px] text-[#5a5550] tracking-[0.1em] mb-1">{item.date}</p>
-                  <h3 className="font-display text-lg text-[#F5F0E8] mb-1">{item.title}</h3>
-                  <p className="text-[#5a5550] text-sm leading-relaxed">{item.description}</p>
+                  <p className="font-mono text-[10px] text-[var(--cs-text-3)] tracking-[0.1em] mb-1">{item.date}</p>
+                  <h3 className="font-display text-lg text-[var(--cs-text)] mb-1">{item.title}</h3>
+                  <p className="text-[var(--cs-text-3)] text-sm leading-relaxed">{item.description}</p>
                 </div>
               </div>
             ))}
@@ -197,14 +197,14 @@ function BlockRenderer({ block }: { block: { id: string; type: string; props: un
         <section className="px-8 md:px-16 lg:px-24 py-16">
           <div className={`grid grid-cols-1 ${cols} gap-5`}>
             {p.cards.map(card => (
-              <div key={card.id} className="border border-[#C9A84C]/10 rounded-2xl p-6 bg-[#0d0d0d]">
+              <div key={card.id} className="border border-[#C9A84C]/10 rounded-2xl p-6 bg-[var(--cs-s1)]">
                 {card.badge && (
                   <span className="font-mono text-[9px] tracking-[0.14em] text-[#C9A84C]/60 border border-[#C9A84C]/20 px-2 py-0.5 rounded-full mb-3 inline-block">
                     {card.badge}
                   </span>
                 )}
-                <h3 className="font-display text-lg text-[#F5F0E8] mb-2">{card.title}</h3>
-                <p className="text-[#5a5550] text-sm leading-relaxed">{card.description}</p>
+                <h3 className="font-display text-lg text-[var(--cs-text)] mb-2">{card.title}</h3>
+                <p className="text-[var(--cs-text-3)] text-sm leading-relaxed">{card.description}</p>
               </div>
             ))}
           </div>

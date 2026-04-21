@@ -33,23 +33,23 @@ export default function FaqAccordion() {
     <section className="py-20 px-8 max-w-2xl mx-auto">
       <div className="text-center mb-12">
         <p className="text-[#C9A84C] text-xs tracking-[0.2em] uppercase mb-3">FAQ</p>
-        <h2 className="text-3xl font-bold text-[#F5F0E8]">Häufige Fragen</h2>
+        <h2 className="text-3xl font-bold text-[var(--cs-text)]">Häufige Fragen</h2>
       </div>
       <div className="flex flex-col gap-2">
         {FAQ.map(({ q, a }, i) => (
           <div
             key={i}
-            className="bg-[#111111] border border-[#C9A84C]/8 rounded-xl overflow-hidden
+            className="bg-[var(--cs-s3)] border border-[#C9A84C]/8 rounded-xl overflow-hidden
                        hover:border-[#C9A84C]/15 transition-colors duration-200"
           >
             <button
               onClick={() => setOpen(open === i ? null : i)}
               className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left cursor-pointer"
             >
-              <span className="text-[#F5F0E8] text-sm font-medium">{q}</span>
+              <span className="text-[var(--cs-text)] text-sm font-medium">{q}</span>
               {open === i
                 ? <Minus size={16} strokeWidth={1.5} className="text-[#C9A84C] shrink-0" />
-                : <Plus  size={16} strokeWidth={1.5} className="text-[#9A9590] shrink-0" />
+                : <Plus  size={16} strokeWidth={1.5} className="text-[var(--cs-text-2)] shrink-0" />
               }
             </button>
             <AnimatePresence>
@@ -61,7 +61,7 @@ export default function FaqAccordion() {
                   transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
                   className="overflow-hidden"
                 >
-                  <p className="px-6 pb-5 text-[#9A9590] text-sm leading-relaxed">{a}</p>
+                  <p className="px-6 pb-5 text-[var(--cs-text-2)] text-sm leading-relaxed">{a}</p>
                 </motion.div>
               )}
             </AnimatePresence>

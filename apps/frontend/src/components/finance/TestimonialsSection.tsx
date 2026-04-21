@@ -31,8 +31,8 @@ function ReviewModal({ onClose }: { onClose: () => void }) {
     }
   }
 
-  const inputCls = `w-full bg-[#0a0a0a] border border-[#C9A84C]/15 rounded-lg px-4 py-2.5
-                    text-[#F5F0E8] text-sm placeholder:text-[#5a5550]
+  const inputCls = `w-full bg-[var(--cs-input)] border border-[#C9A84C]/15 rounded-lg px-4 py-2.5
+                    text-[var(--cs-text)] text-sm placeholder:text-[var(--cs-text-3)]
                     focus:outline-none focus:border-[#C9A84C]/40 transition-colors duration-200`
 
   return (
@@ -46,17 +46,17 @@ function ReviewModal({ onClose }: { onClose: () => void }) {
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.96, y: 12 }}
         transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
-        className="w-full max-w-md bg-[#0e0e0e] border border-[#C9A84C]/15 rounded-2xl p-6 shadow-2xl"
+        className="w-full max-w-md bg-[var(--cs-s2)] border border-[#C9A84C]/15 rounded-2xl p-6 shadow-2xl"
       >
         {/* Header */}
         <div className="flex items-center justify-between mb-5">
           <div>
             <p className="text-[#C9A84C] text-[10px] tracking-[0.18em] uppercase mb-0.5">FinanceBoard</p>
-            <h3 className="text-[#F5F0E8] font-bold text-lg">Bewertung einreichen</h3>
+            <h3 className="text-[var(--cs-text)] font-bold text-lg">Bewertung einreichen</h3>
           </div>
           <button
             onClick={onClose}
-            className="text-[#5a5550] hover:text-[#F5F0E8] transition-colors duration-150 cursor-pointer"
+            className="text-[var(--cs-text-3)] hover:text-[var(--cs-text)] transition-colors duration-150 cursor-pointer"
           >
             <X size={18} />
           </button>
@@ -65,8 +65,8 @@ function ReviewModal({ onClose }: { onClose: () => void }) {
         {status === 'success' ? (
           <div className="flex flex-col items-center gap-3 py-8 text-center">
             <CheckCircle2 size={36} className="text-[#C9A84C]" />
-            <p className="text-[#F5F0E8] font-medium">Danke für dein Feedback!</p>
-            <p className="text-[#9A9590] text-sm">Ich meld mich wenn's passt.</p>
+            <p className="text-[var(--cs-text)] font-medium">Danke für dein Feedback!</p>
+            <p className="text-[var(--cs-text-2)] text-sm">Ich meld mich wenn's passt.</p>
             <button
               onClick={onClose}
               className="mt-2 text-[#C9A84C] text-sm border border-[#C9A84C]/25 px-5 py-2 rounded-lg
@@ -79,7 +79,7 @@ function ReviewModal({ onClose }: { onClose: () => void }) {
           <form onSubmit={handleSubmit} className="flex flex-col gap-3">
             <div className="grid grid-cols-2 gap-3">
               <div className="flex flex-col gap-1.5">
-                <label className="text-[#9A9590] text-xs">Name</label>
+                <label className="text-[var(--cs-text-2)] text-xs">Name</label>
                 <input
                   className={inputCls}
                   placeholder="Dein Name"
@@ -89,7 +89,7 @@ function ReviewModal({ onClose }: { onClose: () => void }) {
                 />
               </div>
               <div className="flex flex-col gap-1.5">
-                <label className="text-[#9A9590] text-xs">E-Mail</label>
+                <label className="text-[var(--cs-text-2)] text-xs">E-Mail</label>
                 <input
                   type="email"
                   className={inputCls}
@@ -102,7 +102,7 @@ function ReviewModal({ onClose }: { onClose: () => void }) {
             </div>
 
             <div className="flex flex-col gap-1.5">
-              <label className="text-[#9A9590] text-xs">Betreff</label>
+              <label className="text-[var(--cs-text-2)] text-xs">Betreff</label>
               <input
                 className={inputCls}
                 value={subject}
@@ -112,7 +112,7 @@ function ReviewModal({ onClose }: { onClose: () => void }) {
             </div>
 
             <div className="flex flex-col gap-1.5">
-              <label className="text-[#9A9590] text-xs">Deine Bewertung</label>
+              <label className="text-[var(--cs-text-2)] text-xs">Deine Bewertung</label>
               <textarea
                 className={`${inputCls} resize-none`}
                 rows={4}
@@ -225,7 +225,7 @@ export default function TestimonialsSection() {
         {/* Header */}
         <div className="text-center mb-12">
           <p className="text-[#C9A84C] text-xs tracking-[0.2em] uppercase mb-3">Nutzerstimmen</p>
-          <h2 className="text-3xl font-bold text-[#F5F0E8]">Was andere sagen</h2>
+          <h2 className="text-3xl font-bold text-[var(--cs-text)]">Was andere sagen</h2>
         </div>
 
         {/* Cards */}
@@ -237,18 +237,18 @@ export default function TestimonialsSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: i * 0.1, ease: [0.4, 0, 0.2, 1] }}
-              className="bg-[#0e0e0e] border border-[#C9A84C]/10 rounded-2xl p-6 flex flex-col gap-4
+              className="bg-[var(--cs-s2)] border border-[#C9A84C]/10 rounded-2xl p-6 flex flex-col gap-4
                          hover:border-[#C9A84C]/20 transition-colors duration-300"
             >
               <StarRating count={r.stars} />
-              <p className="text-[#9A9590] text-sm leading-relaxed flex-1">
+              <p className="text-[var(--cs-text-2)] text-sm leading-relaxed flex-1">
                 „{r.text}"
               </p>
               <div className="flex items-center gap-3 pt-2 border-t border-[#C9A84C]/8">
                 <Avatar initials={r.initials} />
                 <div>
-                  <p className="text-[#F5F0E8] text-sm font-medium">{r.name}</p>
-                  <p className="text-[#5a5550] text-xs">{r.role}</p>
+                  <p className="text-[var(--cs-text)] text-sm font-medium">{r.name}</p>
+                  <p className="text-[var(--cs-text-3)] text-xs">{r.role}</p>
                 </div>
               </div>
             </motion.div>
@@ -257,13 +257,13 @@ export default function TestimonialsSection() {
 
         {/* CTA — eigene Bewertung */}
         <div className="text-center">
-          <p className="text-[#5a5550] text-sm mb-4">
+          <p className="text-[var(--cs-text-3)] text-sm mb-4">
             Du nutzt FinanceBoard? Ich freue mich über dein Feedback.
           </p>
           <button
             onClick={() => setModalOpen(true)}
-            className="inline-flex items-center gap-2 border border-[#C9A84C]/20 text-[#9A9590]
-                       text-sm px-5 py-2.5 rounded-lg hover:border-[#C9A84C]/35 hover:text-[#F5F0E8]
+            className="inline-flex items-center gap-2 border border-[#C9A84C]/20 text-[var(--cs-text-2)]
+                       text-sm px-5 py-2.5 rounded-lg hover:border-[#C9A84C]/35 hover:text-[var(--cs-text)]
                        transition-all duration-200 cursor-pointer"
           >
             ✉ Bewertung einreichen

@@ -26,10 +26,10 @@ const DynamicPage = lazy(() => import('./pages/DynamicPage'))
 /* ── Loading Fallback ──────────────────────────────── */
 function PageLoader() {
   return (
-    <div className="min-h-screen bg-[#080808] flex items-center justify-center">
+    <div className="min-h-screen bg-[var(--cs-bg)] flex items-center justify-center">
       <div className="flex flex-col items-center gap-4">
         <div className="w-8 h-8 rounded-full border-2 border-[#C9A84C]/20 border-t-[#C9A84C] animate-spin" />
-        <span className="font-mono text-[10px] tracking-[0.16em] uppercase text-[#5a5550]">Laden...</span>
+        <span className="font-mono text-[10px] tracking-[0.16em] uppercase text-[var(--cs-text-3)]">Laden...</span>
       </div>
     </div>
   )

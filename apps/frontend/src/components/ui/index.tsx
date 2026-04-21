@@ -24,7 +24,7 @@ interface GradientTextProps {
 export function GradientText({ children, className = '', variant = 'gold' }: GradientTextProps) {
   const gradient = variant === 'gold'
     ? 'from-[#C9A84C] via-[#E8C56D] to-[#C9A84C]'
-    : 'from-[#9A9590] via-[#C9A84C] to-[#9A9590]'
+    : 'from-[var(--cs-text-2)] via-[#C9A84C] to-[var(--cs-text-2)]'
 
   return (
     <span className={`bg-gradient-to-r ${gradient} bg-clip-text text-transparent ${className}`}>
@@ -48,7 +48,7 @@ export function Badge({ children, variant = 'gold', className = '' }: BadgeProps
     gold:  'border-[#C9A84C]/30 bg-[#C9A84C]/8  text-[#C9A84C]',
     green: 'border-[#00C896]/30 bg-[#00C896]/8  text-[#00C896]',
     red:   'border-[#FF4444]/30 bg-[#FF4444]/8  text-[#FF4444]',
-    muted: 'border-[#ffffff]/8  bg-[#ffffff]/4  text-[#9A9590]',
+    muted: 'border-[var(--cs-border-w2)]  bg-[#ffffff]/4  text-[var(--cs-text-2)]',
   }
 
   return (
@@ -142,13 +142,13 @@ export function SectionHeader({
       )}
       <h2 className={`
         font-display text-3xl md:text-4xl lg:text-5xl
-        text-[#F5F0E8] tracking-tight leading-[1.1]
+        text-[var(--cs-text)] tracking-tight leading-[1.1]
         mb-4
       `}>
         {title}
       </h2>
       {description && (
-        <p className="text-[#9A9590] text-base md:text-lg leading-relaxed">
+        <p className="text-[var(--cs-text-2)] text-base md:text-lg leading-relaxed">
           {description}
         </p>
       )}
@@ -227,9 +227,9 @@ export function Card({
 }: CardProps) {
   const padClasses = { sm: 'p-4', md: 'p-6', lg: 'p-8' }
   const variantClasses = {
-    default:  'bg-[#0d0d0d] border border-[#ffffff]/6 hover:border-[#C9A84C]/20',
-    elevated: 'bg-[#0d0d0d] border border-[#C9A84C]/10 hover:border-[#C9A84C]/30 shadow-xl shadow-black/40',
-    gold:     'bg-[#0d0d0d] border border-[#C9A84C]/25 hover:border-[#C9A84C]/50 shadow-lg shadow-[#C9A84C]/5',
+    default:  'bg-[var(--cs-s1)] border border-[var(--cs-border-w)] hover:border-[#C9A84C]/20',
+    elevated: 'bg-[var(--cs-s1)] border border-[#C9A84C]/10 hover:border-[#C9A84C]/30 shadow-xl shadow-black/40',
+    gold:     'bg-[var(--cs-s1)] border border-[#C9A84C]/25 hover:border-[#C9A84C]/50 shadow-lg shadow-[#C9A84C]/5',
   }
 
   const classes = `
@@ -306,7 +306,7 @@ export function StatItem({ value, label, suffix, className = '' }: StatItemProps
           <span className="font-display text-xl text-[#C9A84C]/60 mb-1">{suffix}</span>
         )}
       </div>
-      <span className="font-mono text-[11px] tracking-[0.14em] uppercase text-[#5a5550]">
+      <span className="font-mono text-[11px] tracking-[0.14em] uppercase text-[var(--cs-text-3)]">
         {label}
       </span>
     </div>
@@ -341,7 +341,7 @@ export function CtaButton({
     rounded-full transition-all duration-300
     ${variant === 'primary'
       ? 'border border-[#C9A84C]/40 text-[#C9A84C] px-7 py-3.5'
-      : 'text-[#9A9590] hover:text-[#F5F0E8] px-2 py-1'
+      : 'text-[var(--cs-text-2)] hover:text-[var(--cs-text)] px-2 py-1'
     }
     ${className}
   `
@@ -394,7 +394,7 @@ export function TagList({ tags, className = '' }: TagListProps) {
       {tags.map(tag => (
         <span
           key={tag}
-          className="font-mono text-[11px] tracking-[0.08em] text-[#9A9590] bg-[#ffffff]/4 border border-[#ffffff]/8 px-3 py-1.5 rounded-lg"
+          className="font-mono text-[11px] tracking-[0.08em] text-[var(--cs-text-2)] bg-[#ffffff]/4 border border-[var(--cs-border-w2)] px-3 py-1.5 rounded-lg"
         >
           {tag}
         </span>
@@ -415,7 +415,7 @@ interface HighlightLineProps {
 export function HighlightLine({ children, className = '' }: HighlightLineProps) {
   return (
     <div className={`border-l-2 border-[#C9A84C]/50 pl-5 ${className}`}>
-      <p className="text-[#9A9590] text-base leading-relaxed italic">
+      <p className="text-[var(--cs-text-2)] text-base leading-relaxed italic">
         {children}
       </p>
     </div>

@@ -15,17 +15,17 @@ export default function ImpressumPage() {
           <span className="w-6 h-px bg-[#C9A84C]/40" />
           Rechtliches
         </p>
-        <h1 className="font-display text-4xl md:text-5xl text-[#F5F0E8] tracking-tight mb-4">Impressum</h1>
+        <h1 className="font-display text-4xl md:text-5xl text-[var(--cs-text)] tracking-tight mb-4">Impressum</h1>
         <div className="h-px bg-gradient-to-r from-[#C9A84C]/30 to-transparent" />
       </div>
 
-      <div className="flex flex-col gap-10 text-[#9A9590] leading-relaxed">
+      <div className="flex flex-col gap-10 text-[var(--cs-text-2)] leading-relaxed">
 
         {/* Angaben gemäß § 5 TMG */}
         <section>
-          <h2 className="font-display text-xl text-[#F5F0E8] mb-4">§ 5 TMG — Angaben gemäß § 5 TMG</h2>
+          <h2 className="font-display text-xl text-[var(--cs-text)] mb-4">§ 5 TMG — Angaben gemäß § 5 TMG</h2>
           <div className="flex flex-col gap-1 text-[15px]">
-            <p className="text-[#F5F0E8] font-medium">Chris Schubert</p>
+            <p className="text-[var(--cs-text)] font-medium">Chris Schubert</p>
             <p>Hans-Marchwitza-Ring 19</p>
             <p>14473 Potsdam</p>
             <p className="mt-2">
@@ -40,18 +40,18 @@ export default function ImpressumPage() {
 
         {/* Verantwortlich für den Inhalt */}
         <section>
-          <h2 className="font-display text-xl text-[#F5F0E8] mb-4">
+          <h2 className="font-display text-xl text-[var(--cs-text)] mb-4">
             Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV
           </h2>
           <div className="flex flex-col gap-1 text-[15px]">
-            <p className="text-[#F5F0E8] font-medium">Chris Schubert</p>
+            <p className="text-[var(--cs-text)] font-medium">Chris Schubert</p>
             <p>Hans-Marchwitza-Ring 19, 14473 Potsdam</p>
           </div>
         </section>
 
         {/* Hinweis Privatperson */}
-        <section className="border border-[#C9A84C]/15 rounded-2xl p-6 bg-[#0d0d0d]">
-          <h2 className="font-display text-lg text-[#F5F0E8] mb-3">Hinweis</h2>
+        <section className="border border-[#C9A84C]/15 rounded-2xl p-6 bg-[var(--cs-s1)]">
+          <h2 className="font-display text-lg text-[var(--cs-text)] mb-3">Hinweis</h2>
           <p className="text-[14px]">
             Als Privatperson ist keine Gewerberegistrierung erforderlich. Es besteht keine
             Umsatzsteuer-Identifikationsnummer, da keine gewerbliche Tätigkeit im Sinne des
@@ -61,7 +61,7 @@ export default function ImpressumPage() {
 
         {/* Haftung für Inhalte */}
         <section>
-          <h2 className="font-display text-xl text-[#F5F0E8] mb-4">Haftung für Inhalte</h2>
+          <h2 className="font-display text-xl text-[var(--cs-text)] mb-4">Haftung für Inhalte</h2>
           <p className="text-[14px]">
             Als Diensteanbieter sind wir gemäß § 7 Abs. 1 TMG für eigene Inhalte auf diesen Seiten nach den
             allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir als Diensteanbieter jedoch nicht
@@ -78,7 +78,7 @@ export default function ImpressumPage() {
 
         {/* Haftung für Links */}
         <section>
-          <h2 className="font-display text-xl text-[#F5F0E8] mb-4">Haftung für Links</h2>
+          <h2 className="font-display text-xl text-[var(--cs-text)] mb-4">Haftung für Links</h2>
           <p className="text-[14px]">
             Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben.
             Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der
@@ -94,7 +94,7 @@ export default function ImpressumPage() {
 
         {/* Urheberrecht */}
         <section>
-          <h2 className="font-display text-xl text-[#F5F0E8] mb-4">Urheberrecht</h2>
+          <h2 className="font-display text-xl text-[var(--cs-text)] mb-4">Urheberrecht</h2>
           <p className="text-[14px]">
             Die durch den Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen
             Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb
@@ -112,7 +112,7 @@ export default function ImpressumPage() {
 
         {/* Streitschlichtung */}
         <section>
-          <h2 className="font-display text-xl text-[#F5F0E8] mb-4">Streitschlichtung</h2>
+          <h2 className="font-display text-xl text-[var(--cs-text)] mb-4">Streitschlichtung</h2>
           <p className="text-[14px]">
             Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit:{' '}
             <a href="https://ec.europa.eu/consumers/odr/" target="_blank" rel="noopener noreferrer"
@@ -127,8 +127,8 @@ export default function ImpressumPage() {
         </section>
 
         {/* Finanzielle Inhalte */}
-        <section className="border border-[#C9A84C]/15 rounded-2xl p-6 bg-[#0d0d0d]">
-          <h2 className="font-display text-lg text-[#F5F0E8] mb-3">Hinweis zu Finanzinhalten</h2>
+        <section className="border border-[#C9A84C]/15 rounded-2xl p-6 bg-[var(--cs-s1)]">
+          <h2 className="font-display text-lg text-[var(--cs-text)] mb-3">Hinweis zu Finanzinhalten</h2>
           <p className="text-[14px]">
             Alle auf dieser Website veröffentlichten Inhalte zu Finanzen, Trading, Kryptowährungen und
             Investitionen stellen ausschließlich die persönliche Meinung des Betreibers dar und sind keine
@@ -140,7 +140,7 @@ export default function ImpressumPage() {
 
         {/* Back Link */}
         <div className="pt-4 border-t border-[#C9A84C]/10">
-          <Link to="/" className="font-mono text-[11px] tracking-[0.14em] uppercase text-[#9A9590] hover:text-[#C9A84C] transition-colors flex items-center gap-2">
+          <Link to="/" className="font-mono text-[11px] tracking-[0.14em] uppercase text-[var(--cs-text-2)] hover:text-[#C9A84C] transition-colors flex items-center gap-2">
             ← Zurück zur Startseite
           </Link>
         </div>

@@ -184,7 +184,7 @@ export default function IntroAnimation({ onComplete }: { onComplete: () => void 
                 fontFamily:"'Space Grotesk',sans-serif",
                 fontSize:'1.8em', fontWeight:800,
                 letterSpacing:'0.22em', textTransform:'uppercase',
-                color:'#F5F0E8',
+                color:'var(--cs-text)',
                 clipPath:'inset(0 100% 0 0)',
                 animation:'sp-title 0.65s cubic-bezier(0.22,1,0.36,1) 1.0s forwards',
               }}>

@@ -23,8 +23,8 @@ export default function FeatureGrid() {
     <section className="py-20 px-8 max-w-6xl mx-auto">
       <div className="text-center mb-14">
         <p className="text-[#C9A84C] text-xs tracking-[0.2em] uppercase mb-3">Module</p>
-        <h2 className="text-3xl font-bold text-[#F5F0E8]">Alles was du brauchst</h2>
-        <p className="text-[#9A9590] mt-3 max-w-md mx-auto text-sm leading-relaxed">
+        <h2 className="text-3xl font-bold text-[var(--cs-text)]">Alles was du brauchst</h2>
+        <p className="text-[var(--cs-text-2)] mt-3 max-w-md mx-auto text-sm leading-relaxed">
           10 vollständig integrierte Module — kein Plugin-Dschungel, keine Abo-Extras.
         </p>
       </div>
@@ -32,12 +32,12 @@ export default function FeatureGrid() {
         {MODULES.map(({ icon: Icon, title, desc }) => (
           <div
             key={title}
-            className="bg-[#111111] border border-[#C9A84C]/8 rounded-xl p-5
+            className="bg-[var(--cs-s3)] border border-[#C9A84C]/8 rounded-xl p-5
                        hover:border-[#C9A84C]/20 transition-colors duration-200 group"
           >
             <Icon size={22} strokeWidth={1.5} className="text-[#C9A84C]" />
-            <p className="text-[#F5F0E8] font-semibold text-sm mt-3">{title}</p>
-            <p className="text-[#9A9590] text-xs mt-1.5 leading-relaxed">{desc}</p>
+            <p className="text-[var(--cs-text)] font-semibold text-sm mt-3">{title}</p>
+            <p className="text-[var(--cs-text-2)] text-xs mt-1.5 leading-relaxed">{desc}</p>
           </div>
         ))}
       </div>

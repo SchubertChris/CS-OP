@@ -47,13 +47,13 @@ function TimelineItem({ year, title, desc, current }: {
   return (
     <div className="relative flex gap-6 pb-10 last:pb-0">
       <div className="flex flex-col items-center shrink-0">
-        <div className={`w-3 h-3 rounded-full border-2 mt-1 shrink-0 ${current ? 'border-[#C9A84C] bg-[#C9A84C]' : 'border-[#C9A84C]/40 bg-[#080808]'}`} />
+        <div className={`w-3 h-3 rounded-full border-2 mt-1 shrink-0 ${current ? 'border-[#C9A84C] bg-[#C9A84C]' : 'border-[#C9A84C]/40 bg-[var(--cs-bg)]'}`} />
         <div className="w-px flex-1 bg-gradient-to-b from-[#C9A84C]/30 to-transparent mt-2" />
       </div>
       <div className="flex-1 pb-2">
         <span className="font-mono text-[10px] tracking-[0.16em] uppercase text-[#C9A84C]/60 mb-1 block">{year}</span>
-        <h4 className="font-display text-base text-[#F5F0E8] mb-1">{title}</h4>
-        <p className="text-[#9A9590] text-sm leading-relaxed">{desc}</p>
+        <h4 className="font-display text-base text-[var(--cs-text)] mb-1">{title}</h4>
+        <p className="text-[var(--cs-text-2)] text-sm leading-relaxed">{desc}</p>
         {current && (
           <div className="flex items-center gap-1.5 mt-2">
             <div className="w-1.5 h-1.5 rounded-full bg-[#00C896] animate-pulse" />
@@ -68,13 +68,13 @@ function TimelineItem({ year, title, desc, current }: {
 function ValueCard({ icon, title, desc }: { icon: React.ReactNode; title: string; desc: string }) {
   return (
     <motion.div whileHover={{ y: -3 }} transition={{ duration: 0.2 }}
-      className="flex flex-col gap-3 p-6 rounded-xl border border-[#ffffff]/8 bg-[#0d0d0d] hover:border-[#C9A84C]/20 transition-colors duration-300 h-full">
+      className="flex flex-col gap-3 p-6 rounded-xl border border-[var(--cs-border-w2)] bg-[var(--cs-s1)] hover:border-[#C9A84C]/20 transition-colors duration-300 h-full">
       <div className="w-10 h-10 rounded-xl bg-[#C9A84C]/8 border border-[#C9A84C]/15 flex items-center justify-center text-[#C9A84C]/70 shrink-0">
         {icon}
       </div>
       <div>
-        <h4 className="font-display text-sm text-[#F5F0E8] mb-1">{title}</h4>
-        <p className="text-[#9A9590] text-[13px] leading-relaxed">{desc}</p>
+        <h4 className="font-display text-sm text-[var(--cs-text)] mb-1">{title}</h4>
+        <p className="text-[var(--cs-text-2)] text-[13px] leading-relaxed">{desc}</p>
       </div>
     </motion.div>
   )
@@ -85,10 +85,10 @@ function ServiceCard({ icon, title, desc, tags }: {
 }) {
   return (
     <motion.div whileHover={{ y: -4 }} transition={{ duration: 0.22 }}
-      className="flex flex-col h-full rounded-xl border border-[#ffffff]/8 bg-[#0d0d0d] p-6 hover:border-[#C9A84C]/20 transition-colors duration-300">
+      className="flex flex-col h-full rounded-xl border border-[var(--cs-border-w2)] bg-[var(--cs-s1)] p-6 hover:border-[#C9A84C]/20 transition-colors duration-300">
       <CardIcon>{icon}</CardIcon>
-      <h4 className="font-display text-base text-[#F5F0E8] mb-2">{title}</h4>
-      <p className="text-[#9A9590] text-[13px] leading-relaxed mb-4 flex-1">{desc}</p>
+      <h4 className="font-display text-base text-[var(--cs-text)] mb-2">{title}</h4>
+      <p className="text-[var(--cs-text-2)] text-[13px] leading-relaxed mb-4 flex-1">{desc}</p>
       <div className="flex flex-wrap gap-1.5">
         {tags.map(t => (
           <span key={t} className="font-mono text-[10px] tracking-[0.1em] px-2 py-0.5 rounded-full border border-[#C9A84C]/20 text-[#C9A84C]/60">{t}</span>
@@ -160,7 +160,7 @@ export default function AboutPage() {
 
         {/* Sekundär-CTA */}
         <a href="https://github.com/SchubertChris" target="_blank" rel="noopener noreferrer"
-          className="text-[11px] tracking-[0.16em] uppercase text-[#5a5550] hover:text-[#F5F0E8] transition-colors duration-300 flex items-center gap-2 group">
+          className="text-[11px] tracking-[0.16em] uppercase text-[var(--cs-text-3)] hover:text-[var(--cs-text)] transition-colors duration-300 flex items-center gap-2 group">
           GitHub ansehen
           <span className="w-4 h-px bg-current transition-all duration-300 group-hover:w-6" />
         </a>
@@ -168,7 +168,7 @@ export default function AboutPage() {
         {/* Credibility Strip: echtes Shipped Product als Beweis */}
         <div className="w-full pt-5 border-t border-[#C9A84C]/8">
           <div className="flex flex-wrap items-center gap-3">
-            <span className="font-mono text-[9px] tracking-[0.16em] uppercase text-[#3a3530]">Flagship</span>
+            <span className="font-mono text-[9px] tracking-[0.16em] uppercase text-[var(--cs-text-4)]">Flagship</span>
             <span className="w-px h-3 bg-[#C9A84C]/15" />
             <Link to="/finance"
               className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#C9A84C]/5 border border-[#C9A84C]/20 hover:border-[#C9A84C]/40 hover:bg-[#C9A84C]/8 transition-all group">
@@ -176,7 +176,7 @@ export default function AboutPage() {
               <span className="font-mono text-[9px] tracking-[0.12em] uppercase text-[#C9A84C]/70 group-hover:text-[#C9A84C] transition-colors">FinanceBoard v10.6</span>
               <ArrowRight size={9} strokeWidth={1.5} className="text-[#C9A84C]/40 group-hover:text-[#C9A84C] transition-colors" />
             </Link>
-            <span className="font-mono text-[9px] text-[#3a3530]">selbst entwickelt · selbst deployed · gratis</span>
+            <span className="font-mono text-[9px] text-[var(--cs-text-4)]">selbst entwickelt · selbst deployed · gratis</span>
           </div>
         </div>
       </PageHero>
@@ -188,9 +188,9 @@ export default function AboutPage() {
             <div className="relative rounded-2xl overflow-hidden border border-[#C9A84C]/20">
               <img src={chrisPhoto} alt="Chris Schubert"
                 className="w-full object-cover aspect-[4/5] grayscale hover:grayscale-0 transition-all duration-700" />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#080808]/80 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[var(--cs-bg)]/80 via-transparent to-transparent" />
               <div className="absolute bottom-6 left-6 right-6">
-                <p className="font-display text-xl text-[#F5F0E8] tracking-wide">Chris Schubert</p>
+                <p className="font-display text-xl text-[var(--cs-text)] tracking-wide">Chris Schubert</p>
                 <p className="font-mono text-[11px] tracking-[0.14em] uppercase text-[#C9A84C]/70 mt-1">Potsdam · WebDev · Trader</p>
               </div>
             </div>
@@ -200,22 +200,22 @@ export default function AboutPage() {
           <div className="flex flex-col gap-6">
             <SectionHeader eyebrow="Die Geschichte" title={<>Quereinsteiger.<br /><GradientText>Vollgas.</GradientText></>} className="mb-2" />
             <HighlightLine>„Think big — then double it."</HighlightLine>
-            <p className="text-[#9A9590] leading-relaxed">
+            <p className="text-[var(--cs-text-2)] leading-relaxed">
               1994 in Potsdam geboren und aufgewachsen — seit dem zehnten Lebensjahr am PC,
               immer neugierig auf Technik, Hardware und wie Dinge funktionieren.
               Mit 15 ersten eigenen Lohn verdient, mit 17 den Führerschein selbst bezahlt.
             </p>
-            <p className="text-[#9A9590] leading-relaxed">
+            <p className="text-[var(--cs-text-2)] leading-relaxed">
               13 Jahre Gastronomie auf verschiedenen Levels — vom Hotelfach über das Juliette Potsdam
               bis hin zum Käfer im Bundestag Berlin. Das hat mich gelehrt was wirklich zählt:
               Verlässlichkeit, Qualität unter Druck und echte Kommunikation.
             </p>
-            <p className="text-[#9A9590] leading-relaxed">
+            <p className="text-[var(--cs-text-2)] leading-relaxed">
               2023 die Weiterbildung zum Webentwickler beim DCI Berlin — kombiniert mit allem was ich
               mir davor und danach selbst beigebracht habe. React, TypeScript, Full-Stack —
               heute baue ich Dinge die funktionieren und gut aussehen.
             </p>
-            <p className="text-[#9A9590] leading-relaxed">
+            <p className="text-[var(--cs-text-2)] leading-relaxed">
               Krypto und Finanzen sind kein Hobby — das ist echtes Interesse mit echtem Einsatz.
               Märkte verstehen, Chancen erkennen, eigene Tools bauen.
               2022 entstand CandleScope — meine Marke, mein Projekt, mein Weg.
@@ -225,7 +225,7 @@ export default function AboutPage() {
               <Link to="/contact">
                 <CtaButton variant="primary" href="/contact">Projekt anfragen</CtaButton>
               </Link>
-              <Link to="/dev" className="flex items-center gap-2 text-[11px] tracking-[0.14em] uppercase text-[#5a5550] hover:text-[#F5F0E8] transition-colors duration-200 px-2">
+              <Link to="/dev" className="flex items-center gap-2 text-[11px] tracking-[0.14em] uppercase text-[var(--cs-text-3)] hover:text-[var(--cs-text)] transition-colors duration-200 px-2">
                 Meine Projekte <ArrowRight size={13} strokeWidth={1.5} />
               </Link>
             </div>
@@ -312,9 +312,9 @@ export default function AboutPage() {
         <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {FUN_FACTS.map((fact, i) => (
             <StaggerItem key={i}>
-              <div className="flex items-start gap-3 p-4 rounded-xl border border-[#ffffff]/6 bg-[#0d0d0d] hover:border-[#C9A84C]/15 transition-colors duration-200">
+              <div className="flex items-start gap-3 p-4 rounded-xl border border-[var(--cs-border-w)] bg-[var(--cs-s1)] hover:border-[#C9A84C]/15 transition-colors duration-200">
                 <span className="text-base shrink-0">{fact.split(' ')[0]}</span>
-                <span className="text-[#9A9590] text-sm leading-relaxed">{fact.split(' ').slice(1).join(' ')}</span>
+                <span className="text-[var(--cs-text-2)] text-sm leading-relaxed">{fact.split(' ').slice(1).join(' ')}</span>
               </div>
             </StaggerItem>
           ))}
@@ -325,7 +325,7 @@ export default function AboutPage() {
 
       {/* ── Hire me CTA ──────────────────────────────────── */}
       <SectionWrapper id="hire">
-        <div className="relative rounded-2xl border border-[#C9A84C]/20 bg-gradient-to-br from-[#0f0e0c] to-[#080808] p-10 md:p-14 overflow-hidden">
+        <div className="relative rounded-2xl border border-[#C9A84C]/20 bg-gradient-to-br from-[#0f0e0c] to-[var(--cs-bg)] p-10 md:p-14 overflow-hidden">
           <motion.div
             className="absolute -top-24 -right-24 w-80 h-80 rounded-full pointer-events-none"
             style={{ background: 'radial-gradient(circle, rgba(201,168,76,0.08) 0%, transparent 70%)' }}
@@ -338,10 +338,10 @@ export default function AboutPage() {
                 <div className="w-1.5 h-1.5 rounded-full bg-[#00C896] animate-pulse" />
                 <span className="font-mono text-[10px] tracking-[0.18em] uppercase text-[#00C896]">Open for work</span>
               </div>
-              <h2 className="font-display text-3xl md:text-4xl text-[#F5F0E8] leading-tight mb-4">
+              <h2 className="font-display text-3xl md:text-4xl text-[var(--cs-text)] leading-tight mb-4">
                 Lass uns etwas<br /><GradientText>Großes bauen.</GradientText>
               </h2>
-              <p className="text-[#9A9590] leading-relaxed mb-8">
+              <p className="text-[var(--cs-text-2)] leading-relaxed mb-8">
                 Ob Website, Web-App, Finance-Beratung oder einfach ein ehrliches Gespräch —
                 ich bin direkt erreichbar. Kein Formular das ins Leere geht, kein Vertrieb der dich anruft.
               </p>
@@ -350,7 +350,7 @@ export default function AboutPage() {
                   <CtaButton variant="primary" href="/contact">Jetzt anfragen</CtaButton>
                 </Link>
                 <a href="mailto:info@candlescope.de"
-                  className="flex items-center gap-2 text-[11px] tracking-[0.14em] uppercase text-[#5a5550] hover:text-[#F5F0E8] transition-colors duration-200 px-4">
+                  className="flex items-center gap-2 text-[11px] tracking-[0.14em] uppercase text-[var(--cs-text-3)] hover:text-[var(--cs-text)] transition-colors duration-200 px-4">
                   info@candlescope.de <ArrowRight size={13} strokeWidth={1.5} />
                 </a>
               </div>
@@ -363,9 +363,9 @@ export default function AboutPage() {
                 { label: 'Verfügbarkeit', value: 'Abends & Wochenende' },
               ].map((item, i) => (
                 <StaggerItem key={i}>
-                  <div className="flex items-center justify-between px-5 py-3.5 rounded-xl border border-[#ffffff]/6 bg-[#080808]/60">
-                    <span className="font-mono text-[11px] tracking-[0.1em] uppercase text-[#5a5550]">{item.label}</span>
-                    <span className="text-sm text-[#F5F0E8]">{item.value}</span>
+                  <div className="flex items-center justify-between px-5 py-3.5 rounded-xl border border-[var(--cs-border-w)] bg-[var(--cs-backdrop)]">
+                    <span className="font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--cs-text-3)]">{item.label}</span>
+                    <span className="text-sm text-[var(--cs-text)]">{item.value}</span>
                   </div>
                 </StaggerItem>
               ))}

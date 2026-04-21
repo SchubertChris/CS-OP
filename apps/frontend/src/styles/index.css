@@ -1,1 +1,56 @@
 @import "tailwindcss";
+
+/* ============================================================
+   CandleScope — Design Tokens
+   Dark = Standard  |  Light = [data-theme="light"] auf <html>
+   Gold (#C9A84C) ist in beiden Modi identisch — nie ersetzen.
+   ============================================================ */
+
+:root,
+[data-theme="dark"] {
+  --cs-bg:      #080808;
+  --cs-s0:      #090909;
+  --cs-s1:      #0d0d0d;
+  --cs-s2:      #0e0e0e;
+  --cs-s3:      #111111;
+  --cs-s4:      #161616;
+  --cs-s5:      #1a1a1a;
+  --cs-input:   #0a0a0a;
+
+  --cs-text:    #F5F0E8;
+  --cs-text-2:  #9A9590;
+  --cs-text-3:  #5a5550;
+  --cs-text-4:  #3a3530;
+
+  --cs-backdrop:    rgba(8,8,8,0.75);
+  --cs-backdrop-2:  rgba(8,8,8,0.60);
+  --cs-header-bg:   rgba(8,8,8,0.95);
+  --cs-sidebar-mob: rgba(13,13,13,0.90);
+  --cs-border-w:    rgba(255,255,255,0.06);
+  --cs-border-w2:   rgba(255,255,255,0.08);
+  --cs-border-w3:   rgba(255,255,255,0.10);
+}
+
+[data-theme="light"] {
+  --cs-bg:      #F2EDE2;
+  --cs-s0:      #EEE9DE;
+  --cs-s1:      #EAE5DA;
+  --cs-s2:      #E7E2D7;
+  --cs-s3:      #E2DDD2;
+  --cs-s4:      #DEDAD0;
+  --cs-s5:      #D8D3C8;
+  --cs-input:   #E5E0D5;
+
+  --cs-text:    #0A0806;
+  --cs-text-2:  #605B56;
+  --cs-text-3:  #908B86;
+  --cs-text-4:  #B0ABA6;
+
+  --cs-backdrop:    rgba(242,237,226,0.85);
+  --cs-backdrop-2:  rgba(242,237,226,0.70);
+  --cs-header-bg:   rgba(242,237,226,0.95);
+  --cs-sidebar-mob: rgba(234,229,218,0.92);
+  --cs-border-w:    rgba(0,0,0,0.08);
+  --cs-border-w2:   rgba(0,0,0,0.10);
+  --cs-border-w3:   rgba(0,0,0,0.12);
+}

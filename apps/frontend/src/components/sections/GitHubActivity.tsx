@@ -68,10 +68,10 @@ function StatPill({ icon, value, label }: {
   icon: React.ReactNode; value: string; label: string
 }) {
   return (
-    <div className="flex items-center gap-2 px-4 py-2.5 border border-[#ffffff]/8 rounded-full bg-[#0d0d0d]">
+    <div className="flex items-center gap-2 px-4 py-2.5 border border-[var(--cs-border-w2)] rounded-full bg-[var(--cs-s1)]">
       <span className="text-[#C9A84C]/70">{icon}</span>
-      <span className="font-display text-base text-[#F5F0E8]">{value}</span>
-      <span className="font-mono text-[10px] tracking-[0.12em] uppercase text-[#5a5550]">{label}</span>
+      <span className="font-display text-base text-[var(--cs-text)]">{value}</span>
+      <span className="font-mono text-[10px] tracking-[0.12em] uppercase text-[var(--cs-text-3)]">{label}</span>
     </div>
   )
 }
@@ -152,15 +152,15 @@ export default function GitHubActivity({ username, stats = DEFAULT_STATS }: GitH
 
       {/* Contribution Graph Card */}
       <Reveal delay={0.2}>
-        <div className="rounded-xl border border-[#ffffff]/8 bg-[#0d0d0d] p-6">
+        <div className="rounded-xl border border-[var(--cs-border-w2)] bg-[var(--cs-s1)] p-6">
           {/* Header */}
           <div className="flex items-center justify-between mb-5">
             <div className="flex items-center gap-3">
-              <span className="font-mono text-[11px] tracking-[0.14em] uppercase text-[#5a5550]">
+              <span className="font-mono text-[11px] tracking-[0.14em] uppercase text-[var(--cs-text-3)]">
                 Contribution Graph
               </span>
               {status === 'loading' && (
-                <Loader2 size={12} strokeWidth={1.5} className="text-[#5a5550] animate-spin" />
+                <Loader2 size={12} strokeWidth={1.5} className="text-[var(--cs-text-3)] animate-spin" />
               )}
               {status === 'success' && totalThisYear && (
                 <span className="font-mono text-[10px] text-[#C9A84C]/50">
@@ -187,7 +187,7 @@ export default function GitHubActivity({ username, stats = DEFAULT_STATS }: GitH
               {labels.length > 0 && (
                 <div className="flex gap-1 mb-1">
                   {labels.map((label, i) => (
-                    <div key={i} className="flex-1 font-mono text-[9px] text-[#5a5550] tracking-[0.1em] truncate">
+                    <div key={i} className="flex-1 font-mono text-[9px] text-[var(--cs-text-3)] tracking-[0.1em] truncate">
                       {label}
                     </div>
                   ))}
@@ -217,11 +217,11 @@ export default function GitHubActivity({ username, stats = DEFAULT_STATS }: GitH
 
               {/* Legend */}
               <div className="flex items-center gap-2 mt-3 justify-end">
-                <span className="font-mono text-[9px] text-[#5a5550]">Weniger</span>
+                <span className="font-mono text-[9px] text-[var(--cs-text-3)]">Weniger</span>
                 {([0, 1, 2, 3, 4] as const).map((l) => (
                   <div key={l} className={`w-3 h-3 rounded-sm ${['bg-[#ffffff]/5','bg-[#C9A84C]/20','bg-[#C9A84C]/40','bg-[#C9A84C]/65','bg-[#C9A84C]'][l]}`} />
                 ))}
-                <span className="font-mono text-[9px] text-[#5a5550]">Mehr</span>
+                <span className="font-mono text-[9px] text-[var(--cs-text-3)]">Mehr</span>
               </div>
             </div>
           </div>

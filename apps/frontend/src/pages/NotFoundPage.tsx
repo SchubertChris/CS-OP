@@ -105,7 +105,7 @@ export default function NotFoundPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#080808] flex flex-col items-center justify-center relative overflow-hidden px-6">
+    <div className="min-h-screen bg-[var(--cs-bg)] flex flex-col items-center justify-center relative overflow-hidden px-6">
       <Scanlines />
       <FallingNumbers />
 
@@ -120,18 +120,18 @@ export default function NotFoundPage() {
       {/* Terminal header */}
       <motion.div className="w-full max-w-2xl mb-6"
         initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-        <div className="flex items-center justify-between px-4 py-2.5 bg-[#0d0d0d] border border-[#C9A84C]/15 rounded-t-xl">
+        <div className="flex items-center justify-between px-4 py-2.5 bg-[var(--cs-s1)] border border-[#C9A84C]/15 rounded-t-xl">
           <div className="flex items-center gap-2">
             <div className="w-2.5 h-2.5 rounded-full bg-[#FF4444]/80" />
             <div className="w-2.5 h-2.5 rounded-full bg-[#C9A84C]/40" />
             <div className="w-2.5 h-2.5 rounded-full bg-[#00C896]/30" />
           </div>
-          <span className="font-mono text-[11px] text-[#5a5550] tracking-[0.14em]">CS-TERMINAL · MARKET DATA · ERROR</span>
+          <span className="font-mono text-[11px] text-[var(--cs-text-3)] tracking-[0.14em]">CS-TERMINAL · MARKET DATA · ERROR</span>
           <motion.div className="flex items-center gap-1.5"
             animate={{ opacity: phase === 'dead' ? [1, 0.3, 1] : 1 }}
             transition={{ repeat: Infinity, duration: 1 }}>
             <div className={`w-1.5 h-1.5 rounded-full ${phase === 'dead' ? 'bg-[#FF4444]' : 'bg-[#00C896]'}`} />
-            <span className="font-mono text-[10px] text-[#5a5550]">{phase === 'dead' ? 'OFFLINE' : 'LIVE'}</span>
+            <span className="font-mono text-[10px] text-[var(--cs-text-3)]">{phase === 'dead' ? 'OFFLINE' : 'LIVE'}</span>
           </motion.div>
         </div>
 
@@ -141,7 +141,7 @@ export default function NotFoundPage() {
               style={{ top: `${PAD.t + f * chartH}px` }} />
           ))}
           {[100, 75, 50, 25].map((price) => (
-            <span key={price} className="absolute right-5 font-mono text-[9px] text-[#3a3530]"
+            <span key={price} className="absolute right-5 font-mono text-[9px] text-[var(--cs-text-4)]"
               style={{ top: `${PAD.t + (1 - price / maxPrice) * chartH - 6}px` }}>
               {price}
             </span>
@@ -217,14 +217,14 @@ export default function NotFoundPage() {
           )}
         </div>
 
-        <div className="flex items-center gap-4 px-4 py-2 bg-[#0a0a0a] border-x border-b border-[#C9A84C]/15 rounded-b-xl overflow-hidden">
+        <div className="flex items-center gap-4 px-4 py-2 bg-[var(--cs-input)] border-x border-b border-[#C9A84C]/15 rounded-b-xl overflow-hidden">
           <motion.span className="font-mono text-[10px] text-[#FF4444] font-medium"
             animate={phase === 'dead' ? { opacity: [1, 0.4, 1] } : {}}
             transition={{ repeat: Infinity, duration: 0.8 }}>
             CS/USD ▼ -100.00%
           </motion.span>
-          <span className="font-mono text-[10px] text-[#5a5550]">VOL: 0</span>
-          <span className="font-mono text-[10px] text-[#5a5550]">MKT: CLOSED</span>
+          <span className="font-mono text-[10px] text-[var(--cs-text-3)]">VOL: 0</span>
+          <span className="font-mono text-[10px] text-[var(--cs-text-3)]">MKT: CLOSED</span>
           <motion.span className="font-mono text-[10px] text-[#FF4444] ml-auto"
             animate={phase === 'dead' ? { opacity: [1, 0, 1] } : {}}
             transition={{ repeat: Infinity, duration: 0.5 }}>
@@ -238,7 +238,7 @@ export default function NotFoundPage() {
         initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}>
         <GlitchText text="404"
-          className="font-display text-[8rem] md:text-[12rem] font-bold leading-none tracking-[-0.04em] text-[#F5F0E8]" />
+          className="font-display text-[8rem] md:text-[12rem] font-bold leading-none tracking-[-0.04em] text-[var(--cs-text)]" />
         <motion.div className="absolute -bottom-2 left-0 right-0 h-0.5 bg-[#FF4444]"
           initial={{ scaleX: 0 }} animate={{ scaleX: 1 }}
           transition={{ delay: 0.8, duration: 0.6, ease: [0.22, 1, 0.36, 1] }} />
@@ -252,10 +252,10 @@ export default function NotFoundPage() {
           <TrendingDown size={16} strokeWidth={1.5} className="text-[#FF4444]" />
           <span className="font-mono text-[12px] tracking-[0.16em] text-[#FF4444] uppercase">Market Position Not Found</span>
         </div>
-        <p className="text-[#9A9590] text-base leading-relaxed">
+        <p className="text-[var(--cs-text-2)] text-base leading-relaxed">
           Diese Seite hat gecrasht wie ein Penny Stock im Bärenmarkt. Kein Stop-Loss konnte das verhindern.
         </p>
-        <motion.p className="font-mono text-[11px] text-[#3a3530] mt-3 tracking-[0.08em]"
+        <motion.p className="font-mono text-[11px] text-[var(--cs-text-4)] mt-3 tracking-[0.08em]"
           animate={{ opacity: [0.4, 1, 0.4] }} transition={{ repeat: Infinity, duration: 2 }}>
           ERR_ROUTE_NOT_FOUND · HTTP 404 · CANDLESCOPE.DE
         </motion.p>
@@ -274,7 +274,7 @@ export default function NotFoundPage() {
           <span className="absolute inset-0 bg-[#C9A84C] rounded-full translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
         </Link>
         <button onClick={resetAnimation}
-          className="flex items-center gap-2 text-[12px] tracking-[0.14em] uppercase text-[#9A9590] hover:text-[#F5F0E8] transition-colors">
+          className="flex items-center gap-2 text-[12px] tracking-[0.14em] uppercase text-[var(--cs-text-2)] hover:text-[var(--cs-text)] transition-colors">
           <RotateCcw size={13} strokeWidth={1.5} />
           Crash nochmal ansehen
         </button>

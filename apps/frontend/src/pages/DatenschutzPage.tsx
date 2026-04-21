@@ -16,23 +16,23 @@ export default function DatenschutzPage() {
           <span className="w-6 h-px bg-[#C9A84C]/40" />
           Rechtliches
         </p>
-        <h1 className="font-display text-4xl md:text-5xl text-[#F5F0E8] tracking-tight mb-4">
+        <h1 className="font-display text-4xl md:text-5xl text-[var(--cs-text)] tracking-tight mb-4">
           Datenschutzerklärung
         </h1>
-        <p className="text-[#5a5550] font-mono text-[12px]">Stand: April 2026</p>
+        <p className="text-[var(--cs-text-3)] font-mono text-[12px]">Stand: April 2026</p>
         <div className="h-px bg-gradient-to-r from-[#C9A84C]/30 to-transparent mt-4" />
       </div>
 
-      <div className="flex flex-col gap-10 text-[#9A9590] leading-relaxed">
+      <div className="flex flex-col gap-10 text-[var(--cs-text-2)] leading-relaxed">
 
         {/* 1. Verantwortlicher */}
         <section>
-          <h2 className="font-display text-xl text-[#F5F0E8] mb-4">1. Verantwortlicher</h2>
+          <h2 className="font-display text-xl text-[var(--cs-text)] mb-4">1. Verantwortlicher</h2>
           <p className="text-[14px]">
             Verantwortlicher im Sinne der Datenschutz-Grundverordnung (DSGVO) ist:
           </p>
           <div className="flex flex-col gap-1 text-[15px] mt-4 pl-4 border-l border-[#C9A84C]/20">
-            <p className="text-[#F5F0E8] font-medium">Chris Schubert</p>
+            <p className="text-[var(--cs-text)] font-medium">Chris Schubert</p>
             <p className="mt-2">
               E-Mail:{' '}
               <a href="mailto:info@candlescope.de"
@@ -45,9 +45,9 @@ export default function DatenschutzPage() {
 
         {/* 2. Hosting */}
         <section>
-          <h2 className="font-display text-xl text-[#F5F0E8] mb-4">2. Hosting</h2>
+          <h2 className="font-display text-xl text-[var(--cs-text)] mb-4">2. Hosting</h2>
           <p className="text-[14px]">
-            Diese Website wird bei <strong className="text-[#F5F0E8]">Vercel Inc.</strong> gehostet
+            Diese Website wird bei <strong className="text-[var(--cs-text)]">Vercel Inc.</strong> gehostet
             (340 Pine Street, Suite 603, San Francisco, CA 94104, USA). Beim Aufruf der Website werden
             automatisch Verbindungsdaten an Vercel übermittelt, darunter IP-Adresse, Browsertyp,
             Betriebssystem, Referrer-URL sowie Datum und Uhrzeit des Zugriffs.
@@ -68,11 +68,11 @@ export default function DatenschutzPage() {
 
         {/* 3. Kontaktformular */}
         <section>
-          <h2 className="font-display text-xl text-[#F5F0E8] mb-4">3. Kontaktformular</h2>
+          <h2 className="font-display text-xl text-[var(--cs-text)] mb-4">3. Kontaktformular</h2>
           <p className="text-[14px]">
             Wenn Sie das Kontaktformular auf dieser Website nutzen, werden die eingegebenen Daten
             (Name, E-Mail-Adresse, Nachricht) über den Dienst{' '}
-            <strong className="text-[#F5F0E8]">Formspree Inc.</strong> (Auftragsverarbeiter, USA)
+            <strong className="text-[var(--cs-text)]">Formspree Inc.</strong> (Auftragsverarbeiter, USA)
             verarbeitet und per E-Mail an uns weitergeleitet.
           </p>
           <p className="text-[14px] mt-3">
@@ -92,7 +92,7 @@ export default function DatenschutzPage() {
 
         {/* 4. Externe Dienste */}
         <section>
-          <h2 className="font-display text-xl text-[#F5F0E8] mb-4">4. Externe Dienste</h2>
+          <h2 className="font-display text-xl text-[var(--cs-text)] mb-4">4. Externe Dienste</h2>
           <p className="text-[14px]">
             Diese Website ruft öffentliche Daten von externen APIs ab. Dabei werden keine
             personenbezogenen Daten übermittelt oder gespeichert:
@@ -101,7 +101,7 @@ export default function DatenschutzPage() {
             <div className="flex items-start gap-3">
               <div className="w-1.5 h-1.5 rounded-full bg-[#C9A84C]/50 mt-2 shrink-0" />
               <p>
-                <strong className="text-[#F5F0E8]">GitHub API:</strong>{' '}
+                <strong className="text-[var(--cs-text)]">GitHub API:</strong>{' '}
                 Abruf öffentlicher Repository-Daten (Sterne, Commits). Es werden keine
                 personenbezogenen Daten gespeichert oder weitergegeben.{' '}
                 <a href="https://docs.github.com/en/site-policy/privacy-policies/github-privacy-statement"
@@ -114,7 +114,7 @@ export default function DatenschutzPage() {
             <div className="flex items-start gap-3">
               <div className="w-1.5 h-1.5 rounded-full bg-[#C9A84C]/50 mt-2 shrink-0" />
               <p>
-                <strong className="text-[#F5F0E8]">Discord API:</strong>{' '}
+                <strong className="text-[var(--cs-text)]">Discord API:</strong>{' '}
                 Abruf öffentlicher Serverstatistiken (Mitgliederzahl). Es werden keine
                 personenbezogenen Daten gespeichert oder weitergegeben.{' '}
                 <a href="https://discord.com/privacy" target="_blank" rel="noopener noreferrer"
@@ -128,7 +128,7 @@ export default function DatenschutzPage() {
 
         {/* 5. localStorage */}
         <section>
-          <h2 className="font-display text-xl text-[#F5F0E8] mb-4">5. Lokaler Speicher (localStorage)</h2>
+          <h2 className="font-display text-xl text-[var(--cs-text)] mb-4">5. Lokaler Speicher (localStorage)</h2>
           <p className="text-[14px]">
             Diese Website speichert technisch notwendige Daten im lokalen Speicher (localStorage) des
             Browsers. Gespeichert werden ausschließlich Daten für folgende Zwecke:
@@ -154,9 +154,9 @@ export default function DatenschutzPage() {
 
         {/* 6. Keine Tracking-Dienste */}
         <section>
-          <h2 className="font-display text-xl text-[#F5F0E8] mb-4">6. Keine Tracking-Dienste</h2>
+          <h2 className="font-display text-xl text-[var(--cs-text)] mb-4">6. Keine Tracking-Dienste</h2>
           <p className="text-[14px]">
-            Diese Website verwendet <strong className="text-[#F5F0E8]">keine</strong> Analytics-,
+            Diese Website verwendet <strong className="text-[var(--cs-text)]">keine</strong> Analytics-,
             Werbe- oder Tracking-Skripte. Es werden weder Google Analytics, Meta Pixel noch
             vergleichbare Dienste eingesetzt.
           </p>
@@ -164,7 +164,7 @@ export default function DatenschutzPage() {
 
         {/* 7. Betroffenenrechte */}
         <section>
-          <h2 className="font-display text-xl text-[#F5F0E8] mb-4">7. Ihre Rechte</h2>
+          <h2 className="font-display text-xl text-[var(--cs-text)] mb-4">7. Ihre Rechte</h2>
           <p className="text-[14px] mb-4">
             Sie haben gegenüber uns folgende Rechte hinsichtlich der Sie betreffenden personenbezogenen Daten:
           </p>
@@ -180,7 +180,7 @@ export default function DatenschutzPage() {
               <div key={i} className="flex items-start gap-3">
                 <div className="w-1.5 h-1.5 rounded-full bg-[#C9A84C]/50 mt-2 shrink-0" />
                 <p>
-                  <strong className="text-[#F5F0E8]">{r.title}:</strong>{' '}{r.desc}
+                  <strong className="text-[var(--cs-text)]">{r.title}:</strong>{' '}{r.desc}
                 </p>
               </div>
             ))}
@@ -199,8 +199,8 @@ export default function DatenschutzPage() {
         </section>
 
         {/* 8. Aktualität */}
-        <section className="border border-[#C9A84C]/15 rounded-2xl p-6 bg-[#0d0d0d]">
-          <h2 className="font-display text-lg text-[#F5F0E8] mb-3">Aktualität dieser Erklärung</h2>
+        <section className="border border-[#C9A84C]/15 rounded-2xl p-6 bg-[var(--cs-s1)]">
+          <h2 className="font-display text-lg text-[var(--cs-text)] mb-3">Aktualität dieser Erklärung</h2>
           <p className="text-[14px]">
             Wir behalten uns vor, diese Datenschutzerklärung bei Bedarf anzupassen, um sie stets den
             aktuellen rechtlichen Anforderungen zu entsprechen oder Änderungen unserer Leistungen umzusetzen.
@@ -210,7 +210,7 @@ export default function DatenschutzPage() {
 
         {/* Back Link */}
         <div className="pt-4 border-t border-[#C9A84C]/10">
-          <Link to="/" className="font-mono text-[11px] tracking-[0.14em] uppercase text-[#9A9590] hover:text-[#C9A84C] transition-colors flex items-center gap-2">
+          <Link to="/" className="font-mono text-[11px] tracking-[0.14em] uppercase text-[var(--cs-text-2)] hover:text-[#C9A84C] transition-colors flex items-center gap-2">
             ← Zurück zur Startseite
           </Link>
         </div>

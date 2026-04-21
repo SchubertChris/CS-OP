@@ -106,16 +106,16 @@ const MARQUEE_ITEMS = [
 function Marquee() {
   const items = [...MARQUEE_ITEMS, ...MARQUEE_ITEMS, ...MARQUEE_ITEMS]
   return (
-    <div className="relative overflow-hidden border-y border-[#C9A84C]/10 py-4 bg-[#080808]">
-      <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[#080808] to-transparent z-10 pointer-events-none" />
-      <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[#080808] to-transparent z-10 pointer-events-none" />
+    <div className="relative overflow-hidden border-y border-[#C9A84C]/10 py-4 bg-[var(--cs-bg)]">
+      <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[var(--cs-bg)] to-transparent z-10 pointer-events-none" />
+      <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[var(--cs-bg)] to-transparent z-10 pointer-events-none" />
       <motion.div className="flex items-center gap-10 w-max"
         animate={{ x: ['0%', '-33.33%'] }}
         transition={{ duration: 28, ease: 'linear', repeat: Infinity }}>
         {items.map((item, i) => (
           <div key={i} className="flex items-center gap-2.5 shrink-0">
             <span className="text-[#C9A84C]/50">{item.icon}</span>
-            <span className="font-mono text-[11px] tracking-[0.2em] uppercase text-[#5a5550]">{item.text}</span>
+            <span className="font-mono text-[11px] tracking-[0.2em] uppercase text-[var(--cs-text-3)]">{item.text}</span>
             <span className="w-1 h-1 rounded-full bg-[#C9A84C]/20 ml-4" />
           </div>
         ))}
@@ -143,7 +143,7 @@ export default function HomePage() {
           <div className="absolute inset-0 bg-black/75 backdrop-blur-sm" />
           {/* Card */}
           <motion.div
-            className="relative z-10 w-full max-w-sm border border-[#C9A84C]/25 rounded-2xl bg-[#090909] p-8 shadow-2xl shadow-black"
+            className="relative z-10 w-full max-w-sm border border-[#C9A84C]/25 rounded-2xl bg-[var(--cs-s0)] p-8 shadow-2xl shadow-black"
             initial={{ scale: 0.92, opacity: 0, y: 16 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
@@ -157,10 +157,10 @@ export default function HomePage() {
             </div>
 
             <p className="text-[10px] font-mono tracking-[0.22em] uppercase text-[#C9A84C] text-center mb-2">Bald verfügbar</p>
-            <h2 className="text-xl font-display text-[#F5F0E8] text-center leading-snug mb-3">
+            <h2 className="text-xl font-display text-[var(--cs-text)] text-center leading-snug mb-3">
               Download startet<br />am <span className="text-[#C9A84C]">8. Juni 2026</span>
             </h2>
-            <p className="text-[13px] text-[#5a5550] text-center leading-relaxed mb-7">
+            <p className="text-[13px] text-[var(--cs-text-3)] text-center leading-relaxed mb-7">
               Candlescope FinanceBoard v10.6 für Windows — vollständig offline, kostenlos, kein Abo.
             </p>
 
@@ -195,7 +195,7 @@ export default function HomePage() {
 
         {/* Sekundär-CTA */}
         <a href="#produkt"
-          className="text-[11px] tracking-[0.16em] uppercase text-[#5a5550] hover:text-[#F5F0E8] transition-colors duration-300 flex items-center gap-2 group">
+          className="text-[11px] tracking-[0.16em] uppercase text-[var(--cs-text-3)] hover:text-[var(--cs-text)] transition-colors duration-300 flex items-center gap-2 group">
           App entdecken
           <span className="w-4 h-px bg-current transition-all duration-300 group-hover:w-6" />
         </a>
@@ -211,12 +211,12 @@ export default function HomePage() {
             ].map(({ val, label }) => (
               <div key={label} className="flex flex-col gap-0.5">
                 <span className="font-mono text-[15px] text-[#C9A84C] leading-none tabular-nums">{val}</span>
-                <span className="font-mono text-[8px] tracking-[0.18em] uppercase text-[#3a3530]">{label}</span>
+                <span className="font-mono text-[8px] tracking-[0.18em] uppercase text-[var(--cs-text-4)]">{label}</span>
               </div>
             ))}
             <div className="ml-auto flex items-center gap-2">
               <div className="w-1.5 h-1.5 rounded-full bg-[#22c55e] animate-pulse" />
-              <span className="font-mono text-[9px] tracking-[0.12em] uppercase text-[#3a3530]">Windows · Gratis</span>
+              <span className="font-mono text-[9px] tracking-[0.12em] uppercase text-[var(--cs-text-4)]">Windows · Gratis</span>
             </div>
           </div>
         </div>
@@ -235,7 +235,7 @@ export default function HomePage() {
               description="CandleScope baut Finance-Tools die funktionieren — lokal, privat, ohne Abo. Das Haushaltsbuch ist der Anfang."
             />
             <div className="shrink-0">
-              <p className="font-mono text-[11px] tracking-[0.16em] uppercase text-[#3a3530] mb-2">Gegründet</p>
+              <p className="font-mono text-[11px] tracking-[0.16em] uppercase text-[var(--cs-text-4)] mb-2">Gegründet</p>
               <p className="font-display text-4xl text-[#C9A84C]">2022</p>
             </div>
           </div>
@@ -272,8 +272,8 @@ export default function HomePage() {
                     <CardIcon>{item.icon}</CardIcon>
                     <Badge variant={item.badgeVariant}>{item.badge}</Badge>
                   </div>
-                  <h3 className="font-display text-xl text-[#F5F0E8] mb-2 group-hover:text-[#C9A84C] transition-colors">{item.title}</h3>
-                  <p className="text-[#9A9590] text-sm leading-relaxed mb-6">{item.desc}</p>
+                  <h3 className="font-display text-xl text-[var(--cs-text)] mb-2 group-hover:text-[#C9A84C] transition-colors">{item.title}</h3>
+                  <p className="text-[var(--cs-text-2)] text-sm leading-relaxed mb-6">{item.desc}</p>
                   <Link to={item.href}
                     className="flex items-center gap-2 text-[11px] tracking-[0.1em] uppercase text-[#C9A84C]/50 group-hover:text-[#C9A84C] transition-colors mt-auto">
                     {item.cta}
@@ -308,7 +308,7 @@ export default function HomePage() {
               ].map((f, i) => (
                 <div key={i} className="flex items-center gap-3">
                   <div className="w-1.5 h-1.5 rounded-full bg-[#C9A84C]/60 shrink-0" />
-                  <span className="text-[#9A9590] text-sm">{f}</span>
+                  <span className="text-[var(--cs-text-2)] text-sm">{f}</span>
                 </div>
               ))}
             </div>
@@ -328,7 +328,7 @@ export default function HomePage() {
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2.5">
                 <div className="w-2 h-2 rounded-full bg-[#C9A84C] animate-pulse" />
-                <span className="font-mono text-[11px] tracking-[0.18em] uppercase text-[#9A9590]">
+                <span className="font-mono text-[11px] tracking-[0.18em] uppercase text-[var(--cs-text-2)]">
                   FinanceBoard — App in Aktion
                 </span>
               </div>
@@ -349,14 +349,14 @@ export default function HomePage() {
                 transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
               />
               <div className="relative rounded-2xl overflow-hidden border border-[#C9A84C]/20 shadow-2xl shadow-black/70">
-                <div className="bg-[#161616] px-4 py-2.5 flex items-center gap-2 border-b border-[#C9A84C]/8">
+                <div className="bg-[var(--cs-s4)] px-4 py-2.5 flex items-center gap-2 border-b border-[#C9A84C]/8">
                   <div className="w-3 h-3 rounded-full bg-[#ef4444]/70" />
                   <div className="w-3 h-3 rounded-full bg-[#eab308]/70" />
                   <div className="w-3 h-3 rounded-full bg-[#22c55e]/70" />
-                  <span className="text-[#5a5550] text-[10px] ml-2 font-mono">Candlescope FinanceBoard v10.6 — Dashboard</span>
+                  <span className="text-[var(--cs-text-3)] text-[10px] ml-2 font-mono">Candlescope FinanceBoard v10.6 — Dashboard</span>
                   <div className="ml-auto flex items-center gap-1.5">
                     <div className="w-1.5 h-1.5 rounded-full bg-[#00C896] animate-pulse" />
-                    <span className="font-mono text-[9px] text-[#3a3530] tracking-wider">LIVE</span>
+                    <span className="font-mono text-[9px] text-[var(--cs-text-4)] tracking-wider">LIVE</span>
                   </div>
                 </div>
                 <motion.div
@@ -387,12 +387,12 @@ export default function HomePage() {
               Der Typ dahinter
               <span className="w-6 h-px bg-[#C9A84C]/40" />
             </p>
-            <h2 className="font-display text-4xl md:text-5xl text-[#F5F0E8] tracking-tight leading-[1.1] mb-6">
+            <h2 className="font-display text-4xl md:text-5xl text-[var(--cs-text)] tracking-tight leading-[1.1] mb-6">
               Ich bin<br />
               <GradientText>Chris Schubert.</GradientText>
             </h2>
             <div className="flex flex-col gap-4 max-w-xl">
-              <p className="text-[#9A9590] leading-relaxed">
+              <p className="text-[var(--cs-text-2)] leading-relaxed">
                 Ich baue Software die ich selbst nutze — das Haushaltsbuch ist entstanden weil
                 ich nichts Besseres finden konnte. Ich trade, ich code, ich game.
                 CandleScope ist die Marke die das alles zusammenhält.
@@ -404,7 +404,7 @@ export default function HomePage() {
             <div className="flex items-center gap-4 mt-8 flex-wrap">
               <CtaButton href="/about" variant="primary">Mehr über mich</CtaButton>
               <a href="https://github.com/SchubertChris" target="_blank" rel="noopener noreferrer"
-                className="flex items-center gap-2 text-[11px] tracking-[0.14em] uppercase text-[#9A9590] hover:text-[#F5F0E8] transition-colors group">
+                className="flex items-center gap-2 text-[11px] tracking-[0.14em] uppercase text-[var(--cs-text-2)] hover:text-[var(--cs-text)] transition-colors group">
                 <Github size={14} strokeWidth={1.5} />
                 GitHub
                 <span className="w-4 h-px bg-current transition-all duration-300 group-hover:w-6" />
@@ -422,15 +422,15 @@ export default function HomePage() {
               ].map((item, i) => (
                 <StaggerItem key={i}>
                   <Link to={item.href}
-                    className="group flex items-center gap-5 p-4 border border-[#ffffff]/6 rounded-2xl bg-[#0d0d0d] hover:border-[#C9A84C]/25 hover:bg-[#C9A84C]/3 transition-all duration-200">
+                    className="group flex items-center gap-5 p-4 border border-[var(--cs-border-w)] rounded-2xl bg-[var(--cs-s1)] hover:border-[#C9A84C]/25 hover:bg-[#C9A84C]/3 transition-all duration-200">
                     <div className="w-11 h-11 rounded-xl bg-[#C9A84C]/8 border border-[#C9A84C]/15 flex items-center justify-center text-[#C9A84C]/70 group-hover:text-[#C9A84C] group-hover:border-[#C9A84C]/30 transition-all shrink-0">
                       {item.icon}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-[14px] font-medium text-[#F5F0E8] group-hover:text-[#C9A84C] transition-colors">{item.label}</p>
-                      <p className="text-[12px] text-[#9A9590] mt-0.5">{item.desc}</p>
+                      <p className="text-[14px] font-medium text-[var(--cs-text)] group-hover:text-[#C9A84C] transition-colors">{item.label}</p>
+                      <p className="text-[12px] text-[var(--cs-text-2)] mt-0.5">{item.desc}</p>
                     </div>
-                    <ArrowRight size={15} strokeWidth={1.5} className="text-[#3a3530] group-hover:text-[#C9A84C]/60 group-hover:translate-x-1 transition-all shrink-0" />
+                    <ArrowRight size={15} strokeWidth={1.5} className="text-[var(--cs-text-4)] group-hover:text-[#C9A84C]/60 group-hover:translate-x-1 transition-all shrink-0" />
                   </Link>
                 </StaggerItem>
               ))}

@@ -127,13 +127,13 @@ function StatPill({ icon, value, label, loading }: {
   icon: React.ReactNode; value: string; label: string; loading?: boolean
 }) {
   return (
-    <div className="flex items-center gap-2 px-4 py-2.5 border border-[#ffffff]/8 rounded-full bg-[#0d0d0d]">
+    <div className="flex items-center gap-2 px-4 py-2.5 border border-[var(--cs-border-w2)] rounded-full bg-[var(--cs-s1)]">
       <span className="text-[#C9A84C]/70">{icon}</span>
       {loading
         ? <div className="w-8 h-4 rounded bg-[#ffffff]/10 animate-pulse" />
-        : <span className="font-display text-base text-[#F5F0E8]">{value}</span>
+        : <span className="font-display text-base text-[var(--cs-text)]">{value}</span>
       }
-      <span className="font-mono text-[10px] tracking-[0.12em] uppercase text-[#5a5550]">{label}</span>
+      <span className="font-mono text-[10px] tracking-[0.12em] uppercase text-[var(--cs-text-3)]">{label}</span>
     </div>
   )
 }
@@ -159,11 +159,11 @@ function GitHubActivitySection({ username }: { username: string }) {
         <StatPill icon={<Code2 size={14} strokeWidth={1.5} />} value={userData ? String(userData.public_repos) : '—'} label="Repositories" loading={!userData} />
         <StatPill icon={<Users size={14} strokeWidth={1.5} />} value={userData ? String(userData.followers) : '—'} label="Follower" loading={!userData} />
       </div>
-      <div className="rounded-xl border border-[#ffffff]/8 bg-[#0d0d0d] p-6">
+      <div className="rounded-xl border border-[var(--cs-border-w2)] bg-[var(--cs-s1)] p-6">
         <div className="flex items-center justify-between mb-5">
           <div className="flex items-center gap-3">
-            <span className="font-mono text-[11px] tracking-[0.14em] uppercase text-[#5a5550]">Contribution Graph</span>
-            {status === 'loading' && <Loader2 size={12} strokeWidth={1.5} className="text-[#5a5550] animate-spin" />}
+            <span className="font-mono text-[11px] tracking-[0.14em] uppercase text-[var(--cs-text-3)]">Contribution Graph</span>
+            {status === 'loading' && <Loader2 size={12} strokeWidth={1.5} className="text-[var(--cs-text-3)] animate-spin" />}
             {status === 'success' && totalThisYear && <span className="font-mono text-[10px] text-[#C9A84C]/50">{totalThisYear} in {yearKey}</span>}
             {status === 'error' && <span className="flex items-center gap-1 font-mono text-[10px] text-[#FF4444]/60"><AlertCircle size={11} strokeWidth={1.5} /> API nicht erreichbar</span>}
           </div>
@@ -176,7 +176,7 @@ function GitHubActivitySection({ username }: { username: string }) {
           <div className="min-w-[640px]">
             {labels.length > 0 && (
               <div className="flex gap-1 mb-1">
-                {labels.map((l, i) => <div key={i} className="flex-1 font-mono text-[9px] text-[#5a5550] tracking-[0.1em] truncate">{l}</div>)}
+                {labels.map((l, i) => <div key={i} className="flex-1 font-mono text-[9px] text-[var(--cs-text-3)] tracking-[0.1em] truncate">{l}</div>)}
               </div>
             )}
             {status === 'loading' || contributions.length === 0
@@ -192,11 +192,11 @@ function GitHubActivitySection({ username }: { username: string }) {
               )
             }
             <div className="flex items-center gap-2 mt-3 justify-end">
-              <span className="font-mono text-[9px] text-[#5a5550]">Weniger</span>
+              <span className="font-mono text-[9px] text-[var(--cs-text-3)]">Weniger</span>
               {([0, 1, 2, 3, 4] as const).map(l => (
                 <div key={l} className={`w-3 h-3 rounded-sm ${['bg-[#ffffff]/5', 'bg-[#C9A84C]/20', 'bg-[#C9A84C]/40', 'bg-[#C9A84C]/65', 'bg-[#C9A84C]'][l]}`} />
               ))}
-              <span className="font-mono text-[9px] text-[#5a5550]">Mehr</span>
+              <span className="font-mono text-[9px] text-[var(--cs-text-3)]">Mehr</span>
             </div>
           </div>
         </div>
@@ -228,13 +228,13 @@ function SpotlightCard({ title, description, tags, href, githubHref, status }: {
           </div>
         </div>
       </div>
-      <h3 className="font-display text-2xl md:text-3xl text-[#F5F0E8] mb-3 leading-tight">{title}</h3>
-      <p className="text-[#9A9590] text-sm leading-relaxed mb-6 max-w-lg">{description}</p>
+      <h3 className="font-display text-2xl md:text-3xl text-[var(--cs-text)] mb-3 leading-tight">{title}</h3>
+      <p className="text-[var(--cs-text-2)] text-sm leading-relaxed mb-6 max-w-lg">{description}</p>
       <TagList tags={tags} />
-      <div className="flex items-center gap-4 mt-6 pt-6 border-t border-[#ffffff]/6">
+      <div className="flex items-center gap-4 mt-6 pt-6 border-t border-[var(--cs-border-w)]">
         {githubHref && (
           <a href={githubHref} target="_blank" rel="noopener noreferrer"
-            className="flex items-center gap-1.5 text-[11px] tracking-[0.1em] uppercase text-[#5a5550] hover:text-[#C9A84C] transition-colors">
+            className="flex items-center gap-1.5 text-[11px] tracking-[0.1em] uppercase text-[var(--cs-text-3)] hover:text-[#C9A84C] transition-colors">
             <GitBranch size={13} strokeWidth={1.5} /> GitHub
           </a>
         )}
@@ -256,21 +256,21 @@ function ProjectCard({ title, description, tags, href, githubHref, status, locke
   const statusLabel = { live: 'Live', wip: 'In Arbeit' }[status]
   return (
     <motion.div whileHover={{ y: -3 }} transition={{ duration: 0.22 }}
-      className="flex flex-col h-full rounded-xl border border-[#ffffff]/8 bg-[#0d0d0d] p-6 group hover:border-[#C9A84C]/20 transition-colors duration-300">
+      className="flex flex-col h-full rounded-xl border border-[var(--cs-border-w2)] bg-[var(--cs-s1)] p-6 group hover:border-[#C9A84C]/20 transition-colors duration-300">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-1.5">
           <div className={`w-1.5 h-1.5 rounded-full ${statusDot}`} />
-          <span className="font-mono text-[9px] tracking-[0.14em] uppercase text-[#5a5550]">{statusLabel}</span>
+          <span className="font-mono text-[9px] tracking-[0.14em] uppercase text-[var(--cs-text-3)]">{statusLabel}</span>
         </div>
         {locked && (
-          <div className="flex items-center gap-1 text-[#5a5550]">
+          <div className="flex items-center gap-1 text-[var(--cs-text-3)]">
             <Lock size={11} strokeWidth={1.5} />
             <span className="font-mono text-[9px] tracking-[0.1em] uppercase">Privat</span>
           </div>
         )}
       </div>
-      <h4 className="font-display text-base text-[#F5F0E8] mb-2">{title}</h4>
-      <p className="text-[#9A9590] text-[13px] leading-relaxed mb-4 flex-1">{description}</p>
+      <h4 className="font-display text-base text-[var(--cs-text)] mb-2">{title}</h4>
+      <p className="text-[var(--cs-text-2)] text-[13px] leading-relaxed mb-4 flex-1">{description}</p>
       <div className="flex flex-wrap gap-1.5 mb-4">
         {tags.map(t => (
           <span key={t} className="font-mono text-[10px] tracking-[0.1em] px-2 py-0.5 rounded-full border border-[#C9A84C]/20 text-[#C9A84C]/60">{t}</span>
@@ -279,7 +279,7 @@ function ProjectCard({ title, description, tags, href, githubHref, status, locke
       <div className="flex items-center gap-3 mt-auto">
         {githubHref && (
           <a href={githubHref} target="_blank" rel="noopener noreferrer"
-            className="flex items-center gap-1.5 text-[11px] tracking-[0.1em] uppercase text-[#5a5550] hover:text-[#C9A84C] transition-colors">
+            className="flex items-center gap-1.5 text-[11px] tracking-[0.1em] uppercase text-[var(--cs-text-3)] hover:text-[#C9A84C] transition-colors">
             <GitBranch size={12} strokeWidth={1.5} /> GitHub
           </a>
         )}
@@ -329,7 +329,7 @@ export default function DevPage() {
         {/* Flagship-Strip: Glaubwürdigkeit durch echtes Shipped Product */}
         <div className="w-full pt-5 border-t border-[#C9A84C]/8">
           <div className="flex flex-wrap items-center gap-3">
-            <span className="font-mono text-[9px] tracking-[0.16em] uppercase text-[#3a3530]">Flagship</span>
+            <span className="font-mono text-[9px] tracking-[0.16em] uppercase text-[var(--cs-text-4)]">Flagship</span>
             <span className="w-px h-3 bg-[#C9A84C]/15" />
             <Link to="/finance" className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#C9A84C]/5 border border-[#C9A84C]/20 hover:border-[#C9A84C]/40 hover:bg-[#C9A84C]/8 transition-all group">
               <div className="w-1 h-1 rounded-full bg-[#22c55e]" />
@@ -365,8 +365,8 @@ export default function DevPage() {
             <StaggerItem key={i}>
               <Card variant="elevated" className="h-full">
                 <CardIcon>{s.icon}</CardIcon>
-                <h3 className="font-display text-lg text-[#F5F0E8] mb-2">{s.title}</h3>
-                <p className="text-[#9A9590] text-sm leading-relaxed">{s.desc}</p>
+                <h3 className="font-display text-lg text-[var(--cs-text)] mb-2">{s.title}</h3>
+                <p className="text-[var(--cs-text-2)] text-sm leading-relaxed">{s.desc}</p>
               </Card>
             </StaggerItem>
           ))}
@@ -483,7 +483,7 @@ export default function DevPage() {
                 <StaggerItem key={i}>
                   <div className="flex items-start gap-3">
                     <CheckCircle2 size={15} strokeWidth={1.5} className="text-[#00C896] shrink-0 mt-0.5" />
-                    <span className="text-[#9A9590] text-sm">{item}</span>
+                    <span className="text-[var(--cs-text-2)] text-sm">{item}</span>
                   </div>
                 </StaggerItem>
               ))}
@@ -493,9 +493,9 @@ export default function DevPage() {
             </CtaButton>
           </div>
 
-          <div className="rounded-xl border border-[#ffffff]/8 bg-[#0d0d0d] overflow-hidden">
-            <div className="px-6 py-4 border-b border-[#ffffff]/6">
-              <span className="font-mono text-[11px] tracking-[0.14em] uppercase text-[#5a5550]">Open Source</span>
+          <div className="rounded-xl border border-[var(--cs-border-w2)] bg-[var(--cs-s1)] overflow-hidden">
+            <div className="px-6 py-4 border-b border-[var(--cs-border-w)]">
+              <span className="font-mono text-[11px] tracking-[0.14em] uppercase text-[var(--cs-text-3)]">Open Source</span>
             </div>
             <div className="px-6">
               <motion.div whileHover={{ x: 4 }} transition={{ duration: 0.2 }}
@@ -505,15 +505,15 @@ export default function DevPage() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="font-display text-sm text-[#F5F0E8]">CandleScope Frontend</span>
+                    <span className="font-display text-sm text-[var(--cs-text)]">CandleScope Frontend</span>
                     <span className="font-mono text-[10px] tracking-[0.12em] uppercase text-[#C9A84C]/50 px-2 py-0.5 rounded-full border border-[#C9A84C]/15">Author</span>
                   </div>
-                  <p className="text-[#9A9590] text-[13px] leading-relaxed">
+                  <p className="text-[var(--cs-text-2)] text-[13px] leading-relaxed">
                     Personal Brand Website mit eigenem Page Builder — React, TypeScript, Vite, Tailwind, Zustand.
                   </p>
                 </div>
                 <a href="https://github.com/SchubertChris/Candlescope-Frontend" target="_blank" rel="noopener noreferrer"
-                  className="text-[#5a5550] hover:text-[#C9A84C] transition-colors shrink-0 mt-1 opacity-0 group-hover:opacity-100">
+                  className="text-[var(--cs-text-3)] hover:text-[#C9A84C] transition-colors shrink-0 mt-1 opacity-0 group-hover:opacity-100">
                   <ExternalLink size={13} strokeWidth={1.5} />
                 </a>
               </motion.div>
@@ -526,7 +526,7 @@ export default function DevPage() {
 
       {/* ── Freelance CTA ────────────────────────────────── */}
       <SectionWrapper id="freelance">
-        <div className="relative rounded-2xl border border-[#C9A84C]/20 bg-gradient-to-br from-[#0f0e0c] to-[#080808] p-10 md:p-14 overflow-hidden">
+        <div className="relative rounded-2xl border border-[#C9A84C]/20 bg-gradient-to-br from-[#0f0e0c] to-[var(--cs-bg)] p-10 md:p-14 overflow-hidden">
           <motion.div
             className="absolute -top-24 -right-24 w-80 h-80 rounded-full pointer-events-none"
             style={{ background: 'radial-gradient(circle, rgba(201,168,76,0.08) 0%, transparent 70%)' }}
@@ -539,10 +539,10 @@ export default function DevPage() {
                 <div className="w-1.5 h-1.5 rounded-full bg-[#00C896] animate-pulse" />
                 <span className="font-mono text-[10px] tracking-[0.18em] uppercase text-[#00C896]">Open for work</span>
               </div>
-              <h2 className="font-display text-3xl md:text-4xl text-[#F5F0E8] leading-tight mb-4">
+              <h2 className="font-display text-3xl md:text-4xl text-[var(--cs-text)] leading-tight mb-4">
                 Dein Projekt.<br /><GradientText>Mein Code.</GradientText>
               </h2>
-              <p className="text-[#9A9590] leading-relaxed mb-8">
+              <p className="text-[var(--cs-text-2)] leading-relaxed mb-8">
                 Du hast eine Idee — ich setze sie um. Website, Web-App oder komplettes Backend. Sauber entwickelt, pünktlich geliefert, technisch solid.
               </p>
               <div className="flex flex-wrap gap-3">
@@ -550,7 +550,7 @@ export default function DevPage() {
                   <CtaButton variant="primary" href="/contact">Projekt anfragen</CtaButton>
                 </Link>
                 <a href="mailto:info@candlescope.de"
-                  className="flex items-center gap-2 text-[11px] tracking-[0.14em] uppercase text-[#5a5550] hover:text-[#F5F0E8] transition-colors duration-200 px-4">
+                  className="flex items-center gap-2 text-[11px] tracking-[0.14em] uppercase text-[var(--cs-text-3)] hover:text-[var(--cs-text)] transition-colors duration-200 px-4">
                   info@candlescope.de <ArrowRight size={13} strokeWidth={1.5} />
                 </a>
               </div>
@@ -563,13 +563,13 @@ export default function DevPage() {
                 { icon: <Coffee size={16} strokeWidth={1.5} />, title: 'Direkte Kommunikation', desc: 'Kein Agentur-Overhead — du redest direkt mit dem Entwickler.' },
               ].map((item, i) => (
                 <StaggerItem key={i}>
-                  <div className="flex items-start gap-4 p-4 rounded-xl border border-[#ffffff]/6 bg-[#080808]/60 hover:border-[#C9A84C]/15 transition-colors duration-200">
+                  <div className="flex items-start gap-4 p-4 rounded-xl border border-[var(--cs-border-w)] bg-[var(--cs-backdrop)] hover:border-[#C9A84C]/15 transition-colors duration-200">
                     <div className="w-8 h-8 rounded-lg bg-[#C9A84C]/8 border border-[#C9A84C]/15 flex items-center justify-center shrink-0 text-[#C9A84C]/70">
                       {item.icon}
                     </div>
                     <div>
-                      <p className="font-display text-sm text-[#F5F0E8] mb-1">{item.title}</p>
-                      <p className="text-[#9A9590] text-[13px] leading-relaxed">{item.desc}</p>
+                      <p className="font-display text-sm text-[var(--cs-text)] mb-1">{item.title}</p>
+                      <p className="text-[var(--cs-text-2)] text-[13px] leading-relaxed">{item.desc}</p>
                     </div>
                   </div>
                 </StaggerItem>
@@ -593,7 +593,7 @@ export default function DevPage() {
             <StaggerItem key={i}>
               <div className="flex flex-col gap-1">
                 <span className="font-display text-4xl md:text-5xl text-[#C9A84C] leading-none">{s.value}</span>
-                <span className="font-mono text-[11px] tracking-[0.14em] uppercase text-[#5a5550]">{s.label}</span>
+                <span className="font-mono text-[11px] tracking-[0.14em] uppercase text-[var(--cs-text-3)]">{s.label}</span>
               </div>
             </StaggerItem>
           ))}

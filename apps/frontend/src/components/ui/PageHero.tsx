@@ -44,7 +44,7 @@ function AnimatedTitle({ line1, line2, accent }: { line1: string; line2: string;
   const chars2 = line2.split('')
   return (
     <h1 className="font-display leading-[1.05] tracking-[-0.01em] mb-8">
-      <span className={`block text-5xl sm:text-6xl md:text-7xl xl:text-8xl ${accent === 'line1' ? 'text-[#C9A84C]' : 'text-[#F5F0E8]'}`}>
+      <span className={`block text-5xl sm:text-6xl md:text-7xl xl:text-8xl ${accent === 'line1' ? 'text-[#C9A84C]' : 'text-[var(--cs-text)]'}`}>
         {chars1.map((char, i) => (
           <motion.span key={i} custom={i} variants={CHAR_VARIANTS} initial="hidden" animate="visible"
             className="inline-block" style={{ whiteSpace: char === ' ' ? 'pre' : 'normal' }}>
@@ -52,7 +52,7 @@ function AnimatedTitle({ line1, line2, accent }: { line1: string; line2: string;
           </motion.span>
         ))}
       </span>
-      <span className={`block text-5xl sm:text-6xl md:text-7xl xl:text-8xl ${accent === 'line2' ? 'text-[#C9A84C]' : 'text-[#F5F0E8]'}`}>
+      <span className={`block text-5xl sm:text-6xl md:text-7xl xl:text-8xl ${accent === 'line2' ? 'text-[#C9A84C]' : 'text-[var(--cs-text)]'}`}>
         {chars2.map((char, i) => (
           <motion.span key={i} custom={chars1.length + i} variants={CHAR_VARIANTS} initial="hidden" animate="visible"
             className="inline-block" style={{ whiteSpace: char === ' ' ? 'pre' : 'normal' }}>
@@ -473,7 +473,7 @@ function CommunityBg() {
               transition={{ delay: m.delay, duration: 0.5, ease: [0.34, 1.56, 0.64, 1] }} />
             {/* Avatar */}
             <motion.circle cx={`${m.x}%`} cy={`${m.y}%`} r="2.5%"
-              fill="#0f0f0f" stroke="#C9A84C" strokeWidth="0.4" strokeOpacity="0.5"
+              fill="var(--cs-s2)" stroke="#C9A84C" strokeWidth="0.4" strokeOpacity="0.5"
               filter="url(#aGlow)"
               initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: m.delay + 0.1, duration: 0.4, ease: [0.34, 1.56, 0.64, 1] }} />
@@ -654,11 +654,11 @@ function HomeBg() {
           <motion.div
             animate={{ y: [0, -6, 0] }}
             transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}>
-            <div className="border border-[#C9A84C]/20 rounded-2xl bg-[#090909]/80 backdrop-blur-md px-5 py-4 shadow-2xl shadow-black/70"
+            <div className="border border-[#C9A84C]/20 rounded-2xl bg-[var(--cs-s0)]/80 backdrop-blur-md px-5 py-4 shadow-2xl shadow-black/70"
               style={{ boxShadow: '0 0 40px rgba(201,168,76,0.06), 0 20px 60px rgba(0,0,0,0.7)' }}>
               <div className="text-[9px] font-mono text-[#4a4540] tracking-widest uppercase mb-1">Gesamtvermögen</div>
               <div className="flex items-baseline gap-2.5">
-                <span className="text-[28px] font-mono text-[#F5F0E8] tracking-tight leading-none">€ 24,830</span>
+                <span className="text-[28px] font-mono text-[var(--cs-text)] tracking-tight leading-none">€ 24,830</span>
                 <motion.span className="text-[11px] font-mono text-[#22c55e]"
                   initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.0 }}>
                   +3.2% YTD
@@ -668,7 +668,7 @@ function HomeBg() {
               <div className="mt-2 flex gap-4">
                 {[{ l: 'Konten', v: '4' }, { l: 'Module', v: '10' }, { l: 'Offline', v: '100%' }].map(({ l, v }) => (
                   <div key={l}>
-                    <div className="text-[8px] font-mono text-[#3a3530]">{l}</div>
+                    <div className="text-[8px] font-mono text-[var(--cs-text-4)]">{l}</div>
                     <div className="text-[11px] font-mono text-[#C9A84C]/70">{v}</div>
                   </div>
                 ))}
@@ -699,8 +699,8 @@ function HomeBg() {
           <motion.div
             animate={{ y: [0, 5, 0] }}
             transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', delay: 1.2 }}>
-            <div className="border border-[#C9A84C]/12 rounded-xl bg-[#090909]/70 backdrop-blur-md px-4 py-3 w-[200px]">
-              <div className="text-[8px] font-mono text-[#3a3530] tracking-widest uppercase mb-2">Ausgaben · Jan–Dez</div>
+            <div className="border border-[#C9A84C]/12 rounded-xl bg-[var(--cs-s0)]/70 backdrop-blur-md px-4 py-3 w-[200px]">
+              <div className="text-[8px] font-mono text-[var(--cs-text-4)] tracking-widest uppercase mb-2">Ausgaben · Jan–Dez</div>
               <svg width="100%" viewBox="0 0 220 44">
                 <defs>
                   <linearGradient id="spFill" x1="0" y1="0" x2="0" y2="1">
@@ -719,9 +719,9 @@ function HomeBg() {
                   initial={{ opacity: 0 }} animate={{ opacity: 0.9 }} transition={{ delay: 2.6 }} />
               </svg>
               <div className="mt-1.5 flex justify-between">
-                <span className="text-[8px] font-mono text-[#3a3530]">Jan</span>
+                <span className="text-[8px] font-mono text-[var(--cs-text-4)]">Jan</span>
                 <span className="text-[8px] font-mono text-[#C9A84C]/50">–12.4% ggü. Vorjahr</span>
-                <span className="text-[8px] font-mono text-[#3a3530]">Dez</span>
+                <span className="text-[8px] font-mono text-[var(--cs-text-4)]">Dez</span>
               </div>
             </div>
           </motion.div>
@@ -737,8 +737,8 @@ function HomeBg() {
           <motion.div
             animate={{ y: [0, -4, 0] }}
             transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut', delay: 2 }}>
-            <div className="border border-[#C9A84C]/10 rounded-xl bg-[#090909]/65 backdrop-blur-md px-4 py-3 w-[180px]">
-              <div className="text-[8px] font-mono text-[#3a3530] tracking-widest uppercase mb-3">Kategorien</div>
+            <div className="border border-[#C9A84C]/10 rounded-xl bg-[var(--cs-s0)]/65 backdrop-blur-md px-4 py-3 w-[180px]">
+              <div className="text-[8px] font-mono text-[var(--cs-text-4)] tracking-widest uppercase mb-3">Kategorien</div>
               <div className="flex flex-col gap-2">
                 {cats.map((cat, i) => (
                   <div key={cat.label}>
@@ -828,7 +828,7 @@ export default function PageHero({
 
         <AnimatedTitle line1={titleLine1} line2={titleLine2} accent={titleAccent as 'line1' | 'line2'} />
 
-        <motion.p className="text-[#5a5550] text-base md:text-lg max-w-xl leading-relaxed mb-10"
+        <motion.p className="text-[var(--cs-text-3)] text-base md:text-lg max-w-xl leading-relaxed mb-10"
           initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.75 }}>
           {description}
@@ -852,7 +852,7 @@ export default function PageHero({
           <motion.span className="w-px h-6 bg-gradient-to-b from-[#C9A84C]/60 to-transparent block"
             animate={{ y: [0, 4, 0] }} transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }} />
         )}
-        <span className="text-[10px] tracking-[0.16em] uppercase text-[#3a3530]">Scroll</span>
+        <span className="text-[10px] tracking-[0.16em] uppercase text-[var(--cs-text-4)]">Scroll</span>
       </motion.div>
 
       {/* Bottom divider */}
