@@ -132,7 +132,7 @@ export default function HomePage() {
   const [dlOpen, setDlOpen] = useState(false)
 
   return (
-    <>
+    <div style={{ overflowX: 'hidden' }}>
       {/* ── Download Coming-Soon Modal ────────────────────── */}
       {dlOpen && (
         <motion.div
@@ -464,6 +464,6 @@ export default function HomePage() {
           </Reveal>
         </div>
       </section>
-    </>
+    </div>
   )
 }
