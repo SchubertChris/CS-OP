@@ -1,1 +1,22 @@
 node_modules
+dist
+dist-ssr
+
+# Env files — never commit real secrets
+.env
+.env.local
+.env.*.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.idea
+.vscode/*
+!.vscode/extensions.json
+*.suo
+*.sw?
+
+# Vercel
+.vercel
