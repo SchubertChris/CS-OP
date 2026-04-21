@@ -18,15 +18,24 @@ function ScrollToTop() {
   return null
 }
 
+const SESSION_KEY = 'cs_intro_seen'
+
 export default function RootLayout() {
-  const [introComplete, setIntroComplete] = useState(false)
+  const [introComplete, setIntroComplete] = useState(
+    () => sessionStorage.getItem(SESSION_KEY) === '1'
+  )
+
+  const handleIntroComplete = () => {
+    sessionStorage.setItem(SESSION_KEY, '1')
+    setIntroComplete(true)
+  }
 
   return (
     <div className="min-h-screen bg-[#080808] text-[#F5F0E8] flex flex-col relative">
 
-      {/* Intro — sofort, kein lazy, kein Flash */}
+      {/* Intro — nur einmal pro Session */}
       {!introComplete && (
-        <IntroAnimation onComplete={() => setIntroComplete(true)} />
+        <IntroAnimation onComplete={handleIntroComplete} />
       )}
 
       {/* Seite komplett versteckt bis Intro fertig */}
