@@ -135,7 +135,7 @@ export default function Header() {
           className="flex flex-col gap-1 py-3 backdrop-blur-xl border border-[#C9A84C]/15 rounded-l-2xl overflow-hidden transition-all duration-300"
           style={{
             background: 'var(--cs-sidebar-mob)',
-            width: sidebarOpen ? '148px' : '0px',
+            width: sidebarOpen ? '164px' : '0px',
             opacity: sidebarOpen ? 1 : 0,
             padding: sidebarOpen ? '12px 8px' : '12px 0',
           }}
