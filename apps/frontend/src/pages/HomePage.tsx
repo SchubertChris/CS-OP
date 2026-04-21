@@ -232,7 +232,7 @@ export default function HomePage() {
             <SectionHeader
               eyebrow="Die Marke"
               title={<><GradientText>CandleScope</GradientText><br />ist Fintech.</>}
-              description="CandleScope baut Finance-Tools die wirklich funktionieren — angefangen mit dem Haushaltsbuch. Mehr folgt."
+              description="CandleScope baut Finance-Tools die funktionieren — lokal, privat, ohne Abo. Das Haushaltsbuch ist der Anfang."
             />
             <div className="shrink-0">
               <p className="font-mono text-[11px] tracking-[0.16em] uppercase text-[#3a3530] mb-2">Gegründet</p>
@@ -247,7 +247,7 @@ export default function HomePage() {
               icon: <BarChart2 size={22} strokeWidth={1.5} />,
               badge: 'Live', badgeVariant: 'green' as const,
               title: 'Haushaltsbuch',
-              desc: 'Vollständige Finanz-App — lokal, privat, einmalig kaufen. Kein Abo.',
+              desc: 'Vollständige Finanz-App — lokal, privat, kostenlos. Deine Daten bleiben auf deinem Gerät.',
               href: '/finance', cta: 'Entdecken',
             },
             {
@@ -296,7 +296,7 @@ export default function HomePage() {
             <SectionHeader
               eyebrow="CandleScope Finance"
               title={<>Das<br /><GradientText>Haushaltsbuch</GradientText></>}
-              description="Finanzielle Kontrolle ohne Abo, ohne Cloud, ohne Kompromisse. Einmal kaufen — für immer nutzen."
+              description="Finanzielle Kontrolle ohne Abo, ohne Cloud, ohne Kompromisse. Einmal herunterladen — für immer nutzen."
               className="mb-8"
             />
             <div className="flex flex-col gap-3 mb-8">
@@ -313,8 +313,8 @@ export default function HomePage() {
               ))}
             </div>
             <div className="flex items-center gap-4 flex-wrap">
-              <CtaButton href="/finance" variant="primary">Produkt ansehen</CtaButton>
-              <CtaButton href="/contact" variant="ghost">Kaufanfrage</CtaButton>
+              <CtaButton href="/finance" variant="primary">Alle Features ansehen</CtaButton>
+              <CtaButton href="/contact" variant="ghost">Frage stellen</CtaButton>
             </div>
           </Reveal>
           <ParallaxScreenshot src={imgUebersicht} alt="CandleScope Haushaltsbuch" />
@@ -452,8 +452,8 @@ export default function HomePage() {
             />
             <SectionHeader
               eyebrow="Lass uns reden"
-              title={<>Bereit für<br /><GradientText>mehr?</GradientText></>}
-              description="Projekt · Kooperation · einfach Hallo sagen. Ich antworte innerhalb von 24 Stunden."
+              title={<>Ein Projekt?<br /><GradientText>Schreib mir.</GradientText></>}
+              description="Web-Projekt, Kooperation oder eine Frage zum FinanceBoard — ich antworte innerhalb von 24 Stunden."
               align="center"
               className="mb-8"
             />

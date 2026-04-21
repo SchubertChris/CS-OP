@@ -42,7 +42,7 @@ const CONTACTS = [
   { icon: <Mail size={20} strokeWidth={1.5} />,    title: 'E-Mail',    value: 'info@candlescope.de',    href: 'mailto:info@candlescope.de', desc: 'Direkter Kontakt — bevorzugter Weg.' },
   { icon: <Github size={20} strokeWidth={1.5} />,  title: 'GitHub',    value: 'SchubertChris',            href: 'https://github.com/SchubertChris', desc: 'Code, Open Source, Projekte.', external: true },
   { icon: <Instagram size={20} strokeWidth={1.5} />, title: 'Instagram', value: '@candlescope',           href: INSTAGRAM, desc: 'Charts, Setups & Marktanalysen.', external: true },
-  { icon: <DiscordIcon />,                          title: 'Discord',   value: 'Community Server',        href: DISCORD, desc: 'Trader Rolle sichern — nur kurze Zeit!', external: true },
+  { icon: <DiscordIcon />,                          title: 'Discord',   value: 'Community Server',        href: DISCORD, desc: 'Trading, Finance & Tech — direkt im Austausch.', external: true },
 ]
 
 type FormStatus = 'idle' | 'sending' | 'success' | 'error'

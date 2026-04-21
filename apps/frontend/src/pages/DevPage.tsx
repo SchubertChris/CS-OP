@@ -304,7 +304,7 @@ export default function DevPage() {
   return (
     <>
       <PageHero
-        eyebrow="Fullstack Developer · Köln, DE"
+        eyebrow="Fullstack Developer · Potsdam, DE"
         titleLine1="Von der Idee"
         titleLine2="zum Produkt."
         titleAccent="line2"
