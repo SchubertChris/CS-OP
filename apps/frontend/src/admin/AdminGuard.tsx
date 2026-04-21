@@ -8,7 +8,15 @@ export default function AdminGuard({ children }: { children: React.ReactNode }) 
 
   useEffect(() => {
     fetch('/api/auth/me', { credentials: 'include' })
-      .then(r => setStatus(r.ok ? 'ok' : 'unauthorized'))
+      .then(async r => {
+        const ct = r.headers.get('content-type') ?? ''
+        if (!r.ok || !ct.includes('application/json')) {
+          setStatus('unauthorized')
+          return
+        }
+        const data = await r.json()
+        setStatus(data?.role === 'admin' ? 'ok' : 'unauthorized')
+      })
       .catch(() => setStatus('unauthorized'))
   }, [])
 
