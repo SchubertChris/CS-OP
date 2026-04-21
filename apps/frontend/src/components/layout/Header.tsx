@@ -126,85 +126,87 @@ export default function Header() {
       </header>
 
       {/* ── Mobile Icon Sidebar ──────────────────────────── */}
-      {/* Wrapper — position fixed, immer sichtbar */}
       <div className="fixed right-0 top-[30%] z-40 lg:hidden flex items-center">
 
-        {/* Toggle-Pfeil — IMMER sichtbar, unabhängig vom Sidebar-State */}
+        {/* Lasche — groß genug zum Antippen */}
         <button
           onClick={() => setSidebarOpen(v => !v)}
           aria-label={sidebarOpen ? 'Navigation schließen' : 'Navigation öffnen'}
-          className="w-5 h-10 flex items-center justify-center border border-[#C9A84C]/20 border-r-0 rounded-l-lg text-[#C9A84C]/60 hover:text-[#C9A84C] transition-colors duration-200 shrink-0"
+          className="w-8 h-16 flex items-center justify-center border border-[#C9A84C]/20 border-r-0 rounded-l-xl text-[#C9A84C]/60 hover:text-[#C9A84C] transition-colors duration-200 shrink-0"
           style={{ background: 'var(--cs-sidebar-mob)' }}
         >
           <ChevronRight
-            size={12} strokeWidth={2}
+            size={15} strokeWidth={2}
             className={`transition-transform duration-300 ${sidebarOpen ? 'rotate-0' : 'rotate-180'}`}
           />
         </button>
 
-        {/* Sidebar Panel — collapsed/expanded */}
+        {/* Sidebar Panel */}
         <div
-          className="flex flex-col items-center gap-1 py-3 px-1.5 backdrop-blur-xl border border-[#C9A84C]/15 rounded-l-2xl overflow-hidden transition-all duration-300"
-          style={{ background: 'var(--cs-sidebar-mob)' }}
-          style={{ width: sidebarOpen ? '56px' : '0px', opacity: sidebarOpen ? 1 : 0 }}
+          className="flex flex-col gap-1 py-3 backdrop-blur-xl border border-[#C9A84C]/15 rounded-l-2xl overflow-hidden transition-all duration-300"
+          style={{
+            background: 'var(--cs-sidebar-mob)',
+            width: sidebarOpen ? '148px' : '0px',
+            opacity: sidebarOpen ? 1 : 0,
+            padding: sidebarOpen ? '12px 8px' : '12px 0',
+          }}
         >
           {/* Logo */}
-          <Link to="/" aria-label="CandleScope Startseite" className="flex items-center justify-center w-10 h-10 mb-1 shrink-0">
+          <Link to="/" aria-label="CandleScope Startseite"
+            className="flex items-center gap-2.5 px-2 h-10 mb-1 shrink-0 overflow-hidden">
             <img src={csLogo} alt="CandleScope"
-              className="w-7 h-7 object-contain hover:scale-110 transition-transform duration-200" />
+              className="w-6 h-6 object-contain shrink-0 hover:scale-110 transition-transform duration-200" />
+            <span className="font-display text-[11px] tracking-[0.12em] uppercase text-[var(--cs-text)] whitespace-nowrap">
+              Candle<span className="text-[#C9A84C]">Scope</span>
+            </span>
           </Link>
 
-          <div className="w-5 h-px bg-[#C9A84C]/20 mb-1 shrink-0" />
+          <div className="h-px bg-[#C9A84C]/20 mb-1 mx-2 shrink-0" />
 
           {/* Nav items */}
-          {navItems.map(({ to, label, icon, tooltip }) => (
-            <div key={to} className="relative group shrink-0">
-              <NavLink to={to} aria-label={label}
-                className={({ isActive }) => `
-                  relative w-10 h-10 flex items-center justify-center rounded-xl transition-all duration-200
-                  ${isActive
-                    ? 'bg-[#C9A84C]/15 text-[#C9A84C]'
-                    : 'text-[var(--cs-text-2)] hover:bg-[#C9A84C]/8 hover:text-[#C9A84C]'
-                  }
-                `}>
-                {({ isActive }) => (
-                  <>
-                    <span className={`absolute left-0 top-2 bottom-2 w-0.5 rounded-full transition-all duration-300 ${isActive ? 'bg-[#C9A84C] opacity-100' : 'opacity-0'}`} />
-                    {icon}
-                  </>
-                )}
-              </NavLink>
-              <SidebarTooltip label={label} tooltip={tooltip} />
-            </div>
+          {navItems.map(({ to, label, icon }) => (
+            <NavLink key={to} to={to} aria-label={label}
+              className={({ isActive }) => `
+                relative flex items-center gap-3 px-2 h-10 rounded-xl transition-all duration-200 shrink-0 overflow-hidden
+                ${isActive
+                  ? 'bg-[#C9A84C]/15 text-[#C9A84C]'
+                  : 'text-[var(--cs-text-2)] hover:bg-[#C9A84C]/8 hover:text-[#C9A84C]'
+                }
+              `}>
+              {({ isActive }) => (
+                <>
+                  <span className={`absolute left-0 top-2 bottom-2 w-0.5 rounded-full transition-all duration-300 ${isActive ? 'bg-[#C9A84C] opacity-100' : 'opacity-0'}`} />
+                  <span className="shrink-0 ml-1">{icon}</span>
+                  <span className="text-[11px] tracking-[0.08em] font-medium whitespace-nowrap">{label}</span>
+                </>
+              )}
+            </NavLink>
           ))}
 
-          <div className="w-5 h-px bg-[#C9A84C]/20 my-1 shrink-0" />
+          <div className="h-px bg-[#C9A84C]/20 my-1 mx-2 shrink-0" />
 
           {/* Admin */}
-          <div className="relative group shrink-0">
-            <Link to="/admin" aria-label="Admin Panel"
-              className="w-10 h-10 flex items-center justify-center rounded-xl text-[var(--cs-text-2)] hover:bg-[#C9A84C]/8 hover:text-[#C9A84C] transition-all duration-200">
-              <Shield size={16} strokeWidth={1.5} />
-            </Link>
-            <SidebarTooltip label="Admin" tooltip="Panel · CMS" />
-          </div>
+          <Link to="/admin" aria-label="Admin Panel"
+            className="flex items-center gap-3 px-2 h-10 rounded-xl text-[var(--cs-text-2)] hover:bg-[#C9A84C]/8 hover:text-[#C9A84C] transition-all duration-200 shrink-0 overflow-hidden">
+            <span className="shrink-0 ml-1"><Shield size={16} strokeWidth={1.5} /></span>
+            <span className="text-[11px] tracking-[0.08em] font-medium whitespace-nowrap">Admin</span>
+          </Link>
 
           {/* Hire me */}
-          <div className="relative group shrink-0">
-            <Link to="/contact" aria-label="Hire me – Kontakt aufnehmen"
-              className="w-10 h-10 flex items-center justify-center rounded-xl text-[var(--cs-text-2)] hover:bg-[#C9A84C]/8 hover:text-[#C9A84C] transition-all duration-200">
-              <Mail size={16} strokeWidth={1.5} />
-            </Link>
-            <SidebarTooltip label="Hire me" tooltip="Kontakt aufnehmen" />
-          </div>
+          <Link to="/contact" aria-label="Hire me – Kontakt aufnehmen"
+            className="flex items-center gap-3 px-2 h-10 rounded-xl text-[var(--cs-text-2)] hover:bg-[#C9A84C]/8 hover:text-[#C9A84C] transition-all duration-200 shrink-0 overflow-hidden">
+            <span className="shrink-0 ml-1"><Mail size={16} strokeWidth={1.5} /></span>
+            <span className="text-[11px] tracking-[0.08em] font-medium whitespace-nowrap">Hire me</span>
+          </Link>
 
           {/* Theme Toggle */}
-          <div className="relative group shrink-0">
-            <button onClick={toggle} aria-label="Theme wechseln"
-              className="w-10 h-10 flex items-center justify-center rounded-xl text-[var(--cs-text-3)] hover:bg-[#C9A84C]/8 hover:text-[#C9A84C] transition-all duration-200 cursor-pointer text-base">
-              {theme === 'dark' ? '☀' : '☽'}
-            </button>
-          </div>
+          <button onClick={toggle} aria-label="Theme wechseln"
+            className="flex items-center gap-3 px-2 h-10 rounded-xl text-[var(--cs-text-3)] hover:bg-[#C9A84C]/8 hover:text-[#C9A84C] transition-all duration-200 cursor-pointer shrink-0 overflow-hidden w-full">
+            <span className="shrink-0 ml-1 text-base">{theme === 'dark' ? '☀' : '☽'}</span>
+            <span className="text-[11px] tracking-[0.08em] font-medium whitespace-nowrap">
+              {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+            </span>
+          </button>
         </div>
       </div>
     </>
