@@ -37,7 +37,7 @@ function DesktopTooltip({ text }: { text: string }) {
 
 function SidebarTooltip({ label, tooltip }: { label: string; tooltip: string }) {
   return (
-    <div className="absolute right-full mr-4 top-1/2 -translate-y-1/2 pointer-events-none opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0 transition-all duration-200 delay-75 z-50 min-w-max">
+    <div className="absolute right-full mr-4 top-1/2 -translate-y-1/2 pointer-events-none opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0 transition-all duration-200 delay-75 z-50 min-w-max hidden md:block">
       <div className="bg-[#0f0f0f] border border-[#C9A84C]/20 rounded-xl px-3.5 py-2.5 shadow-2xl shadow-black/60">
         <p className="text-[13px] font-medium text-[#F5F0E8] tracking-[0.02em]">{label}</p>
         <p className="text-[10px] text-[#9A9590] tracking-[0.08em] uppercase mt-0.5">{tooltip}</p>
