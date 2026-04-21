@@ -3,7 +3,7 @@
    src/pages/HomePage.tsx
    ============================================================ */
 
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, useInView, useScroll, useTransform, useSpring } from 'framer-motion'
 import PageHero from '../components/ui/PageHero'
@@ -129,8 +129,52 @@ function Marquee() {
    PAGE
 ══════════════════════════════════════════════════════════════ */
 export default function HomePage() {
+  const [dlOpen, setDlOpen] = useState(false)
+
   return (
     <>
+      {/* ── Download Coming-Soon Modal ────────────────────── */}
+      {dlOpen && (
+        <motion.div
+          className="fixed inset-0 z-[9000] flex items-center justify-center px-6"
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+          onClick={() => setDlOpen(false)}>
+          {/* Backdrop */}
+          <div className="absolute inset-0 bg-black/75 backdrop-blur-sm" />
+          {/* Card */}
+          <motion.div
+            className="relative z-10 w-full max-w-sm border border-[#C9A84C]/25 rounded-2xl bg-[#090909] p-8 shadow-2xl shadow-black"
+            initial={{ scale: 0.92, opacity: 0, y: 16 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            onClick={e => e.stopPropagation()}>
+
+            {/* Icon */}
+            <div className="flex items-center justify-center w-12 h-12 rounded-full border border-[#C9A84C]/25 bg-[#C9A84C]/8 mb-6 mx-auto">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 2v10l4 2" /><circle cx="12" cy="12" r="10" />
+              </svg>
+            </div>
+
+            <p className="text-[10px] font-mono tracking-[0.22em] uppercase text-[#C9A84C] text-center mb-2">Bald verfügbar</p>
+            <h2 className="text-xl font-display text-[#F5F0E8] text-center leading-snug mb-3">
+              Download startet<br />am <span className="text-[#C9A84C]">8. Juni 2026</span>
+            </h2>
+            <p className="text-[13px] text-[#5a5550] text-center leading-relaxed mb-7">
+              Candlescope FinanceBoard v10.6 für Windows — vollständig offline, kostenlos, kein Abo.
+            </p>
+
+            <div className="h-px bg-gradient-to-r from-transparent via-[#C9A84C]/15 to-transparent mb-7" />
+
+            <button
+              onClick={() => setDlOpen(false)}
+              className="w-full text-[11px] tracking-[0.16em] uppercase bg-[#C9A84C] text-[#080808] py-3 rounded-full font-semibold hover:bg-[#d4b55a] transition-colors duration-200">
+              Verstanden
+            </button>
+          </motion.div>
+        </motion.div>
+      )}
+
       {/* ── 1. Hero ───────────────────────────────────────── */}
       <PageHero
         eyebrow="FinanceBoard · Kostenlos für Windows"
@@ -142,11 +186,12 @@ export default function HomePage() {
         theme="home"
       >
         {/* Primär-CTA: solid gold — höchste Priorität */}
-        <Link to="/finance"
-          className="relative overflow-hidden group text-[11px] tracking-[0.18em] uppercase bg-[#C9A84C] text-[#080808] px-8 py-3.5 rounded-full font-semibold shadow-lg shadow-[#C9A84C]/25 hover:shadow-[#C9A84C]/40 transition-shadow duration-300">
+        <button
+          onClick={() => setDlOpen(true)}
+          className="relative overflow-hidden group text-[11px] tracking-[0.18em] uppercase bg-[#C9A84C] text-[#080808] px-8 py-3.5 rounded-full font-semibold shadow-lg shadow-[#C9A84C]/25 hover:shadow-[#C9A84C]/40 transition-shadow duration-300 cursor-pointer">
           <span className="relative z-10">Kostenlos herunterladen</span>
           <span className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-full" />
-        </Link>
+        </button>
 
         {/* Sekundär-CTA */}
         <a href="#produkt"
