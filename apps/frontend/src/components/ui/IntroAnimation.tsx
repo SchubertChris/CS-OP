@@ -75,7 +75,7 @@ export default function IntroAnimation({ onComplete }: { onComplete: () => void 
           <motion.div
             key="intro"
             className="fixed inset-0 z-[300] flex flex-col items-center justify-center"
-            style={{ background: '#080808' }}
+            style={{ background: 'var(--cs-bg)' }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5, ease: 'easeInOut' }}
           >
