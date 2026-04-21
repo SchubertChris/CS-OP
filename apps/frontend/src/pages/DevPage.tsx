@@ -216,7 +216,7 @@ function SpotlightCard({ title, description, tags, href, githubHref, status }: {
   const statusLabel = { live: 'Live', wip: 'In Arbeit' }[status]
   return (
     <motion.div whileHover={{ y: -4 }} transition={{ duration: 0.25 }}
-      className="relative rounded-2xl border border-[#C9A84C]/20 bg-gradient-to-br from-[#0f0e0c] to-[#0a0908] p-8 overflow-hidden group">
+      className="relative rounded-2xl border border-[#C9A84C]/20 bg-gradient-to-br from-[var(--cs-s2)] to-[var(--cs-s1)] p-8 overflow-hidden group">
       <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500
         bg-[radial-gradient(ellipse_at_top_left,rgba(201,168,76,0.08)_0%,transparent_60%)] pointer-events-none" />
       <div className="flex items-start justify-between mb-4">
@@ -526,7 +526,7 @@ export default function DevPage() {
 
       {/* ── Freelance CTA ────────────────────────────────── */}
       <SectionWrapper id="freelance">
-        <div className="relative rounded-2xl border border-[#C9A84C]/20 bg-gradient-to-br from-[#0f0e0c] to-[var(--cs-bg)] p-10 md:p-14 overflow-hidden">
+        <div className="relative rounded-2xl border border-[#C9A84C]/20 bg-gradient-to-br from-[var(--cs-s2)] to-[var(--cs-bg)] p-10 md:p-14 overflow-hidden">
           <motion.div
             className="absolute -top-24 -right-24 w-80 h-80 rounded-full pointer-events-none"
             style={{ background: 'radial-gradient(circle, rgba(201,168,76,0.08) 0%, transparent 70%)' }}

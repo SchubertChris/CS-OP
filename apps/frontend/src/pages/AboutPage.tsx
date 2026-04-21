@@ -325,7 +325,7 @@ export default function AboutPage() {
 
       {/* ── Hire me CTA ──────────────────────────────────── */}
       <SectionWrapper id="hire">
-        <div className="relative rounded-2xl border border-[#C9A84C]/20 bg-gradient-to-br from-[#0f0e0c] to-[var(--cs-bg)] p-10 md:p-14 overflow-hidden">
+        <div className="relative rounded-2xl border border-[#C9A84C]/20 bg-gradient-to-br from-[var(--cs-s2)] to-[var(--cs-bg)] p-10 md:p-14 overflow-hidden">
           <motion.div
             className="absolute -top-24 -right-24 w-80 h-80 rounded-full pointer-events-none"
             style={{ background: 'radial-gradient(circle, rgba(201,168,76,0.08) 0%, transparent 70%)' }}
