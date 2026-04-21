@@ -251,7 +251,7 @@ function WaitlistForm() {
   }
 
   return (
-    <div className="rounded-xl border border-[#C9A84C]/20 bg-gradient-to-br from-[#0f0e0c] to-[#080808] p-8">
+    <div className="rounded-xl border border-[#C9A84C]/20 bg-gradient-to-br from-[var(--cs-s2)] to-[var(--cs-bg)] p-8">
       <div className="flex items-center gap-2 mb-3">
         <div className="w-1.5 h-1.5 rounded-full bg-[#C9A84C] animate-pulse" />
         <span className="font-mono text-[10px] tracking-[0.18em] uppercase text-[#C9A84C]/70">Early Access</span>
