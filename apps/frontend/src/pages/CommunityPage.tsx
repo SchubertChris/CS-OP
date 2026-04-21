@@ -3,6 +3,7 @@
    src/pages/CommunityPage.tsx
    ============================================================ */
 import { useRef, useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { motion, useInView } from 'framer-motion'
 import PageHero from '../components/ui/PageHero'
 import {
@@ -176,6 +177,7 @@ function ServerPreview() {
             {/* Channels — each with increasing delay */}
             {cat.channels.map((ch) => {
               const d = globalDelay
+              // eslint-disable-next-line react-hooks/immutability
               globalDelay += 0.06
               return (
                 <div key={ch.name} onClick={() => setActiveChannel(ch.name)}>
@@ -304,24 +306,46 @@ export default function CommunityPage() {
   return (
     <>
       <PageHero
-        eyebrow="Community"
-        titleLine1="Discord &"
-        titleLine2="Community"
-        titleAccent="line2"
-        description="Trading · Tech · Chartanalysen · Austausch. Eine Community die wirklich was bringt."
+        eyebrow="Candlescope Community · Discord"
+        titleLine1="Finanzen lernen."
+        titleLine2="Gemeinsam."
+        titleAccent="line1"
+        description="Trading · Chartanalysen · Haushaltsbuch-Tipps — eine aktive Community ohne Bullshit. Kein Schnellreich-werden-Versprechen, nur ehrlicher Austausch."
         badge="Jetzt live"
         theme="community"
       >
+        {/* Primär-CTA: Discord-Join ist die einzige Conversion hier */}
         <a href={`https://discord.gg/${INVITE_CODE}`} target="_blank" rel="noopener noreferrer"
-          className="relative overflow-hidden group text-[11px] tracking-[0.16em] uppercase border border-[#C9A84C]/35 text-[#C9A84C] px-7 py-3.5 rounded-full">
-          <span className="relative z-10 group-hover:text-[#080808] transition-colors duration-300">Discord beitreten</span>
-          <span className="absolute inset-0 bg-[#C9A84C] rounded-full translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
+          className="relative overflow-hidden group text-[11px] tracking-[0.18em] uppercase bg-[#C9A84C] text-[#080808] px-8 py-3.5 rounded-full font-semibold shadow-lg shadow-[#C9A84C]/25 hover:shadow-[#C9A84C]/40 transition-shadow duration-300">
+          <span className="relative z-10">Discord beitreten</span>
+          <span className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-full" />
         </a>
-        <a href="#waitlist"
+
+        {/* Sekundär-CTA */}
+        <a href="#features"
           className="text-[11px] tracking-[0.16em] uppercase text-[#5a5550] hover:text-[#F5F0E8] transition-colors duration-300 flex items-center gap-2 group">
-          Early Access
+          Was dich erwartet
           <span className="w-4 h-px bg-current transition-all duration-300 group-hover:w-6" />
         </a>
+
+        {/* Live-Status + Tool-Tipp */}
+        <div className="w-full pt-5 border-t border-[#C9A84C]/8">
+          <div className="flex flex-wrap items-center gap-4">
+            <div className="flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-[#22c55e] animate-pulse" />
+              <span className="font-mono text-[9px] tracking-[0.14em] uppercase text-[#3a3530]">
+                {memberCount ? `${memberCount} Member` : 'Server aktiv'}
+              </span>
+            </div>
+            <span className="w-px h-3 bg-[#C9A84C]/12" />
+            <Link to="/finance"
+              className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#C9A84C]/5 border border-[#C9A84C]/20 hover:border-[#C9A84C]/40 hover:bg-[#C9A84C]/8 transition-all group">
+              <span className="font-mono text-[9px] tracking-[0.12em] uppercase text-[#C9A84C]/70 group-hover:text-[#C9A84C] transition-colors">FinanceBoard · Gratis</span>
+              <ArrowRight size={9} strokeWidth={1.5} className="text-[#C9A84C]/40 group-hover:text-[#C9A84C] transition-colors" />
+            </Link>
+            <span className="font-mono text-[9px] text-[#3a3530]">100% offline · kein Abo</span>
+          </div>
+        </div>
       </PageHero>
 
       {/* Stats */}

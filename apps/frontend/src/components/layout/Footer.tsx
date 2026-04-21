@@ -57,7 +57,7 @@ export default function Footer() {
                 className="w-9 h-9 flex items-center justify-center rounded-full border border-[#ffffff]/8 text-[#9A9590] hover:text-[#C9A84C] hover:border-[#C9A84C]/30 transition-all duration-300" aria-label="Discord">
                 <DiscordIcon />
               </a>
-              <a href="mailto:hello@candlescope.de"
+              <a href="mailto:info@candlescope.de"
                 className="w-9 h-9 flex items-center justify-center rounded-full border border-[#ffffff]/8 text-[#9A9590] hover:text-[#C9A84C] hover:border-[#C9A84C]/30 transition-all duration-300" aria-label="E-Mail">
                 <Mail size={15} strokeWidth={1.5} />
               </a>
@@ -82,10 +82,10 @@ export default function Footer() {
           <div className="flex flex-col gap-5">
             <span className="text-[11px] tracking-[0.16em] uppercase text-[#C9A84C]/70 font-medium">Kontakt</span>
             <div className="flex flex-col gap-3">
-              <a href="mailto:hello@candlescope.de"
+              <a href="mailto:info@candlescope.de"
                 className="group flex items-center gap-2 text-sm text-[#9A9590] hover:text-[#F5F0E8] transition-colors duration-300">
                 <Mail size={14} strokeWidth={1.5} className="text-[#5a5550] group-hover:text-[#C9A84C] transition-colors shrink-0" />
-                hello@candlescope.de
+                info@candlescope.de
               </a>
               <a href="https://github.com/SchubertChris" target="_blank" rel="noopener noreferrer"
                 className="group flex items-center gap-2 text-sm text-[#9A9590] hover:text-[#F5F0E8] transition-colors duration-300">

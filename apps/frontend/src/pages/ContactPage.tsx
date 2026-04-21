@@ -4,6 +4,7 @@
    ============================================================ */
 
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import PageHero from '../components/ui/PageHero'
 import {
   SectionWrapper, SectionHeader, GoldDivider,
@@ -16,9 +17,11 @@ import {
   Calendar, Instagram,
 } from 'lucide-react'
 
+import { SOCIALS } from '../data/socials'
+
 const FORMSPREE_ID = import.meta.env.VITE_FORMSPREE_ID ?? ''
-const DISCORD      = 'https://discord.gg/ztBFjzuMAG'
-const INSTAGRAM    = 'https://www.instagram.com/candlescope'
+const DISCORD      = SOCIALS.discord
+const INSTAGRAM    = SOCIALS.instagram
 
 const TOPICS = [
   { icon: <Code2 size={16} strokeWidth={1.5} />,        label: 'Web-Projekt',   value: 'web-projekt' },
@@ -36,7 +39,7 @@ const DiscordIcon = () => (
 )
 
 const CONTACTS = [
-  { icon: <Mail size={20} strokeWidth={1.5} />,    title: 'E-Mail',    value: 'hello@candlescope.de',    href: 'mailto:hello@candlescope.de', desc: 'Direkter Kontakt — bevorzugter Weg.' },
+  { icon: <Mail size={20} strokeWidth={1.5} />,    title: 'E-Mail',    value: 'info@candlescope.de',    href: 'mailto:info@candlescope.de', desc: 'Direkter Kontakt — bevorzugter Weg.' },
   { icon: <Github size={20} strokeWidth={1.5} />,  title: 'GitHub',    value: 'SchubertChris',            href: 'https://github.com/SchubertChris', desc: 'Code, Open Source, Projekte.', external: true },
   { icon: <Instagram size={20} strokeWidth={1.5} />, title: 'Instagram', value: '@candlescope',           href: INSTAGRAM, desc: 'Charts, Setups & Marktanalysen.', external: true },
   { icon: <DiscordIcon />,                          title: 'Discord',   value: 'Community Server',        href: DISCORD, desc: 'Trader Rolle sichern — nur kurze Zeit!', external: true },
@@ -86,18 +89,47 @@ export default function ContactPage() {
   return (
     <>
       <PageHero
-        eyebrow="Kontakt"
-        titleLine1="Lass uns"
-        titleLine2="reden"
-        titleAccent="line2"
-        description="Projekt · Kooperation · Beratung · Einfach ein Gespräch. Ich antworte innerhalb von 24 Stunden."
+        eyebrow="Kontakt · Antwort in 24h"
+        titleLine1="Schreib mir."
+        titleLine2="Ich antworte."
+        titleAccent="line1"
+        description="Webprojekt, Kooperation, FinanceBoard-Frage oder einfach Hallo — nichts ist zu klein. Montag bis Freitag erreichbar."
+        badge="Verfügbar"
         theme="contact"
       >
-        <a href="mailto:hello@candlescope.de"
-          className="relative overflow-hidden group text-[11px] tracking-[0.16em] uppercase border border-[#C9A84C]/35 text-[#C9A84C] px-7 py-3.5 rounded-full">
-          <span className="relative z-10 group-hover:text-[#080808] transition-colors duration-300">E-Mail schreiben</span>
-          <span className="absolute inset-0 bg-[#C9A84C] rounded-full translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
+        {/* Primär-CTA: direkte Mail-Action */}
+        <a href="mailto:info@candlescope.de"
+          className="relative overflow-hidden group text-[11px] tracking-[0.18em] uppercase bg-[#C9A84C] text-[#080808] px-8 py-3.5 rounded-full font-semibold shadow-lg shadow-[#C9A84C]/25 hover:shadow-[#C9A84C]/40 transition-shadow duration-300">
+          <span className="relative z-10">E-Mail schreiben</span>
+          <span className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-full" />
         </a>
+
+        {/* Sekundär-CTA */}
+        <a href="#form"
+          className="text-[11px] tracking-[0.16em] uppercase text-[#5a5550] hover:text-[#F5F0E8] transition-colors duration-300 flex items-center gap-2 group">
+          Formular nutzen
+          <span className="w-4 h-px bg-current transition-all duration-300 group-hover:w-6" />
+        </a>
+
+        {/* Verfügbarkeits-Strip */}
+        <div className="w-full pt-5 border-t border-[#C9A84C]/8">
+          <div className="flex flex-wrap items-center gap-5">
+            {[
+              { val: '24h', label: 'Antwortzeit' },
+              { val: 'Mo–Fr', label: 'Erreichbar' },
+              { val: 'DE', label: 'Sprache' },
+            ].map(({ val, label }) => (
+              <div key={label} className="flex flex-col gap-0.5">
+                <span className="font-mono text-[13px] text-[#C9A84C] leading-none">{val}</span>
+                <span className="font-mono text-[8px] tracking-[0.18em] uppercase text-[#3a3530]">{label}</span>
+              </div>
+            ))}
+            <div className="ml-auto flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-[#22c55e] animate-pulse" />
+              <span className="font-mono text-[9px] tracking-[0.12em] uppercase text-[#3a3530]">info@candlescope.de</span>
+            </div>
+          </div>
+        </div>
       </PageHero>
 
       {/* ── Themen + Verfügbarkeit ───────────────────────── */}
@@ -200,7 +232,7 @@ export default function ContactPage() {
                 {status === 'error' && (
                   <div className="flex items-center gap-3 p-4 border border-[#FF4444]/25 rounded-xl bg-[#FF4444]/5">
                     <AlertCircle size={16} strokeWidth={1.5} className="text-[#FF4444] shrink-0" />
-                    <p className="text-[13px] text-[#FF4444]">Etwas ist schiefgelaufen. Schreib mir direkt an hello@candlescope.de</p>
+                    <p className="text-[13px] text-[#FF4444]">Etwas ist schiefgelaufen. Schreib mir direkt an info@candlescope.de</p>
                   </div>
                 )}
 

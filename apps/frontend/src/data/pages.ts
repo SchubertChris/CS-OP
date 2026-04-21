@@ -111,7 +111,7 @@ export const INITIAL_PAGES: Page[] = [
         eyebrow: 'Kontakt', titleLine1: 'Lass uns', titleLine2: 'reden',
         titleAccent: 'line2', theme: 'contact',
         description: 'Projekt · Kooperation · Beratung. Ich antworte innerhalb von 24 Stunden.',
-        ctas: [{ label: 'E-Mail schreiben', href: 'mailto:hello@candlescope.de', variant: 'primary' }],
+        ctas: [{ label: 'E-Mail schreiben', href: 'mailto:info@candlescope.de', variant: 'primary' }],
       },
     }],
     createdAt: ts('2025-01-01'), updatedAt: ts('2026-03-14'),

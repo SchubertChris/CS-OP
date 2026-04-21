@@ -3,7 +3,7 @@
    src/pages/HomePage.tsx
    ============================================================ */
 
-import { useRef, useState } from 'react'
+import { useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, useInView, useScroll, useTransform, useSpring } from 'framer-motion'
 import PageHero from '../components/ui/PageHero'
@@ -14,7 +14,7 @@ import {
 import {
   TrendingUp, Code2, Gamepad2, MessageSquare,
   ArrowRight, Wallet, BarChart2, Github,
-  Zap, Star, Play,
+  Zap, Star,
 } from 'lucide-react'
 
 import imgUebersicht from '../assets/images/Präsentation-WebsiteBild.webp'
@@ -124,120 +124,6 @@ function Marquee() {
   )
 }
 
-/* ── Video Player (lädt erst beim Klick) ───────────────────── */
-function LazyVideoPlayer() {
-  const [clicked, setClicked] = useState(false)
-  const [playing, setPlaying] = useState(false)
-  const videoRef = useRef<HTMLVideoElement>(null)
-
-  const handleClick = () => {
-    setClicked(true)
-    // Video wird erst jetzt ins DOM eingesetzt — kurz warten bis mounted
-    setTimeout(() => {
-      videoRef.current?.play()
-    }, 100)
-  }
-
-  const handleVideoPlay = () => {
-    setPlaying(true)
-  }
-
-  return (
-    <div className="relative group">
-      {/* Äußerer Glow */}
-      <motion.div
-        className="absolute -inset-3 rounded-3xl pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse at center, rgba(201,168,76,0.08) 0%, transparent 70%)' }}
-        animate={{ opacity: [0.4, 0.9, 0.4] }}
-        transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-      />
-
-      {/* Video Container */}
-      <div className="relative rounded-2xl overflow-hidden border border-[#C9A84C]/20 shadow-2xl shadow-black/70 aspect-video bg-[#0d0d0d]">
-
-        {/* Shine sweep */}
-        <motion.div
-          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -skew-x-12 pointer-events-none z-10"
-          initial={{ x: '-100%' }} whileInView={{ x: '200%' }} viewport={{ once: true }}
-          transition={{ duration: 1.4, delay: 0.3, ease: 'easeInOut' }}
-        />
-
-        {/* Placeholder / Play Button — solange nicht geklickt */}
-        {!clicked && (
-          <motion.div
-            onClick={handleClick}
-            className="absolute inset-0 flex flex-col items-center justify-center cursor-pointer z-30 bg-[#0d0d0d]"
-          >
-            {/* Hintergrund Grid-Pattern */}
-            <div className="absolute inset-0 opacity-10"
-              style={{
-                backgroundImage: 'linear-gradient(#C9A84C 1px, transparent 1px), linear-gradient(90deg, #C9A84C 1px, transparent 1px)',
-                backgroundSize: '40px 40px',
-              }}
-            />
-            <motion.div
-              className="relative w-20 h-20 rounded-full border-2 border-[#C9A84C]/60 flex items-center justify-center bg-[#080808]/80 backdrop-blur-sm"
-              animate={{
-                scale: [1, 1.08, 1],
-                borderColor: ['rgba(201,168,76,0.4)', 'rgba(201,168,76,0.8)', 'rgba(201,168,76,0.4)'],
-              }}
-              transition={{ duration: 2.5, repeat: Infinity }}
-            >
-              <Play size={28} strokeWidth={1.5} className="text-[#C9A84C] ml-1.5" />
-            </motion.div>
-            <p className="relative mt-5 font-mono text-[11px] tracking-[0.18em] uppercase text-[#5a5550]">
-              Video abspielen
-            </p>
-          </motion.div>
-        )}
-
-        {/* Video — erst nach Klick im DOM */}
-        {clicked && (
-          <>
-            <video
-              ref={videoRef}
-              muted
-              loop
-              playsInline
-              onPlay={handleVideoPlay}
-              className="w-full h-full object-cover block"
-            >
-              <source src="/video/CandleScope.webm" type="video/webm" />
-              <source src="/video/CandleScope.mp4" type="video/mp4" />
-            </video>
-
-            {/* Fade-in von schwarz */}
-            {playing && (
-              <motion.div
-                className="absolute inset-0 bg-black pointer-events-none z-20"
-                initial={{ opacity: 1 }}
-                animate={{ opacity: 0 }}
-                transition={{ duration: 1.5, ease: 'easeOut' }}
-              />
-            )}
-
-            {/* Fade-out zu schwarz im Loop */}
-            {playing && (
-              <motion.div
-                className="absolute inset-0 bg-black pointer-events-none z-20"
-                animate={{ opacity: [0, 0, 0, 0, 0, 0, 0, 0, 1] }}
-                transition={{
-                  duration: 10,
-                  ease: 'linear',
-                  repeat: Infinity,
-                  times: [0, 0.1, 0.3, 0.5, 0.6, 0.7, 0.75, 0.85, 1],
-                }}
-              />
-            )}
-          </>
-        )}
-
-        {/* Unten Gradient */}
-        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-[#080808]/60 to-transparent pointer-events-none z-10" />
-      </div>
-    </div>
-  )
-}
 
 /* ══════════════════════════════════════════════════════════════
    PAGE
@@ -247,24 +133,48 @@ export default function HomePage() {
     <>
       {/* ── 1. Hero ───────────────────────────────────────── */}
       <PageHero
-        eyebrow="CandleScope"
-        titleLine1="Trading &"
-        titleLine2="Technologie"
-        titleAccent="line2"
-        description="Fintech · Finance Tools · WebDev · Gaming. Eine Marke — gebaut von Chris Schubert."
-        badge="Est. 2025"
+        eyebrow="FinanceBoard · Kostenlos für Windows"
+        titleLine1="Dein Geld."
+        titleLine2="Dein Gerät."
+        titleAccent="line1"
+        description="Professionelles Haushaltsbuch für Windows — vollständig offline, kein Abo, keine Cloud. Einmal herunterladen, dauerhaft behalten."
+        badge="v10.6 · Gratis"
         theme="home"
       >
-        <a href="#produkt"
-          className="relative overflow-hidden group text-[11px] tracking-[0.16em] uppercase border border-[#C9A84C]/35 text-[#C9A84C] px-7 py-3.5 rounded-full">
-          <span className="relative z-10 group-hover:text-[#080808] transition-colors duration-300">Produkt entdecken</span>
-          <span className="absolute inset-0 bg-[#C9A84C] rounded-full translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
-        </a>
-        <Link to="/about"
-          className="text-[11px] tracking-[0.16em] uppercase text-[#5a5550] hover:text-[#F5F0E8] transition-colors duration-300 flex items-center gap-2 group">
-          Über mich
-          <span className="w-4 h-px bg-current transition-all duration-300 group-hover:w-6" />
+        {/* Primär-CTA: solid gold — höchste Priorität */}
+        <Link to="/finance"
+          className="relative overflow-hidden group text-[11px] tracking-[0.18em] uppercase bg-[#C9A84C] text-[#080808] px-8 py-3.5 rounded-full font-semibold shadow-lg shadow-[#C9A84C]/25 hover:shadow-[#C9A84C]/40 transition-shadow duration-300">
+          <span className="relative z-10">Kostenlos herunterladen</span>
+          <span className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-full" />
         </Link>
+
+        {/* Sekundär-CTA */}
+        <a href="#produkt"
+          className="text-[11px] tracking-[0.16em] uppercase text-[#5a5550] hover:text-[#F5F0E8] transition-colors duration-300 flex items-center gap-2 group">
+          App entdecken
+          <span className="w-4 h-px bg-current transition-all duration-300 group-hover:w-6" />
+        </a>
+
+        {/* Vertrauens-Strip: konkrete Zahlen statt Mini-Tags */}
+        <div className="w-full pt-5 border-t border-[#C9A84C]/8">
+          <div className="flex flex-wrap items-center gap-6">
+            {[
+              { val: '100%', label: 'Offline' },
+              { val: '0',    label: 'Abonnements' },
+              { val: '10',   label: 'Module' },
+              { val: '∞',    label: 'Nutzungsdauer' },
+            ].map(({ val, label }) => (
+              <div key={label} className="flex flex-col gap-0.5">
+                <span className="font-mono text-[15px] text-[#C9A84C] leading-none tabular-nums">{val}</span>
+                <span className="font-mono text-[8px] tracking-[0.18em] uppercase text-[#3a3530]">{label}</span>
+              </div>
+            ))}
+            <div className="ml-auto flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-[#22c55e] animate-pulse" />
+              <span className="font-mono text-[9px] tracking-[0.12em] uppercase text-[#3a3530]">Windows · Gratis</span>
+            </div>
+          </div>
+        </div>
       </PageHero>
 
       {/* ── 2. Marquee ────────────────────────────────────── */}
@@ -349,7 +259,7 @@ export default function HomePage() {
                 'Dashboard mit Echtzeit-Übersicht',
                 'Jahresanalysen & interaktive Charts',
                 'Dokumentenarchiv & Vertragsverwaltung',
-                'Custom Design — 3 Themes inklusive',
+                'Custom Design — 4 Themes inklusive',
               ].map((f, i) => (
                 <div key={i} className="flex items-center gap-3">
                   <div className="w-1.5 h-1.5 rounded-full bg-[#C9A84C]/60 shrink-0" />
@@ -366,25 +276,57 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── Video — Produkt in Aktion ─────────────────────── */}
+      {/* ── App in Aktion ─────────────────────────────────── */}
       <section className="px-8 md:px-16 lg:px-24 py-12 pb-24">
         <div className="max-w-6xl mx-auto">
           <Reveal direction="up" className="mb-8">
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-full bg-[#C9A84C]/10 border border-[#C9A84C]/25 flex items-center justify-center">
-                  <Play size={12} strokeWidth={1.5} className="text-[#C9A84C] ml-0.5" />
-                </div>
+                <div className="w-2 h-2 rounded-full bg-[#C9A84C] animate-pulse" />
                 <span className="font-mono text-[11px] tracking-[0.18em] uppercase text-[#9A9590]">
-                  Produkt in Aktion
+                  FinanceBoard — App in Aktion
                 </span>
               </div>
               <div className="flex-1 h-px bg-gradient-to-r from-[#C9A84C]/20 to-transparent" />
+              <Link to="/finance"
+                className="font-mono text-[10px] tracking-[0.12em] uppercase text-[#C9A84C]/50 hover:text-[#C9A84C] transition-colors flex items-center gap-1.5 shrink-0">
+                Alle Features <ArrowRight size={11} strokeWidth={1.5} />
+              </Link>
             </div>
           </Reveal>
 
           <Reveal direction="scale" delay={0.1}>
-            <LazyVideoPlayer />
+            <div className="relative group">
+              <motion.div
+                className="absolute -inset-4 rounded-3xl pointer-events-none"
+                style={{ background: 'radial-gradient(ellipse at center, rgba(201,168,76,0.07) 0%, transparent 70%)' }}
+                animate={{ opacity: [0.4, 1, 0.4] }}
+                transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+              />
+              <div className="relative rounded-2xl overflow-hidden border border-[#C9A84C]/20 shadow-2xl shadow-black/70">
+                <div className="bg-[#161616] px-4 py-2.5 flex items-center gap-2 border-b border-[#C9A84C]/8">
+                  <div className="w-3 h-3 rounded-full bg-[#ef4444]/70" />
+                  <div className="w-3 h-3 rounded-full bg-[#eab308]/70" />
+                  <div className="w-3 h-3 rounded-full bg-[#22c55e]/70" />
+                  <span className="text-[#5a5550] text-[10px] ml-2 font-mono">Candlescope FinanceBoard v10.6 — Dashboard</span>
+                  <div className="ml-auto flex items-center gap-1.5">
+                    <div className="w-1.5 h-1.5 rounded-full bg-[#00C896] animate-pulse" />
+                    <span className="font-mono text-[9px] text-[#3a3530] tracking-wider">LIVE</span>
+                  </div>
+                </div>
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/3 to-transparent -skew-x-12 pointer-events-none z-10"
+                  initial={{ x: '-100%' }} whileInView={{ x: '200%' }} viewport={{ once: true }}
+                  transition={{ duration: 1.6, delay: 0.4, ease: 'easeInOut' }}
+                />
+                <img
+                  src={imgUebersicht}
+                  alt="CandleScope FinanceBoard Dashboard"
+                  className="w-full h-auto block"
+                  loading="lazy"
+                />
+              </div>
+            </div>
           </Reveal>
         </div>
       </section>

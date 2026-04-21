@@ -304,24 +304,47 @@ export default function DevPage() {
   return (
     <>
       <PageHero
-        eyebrow="Dev & Web"
-        titleLine1="Code &"
-        titleLine2="Projekte"
+        eyebrow="Fullstack Developer · Köln, DE"
+        titleLine1="Von der Idee"
+        titleLine2="zum Produkt."
         titleAccent="line2"
-        description="Maßgeschneiderte Websites · Web-Apps · Open Source Projekte. Sauberer Code, modernes Design, technisch stark."
+        description="Ich entwickle React-Apps, Desktop-Software und Backends die wirklich in Produktion gehen — sauber, schnell, wartbar. Aktuell verfügbar."
         badge="Open for work"
         theme="dev"
       >
+        {/* Primär-CTA: Anfragen zuerst — das ist die Conversion */}
+        <Link to="/contact"
+          className="relative overflow-hidden group text-[11px] tracking-[0.18em] uppercase bg-[#C9A84C] text-[#080808] px-8 py-3.5 rounded-full font-semibold shadow-lg shadow-[#C9A84C]/25 hover:shadow-[#C9A84C]/40 transition-shadow duration-300">
+          <span className="relative z-10">Projekt anfragen</span>
+          <span className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-full" />
+        </Link>
+
+        {/* Sekundär-CTA */}
         <a href="https://github.com/SchubertChris" target="_blank" rel="noopener noreferrer"
           className="relative overflow-hidden group text-[11px] tracking-[0.16em] uppercase border border-[#C9A84C]/35 text-[#C9A84C] px-7 py-3.5 rounded-full">
           <span className="relative z-10 group-hover:text-[#080808] transition-colors duration-300">GitHub ansehen</span>
           <span className="absolute inset-0 bg-[#C9A84C] rounded-full translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
         </a>
-        <Link to="/contact"
-          className="text-[11px] tracking-[0.16em] uppercase text-[#5a5550] hover:text-[#F5F0E8] transition-colors duration-300 flex items-center gap-2 group">
-          Projekt anfragen
-          <span className="w-4 h-px bg-current transition-all duration-300 group-hover:w-6" />
-        </Link>
+
+        {/* Flagship-Strip: Glaubwürdigkeit durch echtes Shipped Product */}
+        <div className="w-full pt-5 border-t border-[#C9A84C]/8">
+          <div className="flex flex-wrap items-center gap-3">
+            <span className="font-mono text-[9px] tracking-[0.16em] uppercase text-[#3a3530]">Flagship</span>
+            <span className="w-px h-3 bg-[#C9A84C]/15" />
+            <Link to="/finance" className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#C9A84C]/5 border border-[#C9A84C]/20 hover:border-[#C9A84C]/40 hover:bg-[#C9A84C]/8 transition-all group">
+              <div className="w-1 h-1 rounded-full bg-[#22c55e]" />
+              <span className="font-mono text-[9px] tracking-[0.12em] uppercase text-[#C9A84C]/70 group-hover:text-[#C9A84C] transition-colors">FinanceBoard v10.6</span>
+              <ArrowRight size={9} strokeWidth={1.5} className="text-[#C9A84C]/40 group-hover:text-[#C9A84C] transition-colors" />
+            </Link>
+            <div className="flex items-center gap-2 ml-1">
+              {['React', 'TypeScript', 'Electron', 'Node.js'].map(tag => (
+                <span key={tag} className="font-mono text-[8px] px-2 py-1 rounded border border-[#C9A84C]/10 text-[#C9A84C]/35 bg-[#C9A84C]/3">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
       </PageHero>
 
       {/* ── Services ─────────────────────────────────────── */}
@@ -526,9 +549,9 @@ export default function DevPage() {
                 <Link to="/contact">
                   <CtaButton variant="primary" href="/contact">Projekt anfragen</CtaButton>
                 </Link>
-                <a href="mailto:hello@candlescope.de"
+                <a href="mailto:info@candlescope.de"
                   className="flex items-center gap-2 text-[11px] tracking-[0.14em] uppercase text-[#5a5550] hover:text-[#F5F0E8] transition-colors duration-200 px-4">
-                  hello@candlescope.de <ArrowRight size={13} strokeWidth={1.5} />
+                  info@candlescope.de <ArrowRight size={13} strokeWidth={1.5} />
                 </a>
               </div>
             </div>
