@@ -2,7 +2,7 @@ import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { sql } from './_lib/db'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  if (req.headers['x-migrate-token'] !== process.env.SETUP_TOKEN) {
+  if (req.headers['x-migrate-token'] !== process.env.setup_token) {
     return res.status(401).json({ error: 'Unauthorized' })
   }
 

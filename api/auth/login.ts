@@ -18,7 +18,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(400).json({ error: 'Passwort fehlt' })
   }
 
-  const hash = process.env.ADMIN_PASSWORD_HASH ?? ''
+  const hash = process.env.admin_password_hash ?? ''
   const ok   = await bcrypt.compare(password, hash)
 
   if (!ok) {

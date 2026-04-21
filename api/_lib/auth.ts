@@ -2,7 +2,7 @@ import { SignJWT, jwtVerify } from 'jose'
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 
 const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET ?? 'fallback-dev-secret-change-in-prod'
+  process.env.jwt_secret ?? 'fallback-dev-secret-change-in-prod'
 )
 
 export async function issueTempToken(): Promise<string> {

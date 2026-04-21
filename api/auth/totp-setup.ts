@@ -5,7 +5,7 @@ import { generateSecret, generateOtpAuthUrl } from '../_lib/totp'
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'GET') return res.status(405).end()
 
-  const setupToken = process.env.SETUP_TOKEN
+  const setupToken = process.env.setup_token
   if (!setupToken) {
     return res.status(403).json({ error: 'Setup bereits abgeschlossen oder nicht aktiviert' })
   }
@@ -14,7 +14,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(403).json({ error: 'Ungültiger Setup-Token' })
   }
 
-  const secret     = process.env.TOTP_SECRET || generateSecret()
+  const secret     = process.env.totp_secret || generateSecret()
   const otpUrl     = generateOtpAuthUrl(secret, 'Chris', 'CandleScope')
   const qrDataUrl  = await QRCode.toDataURL(otpUrl, { width: 300, margin: 2 })
 
@@ -43,9 +43,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
      3. "CandleScope" erscheint in der App</p>
   <p>Secret (falls manuell eingeben):</p>
   <code>${secret}</code>
-  <p>4. Trage <strong>TOTP_SECRET</strong> in Vercel ein:<br>
+  <p>4. Trage <strong>totp_secret</strong> in Vercel ein:<br>
      <code style="font-size:0.9em;">${secret}</code></p>
-  <p class="warn">⚠ Danach SETUP_TOKEN aus Vercel-ENV löschen!<br>
+  <p class="warn">⚠ Danach setup_token aus Vercel-ENV löschen!<br>
      Dieser Endpoint ist dann dauerhaft deaktiviert.</p>
 </body>
 </html>`)
