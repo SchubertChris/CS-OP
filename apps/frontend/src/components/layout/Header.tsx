@@ -36,17 +36,6 @@ function DesktopTooltip({ text }: { text: string }) {
   )
 }
 
-function SidebarTooltip({ label, tooltip }: { label: string; tooltip: string }) {
-  return (
-    <div className="absolute right-full mr-4 top-1/2 -translate-y-1/2 pointer-events-none opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0 transition-all duration-200 delay-75 z-50 min-w-max hidden md:block">
-      <div className="bg-[var(--cs-s2)] border border-[#C9A84C]/20 rounded-xl px-3.5 py-2.5 shadow-2xl shadow-black/60">
-        <p className="text-[13px] font-medium text-[var(--cs-text)] tracking-[0.02em]">{label}</p>
-        <p className="text-[10px] text-[var(--cs-text-2)] tracking-[0.08em] uppercase mt-0.5">{tooltip}</p>
-      </div>
-      <span className="absolute left-full top-1/2 -translate-y-1/2 -ml-px border-t-[5px] border-t-transparent border-b-[5px] border-b-transparent border-l-[6px] border-l-[#C9A84C]/20" />
-    </div>
-  )
-}
 
 export default function Header() {
   const [scrolled, setScrolled]       = useState(false)
