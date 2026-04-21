@@ -45,7 +45,7 @@ export default function ScreenshotSlider() {
 
   return (
     <section
-      className="py-20"
+      className="py-20 overflow-hidden"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
@@ -74,7 +74,7 @@ export default function ScreenshotSlider() {
 
       {/* 3D Carousel — key=i so framer tracks real element positions */}
       <div
-        className="relative"
+        className="relative overflow-hidden"
         style={{ height: 'clamp(280px, 36vw, 520px)' }}
         onPointerDown={e => { dragStart.current = e.clientX }}
         onPointerUp={e => {
