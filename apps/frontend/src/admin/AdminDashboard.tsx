@@ -1,172 +1,255 @@
-/* ============================================================
-   CandleScope — Admin Command Center Dashboard
-   src/admin/AdminDashboard.tsx
-   ============================================================ */
+import { useEffect, useState, useCallback } from 'react'
+import { Users, TrendingUp, Download, Globe, Monitor, Smartphone, Tablet, Activity } from 'lucide-react'
 
-import { useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import {
-  FileText, Plus, TrendingUp, Code2, User,
-  MessageSquare, ArrowUpRight, ChevronRight,
-  Layers, Zap, Globe,
-} from 'lucide-react'
-import { usePagesStore } from '../store/usePagesStore'
+/* ── Types ── */
+interface Overview {
+  today: number; week: number; month: number; total: number; downloads: number
+  sparkline: { date: string; views: number }[]
+}
+interface PageRow    { path: string; views: number; visitors: number }
+interface GeoRow     { country: string; views: number }
+interface DeviceRow  { device: string; n: number }
+interface BrowserRow { browser: string; n: number }
+interface EventRow   { name: string; path: string; meta: unknown; created_at: string }
 
-const iconMap: Record<string, React.ComponentType<{ size?: number; strokeWidth?: number }>> = {
-  TrendingUp, Code2, User, MessageSquare, FileText, Globe, Layers,
+/* ── Country flag emoji ── */
+function flag(code: string) {
+  if (!code || code === 'XX') return '🌐'
+  return code.toUpperCase().replace(/./g, c =>
+    String.fromCodePoint(c.charCodeAt(0) + 127397)
+  )
 }
 
+/* ── Sparkline SVG ── */
+function Sparkline({ data }: { data: { date: string; views: number }[] }) {
+  if (!data.length) return <div className="h-16 flex items-center justify-center text-[#5a5550] text-xs">Noch keine Daten</div>
+  const max = Math.max(...data.map(d => d.views), 1)
+  const W = 300, H = 60
+  const pts = data.map((d, i) => {
+    const x = (i / (data.length - 1 || 1)) * W
+    const y = H - (d.views / max) * H
+    return `${x},${y}`
+  }).join(' ')
+  return (
+    <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-16" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="spGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#C9A84C" />
+          <stop offset="100%" stopColor="#C9A84C" stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      <polyline points={`0,${H} ${pts} ${W},${H}`} fill="url(#spGrad)" opacity="0.15" />
+      <polyline points={pts} fill="none" stroke="#C9A84C" strokeWidth="1.5"
+        strokeLinejoin="round" strokeLinecap="round" />
+    </svg>
+  )
+}
+
+/* ── Horizontal Bar ── */
+function Bar({ label, value, max }: { label: string; value: number; max: number }) {
+  return (
+    <div className="flex items-center gap-3">
+      <span className="text-xs text-[#9A9590] w-24 shrink-0 truncate">{label}</span>
+      <div className="flex-1 h-1.5 bg-[#C9A84C]/10 rounded-full overflow-hidden">
+        <div className="h-full bg-[#C9A84C]/60 rounded-full transition-all duration-700"
+          style={{ width: `${max > 0 ? (value / max) * 100 : 0}%` }} />
+      </div>
+      <span className="text-xs text-[#9A9590] w-8 text-right shrink-0">{value}</span>
+    </div>
+  )
+}
+
+/* ── KPI Card ── */
+function KpiCard({ label, value, icon: Icon }: {
+  label: string; value: number
+  icon: React.ComponentType<{ size?: number; strokeWidth?: number; className?: string }>
+}) {
+  return (
+    <div className="bg-[#0a0a0a] border border-[#C9A84C]/12 rounded-2xl p-5">
+      <div className="flex items-center justify-between mb-3">
+        <span className="font-mono text-[10px] tracking-[0.18em] uppercase text-[#9A9590]">{label}</span>
+        <Icon size={15} strokeWidth={1.5} className="text-[#C9A84C]/50" />
+      </div>
+      <span className="font-display text-3xl text-[#F5F0E8]">{value.toLocaleString('de-DE')}</span>
+    </div>
+  )
+}
+
+function DeviceIcon({ device }: { device: string }) {
+  if (device === 'mobile') return <Smartphone size={14} strokeWidth={1.5} className="text-[#C9A84C]/60" />
+  if (device === 'tablet') return <Tablet     size={14} strokeWidth={1.5} className="text-[#C9A84C]/60" />
+  return <Monitor size={14} strokeWidth={1.5} className="text-[#C9A84C]/60" />
+}
+
+/* ════════════════════════════════════════════════════════════ */
 export default function AdminDashboard() {
-  const navigate = useNavigate()
-  const { pages, loadPages } = usePagesStore()
+  const [overview, setOverview] = useState<Overview | null>(null)
+  const [live, setLive]         = useState(0)
+  const [pages, setPages]       = useState<PageRow[]>([])
+  const [geo, setGeo]           = useState<GeoRow[]>([])
+  const [devices, setDevices]   = useState<DeviceRow[]>([])
+  const [browsers, setBrowsers] = useState<BrowserRow[]>([])
+  const [events, setEvents]     = useState<EventRow[]>([])
+  const [loading, setLoading]   = useState(true)
 
-  useEffect(() => { loadPages() }, [loadPages])
+  const fetchAll = useCallback(async () => {
+    try {
+      const [ov, lv, pg, ge, dv, ev] = await Promise.all([
+        fetch('/api/analytics/overview', { credentials: 'include' }).then(r => r.json()),
+        fetch('/api/analytics/live',     { credentials: 'include' }).then(r => r.json()),
+        fetch('/api/analytics/pages',    { credentials: 'include' }).then(r => r.json()),
+        fetch('/api/analytics/geo',      { credentials: 'include' }).then(r => r.json()),
+        fetch('/api/analytics/devices',  { credentials: 'include' }).then(r => r.json()),
+        fetch('/api/analytics/events',   { credentials: 'include' }).then(r => r.json()),
+      ])
+      setOverview(ov)
+      setLive(lv.live ?? 0)
+      setPages(pg.pages ?? [])
+      setGeo(ge.geo ?? [])
+      setDevices(dv.devices ?? [])
+      setBrowsers(dv.browsers ?? [])
+      setEvents(ev.events ?? [])
+    } finally {
+      setLoading(false)
+    }
+  }, [])
 
-  const navPages    = pages.filter(p => p.nav?.visible)
-  const livePages   = pages.filter(p => p.published)
-  const totalBlocks = pages.reduce((a, p) => a + p.blocks.length, 0)
+  useEffect(() => {
+    fetchAll()
+    const id = setInterval(() => {
+      fetch('/api/analytics/live', { credentials: 'include' })
+        .then(r => r.json()).then(d => setLive(d.live ?? 0)).catch(() => {})
+    }, 30_000)
+    return () => clearInterval(id)
+  }, [fetchAll])
+
+  if (loading) {
+    return (
+      <div className="min-h-full flex items-center justify-center">
+        <div className="w-8 h-8 rounded-full border-2 border-[#C9A84C]/20 border-t-[#C9A84C] animate-spin" />
+      </div>
+    )
+  }
+
+  const maxDevice  = Math.max(...devices.map(d => d.n), 1)
+  const maxBrowser = Math.max(...browsers.map(b => b.n), 1)
 
   return (
     <div className="min-h-full p-6 md:p-10 flex flex-col gap-6">
 
-      {/* ── Row 1: Welcome + Stats ─────────────────── */}
-      <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-6">
+      {/* ── Live Strip ── */}
+      <div className="flex items-center gap-3 bg-[#0a0a0a] border border-[#C9A84C]/12 rounded-2xl px-6 py-4">
+        <span className="relative flex h-2.5 w-2.5">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#C9A84C] opacity-60" />
+          <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-[#C9A84C]" />
+        </span>
+        <span className="font-mono text-[11px] tracking-[0.18em] uppercase text-[#9A9590]">Live</span>
+        <span className="font-display text-2xl text-[#F5F0E8] ml-1">{live}</span>
+        <span className="text-[#9A9590] text-sm">Besucher gerade online</span>
+        <button onClick={fetchAll} className="ml-auto text-[#9A9590] hover:text-[#C9A84C] transition-colors">
+          <Activity size={15} strokeWidth={1.5} />
+        </button>
+      </div>
 
-        {/* Welcome module */}
-        <div className="relative overflow-hidden border border-[#C9A84C]/15 rounded-2xl p-8 bg-[#080808]">
-          {/* Candlestick deco */}
-          <svg className="absolute right-0 top-0 h-full w-64 pointer-events-none opacity-[0.06]"
-            viewBox="0 0 256 160" preserveAspectRatio="xMaxYMid meet">
-            {[
-              {x:20,o:80,c:110,h:120,l:70},{x:50,o:110,c:95,h:118,l:88},
-              {x:80,o:95,c:125,h:132,l:92},{x:110,o:125,c:108,h:130,l:100},
-              {x:140,o:108,c:138,h:145,l:105},{x:170,o:138,c:120,h:142,l:115},
-              {x:200,o:120,c:148,h:155,l:118},{x:230,o:148,c:135,h:152,l:128},
-            ].map((c, i) => {
-              const s = 0.8, base = 160
-              return (
-                <g key={i}>
-                  <line x1={c.x} y1={base-c.h*s} x2={c.x} y2={base-c.l*s} stroke="#C9A84C" strokeWidth="1"/>
-                  <rect x={c.x-8} y={base-Math.max(c.o,c.c)*s} width="16"
-                    height={Math.max(Math.abs(c.c-c.o)*s,3)}
-                    fill={c.c>c.o?'#C9A84C':'none'} stroke="#C9A84C" strokeWidth="1"/>
-                </g>
-              )
-            })}
-          </svg>
+      {/* ── KPI Cards ── */}
+      <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
+        <KpiCard label="Heute"     value={overview?.today     ?? 0} icon={TrendingUp} />
+        <KpiCard label="7 Tage"    value={overview?.week      ?? 0} icon={TrendingUp} />
+        <KpiCard label="30 Tage"   value={overview?.month     ?? 0} icon={TrendingUp} />
+        <KpiCard label="Gesamt"    value={overview?.total     ?? 0} icon={Users}      />
+        <KpiCard label="Downloads" value={overview?.downloads ?? 0} icon={Download}   />
+      </div>
 
-          <div className="relative z-10">
-            <p className="font-mono text-[11px] tracking-[0.2em] text-[#9A9590] uppercase mb-3">── COMMAND CENTER ──</p>
-            <h1 className="font-display text-4xl md:text-5xl text-[#F5F0E8] tracking-tight leading-none mb-2">
-              Willkommen,<br /><span className="text-[#C9A84C]">Chris.</span>
-            </h1>
-            <p className="text-[#9A9590] text-[14px] mt-4 font-mono tracking-[0.04em]">
-              {pages.length} Seiten · {totalBlocks} Blöcke · {livePages.length} live
-            </p>
-            <div className="flex items-center gap-3 mt-6">
-              <button
-                onClick={() => navigate('/admin/pages/new')}
-                className="relative overflow-hidden group flex items-center gap-2 text-[12px] tracking-[0.12em] uppercase border border-[#C9A84C]/40 text-[#C9A84C] px-5 py-2.5 rounded-full"
-              >
-                <span className="relative z-10 group-hover:text-[#080808] transition-colors duration-300 flex items-center gap-2">
-                  <Plus size={13} strokeWidth={1.5} /> Neue Seite
-                </span>
-                <span className="absolute inset-0 bg-[#C9A84C] rounded-full translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
-              </button>
-              <button
-                onClick={() => navigate('/admin/pages')}
-                className="flex items-center gap-2 text-[12px] tracking-[0.12em] uppercase text-[#9A9590] hover:text-[#F5F0E8] transition-colors"
-              >
-                Alle Seiten <ChevronRight size={13} strokeWidth={1.5} />
-              </button>
-            </div>
+      {/* ── Sparkline ── */}
+      <div className="bg-[#0a0a0a] border border-[#C9A84C]/12 rounded-2xl p-6">
+        <p className="font-mono text-[10px] tracking-[0.18em] uppercase text-[#9A9590] mb-4">
+          Aufrufe — letzte 30 Tage
+        </p>
+        <Sparkline data={overview?.sparkline ?? []} />
+      </div>
+
+      {/* ── Top Pages + Geo ── */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="bg-[#0a0a0a] border border-[#C9A84C]/12 rounded-2xl p-6">
+          <p className="font-mono text-[10px] tracking-[0.18em] uppercase text-[#9A9590] mb-4">Top Seiten</p>
+          <div className="flex flex-col gap-2">
+            {pages.map((p, i) => (
+              <div key={i} className="flex items-center gap-3 py-1.5 border-b border-[#C9A84C]/6 last:border-0">
+                <span className="font-mono text-[10px] text-[#9A9590] w-4 shrink-0">{i + 1}</span>
+                <span className="text-sm text-[#F5F0E8] flex-1 truncate">{p.path || '/'}</span>
+                <span className="text-xs text-[#9A9590] shrink-0">{p.views.toLocaleString('de-DE')}</span>
+              </div>
+            ))}
+            {pages.length === 0 && <p className="text-[#5a5550] text-xs">Noch keine Daten</p>}
           </div>
         </div>
 
-        {/* Stats column */}
-        <div className="flex lg:flex-col gap-3">
-          {[
-            { label: 'PAGES',  value: pages.length,    color: '#C9A84C' },
-            { label: 'LIVE',   value: livePages.length, color: '#00C896' },
-            { label: 'BLOCKS', value: totalBlocks,      color: '#4a9eff' },
-            { label: 'NAV',    value: navPages.length,  color: '#9A9590' },
-          ].map(s => (
-            <div key={s.label} className="flex-1 lg:flex-none border border-[#C9A84C]/10 rounded-xl p-4 bg-[#080808] min-w-[88px]">
-              <p className="font-mono text-[11px] tracking-[0.14em] mb-1.5" style={{ color: s.color + '80' }}>{s.label}</p>
-              <p className="font-display text-3xl font-bold" style={{ color: s.color }}>{s.value}</p>
+        <div className="bg-[#0a0a0a] border border-[#C9A84C]/12 rounded-2xl p-6">
+          <div className="flex items-center gap-2 mb-4">
+            <Globe size={14} strokeWidth={1.5} className="text-[#C9A84C]/50" />
+            <p className="font-mono text-[10px] tracking-[0.18em] uppercase text-[#9A9590]">Länder</p>
+          </div>
+          <div className="flex flex-col gap-2">
+            {geo.map((g, i) => (
+              <div key={i} className="flex items-center gap-3 py-1 border-b border-[#C9A84C]/6 last:border-0">
+                <span className="text-base w-6 shrink-0">{flag(g.country)}</span>
+                <span className="text-sm text-[#F5F0E8] flex-1">{g.country || 'Unbekannt'}</span>
+                <span className="text-xs text-[#9A9590] shrink-0">{g.views}</span>
+              </div>
+            ))}
+            {geo.length === 0 && <p className="text-[#5a5550] text-xs">Noch keine Daten</p>}
+          </div>
+        </div>
+      </div>
+
+      {/* ── Devices + Browsers ── */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="bg-[#0a0a0a] border border-[#C9A84C]/12 rounded-2xl p-6">
+          <p className="font-mono text-[10px] tracking-[0.18em] uppercase text-[#9A9590] mb-4">Geräte</p>
+          <div className="flex flex-col gap-3">
+            {devices.map((d, i) => (
+              <div key={i} className="flex items-center gap-3">
+                <DeviceIcon device={d.device} />
+                <Bar label={d.device} value={d.n} max={maxDevice} />
+              </div>
+            ))}
+            {devices.length === 0 && <p className="text-[#5a5550] text-xs">Noch keine Daten</p>}
+          </div>
+        </div>
+        <div className="bg-[#0a0a0a] border border-[#C9A84C]/12 rounded-2xl p-6">
+          <p className="font-mono text-[10px] tracking-[0.18em] uppercase text-[#9A9590] mb-4">Browser</p>
+          <div className="flex flex-col gap-3">
+            {browsers.map((b, i) => (
+              <Bar key={i} label={b.browser} value={b.n} max={maxBrowser} />
+            ))}
+            {browsers.length === 0 && <p className="text-[#5a5550] text-xs">Noch keine Daten</p>}
+          </div>
+        </div>
+      </div>
+
+      {/* ── Events Log ── */}
+      <div className="bg-[#0a0a0a] border border-[#C9A84C]/12 rounded-2xl p-6">
+        <p className="font-mono text-[10px] tracking-[0.18em] uppercase text-[#9A9590] mb-4">
+          Events — letzte 50
+        </p>
+        <div className="flex flex-col gap-1 max-h-64 overflow-y-auto">
+          {events.map((e, i) => (
+            <div key={i} className="flex items-center gap-4 py-1.5 border-b border-[#C9A84C]/6 last:border-0">
+              <span className="font-mono text-[10px] text-[#C9A84C] bg-[#C9A84C]/8 px-2 py-0.5 rounded shrink-0">
+                {e.name}
+              </span>
+              <span className="text-xs text-[#9A9590] flex-1 truncate">{e.path ?? '—'}</span>
+              <span className="text-[10px] text-[#5a5550] shrink-0">
+                {new Date(e.created_at).toLocaleString('de-DE', {
+                  day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit'
+                })}
+              </span>
             </div>
           ))}
+          {events.length === 0 && <p className="text-[#5a5550] text-xs">Noch keine Events</p>}
         </div>
       </div>
 
-      {/* ── Row 2: Pages Grid ──────────────────────── */}
-      <div>
-        <div className="flex items-center justify-between mb-4">
-          <p className="font-mono text-[11px] tracking-[0.18em] text-[#9A9590] uppercase">── SEITEN</p>
-          <Link to="/admin/pages"
-            className="font-mono text-[12px] tracking-[0.1em] text-[#C9A84C]/50 hover:text-[#C9A84C] transition-colors flex items-center gap-1">
-            Alle <ArrowUpRight size={12} />
-          </Link>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3">
-          {pages.map(page => {
-            const Icon = iconMap[page.nav?.icon ?? ''] ?? FileText
-            return (
-              <Link
-                key={page.id}
-                to={`/admin/pages/${page.id}`}
-                className="group flex items-center gap-4 p-4 border border-[#ffffff]/6 rounded-xl bg-[#0d0d0d] hover:border-[#C9A84C]/25 hover:bg-[#C9A84C]/3 transition-all duration-200"
-              >
-                <div className="w-11 h-11 rounded-xl border border-[#ffffff]/8 bg-[#1a1a1a] flex items-center justify-center text-[#9A9590] group-hover:text-[#C9A84C] group-hover:border-[#C9A84C]/25 transition-all shrink-0">
-                  <Icon size={17} strokeWidth={1.5} />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <p className="text-[14px] font-medium text-[#F5F0E8] group-hover:text-[#C9A84C] transition-colors truncate">{page.title}</p>
-                    {page.isSystem && <span className="font-mono text-[9px] text-[#9A9590] border border-[#ffffff]/10 px-1.5 py-0.5 rounded shrink-0">SYS</span>}
-                    {page.published && <span className="font-mono text-[9px] text-[#00C896] border border-[#00C896]/20 px-1.5 py-0.5 rounded shrink-0">LIVE</span>}
-                  </div>
-                  <div className="flex items-center gap-2 mt-0.5">
-                    <p className="font-mono text-[12px] text-[#9A9590] truncate">/{page.slug}</p>
-                    <span className="text-[#5a5550]">·</span>
-                    <p className="font-mono text-[12px] text-[#5a5550] shrink-0">{page.blocks.length}B</p>
-                  </div>
-                </div>
-                <ArrowUpRight size={14} strokeWidth={1.5} className="text-[#5a5550] group-hover:text-[#C9A84C]/60 transition-colors shrink-0" />
-              </Link>
-            )
-          })}
-
-          {/* New page button */}
-          <button
-            onClick={() => navigate('/admin/pages/new')}
-            className="group flex items-center justify-center gap-3 p-4 border border-dashed border-[#C9A84C]/20 rounded-xl hover:border-[#C9A84C]/45 hover:bg-[#C9A84C]/3 transition-all duration-200 h-[72px]"
-          >
-            <Plus size={16} strokeWidth={1.5} className="text-[#9A9590] group-hover:text-[#C9A84C] transition-colors" />
-            <span className="font-mono text-[12px] tracking-[0.12em] uppercase text-[#9A9590] group-hover:text-[#C9A84C] transition-colors">
-              Neue Seite
-            </span>
-          </button>
-        </div>
-      </div>
-
-      {/* ── Row 3: System info ─────────────────────── */}
-      <div className="border border-[#C9A84C]/8 rounded-xl p-5 bg-[#080808]">
-        <div className="flex flex-wrap items-center gap-6">
-          {[
-            { icon: Zap,    label: 'STACK',  value: 'React · Vite · TS · Zustand' },
-            { icon: Globe,  label: 'DOMAIN', value: 'candlescope.de' },
-            { icon: Layers, label: 'PHASE',  value: '1 · AKTIV' },
-          ].map(({ icon: Icon, label, value }) => (
-            <div key={label} className="flex items-center gap-2">
-              <Icon size={13} strokeWidth={1.5} className="text-[#C9A84C]/50" />
-              <span className="font-mono text-[11px] text-[#5a5550] tracking-[0.1em]">{label}</span>
-              <span className="font-mono text-[12px] text-[#9A9590]">{value}</span>
-            </div>
-          ))}
-        </div>
-      </div>
     </div>
   )
 }
