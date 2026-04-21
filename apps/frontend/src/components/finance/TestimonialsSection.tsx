@@ -14,25 +14,25 @@ interface Review {
 
 const REVIEWS: Review[] = [
   {
-    name: 'Markus R.',
-    role: 'Freelancer, Berlin',
-    text: 'Endlich eine App die einfach funktioniert — ohne Abo-Falle oder Cloud-Zwang. Meine Verträge und Ausgaben hab ich jetzt wirklich im Griff.',
+    name: 'Sento',
+    role: 'Trader & Community',
+    text: 'Die Jahresanalyse mit den Candlesticks — hab ich Chris direkt geschrieben. Sieht aus wie ein richtiges Trading-Terminal, nur für den eigenen Haushalt. Verwende es jeden Monat.',
     stars: 5,
-    initials: 'MR',
+    initials: 'S',
   },
   {
-    name: 'Sandra K.',
-    role: 'Angestellte, München',
-    text: 'Die Jahresübersicht mit den Candlestick-Charts hat mich überzeugt. Sieht aus wie ein professionelles Trading-Tool — für meine Privatfinanzen.',
+    name: 'DoctorHinky',
+    role: 'Community Member',
+    text: 'Hab\'s ehrlich nur installiert weil Chris es gebaut hat — aber dann hab ich gemerkt dass ich endlich weiß wo mein Geld bleibt. Kein Abo, läuft offline, null Drama. Läuft.',
     stars: 5,
-    initials: 'SK',
+    initials: 'DH',
   },
   {
-    name: 'Thomas W.',
-    role: 'Student, Hamburg',
-    text: 'Gratis, offline, kein Datenschutz-Albtraum. Genau das hab ich gesucht. Läuft seit Monaten stabil auf meinem Windows-PC.',
+    name: 'Sandra',
+    role: 'Freundin & Testerin',
+    text: 'Ich versteh nicht alles davon aber allein die Vertragsübersicht hat sich gelohnt — endlich alle Abos auf einen Blick. Und wenn man nicht weiterkommt hilft Chris einfach.',
     stars: 5,
-    initials: 'TW',
+    initials: 'S',
   },
 ]
 
