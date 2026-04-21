@@ -1,6 +1,7 @@
 // src/pages/FinancePage.tsx
-import { motion } from 'framer-motion'
-import { Check } from 'lucide-react'
+import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Check, Clock, X } from 'lucide-react'
 import imgDashboard from '../assets/images/Präsentation-WebsiteBild.webp'
 import UspStrip from '../components/finance/UspStrip'
 import ScreenshotSlider from '../components/finance/ScreenshotSlider'
@@ -57,7 +58,55 @@ const BENEFITS = [
   'Einmalig — kein Abo, keine Cloud',
 ]
 
+function ComingSoonModal({ onClose }: { onClose: () => void }) {
+  return (
+    <div
+      className="fixed inset-0 z-[9000] flex items-center justify-center p-4"
+      style={{ backdropFilter: 'blur(6px)', backgroundColor: 'rgba(8,8,8,0.75)' }}
+      onClick={e => e.target === e.currentTarget && onClose()}
+    >
+      <motion.div
+        initial={{ opacity: 0, scale: 0.96, y: 12 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.96, y: 12 }}
+        transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
+        className="w-full max-w-sm bg-[#0e0e0e] border border-[#C9A84C]/20 rounded-2xl p-8
+                   flex flex-col items-center text-center gap-5 shadow-2xl"
+      >
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 text-[#5a5550] hover:text-[#F5F0E8] transition-colors cursor-pointer"
+        >
+          <X size={16} />
+        </button>
+        <div className="w-14 h-14 rounded-full bg-[#C9A84C]/10 border border-[#C9A84C]/20
+                        flex items-center justify-center">
+          <Clock size={24} className="text-[#C9A84C]" />
+        </div>
+        <div>
+          <p className="text-[#C9A84C] text-xs tracking-[0.15em] uppercase mb-2">Bald verfügbar</p>
+          <h3 className="text-[#F5F0E8] font-bold text-xl mb-2">Download startet am</h3>
+          <p className="text-[#C9A84C] text-3xl font-black">8. Juni 2026</p>
+        </div>
+        <p className="text-[#9A9590] text-sm leading-relaxed">
+          Das FinanceBoard ist fertig — der offizielle Release folgt am 8.6.2026.
+          Bis dahin kannst du dich schon mal auf Discord melden.
+        </p>
+        <button
+          onClick={onClose}
+          className="bg-[#C9A84C] text-[#080808] font-bold text-sm px-8 py-3 rounded-lg
+                     hover:opacity-90 transition-opacity duration-200 cursor-pointer"
+        >
+          Verstanden
+        </button>
+      </motion.div>
+    </div>
+  )
+}
+
 export default function FinancePage() {
+  const [dlOpen, setDlOpen] = useState(false)
+
   return (
     <div className="min-h-screen bg-[#080808] pt-20">
 
@@ -75,7 +124,7 @@ export default function FinancePage() {
             <StaggerItem>
               <span className="inline-flex items-center gap-2 bg-[#C9A84C]/8 border border-[#C9A84C]/20
                                rounded-full px-4 py-1.5 text-[#C9A84C] text-xs tracking-[0.1em] uppercase">
-                v10.6 · Jetzt verfügbar
+                v10.6 · Ab 8. Juni 2026
               </span>
             </StaggerItem>
 
@@ -106,14 +155,13 @@ export default function FinancePage() {
 
             <StaggerItem>
               <div className="flex items-center gap-3 flex-wrap">
-                <a
-                  href="/downloads/FinanceBoard-Setup.exe"
-                  download
+                <button
+                  onClick={() => setDlOpen(true)}
                   className="bg-[#C9A84C] text-[#080808] font-bold px-6 py-3.5 rounded-lg
-                             hover:opacity-90 transition-opacity duration-200 text-sm"
+                             hover:opacity-90 transition-opacity duration-200 text-sm cursor-pointer"
                 >
                   ↓ Gratis herunterladen
-                </a>
+                </button>
                 <button
                   onClick={() => document.getElementById('screenshots')?.scrollIntoView({ behavior: 'smooth' })}
                   className="border border-[#C9A84C]/25 text-[#9A9590] px-5 py-3.5 rounded-lg
@@ -178,7 +226,7 @@ export default function FinancePage() {
       </section>
 
       {/* ⑥ DOWNLOAD */}
-      <DownloadCard />
+      <DownloadCard onDownload={() => setDlOpen(true)} />
 
       {/* ⑦ FAQ */}
       <FaqAccordion />
@@ -203,16 +251,19 @@ export default function FinancePage() {
           <p className="text-[#9A9590] mb-8 text-sm">
             Kostenlos starten — kein Konto, kein Abo, keine Cloud.
           </p>
-          <a
-            href="/downloads/FinanceBoard-Setup.exe"
-            download
+          <button
+            onClick={() => setDlOpen(true)}
             className="inline-flex items-center gap-2 bg-[#C9A84C] text-[#080808] font-bold
-                       px-8 py-4 rounded-lg hover:opacity-90 transition-opacity duration-200"
+                       px-8 py-4 rounded-lg hover:opacity-90 transition-opacity duration-200 cursor-pointer"
           >
             ↓ Gratis herunterladen
-          </a>
+          </button>
         </motion.div>
       </section>
+
+      <AnimatePresence>
+        {dlOpen && <ComingSoonModal onClose={() => setDlOpen(false)} />}
+      </AnimatePresence>
     </div>
   )
 }

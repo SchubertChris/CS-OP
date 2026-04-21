@@ -1,6 +1,157 @@
 // src/components/finance/TestimonialsSection.tsx
-import { motion } from 'framer-motion'
-import { SOCIALS } from '../../data/socials'
+import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { X, Send, CheckCircle2, AlertCircle } from 'lucide-react'
+
+const FORMSPREE_ID = import.meta.env.VITE_FORMSPREE_ID ?? ''
+
+type ModalStatus = 'idle' | 'sending' | 'success' | 'error'
+
+function ReviewModal({ onClose }: { onClose: () => void }) {
+  const [name,    setName]    = useState('')
+  const [email,   setEmail]   = useState('')
+  const [subject, setSubject] = useState('FinanceBoard Bewertung')
+  const [message, setMessage] = useState('')
+  const [status,  setStatus]  = useState<ModalStatus>('idle')
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!name.trim() || !email.trim() || !message.trim()) return
+    if (!FORMSPREE_ID) { alert('Formspree ID fehlt'); return }
+    setStatus('sending')
+    try {
+      const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({ name, email, message, _subject: `[FinanceBoard] ${subject} — ${name}` }),
+      })
+      setStatus(res.ok ? 'success' : 'error')
+    } catch {
+      setStatus('error')
+    }
+  }
+
+  const inputCls = `w-full bg-[#0a0a0a] border border-[#C9A84C]/15 rounded-lg px-4 py-2.5
+                    text-[#F5F0E8] text-sm placeholder:text-[#5a5550]
+                    focus:outline-none focus:border-[#C9A84C]/40 transition-colors duration-200`
+
+  return (
+    <div
+      className="fixed inset-0 z-[9000] flex items-center justify-center p-4"
+      style={{ backdropFilter: 'blur(6px)', backgroundColor: 'rgba(8,8,8,0.75)' }}
+      onClick={e => e.target === e.currentTarget && onClose()}
+    >
+      <motion.div
+        initial={{ opacity: 0, scale: 0.96, y: 12 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.96, y: 12 }}
+        transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
+        className="w-full max-w-md bg-[#0e0e0e] border border-[#C9A84C]/15 rounded-2xl p-6 shadow-2xl"
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between mb-5">
+          <div>
+            <p className="text-[#C9A84C] text-[10px] tracking-[0.18em] uppercase mb-0.5">FinanceBoard</p>
+            <h3 className="text-[#F5F0E8] font-bold text-lg">Bewertung einreichen</h3>
+          </div>
+          <button
+            onClick={onClose}
+            className="text-[#5a5550] hover:text-[#F5F0E8] transition-colors duration-150 cursor-pointer"
+          >
+            <X size={18} />
+          </button>
+        </div>
+
+        {status === 'success' ? (
+          <div className="flex flex-col items-center gap-3 py-8 text-center">
+            <CheckCircle2 size={36} className="text-[#C9A84C]" />
+            <p className="text-[#F5F0E8] font-medium">Danke für dein Feedback!</p>
+            <p className="text-[#9A9590] text-sm">Ich meld mich wenn's passt.</p>
+            <button
+              onClick={onClose}
+              className="mt-2 text-[#C9A84C] text-sm border border-[#C9A84C]/25 px-5 py-2 rounded-lg
+                         hover:border-[#C9A84C]/45 transition-colors duration-200 cursor-pointer"
+            >
+              Schließen
+            </button>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+            <div className="grid grid-cols-2 gap-3">
+              <div className="flex flex-col gap-1.5">
+                <label className="text-[#9A9590] text-xs">Name</label>
+                <input
+                  className={inputCls}
+                  placeholder="Dein Name"
+                  value={name}
+                  onChange={e => setName(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <label className="text-[#9A9590] text-xs">E-Mail</label>
+                <input
+                  type="email"
+                  className={inputCls}
+                  placeholder="du@mail.de"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-1.5">
+              <label className="text-[#9A9590] text-xs">Betreff</label>
+              <input
+                className={inputCls}
+                value={subject}
+                onChange={e => setSubject(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="flex flex-col gap-1.5">
+              <label className="text-[#9A9590] text-xs">Deine Bewertung</label>
+              <textarea
+                className={`${inputCls} resize-none`}
+                rows={4}
+                placeholder="Was hältst du vom FinanceBoard? Was funktioniert gut, was könnte besser sein?"
+                value={message}
+                onChange={e => setMessage(e.target.value)}
+                required
+              />
+            </div>
+
+            {status === 'error' && (
+              <div className="flex items-center gap-2 text-[#ef4444] text-xs">
+                <AlertCircle size={14} />
+                <span>Fehler beim Senden — versuch es nochmal.</span>
+              </div>
+            )}
+
+            <button
+              type="submit"
+              disabled={status === 'sending'}
+              className="mt-1 flex items-center justify-center gap-2 bg-[#C9A84C] text-[#080808]
+                         font-bold text-sm px-6 py-3 rounded-lg hover:opacity-90 transition-opacity
+                         duration-200 disabled:opacity-50 cursor-pointer"
+            >
+              {status === 'sending' ? (
+                <span className="opacity-70">Wird gesendet…</span>
+              ) : (
+                <>
+                  <Send size={14} />
+                  Absenden
+                </>
+              )}
+            </button>
+          </form>
+        )}
+      </motion.div>
+    </div>
+  )
+}
 
 const STARS = 5
 
@@ -65,6 +216,8 @@ function Avatar({ initials }: { initials: string }) {
 }
 
 export default function TestimonialsSection() {
+  const [modalOpen, setModalOpen] = useState(false)
+
   return (
     <section className="py-20 px-8">
       <div className="max-w-5xl mx-auto">
@@ -105,18 +258,22 @@ export default function TestimonialsSection() {
         {/* CTA — eigene Bewertung */}
         <div className="text-center">
           <p className="text-[#5a5550] text-sm mb-4">
-            Du nutzt FinanceBoard? Wir freuen uns über dein Feedback.
+            Du nutzt FinanceBoard? Ich freue mich über dein Feedback.
           </p>
-          <a
-            href={SOCIALS.email + '?subject=FinanceBoard%20Bewertung'}
+          <button
+            onClick={() => setModalOpen(true)}
             className="inline-flex items-center gap-2 border border-[#C9A84C]/20 text-[#9A9590]
                        text-sm px-5 py-2.5 rounded-lg hover:border-[#C9A84C]/35 hover:text-[#F5F0E8]
-                       transition-all duration-200"
+                       transition-all duration-200 cursor-pointer"
           >
             ✉ Bewertung einreichen
-          </a>
+          </button>
         </div>
       </div>
+
+      <AnimatePresence>
+        {modalOpen && <ReviewModal onClose={() => setModalOpen(false)} />}
+      </AnimatePresence>
     </section>
   )
 }

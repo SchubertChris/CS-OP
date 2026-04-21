@@ -13,17 +13,17 @@ const INCLUDED = [
 ]
 
 interface DownloadCardProps {
-  downloadUrl?: string
+  onDownload?: () => void
 }
 
-export default function DownloadCard({ downloadUrl = '/downloads/FinanceBoard-Setup.exe' }: DownloadCardProps) {
+export default function DownloadCard({ onDownload }: DownloadCardProps) {
   const downloads = useDownloadCount()
 
   return (
     <section className="py-20 px-8 max-w-4xl mx-auto">
       <div className="text-center mb-12">
         <p className="text-[#C9A84C] text-xs tracking-[0.2em] uppercase mb-3">Download</p>
-        <h2 className="text-3xl font-bold text-[#F5F0E8]">Jetzt herunterladen</h2>
+        <h2 className="text-3xl font-bold text-[#F5F0E8]">Ab 8. Juni 2026 verfügbar</h2>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-[1.4fr_1fr] rounded-2xl overflow-hidden border border-[#C9A84C]/15">
 
@@ -45,17 +45,16 @@ export default function DownloadCard({ downloadUrl = '/downloads/FinanceBoard-Se
           <div>
             <p className="text-[#5a5550] line-through text-sm mb-1">39 €</p>
             <p className="text-[#C9A84C] text-5xl font-black leading-none">Gratis</p>
-            <p className="text-[#5a5550] text-xs mt-2">Für begrenzte Zeit</p>
+            <p className="text-[#5a5550] text-xs mt-2">Verfügbar ab 8.6.2026</p>
           </div>
           <div className="w-full flex flex-col gap-3 mt-2">
-            <a
-              href={downloadUrl}
-              download
+            <button
+              onClick={onDownload}
               className="w-full bg-[#C9A84C] text-[#080808] font-bold text-sm py-3.5 rounded-lg
-                         hover:opacity-90 transition-opacity duration-200 text-center"
+                         hover:opacity-90 transition-opacity duration-200 text-center cursor-pointer"
             >
               ↓ Windows herunterladen
-            </a>
+            </button>
             {SOCIALS.kofi && (
               <a
                 href={SOCIALS.kofi}
