@@ -9,6 +9,7 @@ import Footer from './Footer'
 import BackgroundEffect from '../ui/BackgroundEffect'
 import CookieBanner from '../ui/CookieBanner'
 import { ThemeProvider } from '../../contexts/ThemeContext'
+import { useAnalytics } from '../../hooks/useAnalytics'
 
 // Nicht lazy — sofort laden damit kein Flash
 import IntroAnimation from '../ui/IntroAnimation'
@@ -16,6 +17,11 @@ import IntroAnimation from '../ui/IntroAnimation'
 function ScrollToTop() {
   const { pathname } = useLocation()
   useEffect(() => { window.scrollTo(0, 0) }, [pathname])
+  return null
+}
+
+function AnalyticsTracker() {
+  useAnalytics()
   return null
 }
 
@@ -44,6 +50,7 @@ export default function RootLayout() {
       <div style={{ visibility: introComplete ? 'visible' : 'hidden' }}>
         <BackgroundEffect />
         <ScrollToTop />
+        <AnalyticsTracker />
         <Header />
         <main className="flex-1 relative z-10">
           <Outlet />
