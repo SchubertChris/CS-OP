@@ -18,7 +18,7 @@ const navItems = [
 
 export default function AdminLayout() {
   const navigate = useNavigate()
-  const { logout } = useAdminStore()
+  useAdminStore() // sidebar state — logout via /api/auth/logout
   const { isDirty, pages } = usePagesStore()
   const [time, setTime] = useState(new Date())
 
@@ -107,7 +107,7 @@ export default function AdminLayout() {
               <Eye size={13} strokeWidth={1.5} />
               <span className="hidden sm:block">Site</span>
             </button>
-            <button onClick={() => { logout(); navigate('/') }}
+            <button onClick={async () => { await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' }); navigate('/') }}
               className="flex items-center gap-1.5 font-mono text-[11px] tracking-[0.1em] uppercase text-[#9A9590] hover:text-[#FF4444] transition-colors">
               <LogOut size={13} strokeWidth={1.5} />
               <span className="hidden sm:block">Exit</span>

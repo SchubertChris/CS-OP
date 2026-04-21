@@ -1,34 +1,25 @@
-/* ============================================================
-   CandleScope — Admin Guard
-   src/admin/AdminGuard.tsx
-   ============================================================ */
-
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Navigate } from 'react-router-dom'
-import { useAdminStore } from '../store/useAdminStore'
+
+type Status = 'loading' | 'ok' | 'unauthorized'
 
 export default function AdminGuard({ children }: { children: React.ReactNode }) {
-  const { isAuthenticated, checkTimeout, updateActivity } = useAdminStore()
+  const [status, setStatus] = useState<Status>('loading')
 
-  /* Timeout bei jedem Render prüfen */
   useEffect(() => {
-    checkTimeout()
-  }, [checkTimeout])
+    fetch('/api/auth/me', { credentials: 'include' })
+      .then(r => setStatus(r.ok ? 'ok' : 'unauthorized'))
+      .catch(() => setStatus('unauthorized'))
+  }, [])
 
-  /* Activity bei Maus/Tastatur updaten */
-  useEffect(() => {
-    const handler = () => updateActivity()
-    window.addEventListener('mousemove', handler)
-    window.addEventListener('keydown', handler)
-    return () => {
-      window.removeEventListener('mousemove', handler)
-      window.removeEventListener('keydown', handler)
-    }
-  }, [updateActivity])
-
-  if (!isAuthenticated) {
-    return <Navigate to="/admin/login" replace />
+  if (status === 'loading') {
+    return (
+      <div className="min-h-screen bg-[#050505] flex items-center justify-center">
+        <div className="w-8 h-8 rounded-full border-2 border-[#C9A84C]/20 border-t-[#C9A84C] animate-spin" />
+      </div>
+    )
   }
 
+  if (status === 'unauthorized') return <Navigate to="/admin/login" replace />
   return <>{children}</>
 }

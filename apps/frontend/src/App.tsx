@@ -6,6 +6,7 @@ import AdminGuard from './admin/AdminGuard'
 /* ── Lazy imports ──────────────────────────────────── */
 const AdminLayout = lazy(() => import('./admin/AdminLayout'))
 const AdminLogin = lazy(() => import('./admin/AdminLogin'))
+const AdminSetup = lazy(() => import('./admin/AdminSetup'))
 const AdminDashboard = lazy(() => import('./admin/AdminDashboard'))
 const AdminSettings = lazy(() => import('./admin/AdminSettings'))
 const PageList = lazy(() => import('./admin/PageList'))
@@ -60,8 +61,9 @@ export default function App() {
       {/* ── 404 ────────────────────────────────────────── */}
       <Route path="*" element={<S><NotFoundPage /></S>} />
 
-      {/* ── Admin Login ────────────────────────────────── */}
+      {/* ── Admin Login + Setup ────────────────────────── */}
       <Route path="/admin/login" element={<S><AdminLogin /></S>} />
+      <Route path="/admin/setup" element={<S><AdminSetup /></S>} />
 
       {/* ── Admin Panel ────────────────────────────────── */}
       <Route
