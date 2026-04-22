@@ -1,11 +1,28 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { requireAdmin } from '../_lib/auth'
-import { getDb } from '../_lib/db'
+import { jwtVerify } from 'jose'
+import { neon } from '@neondatabase/serverless'
+
+function getToken(req: VercelRequest) {
+  const c = req.headers.cookie ?? ''
+  const m = c.match(/cs_admin=([^;]+)/)
+  return m ? m[1] : null
+}
+
+async function requireAdmin(req: VercelRequest, res: VercelResponse) {
+  const token = getToken(req)
+  if (!token) { res.status(401).json({ error: 'Nicht eingeloggt' }); return false }
+  try {
+    const secret = new TextEncoder().encode(process.env.jwt_secret ?? '')
+    const { payload } = await jwtVerify(token, secret)
+    if (payload['role'] !== 'admin') { res.status(401).json({ error: 'Nicht eingeloggt' }); return false }
+    return true
+  } catch { res.status(401).json({ error: 'Nicht eingeloggt' }); return false }
+}
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method === 'OPTIONS') return res.status(200).end()
   if (!await requireAdmin(req, res)) return
-  const sql = getDb()
+  const sql = neon(process.env.DATABASE_URL ?? '')
   const type = req.query.type as string
 
   if (type === 'overview') {

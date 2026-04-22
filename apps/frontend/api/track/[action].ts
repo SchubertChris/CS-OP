@@ -1,14 +1,25 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { getDb } from '../_lib/db'
+import { UAParser } from 'ua-parser-js'
+import { neon } from '@neondatabase/serverless'
 
-import { parseUA } from '../_lib/ua'
-import { getCountry } from '../_lib/ip'
+function parseUA(ua: string) {
+  if (!ua) return { device: 'desktop' as const, browser: 'Unknown', os: 'Unknown' }
+  const parser = new UAParser(ua)
+  const result = parser.getResult()
+  const t = result.device.type
+  const device = t === 'mobile' ? 'mobile' as const : t === 'tablet' ? 'tablet' as const : 'desktop' as const
+  return { device, browser: result.browser.name ?? 'Unknown', os: result.os.name ?? 'Unknown' }
+}
+
+function getCountry(req: VercelRequest): string | null {
+  return (req.headers['x-vercel-ip-country'] as string) ?? null
+}
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method === 'OPTIONS') return res.status(200).end()
   if (req.method !== 'POST') return res.status(405).end()
   const action = req.query.action as string
-  const sql = getDb()
+  const sql = neon(process.env.DATABASE_URL ?? '')
   const ua = req.headers['user-agent'] ?? ''
 
   if (action === 'pageview') {
