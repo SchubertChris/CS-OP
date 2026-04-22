@@ -33,7 +33,7 @@ export default function AdminLayout() {
   const dateStr = time.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' })
 
   return (
-    <div className="min-h-screen bg-[#050505] text-[#F5F0E8] flex flex-col overflow-hidden">
+    <div className="min-h-screen bg-[var(--cs-bg)] text-[var(--cs-text)] flex flex-col overflow-hidden">
 
       <div className="pointer-events-none fixed inset-0 z-0"
         style={{ backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(201,168,76,0.006) 2px, rgba(201,168,76,0.006) 4px)' }} />
@@ -51,13 +51,13 @@ export default function AdminLayout() {
             <div className="flex items-center gap-2.5">
               <img src={csLogo} alt="CandleScope" className="w-5 h-5 object-contain shrink-0" />
               <span className="font-display text-[12px] tracking-[0.2em] uppercase text-[#C9A84C]">CandleScope</span>
-              <span className="text-[#5a5550] text-[12px]">/</span>
-              <span className="font-mono text-[11px] tracking-[0.14em] text-[#9A9590] uppercase">Admin</span>
+              <span className="text-[var(--cs-text-3)] text-[12px]">/</span>
+              <span className="font-mono text-[11px] tracking-[0.14em] text-[var(--cs-text-2)] uppercase">Admin</span>
             </div>
             <div className="hidden sm:flex items-center gap-1.5">
               <motion.div className="w-1.5 h-1.5 rounded-full bg-[#00C896]"
                 animate={{ opacity: [1, 0.3, 1] }} transition={{ repeat: Infinity, duration: 2 }} />
-              <span className="font-mono text-[11px] text-[#9A9590] tracking-[0.1em]">LIVE</span>
+              <span className="font-mono text-[11px] text-[var(--cs-text-2)] tracking-[0.1em]">LIVE</span>
             </div>
           </div>
 
@@ -65,7 +65,7 @@ export default function AdminLayout() {
             {navItems.map(({ to, label, short, icon: Icon, end }) => (
               <NavLink key={to} to={to} end={end}
                 className={({ isActive }) =>
-                  `relative flex items-center gap-2 px-3 md:px-4 py-1.5 transition-all duration-200 ${isActive ? 'text-[#C9A84C]' : 'text-[#9A9590] hover:text-[#F5F0E8]'
+                  `relative flex items-center gap-2 px-3 md:px-4 py-1.5 transition-all duration-200 ${isActive ? 'text-[#C9A84C]' : 'text-[var(--cs-text-2)] hover:text-[var(--cs-text)]'
                   }`
                 }
               >
@@ -91,33 +91,33 @@ export default function AdminLayout() {
                   initial={{ opacity: 0, x: 8 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 8 }}>
                   <motion.div className="w-1.5 h-1.5 rounded-full bg-[#C9A84C]"
                     animate={{ opacity: [1, 0.3, 1] }} transition={{ repeat: Infinity, duration: 1 }} />
-                  <span className="font-mono text-[11px] text-[#C9A84C] tracking-[0.1em] hidden sm:block">UNSAVED</span>
+                    <span className="font-mono text-[11px] text-[#C9A84C] tracking-[0.1em] hidden sm:block">UNSAVED</span>
                 </motion.div>
               )}
             </AnimatePresence>
             <div className="hidden md:flex flex-col items-end">
               <span className="font-mono text-[12px] text-[#C9A84C]/80 tracking-[0.06em]">{timeStr}</span>
-              <span className="font-mono text-[10px] text-[#9A9590] tracking-[0.06em]">{dateStr}</span>
+              <span className="font-mono text-[10px] text-[var(--cs-text-2)] tracking-[0.06em]">{dateStr}</span>
             </div>
             <div className="w-px h-5 bg-[#C9A84C]/15" />
             <button onClick={() => window.open('/', '_blank')}
-              className="flex items-center gap-1.5 font-mono text-[11px] tracking-[0.1em] uppercase text-[#9A9590] hover:text-[#C9A84C] transition-colors">
+              className="flex items-center gap-1.5 font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--cs-text-2)] hover:text-[#C9A84C] transition-colors">
               <Eye size={13} strokeWidth={1.5} />
               <span className="hidden sm:block">Site</span>
             </button>
             <button onClick={async () => { await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' }); navigate('/') }}
-              className="flex items-center gap-1.5 font-mono text-[11px] tracking-[0.1em] uppercase text-[#9A9590] hover:text-[#FF4444] transition-colors">
+              className="flex items-center gap-1.5 font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--cs-text-2)] hover:text-[#FF4444] transition-colors">
               <LogOut size={13} strokeWidth={1.5} />
               <span className="hidden sm:block">Exit</span>
             </button>
           </div>
         </div>
 
-        <div className="flex items-center gap-6 px-6 md:px-10 h-9 border-b border-[#C9A84C]/8 bg-[#080808]/50">
+        <div className="flex items-center gap-6 px-6 md:px-10 h-9 border-b border-[#C9A84C]/8 bg-[var(--cs-bg)]/50">
           <StatItem label="PAGES" value={String(pages.length)} />
           <StatItem label="NAV" value={String(pages.filter(p => p.nav?.visible).length)} />
           <StatItem label="BLOCKS" value={String(pages.reduce((a, p) => a + p.blocks.length, 0))} />
-          <div className="ml-auto font-mono text-[10px] text-[#5a5550] tracking-[0.1em]">CS-ADMIN v1.0 · PHASE-1</div>
+          <div className="ml-auto font-mono text-[10px] text-[var(--cs-text-3)] tracking-[0.1em]">CS-ADMIN v1.0 · PHASE-1</div>
         </div>
       </header>
 
@@ -131,7 +131,7 @@ export default function AdminLayout() {
 function StatItem({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex items-center gap-2">
-      <span className="font-mono text-[11px] text-[#5a5550] tracking-[0.12em]">{label}</span>
+      <span className="font-mono text-[11px] text-[var(--cs-text-3)] tracking-[0.12em]">{label}</span>
       <span className="font-mono text-[12px] text-[#C9A84C]/80 tracking-[0.06em] font-medium">{value}</span>
     </div>
   )

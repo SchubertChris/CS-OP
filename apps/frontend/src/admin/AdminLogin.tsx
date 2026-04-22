@@ -81,7 +81,7 @@ export default function AdminLogin() {
   }
 
   return (
-    <div className="min-h-screen bg-[#050505] flex items-center justify-center px-6">
+    <div className="min-h-screen bg-[var(--cs-bg)] flex items-center justify-center px-6">
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-[#C9A84C]/3 blur-[100px]" />
       </div>
@@ -94,15 +94,15 @@ export default function AdminLogin() {
           <div className="w-14 h-14 rounded-2xl bg-[#C9A84C]/10 border border-[#C9A84C]/25 flex items-center justify-center mb-5">
             <Shield size={24} strokeWidth={1.5} className="text-[#C9A84C]" />
           </div>
-          <h1 className="font-display text-2xl text-[#F5F0E8] tracking-tight">Admin Access</h1>
-          <p className="font-mono text-[11px] tracking-[0.18em] uppercase text-[#9A9590] mt-1">
+          <h1 className="font-display text-2xl text-[var(--cs-text)] tracking-tight">Admin Access</h1>
+          <p className="font-mono text-[11px] tracking-[0.18em] uppercase text-[var(--cs-text-2)] mt-1">
             {step === 'password' ? 'Passwort eingeben' : 'Authenticator Code'}
           </p>
         </div>
 
         <motion.div animate={shake ? { x: [-8, 8, -6, 6, 0] } : {}}
           transition={{ duration: 0.4 }}
-          className="bg-[#0a0a0a] border border-[#C9A84C]/15 rounded-2xl p-8">
+          className="bg-[var(--cs-s2)] border border-[#C9A84C]/15 rounded-2xl p-8">
 
           <AnimatePresence mode="wait">
 
@@ -119,10 +119,10 @@ export default function AdminLogin() {
                     onChange={e => { setPassword(e.target.value); setError('') }}
                     placeholder="Passwort"
                     autoFocus
-                    className="w-full bg-[#111] border border-[#C9A84C]/15 rounded-xl px-4 py-3.5 pr-12 text-[#F5F0E8] text-sm outline-none focus:border-[#C9A84C]/40 transition-colors placeholder-[#5a5550]"
+                    className="w-full bg-[var(--cs-s4)] border border-[#C9A84C]/15 rounded-xl px-4 py-3.5 pr-12 text-[var(--cs-text)] text-sm outline-none focus:border-[#C9A84C]/40 transition-colors placeholder-[var(--cs-text-3)]"
                   />
                   <button type="button" onClick={() => setShowPw(v => !v)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-[#9A9590] hover:text-[#F5F0E8] transition-colors">
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-[var(--cs-text-2)] hover:text-[var(--cs-text)] transition-colors">
                     {showPw ? <EyeOff size={16} /> : <Eye size={16} />}
                   </button>
                 </div>
@@ -142,7 +142,7 @@ export default function AdminLogin() {
                 exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.25 }}
                 className="flex flex-col items-center gap-6">
 
-                <p className="text-[#9A9590] text-sm text-center leading-relaxed">
+                <p className="text-[var(--cs-text-2)] text-sm text-center leading-relaxed">
                   Microsoft Authenticator öffnen<br />
                   und den 6-stelligen Code eingeben
                 </p>
@@ -154,7 +154,7 @@ export default function AdminLogin() {
                       type="text" inputMode="numeric" maxLength={1} value={digit}
                       onChange={e => handleTotpChange(i, e.target.value)}
                       onKeyDown={e => handleTotpKeyDown(i, e)}
-                      className="w-11 h-14 text-center text-xl font-mono bg-[#111] border border-[#C9A84C]/20 rounded-xl text-[#F5F0E8] outline-none focus:border-[#C9A84C]/60 transition-colors"
+                      className="w-11 h-14 text-center text-xl font-mono bg-[var(--cs-s4)] border border-[#C9A84C]/20 rounded-xl text-[var(--cs-text)] outline-none focus:border-[#C9A84C]/60 transition-colors"
                     />
                   ))}
                 </div>
@@ -166,7 +166,7 @@ export default function AdminLogin() {
                 )}
 
                 <button onClick={() => { setStep('password'); setTotp(['','','','','','']); setError('') }}
-                  className="text-[#9A9590] text-xs hover:text-[#F5F0E8] transition-colors">
+                  className="text-[var(--cs-text-2)] text-xs hover:text-[var(--cs-text)] transition-colors">
                   ← Zurück
                 </button>
               </motion.div>
@@ -175,7 +175,7 @@ export default function AdminLogin() {
         </motion.div>
 
         <div className="flex justify-center mt-6">
-          <Link to="/" className="flex items-center gap-2 text-[#9A9590] hover:text-[#F5F0E8] text-xs transition-colors">
+          <Link to="/" className="flex items-center gap-2 text-[var(--cs-text-2)] hover:text-[var(--cs-text)] text-xs transition-colors">
             <Home size={13} /> Zur Website
           </Link>
         </div>

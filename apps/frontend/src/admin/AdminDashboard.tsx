@@ -27,7 +27,7 @@ function flag(code: string) {
 
 /* ── Sparkline SVG ── */
 function Sparkline({ data }: { data: { date: string; views: number }[] }) {
-  if (!data.length) return <div className="h-16 flex items-center justify-center text-[#5a5550] text-xs">Noch keine Daten</div>
+  if (!data.length) return <div className="h-16 flex items-center justify-center text-[var(--cs-text-3)] text-xs">Noch keine Daten</div>
   const max = Math.max(...data.map(d => d.views), 1)
   const W = 300, H = 60
   const pts = data.map((d, i) => {
@@ -54,12 +54,12 @@ function Sparkline({ data }: { data: { date: string; views: number }[] }) {
 function Bar({ label, value, max }: { label: string; value: number; max: number }) {
   return (
     <div className="flex items-center gap-3">
-      <span className="text-xs text-[#9A9590] w-24 shrink-0 truncate">{label}</span>
+      <span className="text-xs text-[var(--cs-text-2)] w-24 shrink-0 truncate">{label}</span>
       <div className="flex-1 h-1.5 bg-[#C9A84C]/10 rounded-full overflow-hidden">
         <div className="h-full bg-[#C9A84C]/60 rounded-full transition-all duration-700"
           style={{ width: `${max > 0 ? (value / max) * 100 : 0}%` }} />
       </div>
-      <span className="text-xs text-[#9A9590] w-8 text-right shrink-0">{value}</span>
+      <span className="text-xs text-[var(--cs-text-2)] w-8 text-right shrink-0">{value}</span>
     </div>
   )
 }
@@ -70,12 +70,12 @@ function KpiCard({ label, value, icon: Icon }: {
   icon: React.ComponentType<{ size?: number; strokeWidth?: number; className?: string }>
 }) {
   return (
-    <div className="bg-[#0a0a0a] border border-[#C9A84C]/12 rounded-2xl p-5">
+    <div className="bg-[var(--cs-s2)] border border-[#C9A84C]/12 rounded-2xl p-5">
       <div className="flex items-center justify-between mb-3">
-        <span className="font-mono text-[10px] tracking-[0.18em] uppercase text-[#9A9590]">{label}</span>
+        <span className="font-mono text-[10px] tracking-[0.18em] uppercase text-[var(--cs-text-2)]">{label}</span>
         <Icon size={15} strokeWidth={1.5} className="text-[#C9A84C]/50" />
       </div>
-      <span className="font-display text-3xl text-[#F5F0E8]">{value.toLocaleString('de-DE')}</span>
+      <span className="font-display text-3xl text-[var(--cs-text)]">{value.toLocaleString('de-DE')}</span>
     </div>
   )
 }
@@ -149,14 +149,14 @@ export default function AdminDashboard() {
     <div className="min-h-full p-6 md:p-10 flex flex-col gap-6">
 
       {/* ── Live Strip ── */}
-      <div className="flex items-center gap-3 bg-[#0a0a0a] border border-[#C9A84C]/12 rounded-2xl px-6 py-4">
+      <div className="flex items-center gap-3 bg-[var(--cs-s2)] border border-[#C9A84C]/12 rounded-2xl px-6 py-4">
         <span className="relative flex h-2.5 w-2.5">
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#C9A84C] opacity-60" />
           <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-[#C9A84C]" />
         </span>
-        <span className="font-mono text-[11px] tracking-[0.18em] uppercase text-[#9A9590]">Live</span>
-        <span className="font-display text-2xl text-[#F5F0E8] ml-1">{live}</span>
-        <span className="text-[#9A9590] text-sm">Besucher gerade online</span>
+        <span className="font-mono text-[11px] tracking-[0.18em] uppercase text-[var(--cs-text-2)]">Live</span>
+        <span className="font-display text-2xl text-[var(--cs-text)] ml-1">{live}</span>
+        <span className="text-[var(--cs-text-2)] text-sm">Besucher gerade online</span>
         <button onClick={fetchAll} className="ml-auto text-[#9A9590] hover:text-[#C9A84C] transition-colors">
           <Activity size={15} strokeWidth={1.5} />
         </button>
@@ -172,8 +172,8 @@ export default function AdminDashboard() {
       </div>
 
       {/* ── Sparkline ── */}
-      <div className="bg-[#0a0a0a] border border-[#C9A84C]/12 rounded-2xl p-6">
-        <p className="font-mono text-[10px] tracking-[0.18em] uppercase text-[#9A9590] mb-4">
+      <div className="bg-[var(--cs-s2)] border border-[#C9A84C]/12 rounded-2xl p-6">
+        <p className="font-mono text-[10px] tracking-[0.18em] uppercase text-[var(--cs-text-2)] mb-4">
           Aufrufe — letzte 30 Tage
         </p>
         <Sparkline data={overview?.sparkline ?? []} />
@@ -181,42 +181,42 @@ export default function AdminDashboard() {
 
       {/* ── Top Pages + Geo ── */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-[#0a0a0a] border border-[#C9A84C]/12 rounded-2xl p-6">
-          <p className="font-mono text-[10px] tracking-[0.18em] uppercase text-[#9A9590] mb-4">Top Seiten</p>
+        <div className="bg-[var(--cs-s2)] border border-[#C9A84C]/12 rounded-2xl p-6">
+          <p className="font-mono text-[10px] tracking-[0.18em] uppercase text-[var(--cs-text-2)] mb-4">Top Seiten</p>
           <div className="flex flex-col gap-2">
             {pages.map((p, i) => (
               <div key={i} className="flex items-center gap-3 py-1.5 border-b border-[#C9A84C]/6 last:border-0">
-                <span className="font-mono text-[10px] text-[#9A9590] w-4 shrink-0">{i + 1}</span>
-                <span className="text-sm text-[#F5F0E8] flex-1 truncate">{p.path || '/'}</span>
-                <span className="text-xs text-[#9A9590] shrink-0">{p.views.toLocaleString('de-DE')}</span>
+                <span className="font-mono text-[10px] text-[var(--cs-text-2)] w-4 shrink-0">{i + 1}</span>
+                <span className="text-sm text-[var(--cs-text)] flex-1 truncate">{p.path || '/'}</span>
+                <span className="text-xs text-[var(--cs-text-2)] shrink-0">{p.views.toLocaleString('de-DE')}</span>
               </div>
             ))}
-            {pages.length === 0 && <p className="text-[#5a5550] text-xs">Noch keine Daten</p>}
+            {pages.length === 0 && <p className="text-[var(--cs-text-3)] text-xs">Noch keine Daten</p>}
           </div>
         </div>
 
-        <div className="bg-[#0a0a0a] border border-[#C9A84C]/12 rounded-2xl p-6">
+        <div className="bg-[var(--cs-s2)] border border-[#C9A84C]/12 rounded-2xl p-6">
           <div className="flex items-center gap-2 mb-4">
             <Globe size={14} strokeWidth={1.5} className="text-[#C9A84C]/50" />
-            <p className="font-mono text-[10px] tracking-[0.18em] uppercase text-[#9A9590]">Länder</p>
+            <p className="font-mono text-[10px] tracking-[0.18em] uppercase text-[var(--cs-text-2)]">Länder</p>
           </div>
           <div className="flex flex-col gap-2">
             {geo.map((g, i) => (
               <div key={i} className="flex items-center gap-3 py-1 border-b border-[#C9A84C]/6 last:border-0">
                 <span className="text-base w-6 shrink-0">{flag(g.country)}</span>
-                <span className="text-sm text-[#F5F0E8] flex-1">{g.country || 'Unbekannt'}</span>
-                <span className="text-xs text-[#9A9590] shrink-0">{g.views}</span>
+                <span className="text-sm text-[var(--cs-text)] flex-1">{g.country || 'Unbekannt'}</span>
+                <span className="text-xs text-[var(--cs-text-2)] shrink-0">{g.views}</span>
               </div>
             ))}
-            {geo.length === 0 && <p className="text-[#5a5550] text-xs">Noch keine Daten</p>}
+            {geo.length === 0 && <p className="text-[var(--cs-text-3)] text-xs">Noch keine Daten</p>}
           </div>
         </div>
       </div>
 
       {/* ── Devices + Browsers ── */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-[#0a0a0a] border border-[#C9A84C]/12 rounded-2xl p-6">
-          <p className="font-mono text-[10px] tracking-[0.18em] uppercase text-[#9A9590] mb-4">Geräte</p>
+        <div className="bg-[var(--cs-s2)] border border-[#C9A84C]/12 rounded-2xl p-6">
+          <p className="font-mono text-[10px] tracking-[0.18em] uppercase text-[var(--cs-text-2)] mb-4">Geräte</p>
           <div className="flex flex-col gap-3">
             {devices.map((d, i) => (
               <div key={i} className="flex items-center gap-3">
@@ -224,23 +224,23 @@ export default function AdminDashboard() {
                 <Bar label={d.device} value={d.n} max={maxDevice} />
               </div>
             ))}
-            {devices.length === 0 && <p className="text-[#5a5550] text-xs">Noch keine Daten</p>}
+            {devices.length === 0 && <p className="text-[var(--cs-text-3)] text-xs">Noch keine Daten</p>}
           </div>
         </div>
-        <div className="bg-[#0a0a0a] border border-[#C9A84C]/12 rounded-2xl p-6">
-          <p className="font-mono text-[10px] tracking-[0.18em] uppercase text-[#9A9590] mb-4">Browser</p>
+        <div className="bg-[var(--cs-s2)] border border-[#C9A84C]/12 rounded-2xl p-6">
+          <p className="font-mono text-[10px] tracking-[0.18em] uppercase text-[var(--cs-text-2)] mb-4">Browser</p>
           <div className="flex flex-col gap-3">
             {browsers.map((b, i) => (
               <Bar key={i} label={b.browser} value={b.n} max={maxBrowser} />
             ))}
-            {browsers.length === 0 && <p className="text-[#5a5550] text-xs">Noch keine Daten</p>}
+            {browsers.length === 0 && <p className="text-[var(--cs-text-3)] text-xs">Noch keine Daten</p>}
           </div>
         </div>
       </div>
 
       {/* ── Events Log ── */}
-      <div className="bg-[#0a0a0a] border border-[#C9A84C]/12 rounded-2xl p-6">
-        <p className="font-mono text-[10px] tracking-[0.18em] uppercase text-[#9A9590] mb-4">
+      <div className="bg-[var(--cs-s2)] border border-[#C9A84C]/12 rounded-2xl p-6">
+        <p className="font-mono text-[10px] tracking-[0.18em] uppercase text-[var(--cs-text-2)] mb-4">
           Events — letzte 50
         </p>
         <div className="flex flex-col gap-1 max-h-64 overflow-y-auto">
@@ -249,23 +249,23 @@ export default function AdminDashboard() {
               <span className="font-mono text-[10px] text-[#C9A84C] bg-[#C9A84C]/8 px-2 py-0.5 rounded shrink-0">
                 {e.name}
               </span>
-              <span className="text-xs text-[#9A9590] flex-1 truncate">{e.path ?? '—'}</span>
-              <span className="text-[10px] text-[#5a5550] shrink-0">
+              <span className="text-xs text-[var(--cs-text-2)] flex-1 truncate">{e.path ?? '—'}</span>
+              <span className="text-[10px] text-[var(--cs-text-3)] shrink-0">
                 {new Date(e.created_at).toLocaleString('de-DE', {
                   day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit'
                 })}
               </span>
             </div>
           ))}
-          {events.length === 0 && <p className="text-[#5a5550] text-xs">Noch keine Events</p>}
+          {events.length === 0 && <p className="text-[var(--cs-text-3)] text-xs">Noch keine Events</p>}
         </div>
       </div>
 
       {/* ── Security ── */}
-      <div className="bg-[#0a0a0a] border border-[#C9A84C]/12 rounded-2xl p-6">
+      <div className="bg-[var(--cs-s2)] border border-[#C9A84C]/12 rounded-2xl p-6">
         <div className="flex items-center gap-2 mb-4">
           <ShieldAlert size={14} strokeWidth={1.5} className="text-[#C9A84C]/50" />
-          <p className="font-mono text-[10px] tracking-[0.18em] uppercase text-[#9A9590]">
+          <p className="font-mono text-[10px] tracking-[0.18em] uppercase text-[var(--cs-text-2)]">
             Security — letzte 24h
           </p>
         </div>
@@ -277,8 +277,8 @@ export default function AdminDashboard() {
             { label: 'TOTP-Fails',  key: 'totp_fail',      Icon: ShieldAlert, color: '#FF4444' },
             { label: 'Geblockt',    key: 'rate_limited',   Icon: ShieldAlert, color: '#C9A84C' },
           ] as const).map(({ label, key, Icon, color }) => (
-            <div key={key} className="bg-[#111] border border-[#C9A84C]/8 rounded-xl p-3 flex flex-col gap-1">
-              <span className="font-mono text-[10px] tracking-[0.12em] uppercase text-[#9A9590]">{label}</span>
+            <div key={key} className="bg-[var(--cs-s4)] border border-[#C9A84C]/8 rounded-xl p-3 flex flex-col gap-1">
+              <span className="font-mono text-[10px] tracking-[0.12em] uppercase text-[var(--cs-text-2)]">{label}</span>
               <div className="flex items-center gap-1.5">
                 <Icon size={12} strokeWidth={1.5} style={{ color }} />
                 <span className="font-display text-xl" style={{ color }}>
@@ -291,16 +291,16 @@ export default function AdminDashboard() {
 
         {(security?.topIps?.length ?? 0) > 0 && (
           <div className="mb-5">
-            <p className="font-mono text-[10px] tracking-[0.14em] uppercase text-[#5a5550] mb-2">Top IPs (Fehlschläge)</p>
+            <p className="font-mono text-[10px] tracking-[0.14em] uppercase text-[var(--cs-text-3)] mb-2">Top IPs (Fehlschläge)</p>
             <div className="flex flex-col gap-2">
               {security!.topIps.map((row, i) => (
                 <div key={i} className="flex items-center gap-3">
-                  <span className="font-mono text-[10px] text-[#9A9590] w-28 shrink-0 truncate">{row.ip}</span>
+                  <span className="font-mono text-[10px] text-[var(--cs-text-2)] w-28 shrink-0 truncate">{row.ip}</span>
                   <div className="flex-1 h-1 bg-[#C9A84C]/10 rounded-full overflow-hidden">
                     <div className="h-full bg-[#FF4444]/50 rounded-full"
                       style={{ width: `${(row.count / security!.topIps[0].count) * 100}%` }} />
                   </div>
-                  <span className="font-mono text-[10px] text-[#9A9590] w-4 text-right shrink-0">{row.count}</span>
+                  <span className="font-mono text-[10px] text-[var(--cs-text-2)] w-4 text-right shrink-0">{row.count}</span>
                 </div>
               ))}
             </div>
@@ -308,7 +308,7 @@ export default function AdminDashboard() {
         )}
 
         <div>
-          <p className="font-mono text-[10px] tracking-[0.14em] uppercase text-[#5a5550] mb-2">Letzte Ereignisse</p>
+          <p className="font-mono text-[10px] tracking-[0.14em] uppercase text-[var(--cs-text-3)] mb-2">Letzte Ereignisse</p>
           <div className="flex flex-col gap-1 max-h-48 overflow-y-auto">
             {(security?.recentEvents ?? []).map((e, i) => {
               const isOk = e.name === 'login_success' || e.name === 'totp_success'
@@ -319,10 +319,10 @@ export default function AdminDashboard() {
                   }`}>
                     {e.name}
                   </span>
-                  <span className="text-[10px] text-[#9A9590] flex-1 truncate font-mono">
+                  <span className="text-[10px] text-[var(--cs-text-2)] flex-1 truncate font-mono">
                     {e.meta?.ip ?? '—'}
                   </span>
-                  <span className="text-[10px] text-[#5a5550] shrink-0">
+                  <span className="text-[10px] text-[var(--cs-text-3)] shrink-0">
                     {new Date(e.created_at).toLocaleString('de-DE', {
                       day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit'
                     })}
@@ -331,7 +331,7 @@ export default function AdminDashboard() {
               )
             })}
             {(security?.recentEvents?.length ?? 0) === 0 && (
-              <p className="text-[#5a5550] text-xs">Noch keine Security-Events</p>
+              <p className="text-[var(--cs-text-3)] text-xs">Noch keine Security-Events</p>
             )}
           </div>
         </div>
