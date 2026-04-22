@@ -99,25 +99,28 @@ export default function AdminDashboard() {
   const [loading, setLoading]   = useState(true)
 
   const fetchAll = useCallback(async () => {
+    const get = (url: string) =>
+      fetch(url, { credentials: 'include' }).then(r => r.json()).catch(() => ({}))
     try {
       const [ov, lv, pg, ge, dv, ev, sec] = await Promise.all([
-        fetch('/api/analytics/overview',  { credentials: 'include' }).then(r => r.json()),
-        fetch('/api/analytics/live',      { credentials: 'include' }).then(r => r.json()),
-        fetch('/api/analytics/pages',     { credentials: 'include' }).then(r => r.json()),
-        fetch('/api/analytics/geo',       { credentials: 'include' }).then(r => r.json()),
-        fetch('/api/analytics/devices',   { credentials: 'include' }).then(r => r.json()),
-        fetch('/api/analytics/events',    { credentials: 'include' }).then(r => r.json()),
-        fetch('/api/analytics/security',  { credentials: 'include' }).then(r => r.json()),
+        get('/api/analytics/overview'),
+        get('/api/analytics/live'),
+        get('/api/analytics/pages'),
+        get('/api/analytics/geo'),
+        get('/api/analytics/devices'),
+        get('/api/analytics/events'),
+        get('/api/analytics/security'),
       ])
-      setOverview(ov)
+      setOverview(ov.error ? null : ov)
       setLive(lv.live ?? 0)
       setPages(pg.pages ?? [])
       setGeo(ge.geo ?? [])
       setDevices(dv.devices ?? [])
       setBrowsers(dv.browsers ?? [])
       setEvents(ev.events ?? [])
-      setSecurity(sec)
-    } finally {
+      setSecurity(sec.error ? null : sec)
+    } catch { /* intentionally empty — individual fetches already catch */ }
+    finally {
       setLoading(false)
     }
   }, [])
