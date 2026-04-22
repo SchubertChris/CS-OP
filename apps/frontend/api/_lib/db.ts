@@ -1,5 +1,10 @@
-import { neon } from '@neondatabase/serverless'
+import { neon, type NeonQueryFunction } from '@neondatabase/serverless'
 
-const dbUrl = process.env.DATABASE_URL ?? process.env.database_url ?? ''
+let _sql: NeonQueryFunction<false, false> | null = null
 
-export const sql = neon(dbUrl || 'postgresql://no-db-url-set:x@localhost/x')
+export function getDb(): NeonQueryFunction<false, false> {
+  if (!_sql) {
+    _sql = neon(process.env.DATABASE_URL ?? process.env.database_url ?? '')
+  }
+  return _sql
+}

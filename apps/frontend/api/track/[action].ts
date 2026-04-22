@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { sql } from '../_lib/db'
+import { getDb } from '../_lib/db'
 import { parseUA } from '../_lib/ua'
 import { getCountry } from '../_lib/ip'
 
@@ -7,6 +7,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method === 'OPTIONS') return res.status(200).end()
   if (req.method !== 'POST') return res.status(405).end()
   const action = req.query.action as string
+  const sql = getDb()
   const ua = req.headers['user-agent'] ?? ''
 
   if (action === 'pageview') {

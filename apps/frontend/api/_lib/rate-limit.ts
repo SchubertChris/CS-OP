@@ -1,10 +1,11 @@
-import { sql } from './db'
+import { getDb } from './db'
 
 export async function isRateLimited(
   key: string,
   max: number,
   windowMs: number
 ): Promise<boolean> {
+  const sql = getDb()
   const resetAt = new Date(Date.now() + windowMs)
 
   const rows = await sql`
