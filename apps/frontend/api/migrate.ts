@@ -1,4 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
+import { getDb } from './_lib/db'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const token = (req.headers['x-migrate-token'] ?? req.query.token) as string
@@ -7,8 +8,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    const { neon } = await import('@neondatabase/serverless')
-    const sql = neon(process.env.DATABASE_URL ?? process.env.database_url ?? '')
+    const sql = getDb()
 
     await sql`CREATE TABLE IF NOT EXISTS page_views (
       id SERIAL PRIMARY KEY, path TEXT NOT NULL, referrer TEXT,

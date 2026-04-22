@@ -1,4 +1,9 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
+import bcrypt from 'bcryptjs'
+import QRCode from 'qrcode'
+import { issueTempToken, clearAdminCookie, requireAdmin, verifyToken, issueAdminToken, setAdminCookie } from '../_lib/auth'
+import { isRateLimited } from '../_lib/rate-limit'
+import { generateSecret, generateOtpAuthUrl, verifyTotp } from '../_lib/totp'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method === 'OPTIONS') return res.status(200).end()
@@ -7,9 +12,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (action === 'login') {
     if (req.method !== 'POST') return res.status(405).end()
     try {
-      const { isRateLimited } = await import('../_lib/rate-limit')
-      const { issueTempToken } = await import('../_lib/auth')
-      const { default: bcrypt } = await import('bcryptjs')
       const ip = (req.headers['x-forwarded-for'] as string)?.split(',')[0] ?? 'unknown'
       if (await isRateLimited(`login:${ip}`, 5, 15 * 60 * 1000))
         return res.status(429).json({ error: 'Zu viele Versuche. Bitte 15 Minuten warten.' })
@@ -25,7 +27,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   if (action === 'logout') {
     if (req.method !== 'POST') return res.status(405).end()
-    const { clearAdminCookie } = await import('../_lib/auth')
     clearAdminCookie(res)
     return res.status(200).json({ ok: true })
   }
@@ -33,7 +34,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (action === 'me') {
     if (req.method !== 'GET') return res.status(405).end()
     try {
-      const { requireAdmin } = await import('../_lib/auth')
       const payload = await requireAdmin(req, res)
       if (!payload) return
       return res.status(200).json({ ok: true, role: 'admin' })
@@ -46,8 +46,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       const setupToken = process.env.setup_token
       if (!setupToken) return res.status(403).json({ error: 'Setup nicht aktiviert' })
       if (req.query.token !== setupToken) return res.status(403).json({ error: 'Ungültiger Token' })
-      const { generateSecret, generateOtpAuthUrl } = await import('../_lib/totp')
-      const { default: QRCode } = await import('qrcode')
       const secret = process.env.totp_secret || generateSecret()
       const qrDataUrl = await QRCode.toDataURL(generateOtpAuthUrl(secret, 'Chris', 'CandleScope'), { width: 300, margin: 2 })
       res.setHeader('Content-Type', 'text/html; charset=utf-8')
@@ -67,9 +65,6 @@ p{color:#9A9590;text-align:center;max-width:420px;line-height:1.6}.warn{color:#F
   if (action === 'totp-verify') {
     if (req.method !== 'POST') return res.status(405).end()
     try {
-      const { isRateLimited } = await import('../_lib/rate-limit')
-      const { verifyToken, issueAdminToken, setAdminCookie } = await import('../_lib/auth')
-      const { verifyTotp } = await import('../_lib/totp')
       const ip = (req.headers['x-forwarded-for'] as string)?.split(',')[0] ?? 'unknown'
       if (await isRateLimited(`totp:${ip}`, 10, 5 * 60 * 1000))
         return res.status(429).json({ error: 'Zu viele Versuche.' })
