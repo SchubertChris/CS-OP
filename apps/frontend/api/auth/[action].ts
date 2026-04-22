@@ -50,6 +50,13 @@ async function requireAdmin(req: VercelRequest, res: VercelResponse) {
   return payload
 }
 
+async function logEvent(name: string, meta: Record<string, string>) {
+  try {
+    const sql = neon(process.env.DATABASE_URL ?? '')
+    await sql`INSERT INTO events (name, meta) VALUES (${name}, ${JSON.stringify(meta)})`
+  } catch { /* nie von Logging werfen lassen */ }
+}
+
 async function isRateLimited(key: string, max: number, windowMs: number) {
   try {
     const sql = neon(process.env.DATABASE_URL ?? '')
@@ -72,13 +79,18 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (req.method !== 'POST') return res.status(405).end()
     try {
       const ip = (req.headers['x-forwarded-for'] as string)?.split(',')[0] ?? 'unknown'
-      if (await isRateLimited(`login:${ip}`, 5, 15 * 60 * 1000))
+      if (await isRateLimited(`login:${ip}`, 5, 15 * 60 * 1000)) {
+        await logEvent('rate_limited', { ip, action: 'login' })
         return res.status(429).json({ error: 'Zu viele Versuche.' })
+      }
       const { password } = req.body ?? {}
       if (!password || typeof password !== 'string')
         return res.status(400).json({ error: 'Passwort fehlt' })
-      if (!await bcrypt.compare(password, process.env.admin_password_hash ?? ''))
+      if (!await bcrypt.compare(password, process.env.admin_password_hash ?? '')) {
+        await logEvent('login_fail', { ip })
         return res.status(401).json({ error: 'Ungültige Anmeldedaten' })
+      }
+      await logEvent('login_success', { ip })
       return res.status(200).json({ tempToken: await issueTempToken() })
     } catch (e) { return res.status(500).json({ error: String(e) }) }
   }
@@ -125,15 +137,20 @@ p{color:#9A9590;text-align:center;max-width:420px;line-height:1.6}.warn{color:#F
     if (req.method !== 'POST') return res.status(405).end()
     try {
       const ip = (req.headers['x-forwarded-for'] as string)?.split(',')[0] ?? 'unknown'
-      if (await isRateLimited(`totp:${ip}`, 10, 5 * 60 * 1000))
+      if (await isRateLimited(`totp:${ip}`, 10, 5 * 60 * 1000)) {
+        await logEvent('rate_limited', { ip, action: 'totp' })
         return res.status(429).json({ error: 'Zu viele Versuche.' })
+      }
       const { code, tempToken } = req.body ?? {}
       if (!code || !tempToken) return res.status(400).json({ error: 'Code und Token erforderlich' })
       const payload = await verifyJwt(tempToken)
       if (!payload || payload['step'] !== 'totp') return res.status(401).json({ error: 'Ungültige Sitzung' })
       authenticator.options = { window: 1 }
-      if (!authenticator.verify({ token: String(code), secret: process.env.totp_secret ?? '' }))
+      if (!authenticator.verify({ token: String(code), secret: process.env.totp_secret ?? '' })) {
+        await logEvent('totp_fail', { ip })
         return res.status(401).json({ error: 'Ungültige Anmeldedaten' })
+      }
+      await logEvent('totp_success', { ip })
       setAdminCookie(res, await issueAdminToken())
       return res.status(200).json({ ok: true })
     } catch (e) { return res.status(500).json({ error: String(e) }) }

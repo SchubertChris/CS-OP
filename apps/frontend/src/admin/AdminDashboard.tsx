@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react'
-import { Users, TrendingUp, Download, Globe, Monitor, Smartphone, Tablet, Activity } from 'lucide-react'
+import { Users, TrendingUp, Download, Globe, Monitor, Smartphone, Tablet, Activity, ShieldAlert, ShieldCheck } from 'lucide-react'
 
 /* ── Types ── */
 interface Overview {
@@ -10,7 +10,12 @@ interface PageRow    { path: string; views: number; visitors: number }
 interface GeoRow     { country: string; views: number }
 interface DeviceRow  { device: string; n: number }
 interface BrowserRow { browser: string; n: number }
-interface EventRow   { name: string; path: string; meta: unknown; created_at: string }
+interface EventRow    { name: string; path: string; meta: unknown; created_at: string }
+interface SecurityData {
+  last24h: Record<string, number>
+  topIps: { ip: string; count: number }[]
+  recentEvents: { name: string; meta: { ip?: string; action?: string }; created_at: string }[]
+}
 
 /* ── Country flag emoji ── */
 function flag(code: string) {
@@ -90,17 +95,19 @@ export default function AdminDashboard() {
   const [devices, setDevices]   = useState<DeviceRow[]>([])
   const [browsers, setBrowsers] = useState<BrowserRow[]>([])
   const [events, setEvents]     = useState<EventRow[]>([])
+  const [security, setSecurity] = useState<SecurityData | null>(null)
   const [loading, setLoading]   = useState(true)
 
   const fetchAll = useCallback(async () => {
     try {
-      const [ov, lv, pg, ge, dv, ev] = await Promise.all([
-        fetch('/api/analytics/overview', { credentials: 'include' }).then(r => r.json()),
-        fetch('/api/analytics/live',     { credentials: 'include' }).then(r => r.json()),
-        fetch('/api/analytics/pages',    { credentials: 'include' }).then(r => r.json()),
-        fetch('/api/analytics/geo',      { credentials: 'include' }).then(r => r.json()),
-        fetch('/api/analytics/devices',  { credentials: 'include' }).then(r => r.json()),
-        fetch('/api/analytics/events',   { credentials: 'include' }).then(r => r.json()),
+      const [ov, lv, pg, ge, dv, ev, sec] = await Promise.all([
+        fetch('/api/analytics/overview',  { credentials: 'include' }).then(r => r.json()),
+        fetch('/api/analytics/live',      { credentials: 'include' }).then(r => r.json()),
+        fetch('/api/analytics/pages',     { credentials: 'include' }).then(r => r.json()),
+        fetch('/api/analytics/geo',       { credentials: 'include' }).then(r => r.json()),
+        fetch('/api/analytics/devices',   { credentials: 'include' }).then(r => r.json()),
+        fetch('/api/analytics/events',    { credentials: 'include' }).then(r => r.json()),
+        fetch('/api/analytics/security',  { credentials: 'include' }).then(r => r.json()),
       ])
       setOverview(ov)
       setLive(lv.live ?? 0)
@@ -109,6 +116,7 @@ export default function AdminDashboard() {
       setDevices(dv.devices ?? [])
       setBrowsers(dv.browsers ?? [])
       setEvents(ev.events ?? [])
+      setSecurity(sec)
     } finally {
       setLoading(false)
     }
@@ -247,6 +255,82 @@ export default function AdminDashboard() {
             </div>
           ))}
           {events.length === 0 && <p className="text-[#5a5550] text-xs">Noch keine Events</p>}
+        </div>
+      </div>
+
+      {/* ── Security ── */}
+      <div className="bg-[#0a0a0a] border border-[#C9A84C]/12 rounded-2xl p-6">
+        <div className="flex items-center gap-2 mb-4">
+          <ShieldAlert size={14} strokeWidth={1.5} className="text-[#C9A84C]/50" />
+          <p className="font-mono text-[10px] tracking-[0.18em] uppercase text-[#9A9590]">
+            Security — letzte 24h
+          </p>
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
+          {([
+            { label: 'Logins OK',   key: 'login_success', Icon: ShieldCheck, color: '#00C896' },
+            { label: 'Login-Fails', key: 'login_fail',     Icon: ShieldAlert, color: '#FF4444' },
+            { label: 'TOTP-Fails',  key: 'totp_fail',      Icon: ShieldAlert, color: '#FF4444' },
+            { label: 'Geblockt',    key: 'rate_limited',   Icon: ShieldAlert, color: '#C9A84C' },
+          ] as const).map(({ label, key, Icon, color }) => (
+            <div key={key} className="bg-[#111] border border-[#C9A84C]/8 rounded-xl p-3 flex flex-col gap-1">
+              <span className="font-mono text-[10px] tracking-[0.12em] uppercase text-[#9A9590]">{label}</span>
+              <div className="flex items-center gap-1.5">
+                <Icon size={12} strokeWidth={1.5} style={{ color }} />
+                <span className="font-display text-xl" style={{ color }}>
+                  {security?.last24h[key] ?? 0}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {(security?.topIps?.length ?? 0) > 0 && (
+          <div className="mb-5">
+            <p className="font-mono text-[10px] tracking-[0.14em] uppercase text-[#5a5550] mb-2">Top IPs (Fehlschläge)</p>
+            <div className="flex flex-col gap-2">
+              {security!.topIps.map((row, i) => (
+                <div key={i} className="flex items-center gap-3">
+                  <span className="font-mono text-[10px] text-[#9A9590] w-28 shrink-0 truncate">{row.ip}</span>
+                  <div className="flex-1 h-1 bg-[#C9A84C]/10 rounded-full overflow-hidden">
+                    <div className="h-full bg-[#FF4444]/50 rounded-full"
+                      style={{ width: `${(row.count / security!.topIps[0].count) * 100}%` }} />
+                  </div>
+                  <span className="font-mono text-[10px] text-[#9A9590] w-4 text-right shrink-0">{row.count}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <div>
+          <p className="font-mono text-[10px] tracking-[0.14em] uppercase text-[#5a5550] mb-2">Letzte Ereignisse</p>
+          <div className="flex flex-col gap-1 max-h-48 overflow-y-auto">
+            {(security?.recentEvents ?? []).map((e, i) => {
+              const isOk = e.name === 'login_success' || e.name === 'totp_success'
+              return (
+                <div key={i} className="flex items-center gap-3 py-1 border-b border-[#C9A84C]/6 last:border-0">
+                  <span className={`font-mono text-[10px] px-2 py-0.5 rounded shrink-0 ${
+                    isOk ? 'text-[#00C896] bg-[#00C896]/8' : 'text-[#FF4444] bg-[#FF4444]/8'
+                  }`}>
+                    {e.name}
+                  </span>
+                  <span className="text-[10px] text-[#9A9590] flex-1 truncate font-mono">
+                    {e.meta?.ip ?? '—'}
+                  </span>
+                  <span className="text-[10px] text-[#5a5550] shrink-0">
+                    {new Date(e.created_at).toLocaleString('de-DE', {
+                      day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit'
+                    })}
+                  </span>
+                </div>
+              )
+            })}
+            {(security?.recentEvents?.length ?? 0) === 0 && (
+              <p className="text-[#5a5550] text-xs">Noch keine Security-Events</p>
+            )}
+          </div>
         </div>
       </div>
 
