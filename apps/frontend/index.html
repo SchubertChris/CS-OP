@@ -18,8 +18,18 @@
     <meta property="og:url" content="https://www.candlescope.de" />
     <meta property="og:type" content="website" />
     <meta name="google-site-verification" content="c5GgbBaRSAqKNj__Nd9b8K1uBZB4w7icG3GYp2XBXaM" />
+    <script>
+      (function(){
+        var t = localStorage.getItem('cs-theme') || 'light';
+        document.documentElement.setAttribute('data-theme', t);
+        var m = document.createElement('meta');
+        m.name = 'theme-color';
+        m.content = t === 'dark' ? '#080808' : '#F2EDE2';
+        document.head.appendChild(m);
+      })();
+    </script>
   </head>
-  <body style="background: var(--cs-bg, #080808); margin: 0">
+  <body style="margin: 0">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
