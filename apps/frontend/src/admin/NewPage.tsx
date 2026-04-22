@@ -73,16 +73,16 @@ export default function NewPage() {
       >
         <Link
           to="/admin/pages"
-          className="flex items-center gap-1.5 font-mono text-[10px] tracking-[0.1em] text-[#3a3530] hover:text-[#C9A84C] transition-colors mb-6"
+          className="flex items-center gap-1.5 font-mono text-[10px] tracking-[0.1em] text-[var(--cs-text-3)] hover:text-[#C9A84C] transition-colors mb-6"
         >
           <ArrowLeft size={11} strokeWidth={1.5} />
           PAGES
         </Link>
 
-        <p className="font-mono text-[10px] tracking-[0.2em] text-[#3a3530] uppercase mb-3">
+        <p className="font-mono text-[10px] tracking-[0.2em] text-[var(--cs-text-3)] uppercase mb-3">
           ── NEUE SEITE
         </p>
-        <h1 className="font-display text-3xl text-[#F5F0E8] tracking-tight mb-8">
+        <h1 className="font-display text-3xl text-[var(--cs-text)] tracking-tight mb-8">
           Seite erstellen
         </h1>
 
@@ -90,7 +90,7 @@ export default function NewPage() {
 
           {/* Titel */}
           <div>
-            <label className="font-mono text-[9px] tracking-[0.16em] text-[#3a3530] uppercase block mb-1.5">
+            <label className="font-mono text-[9px] tracking-[0.16em] text-[var(--cs-text-3)] uppercase block mb-1.5">
               TITEL
             </label>
             <input
@@ -99,33 +99,33 @@ export default function NewPage() {
               value={title}
               onChange={e => handleTitleChange(e.target.value)}
               autoFocus
-              className="w-full bg-[#080808] border border-[#ffffff]/6 rounded-xl px-4 py-3 text-sm text-[#F5F0E8] placeholder:text-[#2a2a2a] font-mono focus:outline-none focus:border-[#C9A84C]/30 transition-colors"
+              className="w-full bg-[var(--cs-bg)] border border-[var(--cs-text)]/8 rounded-xl px-4 py-3 text-sm text-[var(--cs-text)] placeholder:text-[var(--cs-text-3)] font-mono focus:outline-none focus:border-[#C9A84C]/30 transition-colors"
             />
           </div>
 
           {/* Slug */}
           <div>
-            <label className="font-mono text-[9px] tracking-[0.16em] text-[#3a3530] uppercase block mb-1.5">
+            <label className="font-mono text-[9px] tracking-[0.16em] text-[var(--cs-text-3)] uppercase block mb-1.5">
               URL-SLUG
             </label>
-            <div className="flex items-center gap-1.5 bg-[#080808] border border-[#ffffff]/6 rounded-xl px-4 py-3 focus-within:border-[#C9A84C]/30 transition-colors">
-              <span className="font-mono text-sm text-[#3a3530]">candlescope.de/</span>
+            <div className="flex items-center gap-1.5 bg-[var(--cs-bg)] border border-[var(--cs-text)]/8 rounded-xl px-4 py-3 focus-within:border-[#C9A84C]/30 transition-colors">
+              <span className="font-mono text-sm text-[var(--cs-text-3)]">candlescope.de/</span>
               <input
                 type="text"
                 value={slug}
                 onChange={e => setSlug(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ''))}
-                className="flex-1 bg-transparent text-sm text-[#F5F0E8] font-mono focus:outline-none"
+                className="flex-1 bg-transparent text-sm text-[var(--cs-text)] font-mono focus:outline-none"
                 placeholder="meine-seite"
               />
             </div>
-            <p className="font-mono text-[9px] text-[#2a2a2a] mt-1 tracking-[0.08em]">
+            <p className="font-mono text-[9px] text-[var(--cs-text-3)] mt-1 tracking-[0.08em]">
               Nur Kleinbuchstaben, Zahlen und Bindestriche
             </p>
           </div>
 
           {/* Icon */}
           <div>
-            <label className="font-mono text-[9px] tracking-[0.16em] text-[#3a3530] uppercase block mb-1.5">
+            <label className="font-mono text-[9px] tracking-[0.16em] text-[var(--cs-text-3)] uppercase block mb-1.5">
               NAV-ICON
             </label>
             <div className="grid grid-cols-4 gap-2">
@@ -136,7 +136,7 @@ export default function NewPage() {
                   className={`flex flex-col items-center gap-1 py-2.5 rounded-xl border text-[10px] font-mono transition-all ${
                     icon === opt.value
                       ? 'border-[#C9A84C]/40 bg-[#C9A84C]/8 text-[#C9A84C]'
-                      : 'border-[#ffffff]/4 bg-[#080808] text-[#3a3530] hover:border-[#C9A84C]/20 hover:text-[#9A9590]'
+                      : 'border-[var(--cs-text)]/6 bg-[var(--cs-bg)] text-[var(--cs-text-3)] hover:border-[#C9A84C]/20 hover:text-[var(--cs-text-2)]'
                   }`}
                 >
                   <FileText size={14} strokeWidth={1.5} />
@@ -149,7 +149,7 @@ export default function NewPage() {
 
           {/* In Navigation */}
           <div>
-            <label className="font-mono text-[9px] tracking-[0.16em] text-[#3a3530] uppercase block mb-1.5">
+            <label className="font-mono text-[9px] tracking-[0.16em] text-[var(--cs-text-3)] uppercase block mb-1.5">
               NAVIGATION
             </label>
             <button
@@ -157,19 +157,19 @@ export default function NewPage() {
               className={`flex items-center gap-3 px-4 py-3 rounded-xl border w-full text-left transition-all ${
                 showInNav
                   ? 'border-[#C9A84C]/30 bg-[#C9A84C]/6 text-[#C9A84C]'
-                  : 'border-[#ffffff]/6 bg-[#080808] text-[#5a5550]'
+                  : 'border-[var(--cs-text)]/8 bg-[var(--cs-bg)] text-[var(--cs-text-3)]'
               }`}
             >
               <div className={`w-4 h-4 rounded border flex items-center justify-center transition-all ${
-                showInNav ? 'border-[#C9A84C] bg-[#C9A84C]' : 'border-[#3a3530]'
+                showInNav ? 'border-[#C9A84C] bg-[#C9A84C]' : 'border-[var(--cs-text-3)]'
               }`}>
-                {showInNav && <Check size={10} strokeWidth={2.5} className="text-[#080808]" />}
+                {showInNav && <Check size={10} strokeWidth={2.5} className="text-[var(--cs-bg)]" />}
               </div>
               <span className="font-mono text-[11px] tracking-[0.08em]">
                 In Navigation anzeigen
               </span>
             </button>
-            <p className="font-mono text-[9px] text-[#2a2a2a] mt-1 tracking-[0.08em]">
+            <p className="font-mono text-[9px] text-[var(--cs-text-3)] mt-1 tracking-[0.08em]">
               Die Seite wird erst live wenn du sie publizierst
             </p>
           </div>
@@ -198,7 +198,7 @@ export default function NewPage() {
             </button>
             <Link
               to="/admin/pages"
-              className="flex-1 py-3 rounded-full border border-[#ffffff]/6 text-[#5a5550] font-mono text-[11px] tracking-[0.14em] uppercase text-center hover:text-[#F5F0E8] transition-colors"
+              className="flex-1 py-3 rounded-full border border-[var(--cs-text)]/8 text-[var(--cs-text-3)] font-mono text-[11px] tracking-[0.14em] uppercase text-center hover:text-[var(--cs-text)] transition-colors"
             >
               Abbrechen
             </Link>

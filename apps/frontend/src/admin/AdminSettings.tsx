@@ -37,36 +37,36 @@ export default function AdminSettings() {
     <div className="p-6 md:p-10 max-w-3xl">
 
       <div className="mb-8">
-        <p className="font-mono text-[11px] tracking-[0.2em] text-[#9A9590] uppercase mb-3">── SYSTEM CONFIG</p>
-        <h1 className="font-display text-3xl text-[#F5F0E8] tracking-tight">System</h1>
+        <p className="font-mono text-[11px] tracking-[0.2em] text-[var(--cs-text-2)] uppercase mb-3">── SYSTEM CONFIG</p>
+        <h1 className="font-display text-3xl text-[var(--cs-text)] tracking-tight">System</h1>
       </div>
 
       <div className="flex flex-col gap-3">
         {systemModules.map(({ icon: Icon, label, title, status, statusColor, desc, action, disabled }) => (
           <div
             key={label}
-            className="border border-[#ffffff]/6 rounded-xl p-5 bg-[#0d0d0d] hover:border-[#C9A84C]/15 transition-all duration-200"
+            className="border border-[var(--cs-text)]/8 rounded-xl p-5 bg-[var(--cs-s2)] hover:border-[#C9A84C]/15 transition-all duration-200"
           >
             <div className="flex items-start gap-4">
-              <div className="w-11 h-11 rounded-xl border border-[#ffffff]/8 bg-[#1a1a1a] flex items-center justify-center shrink-0">
-                <Icon size={17} strokeWidth={1.5} className="text-[#9A9590]" />
+              <div className="w-11 h-11 rounded-xl border border-[var(--cs-text)]/10 bg-[var(--cs-s4)] flex items-center justify-center shrink-0">
+                <Icon size={17} strokeWidth={1.5} className="text-[var(--cs-text-2)]" />
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-3 mb-1.5">
-                  <span className="font-mono text-[10px] tracking-[0.16em] text-[#5a5550]">{label}</span>
-                  <span className="text-[14px] font-medium text-[#F5F0E8]">{title}</span>
+                  <span className="font-mono text-[10px] tracking-[0.16em] text-[var(--cs-text-3)]">{label}</span>
+                  <span className="text-[14px] font-medium text-[var(--cs-text)]">{title}</span>
                   <span className="font-mono text-[10px] tracking-[0.1em] ml-auto shrink-0" style={{ color: statusColor + '90' }}>
                     {status}
                   </span>
                 </div>
-                <p className="text-[13px] text-[#9A9590] leading-relaxed mb-3">{desc}</p>
+                <p className="text-[13px] text-[var(--cs-text-2)] leading-relaxed mb-3">{desc}</p>
                 <button
                   disabled={disabled}
-                  className="flex items-center gap-1.5 font-mono text-[11px] tracking-[0.1em] uppercase text-[#5a5550] hover:text-[#C9A84C] disabled:cursor-not-allowed transition-colors"
+                  className="flex items-center gap-1.5 font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--cs-text-3)] hover:text-[#C9A84C] disabled:cursor-not-allowed transition-colors"
                 >
                   {action}
                   <ChevronRight size={11} strokeWidth={1.5} />
-                  {disabled && <span className="text-[10px] text-[#5a5550] ml-1">· Phase 2</span>}
+                  {disabled && <span className="text-[10px] text-[var(--cs-text-3)] ml-1">· Phase 2</span>}
                 </button>
               </div>
             </div>
@@ -75,7 +75,7 @@ export default function AdminSettings() {
       </div>
 
       <div className="mt-6 p-4 border border-dashed border-[#C9A84C]/10 rounded-xl">
-        <p className="font-mono text-[11px] text-[#5a5550] tracking-[0.1em] leading-relaxed">
+        <p className="font-mono text-[11px] text-[var(--cs-text-3)] tracking-[0.1em] leading-relaxed">
           CS-ADMIN v1.0 · PHASE-1 · BYPASS-MODE · BUILD 2026.03
         </p>
       </div>

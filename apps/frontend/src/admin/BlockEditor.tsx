@@ -26,7 +26,7 @@ const HERO_THEMES: HeroTheme[] = ['home', 'finance', 'dev', 'about', 'community'
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <label className="font-mono text-[11px] tracking-[0.12em] text-[#9A9590] uppercase block mb-2">{label}</label>
+      <label className="font-mono text-[11px] tracking-[0.12em] text-[var(--cs-text-2)] uppercase block mb-2">{label}</label>
       {children}
     </div>
   )
@@ -35,7 +35,7 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 function TextInput({ value, onChange, placeholder, multiline }: {
   value: string; onChange: (v: string) => void; placeholder?: string; multiline?: boolean
 }) {
-  const cls = "w-full bg-[#080808] border border-[#ffffff]/8 rounded-xl px-4 py-3 text-[14px] text-[#F5F0E8] placeholder:text-[#3a3530] focus:outline-none focus:border-[#C9A84C]/40 transition-colors"
+  const cls = "w-full bg-[var(--cs-bg)] border border-[var(--cs-text)]/10 rounded-xl px-4 py-3 text-[14px] text-[var(--cs-text)] placeholder:text-[var(--cs-text-3)] focus:outline-none focus:border-[#C9A84C]/40 transition-colors"
   if (multiline) return <textarea value={value} onChange={e => onChange(e.target.value)} placeholder={placeholder} rows={3} className={cls + ' resize-none'} />
   return <input type="text" value={value} onChange={e => onChange(e.target.value)} placeholder={placeholder} className={cls} />
 }
@@ -45,7 +45,7 @@ function SelectInput({ value, onChange, options }: {
 }) {
   return (
     <select value={value} onChange={e => onChange(e.target.value)}
-      className="w-full bg-[#080808] border border-[#ffffff]/8 rounded-xl px-4 py-3 text-[14px] text-[#F5F0E8] focus:outline-none focus:border-[#C9A84C]/40 transition-colors appearance-none">
+      className="w-full bg-[var(--cs-bg)] border border-[var(--cs-text)]/10 rounded-xl px-4 py-3 text-[14px] text-[var(--cs-text)] focus:outline-none focus:border-[#C9A84C]/40 transition-colors appearance-none">
       {options.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
     </select>
   )
@@ -54,10 +54,10 @@ function SelectInput({ value, onChange, options }: {
 function ToggleInput({ value, onChange, label }: { value: boolean; onChange: (v: boolean) => void; label: string }) {
   return (
     <button onClick={() => onChange(!value)}
-      className={`flex items-center gap-3 px-4 py-3 rounded-xl border w-full text-left transition-all ${value ? 'border-[#C9A84C]/35 bg-[#C9A84C]/8 text-[#C9A84C]' : 'border-[#ffffff]/8 bg-[#080808] text-[#9A9590] hover:border-[#C9A84C]/20'
+      className={`flex items-center gap-3 px-4 py-3 rounded-xl border w-full text-left transition-all ${value ? 'border-[#C9A84C]/35 bg-[#C9A84C]/8 text-[#C9A84C]' : 'border-[var(--cs-text)]/10 bg-[var(--cs-bg)] text-[var(--cs-text-2)] hover:border-[#C9A84C]/20'
         }`}>
-      <div className={`w-4 h-4 rounded border-2 flex items-center justify-center shrink-0 transition-all ${value ? 'border-[#C9A84C] bg-[#C9A84C]' : 'border-[#5a5550]'}`}>
-        {value && <div className="w-2 h-1.5 border-l-2 border-b-2 border-[#080808] -mt-0.5 rotate-[-45deg]" />}
+      <div className={`w-4 h-4 rounded border-2 flex items-center justify-center shrink-0 transition-all ${value ? 'border-[#C9A84C] bg-[#C9A84C]' : 'border-[var(--cs-text-3)]'}`}>
+        {value && <div className="w-2 h-1.5 border-l-2 border-b-2 border-[var(--cs-bg)] -mt-0.5 rotate-[-45deg]" />}
       </div>
       <span className="text-[13px]">{label}</span>
     </button>
@@ -75,17 +75,17 @@ function BlockHeader({ block, pageId }: { block: AnyBlock; pageId: string }) {
           <Icon size={17} strokeWidth={1.5} />
         </div>
         <div>
-          <p className="text-[15px] font-medium text-[#F5F0E8]">{config?.label ?? block.type}</p>
-          <p className="font-mono text-[11px] text-[#5a5550]">{block.id}</p>
+          <p className="text-[15px] font-medium text-[var(--cs-text)]">{config?.label ?? block.type}</p>
+          <p className="font-mono text-[11px] text-[var(--cs-text-3)]">{block.id}</p>
         </div>
       </div>
       <div className="flex items-center gap-2">
         <button onClick={() => duplicateBlock(pageId, block.id)}
-          className="flex items-center gap-1.5 font-mono text-[12px] text-[#9A9590] hover:text-[#C9A84C] transition-colors px-3 py-2 rounded-lg hover:bg-[#C9A84C]/8 border border-transparent hover:border-[#C9A84C]/20">
+          className="flex items-center gap-1.5 font-mono text-[12px] text-[var(--cs-text-2)] hover:text-[#C9A84C] transition-colors px-3 py-2 rounded-lg hover:bg-[#C9A84C]/8 border border-transparent hover:border-[#C9A84C]/20">
           <Copy size={13} strokeWidth={1.5} /> Duplizieren
         </button>
         <button onClick={() => deleteBlock(pageId, block.id)}
-          className="flex items-center gap-1.5 font-mono text-[12px] text-[#9A9590] hover:text-[#FF4444] transition-colors px-3 py-2 rounded-lg hover:bg-[#FF4444]/8 border border-transparent hover:border-[#FF4444]/20">
+          className="flex items-center gap-1.5 font-mono text-[12px] text-[var(--cs-text-2)] hover:text-[#FF4444] transition-colors px-3 py-2 rounded-lg hover:bg-[#FF4444]/8 border border-transparent hover:border-[#FF4444]/20">
           <Trash2 size={13} strokeWidth={1.5} /> Löschen
         </button>
       </div>
@@ -107,7 +107,7 @@ function HeroEditor({ block, pageId }: { block: AnyBlock; pageId: string }) {
 
   return (
     <div className="flex flex-col gap-5">
-      <p className="font-mono text-[11px] tracking-[0.18em] text-[#9A9590] uppercase">Hero Block</p>
+      <p className="font-mono text-[11px] tracking-[0.18em] text-[var(--cs-text-2)] uppercase">Hero Block</p>
       <Field label="Eyebrow"><TextInput value={p.eyebrow ?? ''} onChange={v => update('eyebrow', v)} placeholder="z.B. Finance" /></Field>
       <div className="grid grid-cols-2 gap-3">
         <Field label="Titel Zeile 1"><TextInput value={p.titleLine1 ?? ''} onChange={v => update('titleLine1', v)} placeholder="Märkte &" /></Field>
@@ -125,17 +125,17 @@ function HeroEditor({ block, pageId }: { block: AnyBlock; pageId: string }) {
       </Field>
       <div>
         <div className="flex items-center justify-between mb-3">
-          <label className="font-mono text-[11px] tracking-[0.12em] text-[#9A9590] uppercase">CTAs</label>
+          <label className="font-mono text-[11px] tracking-[0.12em] text-[var(--cs-text-2)] uppercase">CTAs</label>
           <button onClick={addCta} className="flex items-center gap-1.5 font-mono text-[11px] text-[#C9A84C]/60 hover:text-[#C9A84C] transition-colors">
             <Plus size={12} strokeWidth={1.5} /> Hinzufügen
           </button>
         </div>
         <div className="flex flex-col gap-3">
           {(p.ctas ?? []).map((cta, i) => (
-            <div key={i} className="border border-[#ffffff]/8 rounded-xl p-4 bg-[#080808] flex flex-col gap-3">
+            <div key={i} className="border border-[var(--cs-text)]/10 rounded-xl p-4 bg-[var(--cs-bg)] flex flex-col gap-3">
               <div className="flex items-center justify-between">
-                <span className="font-mono text-[11px] text-[#5a5550]">CTA {i + 1}</span>
-                <button onClick={() => removeCta(i)} className="text-[#5a5550] hover:text-[#FF4444] transition-colors"><Trash2 size={13} strokeWidth={1.5} /></button>
+                <span className="font-mono text-[11px] text-[var(--cs-text-3)]">CTA {i + 1}</span>
+                <button onClick={() => removeCta(i)} className="text-[var(--cs-text-3)] hover:text-[#FF4444] transition-colors"><Trash2 size={13} strokeWidth={1.5} /></button>
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <Field label="Label"><TextInput value={cta.label} onChange={v => updateCta(i, 'label', v)} placeholder="Button Text" /></Field>
@@ -159,7 +159,7 @@ function TextEditor({ block, pageId }: { block: AnyBlock; pageId: string }) {
   const update = (key: string, value: unknown) => updateBlock(pageId, block.id, { [key]: value })
   return (
     <div className="flex flex-col gap-5">
-      <p className="font-mono text-[11px] tracking-[0.18em] text-[#9A9590] uppercase">Text Block</p>
+      <p className="font-mono text-[11px] tracking-[0.18em] text-[var(--cs-text-2)] uppercase">Text Block</p>
       <Field label="Inhalt"><TextInput value={p.content ?? ''} onChange={v => update('content', v)} placeholder="Dein Text hier..." multiline /></Field>
       <div className="grid grid-cols-2 gap-3">
         <Field label="Ausrichtung">
@@ -185,16 +185,16 @@ function StatsEditor({ block, pageId }: { block: AnyBlock; pageId: string }) {
   const removeItem = (index: number) => updateBlock(pageId, block.id, { items: p.items.filter((_, i) => i !== index) })
   return (
     <div className="flex flex-col gap-5">
-      <p className="font-mono text-[11px] tracking-[0.18em] text-[#9A9590] uppercase">Stats Block</p>
+      <p className="font-mono text-[11px] tracking-[0.18em] text-[var(--cs-text-2)] uppercase">Stats Block</p>
       <div className="flex items-center justify-between">
-        <span className="font-mono text-[12px] text-[#5a5550]">{p.items.length} Statistiken</span>
+        <span className="font-mono text-[12px] text-[var(--cs-text-3)]">{p.items.length} Statistiken</span>
         <button onClick={addItem} className="flex items-center gap-1.5 font-mono text-[11px] text-[#C9A84C]/60 hover:text-[#C9A84C] transition-colors"><Plus size={12} strokeWidth={1.5} /> Hinzufügen</button>
       </div>
       {p.items.map((item, i) => (
-        <div key={item.id} className="border border-[#ffffff]/8 rounded-xl p-4 bg-[#080808] flex flex-col gap-3">
+        <div key={item.id} className="border border-[var(--cs-text)]/10 rounded-xl p-4 bg-[var(--cs-bg)] flex flex-col gap-3">
           <div className="flex items-center justify-between">
-            <span className="font-mono text-[11px] text-[#5a5550]">Stat {i + 1}</span>
-            <button onClick={() => removeItem(i)} className="text-[#5a5550] hover:text-[#FF4444] transition-colors"><Trash2 size={13} strokeWidth={1.5} /></button>
+            <span className="font-mono text-[11px] text-[var(--cs-text-3)]">Stat {i + 1}</span>
+            <button onClick={() => removeItem(i)} className="text-[var(--cs-text-3)] hover:text-[#FF4444] transition-colors"><Trash2 size={13} strokeWidth={1.5} /></button>
           </div>
           <div className="grid grid-cols-2 gap-3">
             <Field label="Wert"><TextInput value={item.value} onChange={v => updateItem(i, 'value', v)} placeholder="42+" /></Field>
@@ -212,7 +212,7 @@ function CtaBannerEditor({ block, pageId }: { block: AnyBlock; pageId: string })
   const update = (key: string, value: unknown) => updateBlock(pageId, block.id, { [key]: value })
   return (
     <div className="flex flex-col gap-5">
-      <p className="font-mono text-[11px] tracking-[0.18em] text-[#9A9590] uppercase">CTA Banner</p>
+      <p className="font-mono text-[11px] tracking-[0.18em] text-[var(--cs-text-2)] uppercase">CTA Banner</p>
       <Field label="Titel"><TextInput value={p.title ?? ''} onChange={v => update('title', v)} placeholder="Bereit loszulegen?" /></Field>
       <Field label="Beschreibung"><TextInput value={p.description ?? ''} onChange={v => update('description', v)} placeholder="Kurze Beschreibung..." multiline /></Field>
       <div className="grid grid-cols-2 gap-3">
@@ -237,20 +237,20 @@ function CardGridEditor({ block, pageId }: { block: AnyBlock; pageId: string }) 
   const removeCard = (index: number) => updateBlock(pageId, block.id, { cards: p.cards.filter((_, i) => i !== index) })
   return (
     <div className="flex flex-col gap-5">
-      <p className="font-mono text-[11px] tracking-[0.18em] text-[#9A9590] uppercase">Card Grid</p>
+      <p className="font-mono text-[11px] tracking-[0.18em] text-[var(--cs-text-2)] uppercase">Card Grid</p>
       <Field label="Spalten">
         <SelectInput value={String(p.cols ?? 3)} onChange={v => updateBlock(pageId, block.id, { cols: Number(v) })}
           options={[{ value: '2', label: '2 Spalten' }, { value: '3', label: '3 Spalten' }, { value: '4', label: '4 Spalten' }]} />
       </Field>
       <div className="flex items-center justify-between">
-        <span className="font-mono text-[12px] text-[#5a5550]">{p.cards.length} Karten</span>
+        <span className="font-mono text-[12px] text-[var(--cs-text-3)]">{p.cards.length} Karten</span>
         <button onClick={addCard} className="flex items-center gap-1.5 font-mono text-[11px] text-[#C9A84C]/60 hover:text-[#C9A84C] transition-colors"><Plus size={12} strokeWidth={1.5} /> Hinzufügen</button>
       </div>
       {p.cards.map((card, i) => (
-        <div key={card.id} className="border border-[#ffffff]/8 rounded-xl p-4 bg-[#080808] flex flex-col gap-3">
+        <div key={card.id} className="border border-[var(--cs-text)]/10 rounded-xl p-4 bg-[var(--cs-bg)] flex flex-col gap-3">
           <div className="flex items-center justify-between">
-            <span className="font-mono text-[11px] text-[#5a5550]">Karte {i + 1}</span>
-            <button onClick={() => removeCard(i)} className="text-[#5a5550] hover:text-[#FF4444] transition-colors"><Trash2 size={13} strokeWidth={1.5} /></button>
+            <span className="font-mono text-[11px] text-[var(--cs-text-3)]">Karte {i + 1}</span>
+            <button onClick={() => removeCard(i)} className="text-[var(--cs-text-3)] hover:text-[#FF4444] transition-colors"><Trash2 size={13} strokeWidth={1.5} /></button>
           </div>
           <Field label="Titel"><TextInput value={card.title} onChange={v => updateCard(i, 'title', v)} placeholder="Titel" /></Field>
           <Field label="Beschreibung"><TextInput value={card.description} onChange={v => updateCard(i, 'description', v)} placeholder="Beschreibung..." multiline /></Field>
@@ -274,26 +274,26 @@ function ListEditor({ block, pageId }: { block: AnyBlock; pageId: string }) {
   const removeItem = (index: number) => updateBlock(pageId, block.id, { items: p.items.filter((_, i) => i !== index) })
   return (
     <div className="flex flex-col gap-5">
-      <p className="font-mono text-[11px] tracking-[0.18em] text-[#9A9590] uppercase">Liste</p>
+      <p className="font-mono text-[11px] tracking-[0.18em] text-[var(--cs-text-2)] uppercase">Liste</p>
       <Field label="Überschrift"><TextInput value={p.title ?? ''} onChange={v => updateBlock(pageId, block.id, { title: v })} placeholder="Titel..." /></Field>
       <Field label="Stil">
         <SelectInput value={p.style ?? 'bullet'} onChange={v => updateBlock(pageId, block.id, { style: v })}
           options={[{ value: 'bullet', label: 'Bullet' }, { value: 'numbered', label: 'Nummeriert' }, { value: 'check', label: 'Checkmarks' }]} />
       </Field>
       <div className="flex items-center justify-between">
-        <span className="font-mono text-[12px] text-[#5a5550]">{p.items.length} Punkte</span>
+        <span className="font-mono text-[12px] text-[var(--cs-text-3)]">{p.items.length} Punkte</span>
         <button onClick={addItem} className="flex items-center gap-1.5 font-mono text-[11px] text-[#C9A84C]/60 hover:text-[#C9A84C] transition-colors"><Plus size={12} strokeWidth={1.5} /> Hinzufügen</button>
       </div>
       {p.items.map((item, i) => (
-        <div key={item.id} className="border border-[#ffffff]/8 rounded-xl p-3 bg-[#080808] flex flex-col gap-2">
+        <div key={item.id} className="border border-[var(--cs-text)]/10 rounded-xl p-3 bg-[var(--cs-bg)] flex flex-col gap-2">
           <div className="flex items-center gap-2">
-            <GripVertical size={13} className="text-[#5a5550] shrink-0" />
+            <GripVertical size={13} className="text-[var(--cs-text-3)] shrink-0" />
             <input type="text" value={item.text} onChange={e => updateItem(i, 'text', e.target.value)}
-              className="flex-1 bg-transparent text-[13px] text-[#F5F0E8] focus:outline-none placeholder:text-[#3a3530]" placeholder="Listenpunkt..." />
-            <button onClick={() => removeItem(i)} className="text-[#5a5550] hover:text-[#FF4444] transition-colors shrink-0"><Trash2 size={12} strokeWidth={1.5} /></button>
+              className="flex-1 bg-transparent text-[13px] text-[var(--cs-text)] focus:outline-none placeholder:text-[var(--cs-text-3)]" placeholder="Listenpunkt..." />
+            <button onClick={() => removeItem(i)} className="text-[var(--cs-text-3)] hover:text-[#FF4444] transition-colors shrink-0"><Trash2 size={12} strokeWidth={1.5} /></button>
           </div>
           <input type="text" value={item.subtext ?? ''} onChange={e => updateItem(i, 'subtext', e.target.value)}
-            className="bg-transparent text-[12px] text-[#5a5550] focus:outline-none placeholder:text-[#2a2a2a] pl-5 border-t border-[#ffffff]/4 pt-2" placeholder="Beschreibung (optional)..." />
+            className="bg-transparent text-[12px] text-[var(--cs-text-3)] focus:outline-none placeholder:text-[var(--cs-text-3)] pl-5 border-t border-[var(--cs-text)]/6 pt-2" placeholder="Beschreibung (optional)..." />
         </div>
       ))}
     </div>
@@ -310,17 +310,17 @@ function TimelineEditor({ block, pageId }: { block: AnyBlock; pageId: string }) 
   const removeItem = (index: number) => updateBlock(pageId, block.id, { items: p.items.filter((_, i) => i !== index) })
   return (
     <div className="flex flex-col gap-5">
-      <p className="font-mono text-[11px] tracking-[0.18em] text-[#9A9590] uppercase">Timeline</p>
+      <p className="font-mono text-[11px] tracking-[0.18em] text-[var(--cs-text-2)] uppercase">Timeline</p>
       <Field label="Überschrift"><TextInput value={p.title ?? ''} onChange={v => updateBlock(pageId, block.id, { title: v })} placeholder="Timeline Titel..." /></Field>
       <div className="flex items-center justify-between">
-        <span className="font-mono text-[12px] text-[#5a5550]">{p.items.length} Einträge</span>
+        <span className="font-mono text-[12px] text-[var(--cs-text-3)]">{p.items.length} Einträge</span>
         <button onClick={addItem} className="flex items-center gap-1.5 font-mono text-[11px] text-[#C9A84C]/60 hover:text-[#C9A84C] transition-colors"><Plus size={12} strokeWidth={1.5} /> Hinzufügen</button>
       </div>
       {p.items.map((item, i) => (
-        <div key={item.id} className="border border-[#ffffff]/8 rounded-xl p-4 bg-[#080808] flex flex-col gap-3">
+        <div key={item.id} className="border border-[var(--cs-text)]/10 rounded-xl p-4 bg-[var(--cs-bg)] flex flex-col gap-3">
           <div className="flex items-center justify-between">
-            <span className="font-mono text-[11px] text-[#5a5550]">Eintrag {i + 1}</span>
-            <button onClick={() => removeItem(i)} className="text-[#5a5550] hover:text-[#FF4444] transition-colors"><Trash2 size={13} strokeWidth={1.5} /></button>
+            <span className="font-mono text-[11px] text-[var(--cs-text-3)]">Eintrag {i + 1}</span>
+            <button onClick={() => removeItem(i)} className="text-[var(--cs-text-3)] hover:text-[#FF4444] transition-colors"><Trash2 size={13} strokeWidth={1.5} /></button>
           </div>
           <div className="grid grid-cols-2 gap-3">
             <Field label="Datum"><TextInput value={item.date} onChange={v => updateItem(i, 'date', v)} placeholder="2026" /></Field>
@@ -343,7 +343,7 @@ function ImageEditor({ block, pageId }: { block: AnyBlock; pageId: string }) {
   const update = (key: string, value: unknown) => updateBlock(pageId, block.id, { [key]: value })
   return (
     <div className="flex flex-col gap-5">
-      <p className="font-mono text-[11px] tracking-[0.18em] text-[#9A9590] uppercase">Bild</p>
+      <p className="font-mono text-[11px] tracking-[0.18em] text-[var(--cs-text-2)] uppercase">Bild</p>
       <Field label="Bild URL"><TextInput value={p.src ?? ''} onChange={v => update('src', v)} placeholder="https://..." /></Field>
       <Field label="Alt-Text"><TextInput value={p.alt ?? ''} onChange={v => update('alt', v)} placeholder="Bildbeschreibung" /></Field>
       <Field label="Bildunterschrift"><TextInput value={p.caption ?? ''} onChange={v => update('caption', v)} placeholder="Bildunterschrift..." /></Field>
@@ -364,7 +364,7 @@ function DividerEditor({ block, pageId }: { block: AnyBlock; pageId: string }) {
   const update = (key: string, value: unknown) => updateBlock(pageId, block.id, { [key]: value })
   return (
     <div className="flex flex-col gap-5">
-      <p className="font-mono text-[11px] tracking-[0.18em] text-[#9A9590] uppercase">Trennlinie</p>
+      <p className="font-mono text-[11px] tracking-[0.18em] text-[var(--cs-text-2)] uppercase">Trennlinie</p>
       <div className="grid grid-cols-2 gap-3">
         <Field label="Stil">
           <SelectInput value={p.style ?? 'gold'} onChange={v => update('style', v)}
@@ -385,7 +385,7 @@ function EmbedEditor({ block, pageId }: { block: AnyBlock; pageId: string }) {
   const update = (key: string, value: unknown) => updateBlock(pageId, block.id, { [key]: value })
   return (
     <div className="flex flex-col gap-5">
-      <p className="font-mono text-[11px] tracking-[0.18em] text-[#9A9590] uppercase">Embed</p>
+      <p className="font-mono text-[11px] tracking-[0.18em] text-[var(--cs-text-2)] uppercase">Embed</p>
       <Field label="URL"><TextInput value={p.url ?? ''} onChange={v => update('url', v)} placeholder="https://youtube.com/watch?v=..." /></Field>
       <div className="grid grid-cols-2 gap-3">
         <Field label="Typ">
