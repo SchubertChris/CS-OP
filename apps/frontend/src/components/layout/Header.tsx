@@ -11,6 +11,7 @@ import {
 } from 'lucide-react'
 import csLogo from '../../assets/images/CandleScopeLogo.png'
 import { useTheme } from '../../contexts/ThemeContext'
+import ComingSoonModal from '../ui/ComingSoonModal'
 
 interface NavItem {
   to: string
@@ -40,6 +41,7 @@ function DesktopTooltip({ text }: { text: string }) {
 export default function Header() {
   const [scrolled, setScrolled]       = useState(false)
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [dlOpen, setDlOpen]           = useState(false)
   const { pathname } = useLocation()
   const { theme, toggle } = useTheme()
 
@@ -103,14 +105,13 @@ export default function Header() {
             className="w-8 h-8 flex items-center justify-center rounded-full border border-[#C9A84C]/20 text-[#C9A84C]/60 hover:text-[#C9A84C] hover:border-[#C9A84C]/40 transition-all duration-200 cursor-pointer text-sm">
             {theme === 'dark' ? '☀' : '☽'}
           </button>
-          <a
-            href="/downloads/FinanceBoard-Setup.exe"
-            download
+          <button
+            onClick={() => setDlOpen(true)}
             aria-label="FinanceBoard herunterladen"
-            className="relative overflow-hidden group text-[11px] tracking-[0.15em] uppercase bg-[#C9A84C] text-[#080808] font-bold px-5 py-2.5 rounded-full transition-opacity duration-200 hover:opacity-90"
+            className="relative overflow-hidden group text-[11px] tracking-[0.15em] uppercase bg-[#C9A84C] text-[#080808] font-bold px-5 py-2.5 rounded-full transition-opacity duration-200 hover:opacity-90 cursor-pointer"
           >
             ↓ Gratis laden
-          </a>
+          </button>
         </div>
       </header>
 
@@ -198,6 +199,8 @@ export default function Header() {
           </button>
         </div>
       </div>
+
+      {dlOpen && <ComingSoonModal onClose={() => setDlOpen(false)} />}
     </>
   )
 }

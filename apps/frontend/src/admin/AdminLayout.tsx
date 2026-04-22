@@ -9,6 +9,7 @@ import { LayoutDashboard, FileText, Settings, LogOut, Eye } from 'lucide-react'
 import { useAdminStore } from '../store/useAdminStore'
 import { usePagesStore } from '../store/usePagesStore'
 import { motion, AnimatePresence } from 'framer-motion'
+import csLogo from '../assets/images/CandleScopeLogo.png'
 
 const navItems = [
   { to: '/admin', label: 'Command', short: 'CMD', icon: LayoutDashboard, end: true },
@@ -48,10 +49,7 @@ export default function AdminLayout() {
         <div className="flex items-center justify-between px-6 md:px-10 h-14 border-b border-[#C9A84C]/15">
           <div className="flex items-center gap-5">
             <div className="flex items-center gap-2.5">
-              <div className="relative w-5 h-5 shrink-0">
-                <div className="absolute inset-0 border border-[#C9A84C]/60 rotate-45 rounded-sm" />
-                <div className="absolute inset-[3px] bg-[#C9A84C] rotate-45 rounded-sm" />
-              </div>
+              <img src={csLogo} alt="CandleScope" className="w-5 h-5 object-contain shrink-0" />
               <span className="font-display text-[12px] tracking-[0.2em] uppercase text-[#C9A84C]">CandleScope</span>
               <span className="text-[#5a5550] text-[12px]">/</span>
               <span className="font-mono text-[11px] tracking-[0.14em] text-[#9A9590] uppercase">Admin</span>
