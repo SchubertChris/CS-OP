@@ -91,13 +91,13 @@ export default function AdminLayout() {
                   initial={{ opacity: 0, x: 8 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 8 }}>
                   <motion.div className="w-1.5 h-1.5 rounded-full bg-[#C9A84C]"
                     animate={{ opacity: [1, 0.3, 1] }} transition={{ repeat: Infinity, duration: 1 }} />
-                    <span className="font-mono text-[11px] text-[#C9A84C] tracking-[0.1em] hidden sm:block">UNSAVED</span>
+                    <span className="font-mono text-[11px] text-[var(--cs-text-2)] tracking-[0.1em] hidden sm:block">UNSAVED</span>
                 </motion.div>
               )}
             </AnimatePresence>
             <div className="hidden md:flex flex-col items-end">
-              <span className="font-mono text-[12px] text-[#C9A84C]/80 tracking-[0.06em]">{timeStr}</span>
-              <span className="font-mono text-[10px] text-[var(--cs-text-2)] tracking-[0.06em]">{dateStr}</span>
+              <span className="font-mono text-[12px] text-[var(--cs-text-2)] tracking-[0.06em]">{timeStr}</span>
+              <span className="font-mono text-[10px] text-[var(--cs-text-3)] tracking-[0.06em]">{dateStr}</span>
             </div>
             <div className="w-px h-5 bg-[#C9A84C]/15" />
             <button onClick={() => window.open('/', '_blank')}
@@ -132,7 +132,7 @@ function StatItem({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex items-center gap-2">
       <span className="font-mono text-[11px] text-[var(--cs-text-3)] tracking-[0.12em]">{label}</span>
-      <span className="font-mono text-[12px] text-[#C9A84C]/80 tracking-[0.06em] font-medium">{value}</span>
+      <span className="font-mono text-[12px] text-[var(--cs-text)] tracking-[0.06em] font-medium">{value}</span>
     </div>
   )
 }

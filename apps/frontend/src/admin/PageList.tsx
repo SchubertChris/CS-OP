@@ -96,13 +96,13 @@ export default function PageList() {
                       {page.title}
                     </span>
                     {page.isSystem && (
-                      <span className="font-mono text-[10px] text-[var(--cs-text-2)] border border-[var(--cs-text)]/12 px-2 py-0.5 rounded shrink-0">SYS</span>
+                      <span className="font-mono text-[11px] tracking-[0.08em] text-[var(--cs-text-2)] border border-[var(--cs-text)]/15 px-2 py-0.5 rounded shrink-0">SYS</span>
                     )}
                     {page.published && (
-                      <span className="font-mono text-[10px] text-[#00C896] border border-[#00C896]/25 px-2 py-0.5 rounded shrink-0">LIVE</span>
+                      <span className="font-mono text-[11px] tracking-[0.08em] text-[#00C896] border border-[#00C896]/40 px-2 py-0.5 rounded shrink-0">LIVE</span>
                     )}
                     {page.nav?.visible && (
-                      <span className="font-mono text-[10px] text-[#C9A84C]/60 border border-[#C9A84C]/20 px-2 py-0.5 rounded shrink-0">
+                      <span className="font-mono text-[11px] tracking-[0.08em] text-[#C9A84C] border border-[#C9A84C]/35 px-2 py-0.5 rounded shrink-0">
                         NAV·{page.nav.position}
                       </span>
                     )}

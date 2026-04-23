@@ -199,7 +199,7 @@ function BlockRenderer({ block }: { block: { id: string; type: string; props: un
             {p.cards.map(card => (
               <div key={card.id} className="border border-[#C9A84C]/10 rounded-2xl p-6 bg-[var(--cs-s1)]">
                 {card.badge && (
-                  <span className="font-mono text-[9px] tracking-[0.14em] text-[#C9A84C]/60 border border-[#C9A84C]/20 px-2 py-0.5 rounded-full mb-3 inline-block">
+                  <span className="font-mono text-[9px] tracking-[0.14em] text-[var(--cs-text-2)] border border-[#C9A84C]/25 px-2 py-0.5 rounded-full mb-3 inline-block">
                     {card.badge}
                   </span>
                 )}

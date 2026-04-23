@@ -163,7 +163,7 @@ export default function GitHubActivity({ username, stats = DEFAULT_STATS }: GitH
                 <Loader2 size={12} strokeWidth={1.5} className="text-[var(--cs-text-3)] animate-spin" />
               )}
               {status === 'success' && totalThisYear && (
-                <span className="font-mono text-[10px] text-[#C9A84C]/50">
+                <span className="font-mono text-[10px] text-[var(--cs-text-2)]">
                   {totalThisYear} in {yearKey}
                 </span>
               )}
@@ -175,7 +175,7 @@ export default function GitHubActivity({ username, stats = DEFAULT_STATS }: GitH
               )}
             </div>
             <a href={`https://github.com/${username}`} target="_blank" rel="noopener noreferrer"
-              className="flex items-center gap-1.5 font-mono text-[11px] tracking-[0.1em] uppercase text-[#C9A84C]/60 hover:text-[#C9A84C] transition-colors">
+              className="flex items-center gap-1.5 font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--cs-text-2)] hover:text-[#C9A84C] transition-colors">
               GitHub <ExternalLink size={11} strokeWidth={1.5} />
             </a>
           </div>

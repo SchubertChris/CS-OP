@@ -12,7 +12,7 @@ export default function DatenschutzPage() {
 
       {/* Header */}
       <div className="mb-12">
-        <p className="font-mono text-[11px] tracking-[0.22em] uppercase text-[#C9A84C]/60 mb-4 flex items-center gap-3">
+        <p className="font-mono text-[11px] tracking-[0.22em] uppercase text-[var(--cs-text-2)] mb-4 flex items-center gap-3">
           <span className="w-6 h-px bg-[#C9A84C]/40" />
           Rechtliches
         </p>

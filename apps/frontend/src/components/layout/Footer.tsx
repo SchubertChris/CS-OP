@@ -66,7 +66,7 @@ export default function Footer() {
 
           {/* Navigation */}
           <div className="flex flex-col gap-5">
-            <span className="text-[11px] tracking-[0.16em] uppercase text-[#C9A84C]/70 font-medium">Navigation</span>
+            <span className="text-[11px] tracking-[0.16em] uppercase text-[var(--cs-text-2)] font-medium">Navigation</span>
             <nav className="flex flex-col gap-3">
               {footerNav.map(({ to, label, icon }) => (
                 <Link key={to} to={to}
@@ -80,7 +80,7 @@ export default function Footer() {
 
           {/* Kontakt */}
           <div className="flex flex-col gap-5">
-            <span className="text-[11px] tracking-[0.16em] uppercase text-[#C9A84C]/70 font-medium">Kontakt</span>
+            <span className="text-[11px] tracking-[0.16em] uppercase text-[var(--cs-text-2)] font-medium">Kontakt</span>
             <div className="flex flex-col gap-3">
               <a href="mailto:info@candlescope.de"
                 className="group flex items-center gap-2 text-sm text-[var(--cs-text-2)] hover:text-[var(--cs-text)] transition-colors duration-300">
@@ -104,7 +104,7 @@ export default function Footer() {
 
           {/* CTA */}
           <div className="flex flex-col gap-5">
-            <span className="text-[11px] tracking-[0.16em] uppercase text-[#C9A84C]/70 font-medium">Zusammenarbeit</span>
+            <span className="text-[11px] tracking-[0.16em] uppercase text-[var(--cs-text-2)] font-medium">Zusammenarbeit</span>
             <p className="text-sm text-[var(--cs-text-2)] leading-relaxed">
               Projekt · Kooperation · Beratung.<br />Ich antworte innerhalb von 24h.
             </p>

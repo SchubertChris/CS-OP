@@ -382,7 +382,7 @@ export default function HomePage() {
       <section className="px-8 md:px-16 lg:px-24 py-24">
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <Reveal direction="left">
-            <p className="font-mono text-[11px] tracking-[0.22em] uppercase text-[#C9A84C]/60 mb-6 flex items-center gap-3">
+            <p className="font-mono text-[11px] tracking-[0.22em] uppercase text-[var(--cs-text-2)] mb-6 flex items-center gap-3">
               <span className="w-6 h-px bg-[#C9A84C]/40" />
               Der Typ dahinter
               <span className="w-6 h-px bg-[#C9A84C]/40" />

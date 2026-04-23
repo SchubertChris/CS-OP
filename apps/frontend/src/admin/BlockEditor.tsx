@@ -126,7 +126,7 @@ function HeroEditor({ block, pageId }: { block: AnyBlock; pageId: string }) {
       <div>
         <div className="flex items-center justify-between mb-3">
           <label className="font-mono text-[11px] tracking-[0.12em] text-[var(--cs-text-2)] uppercase">CTAs</label>
-          <button onClick={addCta} className="flex items-center gap-1.5 font-mono text-[11px] text-[#C9A84C]/60 hover:text-[#C9A84C] transition-colors">
+          <button onClick={addCta} className="flex items-center gap-1.5 font-mono text-[11px] text-[var(--cs-text-2)] hover:text-[#C9A84C] transition-colors">
             <Plus size={12} strokeWidth={1.5} /> Hinzufügen
           </button>
         </div>
@@ -188,7 +188,7 @@ function StatsEditor({ block, pageId }: { block: AnyBlock; pageId: string }) {
       <p className="font-mono text-[11px] tracking-[0.18em] text-[var(--cs-text-2)] uppercase">Stats Block</p>
       <div className="flex items-center justify-between">
         <span className="font-mono text-[12px] text-[var(--cs-text-3)]">{p.items.length} Statistiken</span>
-        <button onClick={addItem} className="flex items-center gap-1.5 font-mono text-[11px] text-[#C9A84C]/60 hover:text-[#C9A84C] transition-colors"><Plus size={12} strokeWidth={1.5} /> Hinzufügen</button>
+        <button onClick={addItem} className="flex items-center gap-1.5 font-mono text-[11px] text-[var(--cs-text-2)] hover:text-[#C9A84C] transition-colors"><Plus size={12} strokeWidth={1.5} /> Hinzufügen</button>
       </div>
       {p.items.map((item, i) => (
         <div key={item.id} className="border border-[var(--cs-text)]/10 rounded-xl p-4 bg-[var(--cs-bg)] flex flex-col gap-3">
@@ -244,7 +244,7 @@ function CardGridEditor({ block, pageId }: { block: AnyBlock; pageId: string }) 
       </Field>
       <div className="flex items-center justify-between">
         <span className="font-mono text-[12px] text-[var(--cs-text-3)]">{p.cards.length} Karten</span>
-        <button onClick={addCard} className="flex items-center gap-1.5 font-mono text-[11px] text-[#C9A84C]/60 hover:text-[#C9A84C] transition-colors"><Plus size={12} strokeWidth={1.5} /> Hinzufügen</button>
+        <button onClick={addCard} className="flex items-center gap-1.5 font-mono text-[11px] text-[var(--cs-text-2)] hover:text-[#C9A84C] transition-colors"><Plus size={12} strokeWidth={1.5} /> Hinzufügen</button>
       </div>
       {p.cards.map((card, i) => (
         <div key={card.id} className="border border-[var(--cs-text)]/10 rounded-xl p-4 bg-[var(--cs-bg)] flex flex-col gap-3">
@@ -282,7 +282,7 @@ function ListEditor({ block, pageId }: { block: AnyBlock; pageId: string }) {
       </Field>
       <div className="flex items-center justify-between">
         <span className="font-mono text-[12px] text-[var(--cs-text-3)]">{p.items.length} Punkte</span>
-        <button onClick={addItem} className="flex items-center gap-1.5 font-mono text-[11px] text-[#C9A84C]/60 hover:text-[#C9A84C] transition-colors"><Plus size={12} strokeWidth={1.5} /> Hinzufügen</button>
+        <button onClick={addItem} className="flex items-center gap-1.5 font-mono text-[11px] text-[var(--cs-text-2)] hover:text-[#C9A84C] transition-colors"><Plus size={12} strokeWidth={1.5} /> Hinzufügen</button>
       </div>
       {p.items.map((item, i) => (
         <div key={item.id} className="border border-[var(--cs-text)]/10 rounded-xl p-3 bg-[var(--cs-bg)] flex flex-col gap-2">
@@ -314,7 +314,7 @@ function TimelineEditor({ block, pageId }: { block: AnyBlock; pageId: string }) 
       <Field label="Überschrift"><TextInput value={p.title ?? ''} onChange={v => updateBlock(pageId, block.id, { title: v })} placeholder="Timeline Titel..." /></Field>
       <div className="flex items-center justify-between">
         <span className="font-mono text-[12px] text-[var(--cs-text-3)]">{p.items.length} Einträge</span>
-        <button onClick={addItem} className="flex items-center gap-1.5 font-mono text-[11px] text-[#C9A84C]/60 hover:text-[#C9A84C] transition-colors"><Plus size={12} strokeWidth={1.5} /> Hinzufügen</button>
+        <button onClick={addItem} className="flex items-center gap-1.5 font-mono text-[11px] text-[var(--cs-text-2)] hover:text-[#C9A84C] transition-colors"><Plus size={12} strokeWidth={1.5} /> Hinzufügen</button>
       </div>
       {p.items.map((item, i) => (
         <div key={item.id} className="border border-[var(--cs-text)]/10 rounded-xl p-4 bg-[var(--cs-bg)] flex flex-col gap-3">

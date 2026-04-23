@@ -70,7 +70,7 @@ export default function CookieBanner() {
                       </div>
                       <div>
                         <h2 className="font-display text-lg text-[var(--cs-text)] tracking-wide">Cookie-Einstellungen</h2>
-                        <p className="font-mono text-[10px] tracking-[0.14em] uppercase text-[#C9A84C]/50 mt-0.5">CandleScope · DSGVO</p>
+                        <p className="font-mono text-[10px] tracking-[0.14em] uppercase text-[var(--cs-text-2)] mt-0.5">CandleScope · DSGVO</p>
                       </div>
                     </div>
                   </div>

@@ -51,7 +51,7 @@ function TimelineItem({ year, title, desc, current }: {
         <div className="w-px flex-1 bg-gradient-to-b from-[#C9A84C]/30 to-transparent mt-2" />
       </div>
       <div className="flex-1 pb-2">
-        <span className="font-mono text-[10px] tracking-[0.16em] uppercase text-[#C9A84C]/60 mb-1 block">{year}</span>
+        <span className="font-mono text-[10px] tracking-[0.16em] uppercase text-[var(--cs-text-2)] mb-1 block">{year}</span>
         <h4 className="font-display text-base text-[var(--cs-text)] mb-1">{title}</h4>
         <p className="text-[var(--cs-text-2)] text-sm leading-relaxed">{desc}</p>
         {current && (
@@ -91,7 +91,7 @@ function ServiceCard({ icon, title, desc, tags }: {
       <p className="text-[var(--cs-text-2)] text-[13px] leading-relaxed mb-4 flex-1">{desc}</p>
       <div className="flex flex-wrap gap-1.5">
         {tags.map(t => (
-          <span key={t} className="font-mono text-[10px] tracking-[0.1em] px-2 py-0.5 rounded-full border border-[#C9A84C]/20 text-[#C9A84C]/60">{t}</span>
+          <span key={t} className="font-mono text-[10px] tracking-[0.1em] px-2 py-0.5 rounded-full border border-[#C9A84C]/25 text-[var(--cs-text-2)]">{t}</span>
         ))}
       </div>
     </motion.div>
@@ -260,15 +260,15 @@ export default function AboutPage() {
         <SectionHeader eyebrow="Skills" title={<>Was ich <GradientText>kann</GradientText></>} className="mb-10" />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
-            <p className="font-mono text-[11px] tracking-[0.16em] text-[#C9A84C]/60 uppercase mb-4">Development</p>
+            <p className="font-mono text-[11px] tracking-[0.16em] text-[var(--cs-text-2)] uppercase mb-4">Development</p>
             <TagList tags={SKILLS_DEV} />
           </div>
           <div>
-            <p className="font-mono text-[11px] tracking-[0.16em] text-[#C9A84C]/60 uppercase mb-4">Finance & Trading</p>
+            <p className="font-mono text-[11px] tracking-[0.16em] text-[var(--cs-text-2)] uppercase mb-4">Finance & Trading</p>
             <TagList tags={SKILLS_FINANCE} />
           </div>
           <div>
-            <p className="font-mono text-[11px] tracking-[0.16em] text-[#C9A84C]/60 uppercase mb-4">Tools & Sonstiges</p>
+            <p className="font-mono text-[11px] tracking-[0.16em] text-[var(--cs-text-2)] uppercase mb-4">Tools & Sonstiges</p>
             <TagList tags={SKILLS_OTHER} />
           </div>
         </div>

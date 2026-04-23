@@ -164,11 +164,11 @@ function GitHubActivitySection({ username }: { username: string }) {
           <div className="flex items-center gap-3">
             <span className="font-mono text-[11px] tracking-[0.14em] uppercase text-[var(--cs-text-3)]">Contribution Graph</span>
             {status === 'loading' && <Loader2 size={12} strokeWidth={1.5} className="text-[var(--cs-text-3)] animate-spin" />}
-            {status === 'success' && totalThisYear && <span className="font-mono text-[10px] text-[#C9A84C]/50">{totalThisYear} in {yearKey}</span>}
+            {status === 'success' && totalThisYear && <span className="font-mono text-[10px] text-[var(--cs-text-2)]">{totalThisYear} in {yearKey}</span>}
             {status === 'error' && <span className="flex items-center gap-1 font-mono text-[10px] text-[#FF4444]/60"><AlertCircle size={11} strokeWidth={1.5} /> API nicht erreichbar</span>}
           </div>
           <a href={`https://github.com/${username}`} target="_blank" rel="noopener noreferrer"
-            className="flex items-center gap-1.5 font-mono text-[11px] tracking-[0.1em] uppercase text-[#C9A84C]/60 hover:text-[#C9A84C] transition-colors">
+            className="flex items-center gap-1.5 font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--cs-text-2)] hover:text-[#C9A84C] transition-colors">
             GitHub <ExternalLink size={11} strokeWidth={1.5} />
           </a>
         </div>
@@ -273,7 +273,7 @@ function ProjectCard({ title, description, tags, href, githubHref, status, locke
       <p className="text-[var(--cs-text-2)] text-[13px] leading-relaxed mb-4 flex-1">{description}</p>
       <div className="flex flex-wrap gap-1.5 mb-4">
         {tags.map(t => (
-          <span key={t} className="font-mono text-[10px] tracking-[0.1em] px-2 py-0.5 rounded-full border border-[#C9A84C]/20 text-[#C9A84C]/60">{t}</span>
+          <span key={t} className="font-mono text-[10px] tracking-[0.1em] px-2 py-0.5 rounded-full border border-[#C9A84C]/25 text-[var(--cs-text-2)]">{t}</span>
         ))}
       </div>
       <div className="flex items-center gap-3 mt-auto">
@@ -285,7 +285,7 @@ function ProjectCard({ title, description, tags, href, githubHref, status, locke
         )}
         {href && (
           <a href={href} target="_blank" rel="noopener noreferrer"
-            className="flex items-center gap-1.5 text-[11px] tracking-[0.1em] uppercase text-[#C9A84C]/60 hover:text-[#C9A84C] transition-colors ml-auto">
+            className="flex items-center gap-1.5 text-[11px] tracking-[0.1em] uppercase text-[var(--cs-text-2)] hover:text-[#C9A84C] transition-colors ml-auto">
             Ansehen <ExternalLink size={11} strokeWidth={1.5} />
           </a>
         )}
@@ -506,7 +506,7 @@ export default function DevPage() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
                     <span className="font-display text-sm text-[var(--cs-text)]">CandleScope Frontend</span>
-                    <span className="font-mono text-[10px] tracking-[0.12em] uppercase text-[#C9A84C]/50 px-2 py-0.5 rounded-full border border-[#C9A84C]/15">Author</span>
+                    <span className="font-mono text-[10px] tracking-[0.12em] uppercase text-[var(--cs-text-2)] px-2 py-0.5 rounded-full border border-[#C9A84C]/20">Author</span>
                   </div>
                   <p className="text-[var(--cs-text-2)] text-[13px] leading-relaxed">
                     Personal Brand Website mit eigenem Page Builder — React, TypeScript, Vite, Tailwind, Zustand.

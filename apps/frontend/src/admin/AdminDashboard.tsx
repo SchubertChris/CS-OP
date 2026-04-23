@@ -81,9 +81,9 @@ function KpiCard({ label, value, icon: Icon }: {
 }
 
 function DeviceIcon({ device }: { device: string }) {
-  if (device === 'mobile') return <Smartphone size={14} strokeWidth={1.5} className="text-[#C9A84C]/60" />
-  if (device === 'tablet') return <Tablet     size={14} strokeWidth={1.5} className="text-[#C9A84C]/60" />
-  return <Monitor size={14} strokeWidth={1.5} className="text-[#C9A84C]/60" />
+  if (device === 'mobile') return <Smartphone size={14} strokeWidth={1.5} className="text-[#C9A84C]" />
+  if (device === 'tablet') return <Tablet     size={14} strokeWidth={1.5} className="text-[#C9A84C]" />
+  return <Monitor size={14} strokeWidth={1.5} className="text-[#C9A84C]" />
 }
 
 /* ════════════════════════════════════════════════════════════ */
@@ -157,7 +157,7 @@ export default function AdminDashboard() {
         <span className="font-mono text-[11px] tracking-[0.18em] uppercase text-[var(--cs-text-2)]">Live</span>
         <span className="font-display text-2xl text-[var(--cs-text)] ml-1">{live}</span>
         <span className="text-[var(--cs-text-2)] text-sm">Besucher gerade online</span>
-        <button onClick={fetchAll} className="ml-auto text-[#9A9590] hover:text-[#C9A84C] transition-colors">
+        <button onClick={fetchAll} className="ml-auto text-[var(--cs-text-3)] hover:text-[#C9A84C] transition-colors">
           <Activity size={15} strokeWidth={1.5} />
         </button>
       </div>
@@ -246,7 +246,7 @@ export default function AdminDashboard() {
         <div className="flex flex-col gap-1 max-h-64 overflow-y-auto">
           {events.map((e, i) => (
             <div key={i} className="flex items-center gap-4 py-1.5 border-b border-[#C9A84C]/6 last:border-0">
-              <span className="font-mono text-[10px] text-[#C9A84C] bg-[#C9A84C]/8 px-2 py-0.5 rounded shrink-0">
+              <span className="font-mono text-[10px] text-[var(--cs-text-2)] bg-[var(--cs-s4)] border border-[var(--cs-text)]/8 px-2 py-0.5 rounded shrink-0">
                 {e.name}
               </span>
               <span className="text-xs text-[var(--cs-text-2)] flex-1 truncate">{e.path ?? '—'}</span>
@@ -314,8 +314,8 @@ export default function AdminDashboard() {
               const isOk = e.name === 'login_success' || e.name === 'totp_success'
               return (
                 <div key={i} className="flex items-center gap-3 py-1 border-b border-[#C9A84C]/6 last:border-0">
-                  <span className={`font-mono text-[10px] px-2 py-0.5 rounded shrink-0 ${
-                    isOk ? 'text-[#00C896] bg-[#00C896]/8' : 'text-[#FF4444] bg-[#FF4444]/8'
+                  <span className={`font-mono text-[10px] px-2 py-0.5 rounded shrink-0 text-[var(--cs-text-2)] ${
+                    isOk ? 'bg-[#00C896]/15 border border-[#00C896]/25' : 'bg-[#FF4444]/15 border border-[#FF4444]/25'
                   }`}>
                     {e.name}
                   </span>

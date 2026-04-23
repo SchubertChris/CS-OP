@@ -235,7 +235,7 @@ export default function PageEditor() {
               {page.published && (
                 <div className="mt-4 pt-3 border-t border-[var(--cs-text)]/8">
                   <a href={`/${page.slug}`} target="_blank" rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-[12px] text-[#C9A84C]/60 hover:text-[#C9A84C] transition-colors">
+                    className="flex items-center gap-2 text-[12px] text-[var(--cs-text-2)] hover:text-[#C9A84C] transition-colors">
                     <Eye size={13} strokeWidth={1.5} /> Seite live ansehen
                   </a>
                 </div>
