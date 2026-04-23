@@ -1,5 +1,5 @@
 // src/components/finance/TestimonialsSection.tsx
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, CheckCircle2, AlertCircle } from 'lucide-react'
 import { useReviewStore } from '../../store/useReviewStore'
@@ -203,7 +203,8 @@ function Avatar({ name }: { name: string }) {
 /* ── Section ── */
 export default function TestimonialsSection() {
   const [modalOpen, setModalOpen] = useState(false)
-  const approved = useReviewStore(s => s.reviews.filter(r => r.status === 'approved'))
+  const reviews = useReviewStore(s => s.reviews)
+  const approved = useMemo(() => reviews.filter(r => r.status === 'approved'), [reviews])
 
   return (
     <section className="py-20 px-8">
