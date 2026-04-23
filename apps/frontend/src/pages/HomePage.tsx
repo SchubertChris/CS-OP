@@ -275,7 +275,7 @@ export default function HomePage() {
                   <h3 className="font-display text-xl text-[var(--cs-text)] mb-2 group-hover:text-[#C9A84C] transition-colors">{item.title}</h3>
                   <p className="text-[var(--cs-text-2)] text-sm leading-relaxed mb-6">{item.desc}</p>
                   <Link to={item.href}
-                    className="flex items-center gap-2 text-[11px] tracking-[0.1em] uppercase text-[#C9A84C]/50 group-hover:text-[#C9A84C] transition-colors mt-auto">
+                    className="flex items-center gap-2 text-[11px] tracking-[0.1em] uppercase text-[var(--cs-text-2)] group-hover:text-[#C9A84C] transition-colors mt-auto">
                     {item.cta}
                     <ArrowRight size={13} strokeWidth={1.5} className="group-hover:translate-x-1 transition-transform" />
                   </Link>
@@ -334,7 +334,7 @@ export default function HomePage() {
               </div>
               <div className="flex-1 h-px bg-gradient-to-r from-[#C9A84C]/20 to-transparent" />
               <Link to="/finance"
-                className="font-mono text-[10px] tracking-[0.12em] uppercase text-[#C9A84C]/50 hover:text-[#C9A84C] transition-colors flex items-center gap-1.5 shrink-0">
+                className="font-mono text-[10px] tracking-[0.12em] uppercase text-[var(--cs-text-2)] hover:text-[#C9A84C] transition-colors flex items-center gap-1.5 shrink-0">
                 Alle Features <ArrowRight size={11} strokeWidth={1.5} />
               </Link>
             </div>

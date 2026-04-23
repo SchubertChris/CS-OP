@@ -166,17 +166,17 @@ export default function AboutPage() {
         </a>
 
         {/* Credibility Strip: echtes Shipped Product als Beweis */}
-        <div className="w-full pt-5 border-t border-[#C9A84C]/8">
+        <div className="w-full pt-5 border-t border-[var(--cs-text)]/8">
           <div className="flex flex-wrap items-center gap-3">
-            <span className="font-mono text-[9px] tracking-[0.16em] uppercase text-[var(--cs-text-4)]">Flagship</span>
-            <span className="w-px h-3 bg-[#C9A84C]/15" />
+            <span className="font-mono text-[9px] tracking-[0.16em] uppercase text-[var(--cs-text-3)]">Flagship</span>
+            <span className="w-px h-3 bg-[var(--cs-text)]/12" />
             <Link to="/finance"
-              className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#C9A84C]/5 border border-[#C9A84C]/20 hover:border-[#C9A84C]/40 hover:bg-[#C9A84C]/8 transition-all group">
+              className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#C9A84C]/6 border border-[#C9A84C]/30 hover:border-[#C9A84C]/50 hover:bg-[#C9A84C]/10 transition-all group">
               <div className="w-1 h-1 rounded-full bg-[#22c55e]" />
-              <span className="font-mono text-[9px] tracking-[0.12em] uppercase text-[#C9A84C]/70 group-hover:text-[#C9A84C] transition-colors">FinanceBoard v10.6</span>
-              <ArrowRight size={9} strokeWidth={1.5} className="text-[#C9A84C]/40 group-hover:text-[#C9A84C] transition-colors" />
+              <span className="font-mono text-[9px] tracking-[0.12em] uppercase text-[var(--cs-text-2)] group-hover:text-[#C9A84C] transition-colors">FinanceBoard v10.6</span>
+              <ArrowRight size={9} strokeWidth={1.5} className="text-[var(--cs-text-3)] group-hover:text-[#C9A84C] transition-colors" />
             </Link>
-            <span className="font-mono text-[9px] text-[var(--cs-text-4)]">selbst entwickelt · selbst deployed · gratis</span>
+            <span className="font-mono text-[9px] text-[var(--cs-text-3)]">selbst entwickelt · selbst deployed · gratis</span>
           </div>
         </div>
       </PageHero>
@@ -191,7 +191,7 @@ export default function AboutPage() {
               <div className="absolute inset-0 bg-gradient-to-t from-[var(--cs-bg)]/80 via-transparent to-transparent" />
               <div className="absolute bottom-6 left-6 right-6">
                 <p className="font-display text-xl text-[var(--cs-text)] tracking-wide">Chris Schubert</p>
-                <p className="font-mono text-[11px] tracking-[0.14em] uppercase text-[#C9A84C]/70 mt-1">Potsdam · WebDev · Trader</p>
+                <p className="font-mono text-[11px] tracking-[0.14em] uppercase text-[var(--cs-text-2)] mt-1">Potsdam · WebDev · Trader</p>
               </div>
             </div>
             <div className="absolute -inset-4 rounded-3xl bg-[radial-gradient(ellipse_at_center,rgba(201,168,76,0.06)_0%,transparent_70%)] pointer-events-none" />

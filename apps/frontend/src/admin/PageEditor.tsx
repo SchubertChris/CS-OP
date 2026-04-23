@@ -325,7 +325,7 @@ export default function PageEditor() {
               </div>
               <div className="flex gap-3 mt-5">
                 <button onClick={handleSaveSettings}
-                  className="flex-1 py-3 rounded-xl bg-[#C9A84C]/12 border border-[#C9A84C]/35 text-[#C9A84C] font-mono text-[12px] tracking-[0.1em] hover:bg-[#C9A84C]/20 transition-all">
+                  className="flex-1 py-3 rounded-xl bg-[#C9A84C]/12 border border-[#C9A84C]/35 text-[var(--cs-text-2)] font-mono text-[12px] tracking-[0.1em] hover:bg-[#C9A84C]/20 hover:text-[var(--cs-text)] transition-all">
                   SPEICHERN
                 </button>
                 <button onClick={() => setShowPageSettings(false)}

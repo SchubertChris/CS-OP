@@ -36,7 +36,7 @@ export default function DatenschutzPage() {
             <p className="mt-2">
               E-Mail:{' '}
               <a href="mailto:info@candlescope.de"
-                className="text-[#C9A84C]/70 hover:text-[#C9A84C] transition-colors">
+                className="text-[var(--cs-text-2)] hover:text-[#C9A84C] transition-colors">
                 info@candlescope.de
               </a>
             </p>
@@ -60,7 +60,7 @@ export default function DatenschutzPage() {
           <p className="text-[14px] mt-3">
             Weitere Informationen:{' '}
             <a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer"
-              className="text-[#C9A84C]/70 hover:text-[#C9A84C] transition-colors">
+              className="text-[var(--cs-text-2)] hover:text-[#C9A84C] transition-colors">
               vercel.com/legal/privacy-policy
             </a>
           </p>
@@ -84,7 +84,7 @@ export default function DatenschutzPage() {
             Die übermittelten Daten werden nicht an weitere Dritte weitergegeben und nach vollständiger
             Erledigung Ihrer Anfrage, spätestens nach 6 Monaten, gelöscht. Weitere Informationen:{' '}
             <a href="https://formspree.io/legal/privacy-policy" target="_blank" rel="noopener noreferrer"
-              className="text-[#C9A84C]/70 hover:text-[#C9A84C] transition-colors">
+              className="text-[var(--cs-text-2)] hover:text-[#C9A84C] transition-colors">
               formspree.io/legal/privacy-policy
             </a>
           </p>
@@ -106,7 +106,7 @@ export default function DatenschutzPage() {
                 personenbezogenen Daten gespeichert oder weitergegeben.{' '}
                 <a href="https://docs.github.com/en/site-policy/privacy-policies/github-privacy-statement"
                   target="_blank" rel="noopener noreferrer"
-                  className="text-[#C9A84C]/70 hover:text-[#C9A84C] transition-colors">
+                  className="text-[var(--cs-text-2)] hover:text-[#C9A84C] transition-colors">
                   GitHub Privacy Statement
                 </a>
               </p>
@@ -118,7 +118,7 @@ export default function DatenschutzPage() {
                 Abruf öffentlicher Serverstatistiken (Mitgliederzahl). Es werden keine
                 personenbezogenen Daten gespeichert oder weitergegeben.{' '}
                 <a href="https://discord.com/privacy" target="_blank" rel="noopener noreferrer"
-                  className="text-[#C9A84C]/70 hover:text-[#C9A84C] transition-colors">
+                  className="text-[var(--cs-text-2)] hover:text-[#C9A84C] transition-colors">
                   Discord Privacy Policy
                 </a>
               </p>
@@ -188,7 +188,7 @@ export default function DatenschutzPage() {
           <p className="text-[14px] mt-4">
             Zur Ausübung Ihrer Rechte wenden Sie sich bitte an:{' '}
             <a href="mailto:info@candlescope.de"
-              className="text-[#C9A84C]/70 hover:text-[#C9A84C] transition-colors">
+              className="text-[var(--cs-text-2)] hover:text-[#C9A84C] transition-colors">
               info@candlescope.de
             </a>
           </p>

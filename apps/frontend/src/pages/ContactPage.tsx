@@ -281,7 +281,7 @@ export default function ContactPage() {
               </div>
               <p className="text-[13px] text-[var(--cs-text-2)] leading-relaxed mb-4">Lieber direkt sprechen? Buch dir einen kostenlosen Slot.</p>
               <a href="https://calendly.com/" target="_blank" rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 w-full py-2.5 border border-[#C9A84C]/25 rounded-xl font-mono text-[12px] tracking-[0.1em] uppercase text-[#C9A84C]/70 hover:text-[#C9A84C] hover:border-[#C9A84C]/45 hover:bg-[#C9A84C]/5 transition-all">
+                className="flex items-center justify-center gap-2 w-full py-2.5 border border-[var(--cs-text)]/15 rounded-xl font-mono text-[12px] tracking-[0.1em] uppercase text-[var(--cs-text-2)] hover:text-[#C9A84C] hover:border-[#C9A84C]/45 hover:bg-[#C9A84C]/5 transition-all">
                 <Calendar size={13} strokeWidth={1.5} />
                 Kalender öffnen
               </a>

@@ -110,7 +110,7 @@ export default function Footer() {
             </p>
             {/* Kontakt aufnehmen → Kontaktformular */}
             <Link to="/contact"
-              className="relative overflow-hidden group w-fit text-[11px] tracking-[0.16em] uppercase border border-[#C9A84C]/30 text-[#C9A84C] px-6 py-3 rounded-full">
+              className="relative overflow-hidden group w-fit text-[11px] tracking-[0.16em] uppercase border border-[var(--cs-text)]/20 text-[var(--cs-text)] px-6 py-3 rounded-full">
               <span className="relative z-10 transition-colors duration-300 group-hover:text-[#080808]">Kontakt aufnehmen</span>
               <span className="absolute inset-0 bg-[#C9A84C] translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out rounded-full" />
             </Link>

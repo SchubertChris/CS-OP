@@ -63,7 +63,7 @@ export default function ScreenshotSlider() {
             onClick={() => go(i)}
             className={`px-4 py-1.5 rounded-full text-xs tracking-[0.1em] uppercase transition-all duration-200 cursor-pointer
               ${active === i
-                ? 'bg-[#C9A84C]/15 border border-[#C9A84C]/30 text-[#C9A84C]'
+                ? 'bg-[#C9A84C]/15 border border-[#C9A84C]/35 text-[var(--cs-text)]'
                 : 'border border-transparent text-[var(--cs-text-2)] hover:text-[var(--cs-text)]'
               }`}
           >

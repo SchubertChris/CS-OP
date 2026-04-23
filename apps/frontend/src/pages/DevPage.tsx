@@ -240,7 +240,7 @@ function SpotlightCard({ title, description, tags, href, githubHref, status }: {
         )}
         {href && (
           <a href={href} target="_blank" rel="noopener noreferrer"
-            className="flex items-center gap-1.5 text-[11px] tracking-[0.1em] uppercase text-[#C9A84C]/70 hover:text-[#C9A84C] transition-colors ml-auto">
+            className="flex items-center gap-1.5 text-[11px] tracking-[0.1em] uppercase text-[var(--cs-text-2)] hover:text-[#C9A84C] transition-colors ml-auto">
             Live ansehen <ExternalLink size={12} strokeWidth={1.5} />
           </a>
         )}
@@ -321,24 +321,24 @@ export default function DevPage() {
 
         {/* Sekundär-CTA */}
         <a href="https://github.com/SchubertChris" target="_blank" rel="noopener noreferrer"
-          className="relative overflow-hidden group text-[11px] tracking-[0.16em] uppercase border border-[#C9A84C]/35 text-[#C9A84C] px-7 py-3.5 rounded-full">
+          className="relative overflow-hidden group text-[11px] tracking-[0.16em] uppercase border border-[var(--cs-text)]/20 text-[var(--cs-text)] px-7 py-3.5 rounded-full">
           <span className="relative z-10 group-hover:text-[#080808] transition-colors duration-300">GitHub ansehen</span>
           <span className="absolute inset-0 bg-[#C9A84C] rounded-full translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
         </a>
 
         {/* Flagship-Strip: Glaubwürdigkeit durch echtes Shipped Product */}
-        <div className="w-full pt-5 border-t border-[#C9A84C]/8">
+        <div className="w-full pt-5 border-t border-[var(--cs-text)]/8">
           <div className="flex flex-wrap items-center gap-3">
-            <span className="font-mono text-[9px] tracking-[0.16em] uppercase text-[var(--cs-text-4)]">Flagship</span>
-            <span className="w-px h-3 bg-[#C9A84C]/15" />
-            <Link to="/finance" className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#C9A84C]/5 border border-[#C9A84C]/20 hover:border-[#C9A84C]/40 hover:bg-[#C9A84C]/8 transition-all group">
+            <span className="font-mono text-[9px] tracking-[0.16em] uppercase text-[var(--cs-text-3)]">Flagship</span>
+            <span className="w-px h-3 bg-[var(--cs-text)]/12" />
+            <Link to="/finance" className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#C9A84C]/6 border border-[#C9A84C]/30 hover:border-[#C9A84C]/50 hover:bg-[#C9A84C]/10 transition-all group">
               <div className="w-1 h-1 rounded-full bg-[#22c55e]" />
-              <span className="font-mono text-[9px] tracking-[0.12em] uppercase text-[#C9A84C]/70 group-hover:text-[#C9A84C] transition-colors">FinanceBoard v10.6</span>
-              <ArrowRight size={9} strokeWidth={1.5} className="text-[#C9A84C]/40 group-hover:text-[#C9A84C] transition-colors" />
+              <span className="font-mono text-[9px] tracking-[0.12em] uppercase text-[var(--cs-text-2)] group-hover:text-[#C9A84C] transition-colors">FinanceBoard v10.6</span>
+              <ArrowRight size={9} strokeWidth={1.5} className="text-[var(--cs-text-3)] group-hover:text-[#C9A84C] transition-colors" />
             </Link>
             <div className="flex items-center gap-2 ml-1">
               {['React', 'TypeScript', 'Electron', 'Node.js'].map(tag => (
-                <span key={tag} className="font-mono text-[8px] px-2 py-1 rounded border border-[#C9A84C]/10 text-[#C9A84C]/35 bg-[#C9A84C]/3">
+                <span key={tag} className="font-mono text-[9px] px-2 py-0.5 rounded border border-[var(--cs-text)]/12 text-[var(--cs-text-2)]">
                   {tag}
                 </span>
               ))}

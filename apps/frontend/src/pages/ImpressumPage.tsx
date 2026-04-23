@@ -31,7 +31,7 @@ export default function ImpressumPage() {
             <p className="mt-2">
               E-Mail:{' '}
               <a href="mailto:info@candlescope.de"
-                className="text-[#C9A84C]/70 hover:text-[#C9A84C] transition-colors">
+                className="text-[var(--cs-text-2)] hover:text-[#C9A84C] transition-colors">
                 info@candlescope.de
               </a>
             </p>
@@ -116,7 +116,7 @@ export default function ImpressumPage() {
           <p className="text-[14px]">
             Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit:{' '}
             <a href="https://ec.europa.eu/consumers/odr/" target="_blank" rel="noopener noreferrer"
-              className="text-[#C9A84C]/70 hover:text-[#C9A84C] transition-colors">
+              className="text-[var(--cs-text-2)] hover:text-[#C9A84C] transition-colors">
               https://ec.europa.eu/consumers/odr/
             </a>
           </p>

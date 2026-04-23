@@ -53,7 +53,7 @@ function BlockRenderer({ block }: { block: { id: string; type: string; props: un
               {p.ctas.map((cta, i) => (
                 cta.variant === 'primary' ? (
                   <a key={i} href={cta.href}
-                    className="relative overflow-hidden group text-[11px] tracking-[0.16em] uppercase border border-[#C9A84C]/35 text-[#C9A84C] px-7 py-3.5 rounded-full">
+                    className="relative overflow-hidden group text-[11px] tracking-[0.16em] uppercase border border-[var(--cs-text)]/20 text-[var(--cs-text)] px-7 py-3.5 rounded-full">
                     <span className="relative z-10 group-hover:text-[#080808] transition-colors duration-300">{cta.label}</span>
                     <span className="absolute inset-0 bg-[#C9A84C] rounded-full translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
                   </a>
@@ -110,7 +110,7 @@ function BlockRenderer({ block }: { block: { id: string; type: string; props: un
               {p.description && <p className="text-[var(--cs-text-3)] text-sm">{p.description}</p>}
             </div>
             <a href={p.buttonHref}
-              className="relative overflow-hidden group text-[11px] tracking-[0.16em] uppercase border border-[#C9A84C]/35 text-[#C9A84C] px-8 py-4 rounded-full shrink-0">
+              className="relative overflow-hidden group text-[11px] tracking-[0.16em] uppercase border border-[var(--cs-text)]/20 text-[var(--cs-text)] px-8 py-4 rounded-full shrink-0">
               <span className="relative z-10 group-hover:text-[#080808] transition-colors duration-300">{p.buttonLabel}</span>
               <span className="absolute inset-0 bg-[#C9A84C] rounded-full translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
             </a>
