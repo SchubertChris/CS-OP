@@ -32,7 +32,7 @@ export default function ComingSoonModal({ onClose }: { onClose: () => void }) {
           <p className="text-[#C9A84C] text-3xl font-black">8. Juni 2026</p>
         </div>
         <p className="text-[var(--cs-text-2)] text-sm leading-relaxed">
-          Das FinanceBoard ist fertig — der offizielle Release folgt am 8.6.2026.
+          Die erste Version geht am 8.6.2026 online — kostenlos für alle.
           Bis dahin kannst du dich schon mal auf Discord melden.
         </p>
         <button
