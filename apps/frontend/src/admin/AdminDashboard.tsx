@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from 'react'
 import { Users, TrendingUp, Download, Globe, Monitor, Smartphone, Tablet, Activity, ShieldAlert, ShieldCheck } from 'lucide-react'
+import ReviewQueue from './ReviewQueue'
 
 /* ── Types ── */
 interface Overview {
@@ -260,6 +261,9 @@ export default function AdminDashboard() {
           {events.length === 0 && <p className="text-[var(--cs-text-3)] text-xs">Noch keine Events</p>}
         </div>
       </div>
+
+      {/* ── Reviews ── */}
+      <ReviewQueue />
 
       {/* ── Security ── */}
       <div className="bg-[var(--cs-s2)] border border-[#C9A84C]/12 rounded-2xl p-6">
