@@ -6,6 +6,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import csLogo from '../../assets/images/CandleScopeLogo.png'
+import { useTheme } from '../../contexts/ThemeContext'
 
 const GOLD = '#C9A84C'
 const DISPLAY_MS = 2600
@@ -52,6 +53,8 @@ const CORNERS = [
 export default function IntroAnimation({ onComplete }: { onComplete: () => void }) {
   const [visible, setVisible] = useState(true)
   const doneRef = useRef(false)
+  const { theme } = useTheme()
+  const isDark = theme === 'dark'
 
   const complete = useCallback(() => {
     if (doneRef.current) return
@@ -139,10 +142,14 @@ export default function IntroAnimation({ onComplete }: { onComplete: () => void 
               <div style={{
                 position:'relative', zIndex:1,
                 width:100, height:100, borderRadius:26,
-                background:'radial-gradient(circle at 22% 12%,rgba(255,255,255,0.10),transparent 52%),linear-gradient(145deg,#131420,#07080f)',
-                border:'1px solid rgba(201,168,76,0.25)',
+                background: isDark
+                  ? 'radial-gradient(circle at 22% 12%,rgba(255,255,255,0.10),transparent 52%),linear-gradient(145deg,#131420,#07080f)'
+                  : 'radial-gradient(circle at 22% 12%,rgba(255,255,255,0.30),transparent 52%),linear-gradient(145deg,var(--cs-s3),var(--cs-s2))',
+                border: isDark ? '1px solid rgba(201,168,76,0.25)' : '1px solid rgba(201,168,76,0.35)',
                 display:'flex', alignItems:'center', justifyContent:'center',
-                boxShadow:'0 0 0 1px rgba(201,168,76,0.12),0 24px 56px rgba(0,0,0,0.65),0 0 80px rgba(201,168,76,0.15)',
+                boxShadow: isDark
+                  ? '0 0 0 1px rgba(201,168,76,0.12),0 24px 56px rgba(0,0,0,0.65),0 0 80px rgba(201,168,76,0.15)'
+                  : '0 0 0 1px rgba(201,168,76,0.20),0 8px 28px rgba(0,0,0,0.10),0 0 40px rgba(201,168,76,0.12)',
                 opacity:0,
                 animation:'sp-logo-in 0.55s cubic-bezier(0.22,1,0.36,1) 0.15s forwards',
               }}>
@@ -213,8 +220,8 @@ export default function IntroAnimation({ onComplete }: { onComplete: () => void 
             {/* Skip */}
             <motion.button
               onClick={complete}
-              className="absolute bottom-9 right-10 font-mono text-[10px] tracking-[0.22em] uppercase text-[#403a35] hover:text-[#C9A84C] transition-colors duration-300 cursor-pointer"
-              style={{ WebkitAppearance:'none', appearance:'none', background:'none', border:'none' }}
+              className="absolute bottom-9 right-10 font-mono text-[10px] tracking-[0.22em] uppercase hover:text-[#C9A84C] transition-colors duration-300 cursor-pointer"
+              style={{ WebkitAppearance:'none', appearance:'none', background:'none', border:'none', color:'var(--cs-text-3)' }}
               initial={{ opacity: 0 }} animate={{ opacity: 1 }}
               transition={{ delay: 0.8 }}
             >
