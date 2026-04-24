@@ -68,7 +68,7 @@ export default function ContactPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!validate()) return
-    if (!FORMSPREE_ID) { alert('Formspree ID fehlt — VITE_FORMSPREE_ID in .env eintragen'); return }
+    if (!FORMSPREE_ID) { setStatus('error'); return }
     setStatus('sending')
     try {
       const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {

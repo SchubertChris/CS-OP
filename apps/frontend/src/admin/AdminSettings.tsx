@@ -8,27 +8,27 @@ import { Shield, Database, Key, Server, ChevronRight } from 'lucide-react'
 const systemModules = [
   {
     icon: Shield, label: 'AUTH', title: 'Authentifizierung',
-    status: 'BYPASS · PHASE 1', statusColor: '#C9A84C',
-    desc: 'Phase 2: JWT via NestJS API ersetzt den PIN-Bypass.',
-    action: 'PIN einrichten', disabled: true,
+    status: 'JWT + TOTP · AKTIV', statusColor: '#00C896',
+    desc: 'Passwort (bcrypt) + TOTP-Authenticator-Code. JWT-Session via /api/auth/. AdminGuard prüft /api/auth/me.',
+    action: 'Auth verwalten', disabled: true,
   },
   {
     icon: Database, label: 'DATA', title: 'Datenquelle',
-    status: 'localStorage · AKTIV', statusColor: '#00C896',
-    desc: 'Phase 2: NestJS API + PostgreSQL. Gleiche Store-Struktur.',
+    status: 'localStorage · AKTIV', statusColor: '#C9A84C',
+    desc: 'Reviews + Pages in localStorage via Zustand-Persist. Phase 2: PostgreSQL (Neon) via API-Endpunkte.',
     action: 'API verbinden', disabled: true,
   },
   {
     icon: Key, label: 'KEYS', title: 'Admin-Zugang',
-    status: 'URL-KEY · AKTIV', statusColor: '#C9A84C',
-    desc: '/admin?key=cs2025admin — nur wer die URL kennt kommt rein.',
-    action: 'Key ändern', disabled: true,
+    status: 'JWT-Token · AKTIV', statusColor: '#00C896',
+    desc: '/admin/login → Passwort + TOTP → JWT-Cookie. Token-Validierung via AdminGuard bei jedem Route-Aufruf.',
+    action: 'Token-Einstellungen', disabled: true,
   },
   {
     icon: Server, label: 'HOST', title: 'Hosting',
-    status: 'LOKAL · DEV', statusColor: '#4a9eff',
-    desc: 'Phase 1: localhost. Phase 2: IONOS VPS · Ubuntu · Nginx.',
-    action: 'VPS verbinden', disabled: true,
+    status: 'VERCEL · LIVE', statusColor: '#4a9eff',
+    desc: 'Frontend + API-Routes auf Vercel. Secrets in Vercel Environment Variables (nie in .env-Dateien committen).',
+    action: 'Dashboard öffnen', disabled: true,
   },
 ]
 
@@ -76,7 +76,7 @@ export default function AdminSettings() {
 
       <div className="mt-6 p-4 border border-dashed border-[#C9A84C]/10 rounded-xl">
         <p className="font-mono text-[11px] text-[var(--cs-text-3)] tracking-[0.1em] leading-relaxed">
-          CS-ADMIN v1.0 · PHASE-1 · BYPASS-MODE · BUILD 2026.03
+          CS-ADMIN v1.1 · JWT+TOTP-AUTH · LOCALSTORAGE-DATA · BUILD 2026.04
         </p>
       </div>
     </div>
