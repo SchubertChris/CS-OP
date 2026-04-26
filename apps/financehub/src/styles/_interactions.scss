@@ -1,0 +1,406 @@
+// =============================================================================
+// INTERACTIONS — Motion · Scroll · Touch · Haptic · Browser · Security
+//
+// Ziel: Robust, präzise, schnell — aber smooth.
+// Geräte: iOS Safari, Chrome Android, Desktop Chrome/Firefox/Safari/Edge
+// =============================================================================
+
+// ---------------------------------------------------------------------------
+// USER-SELECT — App-Feeling: kein versehentliches Markieren von UI-Chrome
+//
+// Strategie: body = none (App-Default), explizit aufheben wo nötig
+// Erlaubt:  Inputs, Textareas, IBANs/Beträge (data-copy), Prosa
+// Verboten: Nav, Buttons, Labels, Cards, Headings, Icons, Badges
+// ---------------------------------------------------------------------------
+html, body {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+// Echte Text-Inputs immer selectable (Override mit !important gegen Vererbung)
+input,
+textarea,
+select,
+[contenteditable="true"] {
+  user-select: text !important;
+  -webkit-user-select: text !important;
+  cursor: text;
+}
+
+// Ein-Klick-Auswahl für kopierbare Finanzdaten (IBAN, Kontonummer, Betrag)
+[data-copy],
+.iban {
+  user-select: all;
+  -webkit-user-select: all;
+  cursor: copy;
+}
+
+// Prosa / Fließtext in z.B. Hilfeseiten, Postbox
+.prose,
+[data-selectable] {
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+// ---------------------------------------------------------------------------
+// SCROLL — Smooth + Momentum (iOS) + Overscroll
+// ---------------------------------------------------------------------------
+html {
+  scroll-behavior: smooth;
+}
+
+// Reduzierte Bewegung: Sofort, kein Smooth
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// SCROLL-CONTAINER (iOS Momentum + Snap)
+// ---------------------------------------------------------------------------
+
+// Vertikaler Scroll-Container — z.B. Transaktionsliste, Modal-Body
+.scroll-y {
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;   // iOS Momentum (legacy aber nötig)
+  overscroll-behavior-y: contain;      // Kein Scroll-Chaining zum Parent
+  scroll-padding-top: var(--space-4);
+}
+
+// Horizontaler Scroll-Container — z.B. Karten-Carousel
+.scroll-x {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  scroll-padding-left: var(--space-4);
+
+  // Momentum Scroll Snap
+  &.snap {
+    scroll-snap-type: x mandatory;
+
+    > * { scroll-snap-align: start; }
+  }
+}
+
+// Scroll-Bar ausblenden (trotzdem scrollbar)
+.scrollbar-hidden {
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
+// Styled Scrollbar (Desktop)
+.scrollbar-styled {
+  scrollbar-width: thin;
+  scrollbar-color: var(--cs-border) transparent;
+
+  &::-webkit-scrollbar { width: 4px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb {
+    background: var(--cs-border);
+    border-radius: var(--radius-full);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// TOUCH — 300ms Tap-Delay entfernen + Tap-Highlight
+// ---------------------------------------------------------------------------
+a,
+button,
+[role="button"],
+[role="tab"],
+[role="menuitem"],
+input,
+select,
+textarea,
+label,
+summary {
+  touch-action: manipulation; // Entfernt 300ms Tap-Delay auf iOS/Android
+  -webkit-tap-highlight-color: transparent; // Kein blauer Flash auf Android
+}
+
+// Kein Text-Select auf interaktiven Elementen
+button,
+[role="button"],
+[role="tab"],
+[role="menuitem"] {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+// ---------------------------------------------------------------------------
+// FOCUS — Keyboard-only, kein Click-Outline
+// ---------------------------------------------------------------------------
+
+// Interaction State Hierarchy:
+//   1. :hover        → leichte Aufhellung/Abdunklung (fill-animation bei Buttons)
+//   2. :focus-visible → Gold-Outline (nur Keyboard, kein Klick)
+//   3. :active        → Press-Feedback: scale(0.97) oder Opacity-Drop
+//   4. :disabled      → Gedämpft, nicht klickbar
+//   5. [aria-selected="true"] / .active → Permanenter aktiver Zustand
+
+:focus {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--cs-gold);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+// Buttons kriegen Pill-Outline
+button:focus-visible,
+[role="button"]:focus-visible {
+  border-radius: var(--radius-full);
+}
+
+// ---------------------------------------------------------------------------
+// ACTIVE — Press-Feedback (global für nicht-Button interaktive Elemente)
+//
+// Buttons haben eigene :active in Button.module.scss (variant-spezifisch).
+// Hier: generische click-targets — MenuItems, Tabs, Cards, List-Rows
+// ---------------------------------------------------------------------------
+[role="menuitem"]:active:not(:disabled),
+[role="tab"]:active:not(:disabled),
+[role="option"]:active:not(:disabled),
+[role="listitem"]:active:not(:disabled) {
+  background: var(--cs-surface-active) !important;
+}
+
+// Micro-scale für Cards und interaktive Listen-Zeilen
+.clickable:active,
+[data-interactive]:active {
+  transform: scale(0.99);
+}
+
+// ---------------------------------------------------------------------------
+// HAPTIC — CSS-Klassen als Hooks für JS (navigator.vibrate + AudioContext)
+//
+// Wie nutzen:
+//   Android:   navigator.vibrate(pattern) — direkt im Click-Handler
+//   iOS:       AudioContext mit stummem Ton — triggert Taptic Engine
+//   Web:       Klasse .haptic-light / .haptic-medium / .haptic-heavy
+//              → JS-Hook in useHaptic.ts liest die Klasse und feuert vibration
+//
+// Patterns:
+//   light:  [10]         — leichter Tap (Button, Toggle)
+//   medium: [30]         — normaler Tap (Action, Confirm)
+//   heavy:  [50]         — wichtige Aktion (Delete, Payment)
+//   error:  [50, 30, 50] — Fehler / Ablehnung
+//   success:[10, 10, 10] — Erfolg / Bestätigung
+// ---------------------------------------------------------------------------
+// Klassen werden nur als semantische Marker gesetzt — Logik in useHaptic.ts
+.haptic-light  { /* marker */ }
+.haptic-medium { /* marker */ }
+.haptic-heavy  { /* marker */ }
+.haptic-error  { /* marker */ }
+.haptic-success { /* marker */ }
+
+// ---------------------------------------------------------------------------
+// BROWSER-FIXES
+// ---------------------------------------------------------------------------
+
+// iOS Safari: Verhindert Auto-Zoom bei Inputs unter 16px
+// Wir setzen font-size auf min. 16px für alle Inputs
+input,
+select,
+textarea {
+  font-size: max(var(--text-base), 16px); // iOS zoomt nur wenn < 16px
+}
+
+// iOS Safari: Verhindert Orientierungs-Zoom
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+// Firefox: Entfernt den roten Box-Shadow bei invalid
+input:invalid,
+textarea:invalid {
+  box-shadow: none;
+}
+
+// Safari: Button-Normalisierung
+button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+// Edge/Chrome: Entfernt den Password-Reveal-Button (wir haben eigenen)
+input[type="password"]::-ms-reveal,
+input[type="password"]::-webkit-contacts-auto-fill-button {
+  display: none;
+}
+
+// Chrome: Autocomplete-Hintergrund (überschreibt gelben Autofill-BG)
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px var(--cs-surface-2) inset;
+  -webkit-text-fill-color: var(--cs-text);
+  caret-color: var(--cs-text);
+  transition: background-color 9999s ease; // Trick: verzögert Autofill-Reset
+}
+
+// Firefox: Scrollbar-Stil (Chromium nutzt ::-webkit-scrollbar)
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--cs-border-neutral) transparent;
+}
+
+// ---------------------------------------------------------------------------
+// SYSTEM-THEME DETECTION — prefers-color-scheme
+// Bereits in _tokens.scss verankert. Hier nur dokumentiert:
+//
+// :root                     → Light Mode (default)
+// .theme-dark               → Dark Mode (User-Auswahl, persistent)
+// .theme-light              → Light Mode (User-Auswahl, blockiert System-Fallback)
+// @media(prefers-dark) :root:not(.theme-light) → System-Fallback vor JS-Load
+//
+// appStore.ts liest: matchMedia('(prefers-color-scheme: dark)').matches
+// und reagiert auf: matchMedia.addEventListener('change', handler)
+// ---------------------------------------------------------------------------
+
+// ---------------------------------------------------------------------------
+// GLASS INTENSITY — User-Präferenz
+// prefers-reduced-transparency ist in _mixins.scss @mixin glass abgedeckt.
+// Zusätzlich: .glass-off Klasse auf <html> für App-Setting "Glass deaktivieren"
+// ---------------------------------------------------------------------------
+html.glass-off {
+  // Alle glass-Mixins werden überschrieben → feste Surface-Farbe
+  --cs-glass-bg:      var(--cs-surface);
+  --cs-glass-blur:    0px;
+  --cs-glass-saturate: 100%;
+}
+
+// ---------------------------------------------------------------------------
+// TOOLTIP — CSS-only via data-tooltip="Text"
+// Kein JavaScript nötig für einfache Hover-Tooltips
+//
+// Verwendung:
+//   <button data-tooltip="Speichern">...</button>
+//   <button data-tooltip="Oben" data-tooltip-pos="top">...</button>
+//
+// Positionen: top (default), bottom, left, right
+// ---------------------------------------------------------------------------
+[data-tooltip] {
+  position: relative;
+
+  &::before,
+  &::after {
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity var(--transition-fast), transform var(--transition-fast);
+    z-index: var(--z-tooltip);
+  }
+
+  // Tooltip-Box
+  &::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: calc(100% + var(--tooltip-gap));
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    background: var(--tooltip-bg);
+    color: var(--tooltip-text);
+    padding: var(--tooltip-pad-y) var(--tooltip-pad-x);
+    border-radius: var(--tooltip-radius);
+    font-family: var(--tooltip-font);
+    font-size: var(--tooltip-size);
+    font-weight: var(--tooltip-weight);
+    white-space: nowrap;
+    box-shadow: var(--tooltip-shadow);
+  }
+
+  // Pfeil
+  &::before {
+    content: '';
+    position: absolute;
+    bottom: calc(100% + 3px);
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    border: 5px solid transparent;
+    border-top-color: var(--tooltip-bg);
+  }
+
+  &:hover::before,
+  &:hover::after {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  // Position: bottom
+  &[data-tooltip-pos="bottom"]::after {
+    top: calc(100% + var(--tooltip-gap));
+    bottom: auto;
+    transform: translateX(-50%) translateY(-4px);
+  }
+  &[data-tooltip-pos="bottom"]::before {
+    top: calc(100% + 3px);
+    bottom: auto;
+    border-top-color: transparent;
+    border-bottom-color: var(--tooltip-bg);
+    transform: translateX(-50%) translateY(-4px);
+  }
+  &[data-tooltip-pos="bottom"]:hover::after,
+  &[data-tooltip-pos="bottom"]:hover::before {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  // Position: left
+  &[data-tooltip-pos="left"]::after {
+    right: calc(100% + var(--tooltip-gap));
+    left: auto;
+    top: 50%;
+    bottom: auto;
+    transform: translateY(-50%) translateX(4px);
+  }
+  &[data-tooltip-pos="left"]::before {
+    right: calc(100% + 3px);
+    left: auto;
+    top: 50%;
+    bottom: auto;
+    border-top-color: transparent;
+    border-left-color: var(--tooltip-bg);
+    transform: translateY(-50%) translateX(4px);
+  }
+  &[data-tooltip-pos="left"]:hover::after,
+  &[data-tooltip-pos="left"]:hover::before {
+    transform: translateY(-50%) translateX(0);
+  }
+
+  // Position: right
+  &[data-tooltip-pos="right"]::after {
+    left: calc(100% + var(--tooltip-gap));
+    top: 50%;
+    bottom: auto;
+    transform: translateY(-50%) translateX(-4px);
+  }
+  &[data-tooltip-pos="right"]::before {
+    left: calc(100% + 3px);
+    top: 50%;
+    bottom: auto;
+    border-top-color: transparent;
+    border-right-color: var(--tooltip-bg);
+    transform: translateY(-50%) translateX(-4px);
+  }
+  &[data-tooltip-pos="right"]:hover::after,
+  &[data-tooltip-pos="right"]:hover::before {
+    transform: translateY(-50%) translateX(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &::before, &::after { transition: opacity var(--transition-fast); }
+    &:hover::before, &:hover::after { transform: translateX(-50%) translateY(0); }
+  }
+}

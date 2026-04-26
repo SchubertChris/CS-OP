@@ -1,0 +1,184 @@
+// =============================================================================
+// TYPOGRAPHY — Futuristic · Solid · Geist Variable
+//
+// Charakter: technisch-präzise, enge Headlines, starke Gewichtskurve.
+// Kein rundes Retro, kein Marketing-Font — Fintech-Qualität.
+// =============================================================================
+
+// ---------------------------------------------------------------------------
+// BASE
+// ---------------------------------------------------------------------------
+body {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-normal);
+  color: var(--cs-text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
+}
+
+// ---------------------------------------------------------------------------
+// HEADINGS — Tight, heavy, architectural
+// ---------------------------------------------------------------------------
+.h1 {
+  font-family: var(--font-display);
+  font-size: var(--text-5xl);
+  font-weight: var(--fw-black);
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  color: var(--cs-text);
+}
+
+.h2 {
+  font-family: var(--font-display);
+  font-size: var(--text-4xl);
+  font-weight: var(--fw-bold);
+  line-height: 1.1;
+  letter-spacing: -0.035em;
+  color: var(--cs-text);
+}
+
+.h3 {
+  font-family: var(--font-display);
+  font-size: var(--text-3xl);
+  font-weight: var(--fw-bold);
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  color: var(--cs-text);
+}
+
+.h4 {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: var(--fw-semibold);
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  color: var(--cs-text);
+}
+
+.pageTitle {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: var(--fw-bold);
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+  color: var(--cs-text);
+}
+
+// ---------------------------------------------------------------------------
+// LABELS & EYEBROWS — Mono · Wide Tracking
+// ---------------------------------------------------------------------------
+.sectionLabel {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: var(--fw-medium);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cs-text-3);
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: var(--fw-medium);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--cs-gold);
+}
+
+// ---------------------------------------------------------------------------
+// BODY TEXT
+// ---------------------------------------------------------------------------
+.body {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-normal);
+  color: var(--cs-text);
+}
+
+.bodySmall {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-normal);
+  color: var(--cs-text-2);
+}
+
+.caption {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-tight);
+  color: var(--cs-text-3);
+}
+
+// ---------------------------------------------------------------------------
+// FINANCE AMOUNTS — Mono · Tabular · Präzise
+// ---------------------------------------------------------------------------
+.amountHero {
+  font-family: var(--font-mono);
+  font-size: var(--text-5xl);
+  font-weight: var(--fw-black);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.amountLarge {
+  font-family: var(--font-mono);
+  font-size: var(--text-3xl);
+  font-weight: var(--fw-bold);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.amountBase {
+  font-family: var(--font-mono);
+  font-size: var(--text-lg);
+  font-weight: var(--fw-semibold);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+.amountSmall {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: var(--fw-medium);
+  font-variant-numeric: tabular-nums;
+}
+
+// ---------------------------------------------------------------------------
+// IBAN / KONTONUMMER
+// ---------------------------------------------------------------------------
+.iban {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: var(--fw-regular);
+  letter-spacing: 0.06em;
+  color: var(--cs-text-2);
+  user-select: all;
+}
+
+// ---------------------------------------------------------------------------
+// COLOR UTILITIES
+// ---------------------------------------------------------------------------
+.textPositive   { color: var(--cs-positive); }
+.textNegative   { color: var(--cs-negative); }
+.textWarning    { color: var(--cs-warning); }
+.textGold       { color: var(--cs-gold); }
+.textMuted      { color: var(--cs-text-3); }
+.textSecondary  { color: var(--cs-text-2); }
+.textAnthracite { color: var(--cs-anthracite); }
+
+// ---------------------------------------------------------------------------
+// TRUNCATE
+// ---------------------------------------------------------------------------
+.truncate {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

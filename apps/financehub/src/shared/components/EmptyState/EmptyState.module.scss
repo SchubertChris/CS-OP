@@ -1,0 +1,79 @@
+// =============================================================================
+// EMPTY STATE — Kein-Daten-Screen
+// =============================================================================
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--space-10) var(--space-5);
+  gap: var(--space-4);
+}
+
+.compact {
+  padding: var(--space-6) var(--space-4);
+  gap: var(--space-3);
+}
+
+// ---------------------------------------------------------------------------
+// ICON — groß, gedämpft
+// ---------------------------------------------------------------------------
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--cs-text-3);
+  opacity: 0.5;
+
+  .wrapper:not(.compact) & {
+    width: 56px;
+    height: 56px;
+    background: var(--cs-surface-2);
+    border: 1px solid var(--cs-border-subtle);
+    border-radius: var(--radius-xl);
+  }
+
+  .compact & {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// TEXT
+// ---------------------------------------------------------------------------
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  max-width: 320px;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: var(--fw-semibold);
+  letter-spacing: -0.02em;
+  color: var(--cs-text);
+  margin: 0;
+
+  .compact & {
+    font-size: var(--text-base);
+  }
+}
+
+.desc {
+  font-size: var(--text-sm);
+  color: var(--cs-text-3);
+  line-height: var(--lh-relaxed);
+  margin: 0;
+}
+
+// ---------------------------------------------------------------------------
+// ACTION
+// ---------------------------------------------------------------------------
+.action {
+  margin-top: var(--space-2);
+}

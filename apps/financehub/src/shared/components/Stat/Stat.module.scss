@@ -1,0 +1,79 @@
+// =============================================================================
+// STAT / METRIC — Dashboard-Kennzahl
+// =============================================================================
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+// ---------------------------------------------------------------------------
+// GRÖßEN
+// ---------------------------------------------------------------------------
+.sm {
+  .label { font-size: var(--text-xs); }
+  .value { font-size: var(--text-xl); }
+}
+
+.md {
+  .label { font-size: var(--text-xs); }
+  .value { font-size: var(--text-3xl); }
+}
+
+.lg {
+  .label { font-size: var(--text-sm); }
+  .value {
+    font-size: var(--text-4xl);
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    min-width: 0;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// ELEMENTE
+// ---------------------------------------------------------------------------
+.label {
+  font-family: var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cs-text-3);
+  font-weight: var(--fw-medium);
+}
+
+.value {
+  font-family: var(--font-mono);
+  font-weight: var(--fw-bold);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: var(--ls-tight);
+  color: var(--cs-text);
+  line-height: var(--lh-tight);
+}
+
+// ---------------------------------------------------------------------------
+// TREND INDICATOR — Pfeil + Prozentwert
+// ---------------------------------------------------------------------------
+.trend {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: var(--fw-semibold);
+  font-variant-numeric: tabular-nums;
+  border-radius: var(--radius-full);
+  padding: 2px 7px 2px 5px;
+  width: fit-content;
+
+  &.up   { background: var(--cs-positive-bg); color: var(--stat-trend-up); }
+  &.down { background: var(--cs-negative-bg); color: var(--stat-trend-down); }
+  &.flat { background: var(--cs-surface-3);   color: var(--cs-text-3); }
+}
+
+.trendLabel {
+  font-weight: var(--fw-regular);
+  opacity: 0.7;
+  margin-left: 2px;
+}

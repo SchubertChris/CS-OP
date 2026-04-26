@@ -1,0 +1,94 @@
+// =============================================================================
+// CHECKBOX — Eigenes visuelles Erscheinungsbild, native Input dahinter
+// =============================================================================
+
+.wrapper {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  cursor: pointer;
+  user-select: none;
+
+  &.disabled { opacity: 0.45; cursor: not-allowed; pointer-events: none; }
+}
+
+// ---------------------------------------------------------------------------
+// CONTROL — verstecktes Input + sichtbare Box
+// ---------------------------------------------------------------------------
+.ctrl {
+  position: relative;
+  display: flex;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+// Natives Input: überdeckt die gesamte .ctrl-Fläche, unsichtbar aber klickbar
+.input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+  margin: 0;
+  z-index: 1;
+  width: var(--check-size);
+  height: var(--check-size);
+}
+
+// Visuelle Box
+.box {
+  width: var(--check-size);
+  height: var(--check-size);
+  border: 2px solid var(--check-border);
+  border-radius: var(--radius-sm);
+  background: var(--check-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast);
+  flex-shrink: 0;
+
+  .mark { color: transparent; transition: color var(--transition-fast); }
+}
+
+// Checked: via sibling-Selektor (~)
+.input:checked ~ .box {
+  background: var(--check-active-bg);
+  border-color: var(--check-active-border);
+  .mark { color: var(--cs-text-inverse); }
+}
+
+// Indeterminate (partial)
+.partial {
+  background: var(--check-active-bg);
+  border-color: var(--check-active-border);
+  .mark { color: var(--cs-text-inverse) !important; }
+}
+
+// Focus-Ring
+.input:focus-visible ~ .box {
+  outline: 2px solid var(--cs-gold);
+  outline-offset: 2px;
+}
+
+// ---------------------------------------------------------------------------
+// TEXT-META
+// ---------------------------------------------------------------------------
+.meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-top: 1px;
+}
+
+.label {
+  font-size: var(--text-sm);
+  font-weight: var(--fw-medium);
+  color: var(--cs-text);
+  line-height: var(--lh-tight);
+}
+
+.desc {
+  font-size: var(--text-xs);
+  color: var(--cs-text-3);
+  line-height: var(--lh-normal);
+}

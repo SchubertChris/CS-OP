@@ -1,0 +1,25 @@
+// =============================================================================
+// CANDLESCOPE FINANZBOARD — MAIN STYLES
+// Globaler SCSS-Einstiegspunkt — importiert alle Style-Module
+// =============================================================================
+
+// 1. Fonts (@font-face — muss vor Tokens stehen)
+@use './fonts';
+
+// 2. Design Tokens (CSS Custom Properties, :root + .theme-dark + System-Fallback)
+@use './tokens';
+
+// 2. CSS Reset
+@use './reset';
+
+// 3. Typografie-Klassen
+@use './typography';
+
+// 4. Animationen (Keyframes global — damit spin/shimmer in inline-styles nutzbar)
+@use './animations';
+
+// 5. Interactions (Scroll, Touch, Haptic, Motion, Browser-Fixes)
+@use './interactions';
+
+// 6. View Transitions (diagonale Theme-Wipe-Animation)
+@use './transitions';

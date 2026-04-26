@@ -1,0 +1,306 @@
+// =============================================================================
+// CANDLESCOPE FINANZBOARD — SCSS MIXINS & VARIABLES
+// Auto-importiert in alle .module.scss via vite.config additionalData
+// =============================================================================
+
+// ---------------------------------------------------------------------------
+// BREAKPOINT VARIABLEN
+// ---------------------------------------------------------------------------
+$bp-sm: 480px;
+$bp-md: 768px;
+$bp-lg: 1024px;
+$bp-xl: 1280px;
+
+// ---------------------------------------------------------------------------
+// BREAKPOINT MIXINS (Mobile-First)
+// ---------------------------------------------------------------------------
+@mixin sm { @media (min-width: $bp-sm) { @content; } }
+@mixin md { @media (min-width: $bp-md) { @content; } }
+@mixin lg { @media (min-width: $bp-lg) { @content; } }
+@mixin xl { @media (min-width: $bp-xl) { @content; } }
+
+@mixin below-sm { @media (max-width: #{$bp-sm - 1px}) { @content; } }
+@mixin below-md { @media (max-width: #{$bp-md - 1px}) { @content; } }
+@mixin below-lg { @media (max-width: #{$bp-lg - 1px}) { @content; } }
+
+// ---------------------------------------------------------------------------
+// TEXT UTILITIES
+// ---------------------------------------------------------------------------
+@mixin truncate($lines: 1) {
+  @if $lines == 1 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  } @else {
+    display: -webkit-box;
+    -webkit-line-clamp: $lines;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// FINANZ-ZAHLEN
+// ---------------------------------------------------------------------------
+@mixin money {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum';
+  letter-spacing: var(--ls-tight);
+}
+
+// ---------------------------------------------------------------------------
+// CARD BASIS
+// ---------------------------------------------------------------------------
+@mixin card {
+  background: var(--cs-surface);
+  border: 1px solid var(--cs-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+}
+
+@mixin card-elevated {
+  background: var(--cs-surface-2);
+  border: 1px solid var(--cs-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-elevated);
+}
+
+// ---------------------------------------------------------------------------
+// GLASS EFFECT — Apple-Vibrancy: blur + saturate (iOS/macOS feel)
+// prefers-transparency: reduce → kein Blur (Accessibility)
+// ---------------------------------------------------------------------------
+@mixin glass {
+  background: var(--cs-glass-bg);
+  backdrop-filter: blur(var(--cs-glass-blur)) saturate(var(--cs-glass-saturate));
+  -webkit-backdrop-filter: blur(var(--cs-glass-blur)) saturate(var(--cs-glass-saturate));
+  border: 1px solid var(--cs-glass-border);
+
+  // Accessibility: User hat "Transparenz reduzieren" aktiviert (iOS/macOS)
+  @media (prefers-reduced-transparency: reduce) {
+    background: var(--cs-surface);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
+// Glass ohne Border — für gestapelte Elemente
+@mixin glass-borderless {
+  background: var(--cs-glass-bg);
+  backdrop-filter: blur(var(--cs-glass-blur)) saturate(var(--cs-glass-saturate));
+  -webkit-backdrop-filter: blur(var(--cs-glass-blur)) saturate(var(--cs-glass-saturate));
+
+  @media (prefers-reduced-transparency: reduce) {
+    background: var(--cs-surface);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// FOKUS RING
+// ---------------------------------------------------------------------------
+@mixin focus-ring {
+  &:focus-visible {
+    outline: 2px solid var(--cs-gold);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// SCROLLBAR
+// ---------------------------------------------------------------------------
+@mixin scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--cs-surface-3) transparent;
+
+  &::-webkit-scrollbar { width: 6px; height: 6px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb {
+    background: var(--cs-surface-3);
+    border-radius: var(--radius-full);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// FLEX SHORTCUTS
+// ---------------------------------------------------------------------------
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin flex-start {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+// ---------------------------------------------------------------------------
+// TRANSITIONS
+// ---------------------------------------------------------------------------
+@mixin transition($props: all, $speed: var(--transition-normal)) {
+  transition: $props $speed;
+}
+
+// ---------------------------------------------------------------------------
+// VISUALLY HIDDEN (Accessibility)
+// ---------------------------------------------------------------------------
+@mixin visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+// ---------------------------------------------------------------------------
+// SKELETON LOADER — Shimmer-Sweep auf Platzhalter-Elementen
+// Keyframe 'shimmer' ist in _animations.scss global definiert
+// ---------------------------------------------------------------------------
+@mixin skeleton($h: 1em, $r: var(--skeleton-radius)) {
+  display: block;
+  height: $h;
+  border-radius: $r;
+  background: linear-gradient(
+    90deg,
+    var(--skeleton-base) 25%,
+    var(--skeleton-shine) 50%,
+    var(--skeleton-base) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite linear;
+}
+
+// ---------------------------------------------------------------------------
+// MODAL OVERLAY — Dunkler Hintergrund für Dialoge / Drawer
+// ---------------------------------------------------------------------------
+@mixin overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px) saturate(120%);
+  -webkit-backdrop-filter: blur(4px) saturate(120%);
+  z-index: var(--z-modal);
+
+  @media (prefers-reduced-transparency: reduce) {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: rgba(0, 0, 0, 0.7);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// DIVIDER — einfache Trennlinie (3 Stärken)
+// ---------------------------------------------------------------------------
+@mixin divider($color: var(--divider-neutral)) {
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: $color;
+  border: none;
+  flex-shrink: 0;
+}
+
+// ---------------------------------------------------------------------------
+// SECTION HEADER — semantischer Abschnitts-Kopf mit Trennlinie darunter
+// ---------------------------------------------------------------------------
+@mixin section-header {
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--cs-border-neutral);
+  margin-bottom: var(--space-5);
+}
+
+// ---------------------------------------------------------------------------
+// GOLD ACCENT STRIPE — linker 3px Akzentstreifen (::before auf Containern)
+// ---------------------------------------------------------------------------
+@mixin gold-stripe {
+  position: relative;
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--cs-gold);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  }
+}
+
+// =============================================================================
+// GRID MIXINS — Fluid, auto-fill, "airy by default"
+//
+// Alle Grids nutzen repeat(auto-fill, minmax(...)) — keine festen Spaltenanzahlen.
+// Karten umbrechen fluid, kein @media breakpoint nötig.
+// =============================================================================
+
+// KPI-Row — Metric-Karten (Nettovermögen, Einnahmen, Ausgaben, Sparquote)
+// 4 Karten Desktop → 2 Tablet → 1 Mobile (auto-fill)
+@mixin grid-kpi {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--grid-col-kpi)), 1fr));
+  gap: var(--grid-gap);
+}
+
+// Standard Card Grid — allgemeine Karten auf einer Seite
+@mixin grid-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--grid-col-card)), 1fr));
+  gap: var(--grid-gap);
+  align-items: start;
+}
+
+// Wide Card Grid — Karten mit mehr Inhalt (Charts, Tabellen)
+@mixin grid-cards-wide {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--grid-col-wide)), 1fr));
+  gap: var(--grid-gap-lg);
+  align-items: start;
+}
+
+// Feature Grid — asymmetrisch (z.B. Chart 2fr + Sidebar 1fr)
+// Ratio via String z.B. '2fr 1fr' oder '3fr 2fr'
+@mixin grid-feature($ratio: '2fr 1fr') {
+  display: grid;
+  grid-template-columns: #{$ratio};
+  gap: var(--grid-gap-lg);
+  align-items: start;
+
+  @include below-md {
+    grid-template-columns: 1fr; // Mobile: einspaltig
+  }
+}
+
+// Page Section Wrapper — Atemraum + max-width Zentrierung
+@mixin page-section {
+  padding: var(--page-pad-y) var(--page-pad-x);
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  width: 100%;
+}
+
+// Section Stack — Sektion-Stapel mit großem Abstand zwischen Blöcken
+// Nutzen: direkt auf dem Page-Root-Container
+@mixin section-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--section-gap);
+}
+
+// Inner Stack — enger Abstand innerhalb einer Sektion
+@mixin inner-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--section-gap-inner);
+}

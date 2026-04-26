@@ -1,0 +1,99 @@
+// =============================================================================
+// ALERT / INLINE-BANNER
+// =============================================================================
+
+.alert {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  border-left: 3px solid transparent; // Akzent-Streifen links (before-Effekt)
+  position: relative;
+}
+
+// ---------------------------------------------------------------------------
+// VARIANTEN
+// ---------------------------------------------------------------------------
+.info {
+  background: var(--cs-info-bg);
+  border-left-color: var(--cs-info);
+  .icon { color: var(--cs-info); }
+}
+
+.success {
+  background: var(--cs-positive-bg);
+  border-left-color: var(--cs-positive);
+  .icon { color: var(--cs-positive); }
+}
+
+.warning {
+  background: var(--cs-warning-bg);
+  border-left-color: var(--cs-warning);
+  .icon { color: var(--cs-warning); }
+}
+
+.error {
+  background: var(--cs-negative-bg);
+  border-left-color: var(--cs-negative);
+  .icon { color: var(--cs-negative); }
+}
+
+// ---------------------------------------------------------------------------
+// ICON
+// ---------------------------------------------------------------------------
+.icon {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  margin-top: 1px; // optische Ausrichtung mit Textzeile 1
+}
+
+// ---------------------------------------------------------------------------
+// CONTENT
+// ---------------------------------------------------------------------------
+.content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.title {
+  font-size: var(--text-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--cs-text);
+  margin: 0;
+  line-height: var(--lh-tight);
+}
+
+.body {
+  font-size: var(--text-sm);
+  color: var(--cs-text-2);
+  line-height: var(--lh-normal);
+}
+
+// ---------------------------------------------------------------------------
+// DISMISS-BUTTON
+// ---------------------------------------------------------------------------
+.dismiss {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border: none;
+  background: none;
+  color: var(--cs-text-3);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+  margin-top: 1px;
+  transition: color var(--transition-fast), background var(--transition-fast);
+
+  &:hover {
+    color: var(--cs-text);
+    background: rgba(0, 0, 0, 0.08);
+  }
+}

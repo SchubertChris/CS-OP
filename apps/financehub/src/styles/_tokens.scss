@@ -1,0 +1,529 @@
+// =============================================================================
+// CANDLESCOPE FINANZBOARD — DESIGN TOKENS
+//
+// THEME-SYSTEM:
+//   • :root           = Light Mode (Default, kein class nötig)
+//   • .theme-dark     = Dark Mode (class auf <html>)
+//   • @media fallback = System-Preference (wenn JS noch nicht geladen)
+//
+// NEUES THEME HINZUFÜGEN:
+//   1. .theme-[name] { --cs-bg: ...; --cs-surface: ...; ... } hier anfügen
+//   2. 'theme-[name]' zu AppTheme type in appStore.ts hinzufügen
+//   3. App.tsx classList-Logik erweitern
+//   → Alle anderen Tokens bleiben unverändert — semantische Namen!
+//
+// REGEL: Niemals hardcoded Farben in Komponenten. Immer var(--cs-*).
+// =============================================================================
+
+:root {
+  color-scheme: light;
+  // ---------------------------------------------------------------------------
+  // FARBEN — Marke
+  // ---------------------------------------------------------------------------
+  --cs-gold:          #C9A84C;
+  --cs-gold-hover:    #B8922E;   // Auf hellem BG: dunkler Hover
+  --cs-gold-muted:    #C9A84C60; // 38% Opacity
+  --cs-gold-dim:      #C9A84C1A; // 10% Opacity
+
+  // Accent-Alias — Theme-Switching: Themes überschreiben --cs-gold.
+  // Neue Komponenten nutzen --cs-accent für Brand-Farbe.
+  // Bestehende Komponenten via --cs-gold bleiben kompatibel (gleicher Wert).
+  --cs-accent:        var(--cs-gold);
+  --cs-accent-hover:  var(--cs-gold-hover);
+  --cs-accent-muted:  var(--cs-gold-muted);
+  --cs-accent-dim:    var(--cs-gold-dim);
+
+  // ---------------------------------------------------------------------------
+  // FARBEN — Hintergründe (Light Mode)
+  // ---------------------------------------------------------------------------
+  --cs-bg:             #F2EDE2;
+  --cs-surface:        #EDE8DE;
+  --cs-surface-2:      #E6E0D4;
+  --cs-surface-3:      #DED8CC;
+  --cs-surface-active: #D8D2C4;   // Tiefster Surface: :active-Press (dunkler als surface-3)
+  --cs-neutral:        #9E9A91;   // Mid-Tone: disabled, placeholder, divider
+  --cs-anthracite:     #2E2B28;   // Warmes Anthrazit — dunkler Akzent zu Cream
+  --cs-border:         #C9A84C55; // Gold-Border: sichtbar auf warm-cream (33% op)
+  --cs-border-neutral: #00000018; // Neutrale Trenner, Inputs
+  --cs-border-subtle:  #00000010; // Hauchdünn: nur interne Trennlinien
+
+  // Glass Effect — Apple-Vibrancy inspiriert (blur + saturate)
+  --cs-glass-bg:        rgba(237, 232, 222, 0.75);
+  --cs-glass-border:    rgba(201, 168, 76, 0.18);
+  --cs-glass-blur:      20px;
+  --cs-glass-saturate:  160%;  // saturate() in backdrop-filter — Apple-Vibrancy-Effekt
+
+  // ---------------------------------------------------------------------------
+  // FARBEN — Text
+  // ---------------------------------------------------------------------------
+  --cs-text:          #1A1410;
+  --cs-text-2:        #4A3F35;
+  --cs-text-3:        #7A6F65;
+  --cs-text-inverse:  #F0ECE8;
+
+  // ---------------------------------------------------------------------------
+  // FARBEN — Semantisch
+  // ---------------------------------------------------------------------------
+  --cs-positive:      #22C55E;
+  --cs-positive-bg:   #22C55E15;
+  --cs-negative:      #C03434;   // Gedämpftes Rot — reif, nicht panikrot
+  --cs-negative-bg:   #C0343415;
+  --cs-warning:       #F59E0B;
+  --cs-warning-bg:    #F59E0B15;
+  --cs-info:          #3B82F6;
+  --cs-info-bg:       #3B82F615;
+  --cs-neutral:       #6B7280;
+
+  // ---------------------------------------------------------------------------
+  // TYPOGRAFIE
+  // ---------------------------------------------------------------------------
+  --font-display: 'Geist', system-ui, sans-serif;
+  --font-body:    'Geist', system-ui, sans-serif;
+  --font-mono:    'Geist Mono', 'JetBrains Mono', monospace;
+
+  // Fluid Type Scale — clamp(mobile-min, fluid-preferred, desktop-max)
+  // Formel: preferred = intercept + slope * 100vw
+  // Basis:  320px Mobile → 1440px Desktop  (Δ = 1120px)
+  // Alle Größen skalieren stufenlos — kein @media breakpoint nötig.
+  //
+  //  xs:   11px → 13px   (Δ 2px / 1120 = 0.179px/vw)
+  //  sm:   13px → 15px   (Δ 2px / 1120 = 0.179px/vw)
+  //  base: 15px → 17px   (Δ 2px / 1120 = 0.179px/vw)
+  //  lg:   16px → 19px   (Δ 3px / 1120 = 0.268px/vw)
+  //  xl:   18px → 22px   (Δ 4px / 1120 = 0.357px/vw)
+  //  2xl:  20px → 26px   (Δ 6px / 1120 = 0.536px/vw)
+  //  3xl:  24px → 32px   (Δ 8px / 1120 = 0.714px/vw)
+  //  4xl:  28px → 40px   (Δ 12px/ 1120 = 1.07px/vw)
+  //  5xl:  36px → 52px   (Δ 16px/ 1120 = 1.43px/vw)
+  //
+  --text-xs:   clamp(0.6875rem, 0.6313rem + 0.1786vw, 0.8125rem);  // 11px → 13px
+  --text-sm:   clamp(0.8125rem, 0.7563rem + 0.1786vw, 0.9375rem);  // 13px → 15px
+  --text-base: clamp(0.9375rem, 0.8813rem + 0.1786vw, 1.0625rem);  // 15px → 17px
+  --text-lg:   clamp(1rem, 0.9152rem + 0.2679vw, 1.1875rem);       // 16px → 19px
+  --text-xl:   clamp(1.125rem, 1.0134rem + 0.3571vw, 1.375rem);    // 18px → 22px
+  --text-2xl:  clamp(1.25rem, 1.0804rem + 0.5357vw, 1.625rem);     // 20px → 26px
+  --text-3xl:  clamp(1.5rem, 1.2768rem + 0.7143vw, 2rem);          // 24px → 32px
+  --text-4xl:  clamp(1.75rem, 1.4107rem + 1.0714vw, 2.5rem);       // 28px → 40px
+  --text-5xl:  clamp(2.25rem, 1.8036rem + 1.4286vw, 3.25rem);      // 36px → 52px
+
+  --fw-regular:  400;
+  --fw-medium:   500;
+  --fw-semibold: 600;
+  --fw-bold:     700;
+  --fw-black:    900;
+
+  --lh-tight:   1.25;
+  --lh-normal:  1.5;
+  --lh-relaxed: 1.75;
+
+  --ls-tight:  -0.025em;
+  --ls-normal:  0;
+  --ls-wide:    0.05em;
+  --ls-wider:   0.1em;
+
+  // ---------------------------------------------------------------------------
+  // ABSTÄNDE (8px Grid)
+  // ---------------------------------------------------------------------------
+  --space-0:  0;
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  24px;
+  --space-6:  32px;
+  --space-7:  40px;
+  --space-8:  48px;
+  --space-10: 64px;
+  --space-12: 80px;
+  --space-16: 96px;
+
+  // ---------------------------------------------------------------------------
+  // BORDER RADIUS
+  // ---------------------------------------------------------------------------
+  --radius-sm:   4px;
+  --radius-md:   8px;
+  --radius-lg:   12px;
+  --radius-xl:   16px;
+  --radius-2xl:  20px;
+  --radius-full: 9999px;
+
+  // ---------------------------------------------------------------------------
+  // SCHATTEN
+  // ---------------------------------------------------------------------------
+  --shadow-sm:       0 1px 2px rgba(0, 0, 0, 0.12);
+  --shadow-card:     0 2px 8px rgba(0, 0, 0, 0.1), 0 0 0 1px var(--cs-border);
+  --shadow-elevated: 0 8px 32px rgba(0, 0, 0, 0.18), 0 0 0 1px var(--cs-border);
+  --shadow-modal:    0 20px 60px rgba(0, 0, 0, 0.35);
+  --shadow-gold:     0 0 0 1px rgba(201, 168, 76, 0.6), 0 0 24px rgba(201, 168, 76, 0.35);
+  --shadow-rail:     2px 0 24px rgba(0, 0, 0, 0.08);
+
+  // ---------------------------------------------------------------------------
+  // Z-INDEX SKALA
+  // ---------------------------------------------------------------------------
+  --z-base:       1;
+  --z-raised:     10;
+  --z-dropdown:   100;
+  --z-rail:       200;   // Icon Rail (links)
+  --z-contextbar: 210;   // Floating Context Bar (über Rail)
+  --z-modal:      300;
+  --z-command:    350;   // Command Palette (über Modals)
+  --z-toast:      400;
+  --z-tooltip:    500;
+
+  // ---------------------------------------------------------------------------
+  // ÜBERGÄNGE — Robust, präzise, smooth
+  // Faustregel: instant=Feedback, fast=UI-State, normal=Layout, slow=Modal
+  // ---------------------------------------------------------------------------
+  --transition-instant: 80ms ease;                              // Toggle, Checkbox — sofortiges Feedback
+  --transition-fast:    150ms ease;                             // Hover, Focus, Farb-Wechsel
+  --transition-normal:  250ms ease;                             // Layout, Cards, Nav
+  --transition-slow:    400ms ease;                             // Modals, Overlays, große Flächen
+  --transition-enter:   350ms cubic-bezier(0.16, 1, 0.3, 1);   // Elemente erscheinen — dezeleriert
+  --transition-exit:    200ms cubic-bezier(0.4, 0, 1, 1);      // Elemente verschwinden — akzeleriert
+  --transition-spring:  500ms cubic-bezier(0.34, 1.56, 0.64, 1); // Bounce für FAB, Toast
+
+  // Easing-Kurven (für Framer Motion / CSS-Keyframes)
+  --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in:     cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  // ---------------------------------------------------------------------------
+  // BUTTON — Theme-abhängige Hover-Textfarbe (verhindert Flackern im Dark Mode)
+  // Light: Gold-Fill kommt hoch → dunkler Text lesbar auf Gold UND auf Cream
+  // Dark:  Cream-Text bleibt durch → kein Wechsel, kein Flackern auf dunklem BG
+  // ---------------------------------------------------------------------------
+  --btn-primary-hover-text: #1A1410;  // Light Mode: dunkler Text auf Gold-Fill
+  --btn-primary-text-shadow: none;    // Light Mode: kein Shadow nötig
+
+  // ---------------------------------------------------------------------------
+  // LAYOUT — Navigation System
+  // ---------------------------------------------------------------------------
+  --rail-width:           56px;   // Icon Rail collapsed
+  --rail-width-expanded:  220px;  // Hover / Pinned
+  --contextbar-height:    52px;   // Floating Context Bar
+  --fab-size:             48px;   // Quick-Add FAB
+  --content-max-width:    1280px;
+  --card-gap:             16px;
+
+  // ---------------------------------------------------------------------------
+  // CARD — Titelleisten-Variante
+  // Kontrastheader oben mit Akzentstreifen (::before) + Trennlinie
+  // ---------------------------------------------------------------------------
+  --cs-card-header-bg:       var(--cs-surface-2);
+  --cs-card-header-border:   var(--cs-border-neutral);
+  --cs-card-header-accent:   var(--cs-gold);         // Linker Akzentstreifen
+
+  // ---------------------------------------------------------------------------
+  // SKELETON LOADER — Shimmer Platzhalter
+  // Leicht heller Shine damit der Sweep-Effekt sichtbar ist
+  // ---------------------------------------------------------------------------
+  --skeleton-base:   var(--cs-surface-2);
+  --skeleton-shine:  var(--cs-surface-3);
+  --skeleton-radius: var(--radius-md);
+
+  // ---------------------------------------------------------------------------
+  // PROGRESS BAR — Ladebalken & Zielfortschritt
+  // ---------------------------------------------------------------------------
+  --progress-track:           var(--cs-surface-3);
+  --progress-fill-default:    var(--cs-gold);
+  --progress-fill-positive:   var(--cs-positive);
+  --progress-fill-negative:   var(--cs-negative);
+  --progress-fill-warning:    var(--cs-warning);
+  --progress-fill-info:       var(--cs-info);
+  --progress-radius:          var(--radius-full);
+
+  // ---------------------------------------------------------------------------
+  // DIVIDER / TRENNLINIEN
+  // drei Stärken: subtle < neutral < gold
+  // ---------------------------------------------------------------------------
+  --divider-subtle:   var(--cs-border-subtle);
+  --divider-neutral:  var(--cs-border-neutral);
+  --divider-gold:     var(--cs-gold-muted);
+
+  // ---------------------------------------------------------------------------
+  // INPUT / FORM FIELDS
+  // ---------------------------------------------------------------------------
+  --input-bg:              var(--cs-surface);
+  --input-border:          var(--cs-border-neutral);
+  --input-border-focus:    var(--cs-accent);
+  --input-border-error:    var(--cs-negative);
+  --input-border-success:  var(--cs-positive);
+  --input-text:            var(--cs-text);
+  --input-placeholder:     var(--cs-text-3);
+  --input-focus-ring:      var(--cs-gold-muted);
+
+  // ---------------------------------------------------------------------------
+  // TOGGLE / SWITCH
+  // ---------------------------------------------------------------------------
+  --toggle-track-off:   var(--cs-surface-3);
+  --toggle-track-on:    var(--cs-gold);
+  --toggle-thumb:       #FFFFFF;
+  --toggle-thumb-dark:  #F0ECE8;
+
+  // ---------------------------------------------------------------------------
+  // TOOLBAR / PAGE HEADER
+  // ---------------------------------------------------------------------------
+  --toolbar-height:    64px;
+  --toolbar-bg:        var(--cs-bg);
+  --toolbar-border:    var(--cs-border-neutral);
+
+  // ---------------------------------------------------------------------------
+  // ASIDE / SIDE PANEL
+  // ---------------------------------------------------------------------------
+  --aside-width:       320px;
+  --aside-width-sm:    260px;
+  --aside-bg:          var(--cs-surface);
+
+  // ---------------------------------------------------------------------------
+  // BOTTOM NAV (Mobile Floating Navigation)
+  // ---------------------------------------------------------------------------
+  --bottom-nav-height: 72px;
+  --bottom-nav-bg:     var(--cs-glass-bg);
+  --bottom-nav-border: var(--cs-glass-border);
+
+  // ---------------------------------------------------------------------------
+  // DROPDOWN / POPOVER — Verankerte Floating-Panels
+  // ---------------------------------------------------------------------------
+  --dropdown-bg:       var(--cs-surface);
+  --dropdown-border:   var(--cs-border-neutral);
+  --dropdown-shadow:   var(--shadow-elevated);
+  --dropdown-radius:   var(--radius-lg);
+  --dropdown-item-hover: var(--cs-surface-2);
+
+  // ---------------------------------------------------------------------------
+  // MODAL / DIALOG
+  // ---------------------------------------------------------------------------
+  --modal-overlay:     rgba(0, 0, 0, 0.55);
+  --modal-bg:          var(--cs-surface);
+  --modal-radius:      var(--radius-2xl);
+  --modal-max-sm:      400px;
+  --modal-max-md:      560px;
+  --modal-max-lg:      720px;
+
+  // ---------------------------------------------------------------------------
+  // TOAST — Transiente Meldungen
+  // ---------------------------------------------------------------------------
+  --toast-width:       360px;
+  --toast-bg:          var(--cs-surface);
+  --toast-shadow:      var(--shadow-elevated);
+  --toast-radius:      var(--radius-lg);
+
+  // ---------------------------------------------------------------------------
+  // TOOLTIP
+  // Immer dunkel — auch im Light Mode — für maximalen Kontrast auf jeder Surface.
+  // Nutzt var(--cs-anthracite) als feste dunkle Base (nicht theme-abhängig).
+  // ---------------------------------------------------------------------------
+  --tooltip-bg:      var(--cs-anthracite);   // #2E2B28 — warm dunkel, immer gleich
+  --tooltip-text:    #F0ECE8;                // Hellcreme — immer lesbar auf dunklem BG
+  --tooltip-radius:  var(--radius-sm);
+  --tooltip-shadow:  var(--shadow-elevated);
+  --tooltip-pad-x:   10px;
+  --tooltip-pad-y:   5px;
+  --tooltip-font:    var(--font-body);
+  --tooltip-size:    var(--text-xs);
+  --tooltip-weight:  var(--fw-medium);
+  --tooltip-gap:     8px;  // Abstand zwischen Tooltip und Trigger
+
+  // ---------------------------------------------------------------------------
+  // CHECKBOX / RADIO
+  // ---------------------------------------------------------------------------
+  --check-size:        18px;
+  --check-border:      var(--cs-border-neutral);
+  --check-bg:          var(--cs-surface);
+  --check-active-bg:   var(--cs-gold);
+  --check-active-border: var(--cs-gold);
+
+  // ---------------------------------------------------------------------------
+  // CHIP / TAG — schließbare Filter-Elemente
+  // ---------------------------------------------------------------------------
+  --chip-bg:      var(--cs-surface-2);
+  --chip-border:  var(--cs-border-neutral);
+  --chip-radius:  var(--radius-full);
+
+  // ---------------------------------------------------------------------------
+  // STAT / METRIC — Dashboard-Zahlen
+  // ---------------------------------------------------------------------------
+  --stat-trend-up:   var(--cs-positive);
+  --stat-trend-down: var(--cs-negative);
+
+  // ---------------------------------------------------------------------------
+  // GRID SYSTEM — Fluid, breathable, futuristisch
+  //
+  // Prinzip: auto-fill + minmax statt feste Breakpoints.
+  // Karten entscheiden selbst wann sie umbrechen — kein erzwungenes Layout.
+  // "Airy by default" — Freiraum ist das Default, Dichte ist opt-in.
+  // ---------------------------------------------------------------------------
+  --grid-gap:         var(--space-4);   // 16px — Standard Card-Gap
+  --grid-gap-lg:      var(--space-5);   // 24px — Großzügige Sektion
+  --grid-col-kpi:     200px;            // min-width KPI-Karten (Stat-Row)
+  --grid-col-card:    280px;            // min-width Standard-Karten
+  --grid-col-wide:    360px;            // min-width breite Karten (Charts)
+
+  // Page Breathing Room — Atemraum-Tokens für Page-Level-Layout
+  --page-pad-x:       var(--space-5);   // 24px seitliches Page-Padding
+  --page-pad-y:       var(--space-5);   // 24px Top-Padding unter ContextBar
+  --section-gap:      var(--space-8);   // 48px zwischen Page-Sektionen
+  --section-gap-inner: var(--space-5);  // 24px innerhalb einer Sektion
+
+  // ---------------------------------------------------------------------------
+  // ANIMATION TIMINGS — Benannte Werte nach Einsatzzweck
+  //
+  // Hierarchie: hero (langsam, dramatisch) → section → card → micro (schnell)
+  // Spring: für Elemente die "rein popen" sollen (Avatare, Badges, FAB)
+  // Stagger: Verzögerungs-Increment — delay = index × --anim-stagger
+  // ---------------------------------------------------------------------------
+  --anim-hero:     700ms cubic-bezier(0.16, 1, 0.3, 1);     // Hero, Section-Opener
+  --anim-section:  450ms cubic-bezier(0.16, 1, 0.3, 1);     // Sektions-Karten, CTAs
+  --anim-card:     320ms cubic-bezier(0.16, 1, 0.3, 1);     // Einzelne Cards, Items
+  --anim-micro:    180ms ease;                               // Micro-Interactions
+  --anim-spring:   600ms cubic-bezier(0.34, 1.56, 0.64, 1); // Pop, Bounce (Avatar, FAB)
+  --anim-stagger:   60ms;   // Increment: delay = index × 60ms (max. 8 children sinnvoll)
+}
+
+// ---------------------------------------------------------------------------
+// SYSTEM PREFERENCE FALLBACK (greift bevor JS das theme-class setzt)
+// ---------------------------------------------------------------------------
+@media (prefers-color-scheme: dark) {
+  :root:not(.theme-light) {
+    color-scheme: dark;
+    --btn-primary-hover-text: var(--cs-text);
+    --btn-primary-text-shadow: 0 0 12px rgba(201, 168, 76, 0.3), 0 1px 3px rgba(0, 0, 0, 0.6);
+    --cs-bg:             #080808;
+    --cs-surface:        #111111;
+    --cs-surface-2:      #181818;
+    --cs-surface-3:      #202020;
+    --cs-surface-active: #282828;   // :active-Press (etwas heller als surface-3 im Dark Mode)
+    --cs-neutral:        #6B6059;
+    --cs-border:         #C9A84C40; // Mehr Opacity als Light — dunkel braucht mehr Punch
+    --cs-border-neutral: #FFFFFF14;
+    --cs-border-subtle:  #FFFFFF0A;
+    --cs-text:           #F0ECE8;
+    --cs-text-2:         #BDB5AB;
+    --cs-text-3:         #6B6059;
+    --cs-text-inverse:   #1A1410;
+    --cs-gold-hover:     #D4B864;
+    --cs-glass-bg:        rgba(17, 17, 17, 0.78);
+    --cs-glass-border:    rgba(201, 168, 76, 0.22);
+    --cs-glass-saturate:  180%;
+    --shadow-sm:         0 1px 2px rgba(0, 0, 0, 0.4);
+    --shadow-card:       0 2px 8px rgba(0, 0, 0, 0.5), 0 0 0 1px var(--cs-border);
+    --shadow-elevated:   0 8px 32px rgba(0, 0, 0, 0.65), 0 0 0 1px var(--cs-border);
+    --shadow-modal:      0 20px 60px rgba(0, 0, 0, 0.8);
+    --shadow-gold:       0 0 0 1px rgba(201, 168, 76, 0.5), 0 0 32px rgba(201, 168, 76, 0.25);
+    --shadow-rail:       2px 0 24px rgba(0, 0, 0, 0.3);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// DARK MODE — explizit via .theme-dark auf <html> (überschreibt System)
+// ---------------------------------------------------------------------------
+.theme-dark {
+  color-scheme: dark;
+  --btn-primary-hover-text: var(--cs-text);
+  --btn-primary-text-shadow: 0 0 12px rgba(201, 168, 76, 0.3), 0 1px 3px rgba(0, 0, 0, 0.6);
+  --cs-bg:             #080808;
+  --cs-surface:        #111111;
+  --cs-surface-2:      #181818;
+  --cs-surface-3:      #202020;
+  --cs-neutral:        #6B6059;
+  --cs-border:         #C9A84C40;
+  --cs-border-neutral: #FFFFFF14;
+  --cs-border-subtle:  #FFFFFF0A;
+  --cs-text:           #F0ECE8;
+  --cs-text-2:         #BDB5AB;
+  --cs-text-3:         #6B6059;
+  --cs-text-inverse:   #1A1410;
+  --cs-gold-hover:     #D4B864;
+  --cs-glass-bg:       rgba(17, 17, 17, 0.85);
+  --cs-glass-border:   rgba(201, 168, 76, 0.22);
+  --shadow-sm:         0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-card:       0 2px 8px rgba(0, 0, 0, 0.5), 0 0 0 1px var(--cs-border);
+  --shadow-elevated:   0 8px 32px rgba(0, 0, 0, 0.65), 0 0 0 1px var(--cs-border);
+  --shadow-modal:      0 20px 60px rgba(0, 0, 0, 0.8);
+  --shadow-gold:       0 0 0 1px rgba(201, 168, 76, 0.5), 0 0 32px rgba(201, 168, 76, 0.25);
+  --shadow-rail:       2px 0 24px rgba(0, 0, 0, 0.3);
+}
+
+// ---------------------------------------------------------------------------
+// LIGHT MODE — explizit via .theme-light (falls User von Dark zurück zu Light)
+// Nicht nötig wenn :root schon Light ist, aber für explizites Setzen
+// ---------------------------------------------------------------------------
+.theme-light {
+  color-scheme: light;
+  // Alle :root Werte gelten — keine Overrides nötig
+  // Diese Klasse verhindert dass @media (prefers-dark) greift
+}
+
+// =============================================================================
+// ACCENT-THEMES — Überschreiben NUR die Akzentfarbe (--cs-gold + Derivate).
+// Kombinierbar mit Light/Dark: class="theme-dark theme-ocean"
+//
+// REGEL: Jedes Theme überschreibt nur die GOLD-Familie + abhängige Tokens.
+//        Background, Text, Surface bleiben unverändert (Light/Dark entscheidet das).
+//
+// NEUES THEME ERSTELLEN:
+//   1. .theme-[name] { --cs-gold: #xxx; ... (Vorlage unten kopieren) }
+//   2. In appStore.ts AppTheme-Typ erweitern
+//   3. Theme-Switcher in Settings-Seite hinzufügen
+// =============================================================================
+
+// Theme: Ocean — Blauer Akzent
+.theme-ocean {
+  --cs-gold:               #4B9EFF;
+  --cs-gold-hover:         #2D7DE8;
+  --cs-gold-muted:         #4B9EFF60;
+  --cs-gold-dim:           #4B9EFF1A;
+  --cs-border:             #4B9EFF40;
+  --cs-glass-border:       rgba(75, 158, 255, 0.18);
+  --shadow-gold:           0 0 0 1px rgba(75, 158, 255, 0.5), 0 0 24px rgba(75, 158, 255, 0.2);
+  --cs-card-header-accent: #4B9EFF;
+  --progress-fill-default: #4B9EFF;
+  --toggle-track-on:       #4B9EFF;
+}
+
+// Theme: Forest — Grüner Akzent
+.theme-forest {
+  --cs-gold:               #34C772;
+  --cs-gold-hover:         #22A85A;
+  --cs-gold-muted:         #34C77260;
+  --cs-gold-dim:           #34C7721A;
+  --cs-border:             #34C77240;
+  --cs-glass-border:       rgba(52, 199, 114, 0.18);
+  --shadow-gold:           0 0 0 1px rgba(52, 199, 114, 0.5), 0 0 24px rgba(52, 199, 114, 0.2);
+  --cs-card-header-accent: #34C772;
+  --progress-fill-default: #34C772;
+  --toggle-track-on:       #34C772;
+}
+
+// Theme: Rose — Roter Akzent (z.B. für Alerts-heavy UIs)
+.theme-rose {
+  --cs-gold:               #F97070;
+  --cs-gold-hover:         #E05555;
+  --cs-gold-muted:         #F9707060;
+  --cs-gold-dim:           #F970701A;
+  --cs-border:             #F9707040;
+  --cs-glass-border:       rgba(249, 112, 112, 0.18);
+  --shadow-gold:           0 0 0 1px rgba(249, 112, 112, 0.5), 0 0 24px rgba(249, 112, 112, 0.2);
+  --cs-card-header-accent: #F97070;
+  --progress-fill-default: #F97070;
+  --toggle-track-on:       #F97070;
+}
+
+// Theme: Midnight — Dunkelblaues Background (Dark-Variante)
+// Kombinieren mit .theme-ocean für Midnight + Blau
+.theme-midnight {
+  color-scheme: dark;
+  --cs-bg:             #060A14;
+  --cs-surface:        #0D1525;
+  --cs-surface-2:      #121E35;
+  --cs-surface-3:      #192640;
+  --cs-text:           #E8EDF5;
+  --cs-text-2:         #9BADC8;
+  --cs-text-3:         #5470A0;
+  --cs-border-neutral: #FFFFFF12;
+  --cs-border-subtle:  #FFFFFF08;
+  --cs-glass-bg:       rgba(13, 21, 37, 0.85);
+  --shadow-card:       0 2px 8px rgba(0, 0, 0, 0.6), 0 0 0 1px var(--cs-border);
+  --shadow-elevated:   0 8px 32px rgba(0, 0, 0, 0.8), 0 0 0 1px var(--cs-border);
+}

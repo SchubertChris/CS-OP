@@ -1,0 +1,255 @@
+// =============================================================================
+// CANDLESCOPE FINANZBOARD — ANIMATIONEN
+// Keyframes + Animation-Utility-Klassen
+//
+// Hierarchie der Entrance-Animationen:
+//   heroEnter    → Große Bühnenelemente, Section-Opener (700ms, blur+scale)
+//   blurIn       → Premium-Reveal, große Zahlen (450ms, futuristisches Blur)
+//   enterUp      → Cards, CTAs, von unten (320ms, dezent)
+//   enterLeft/Right → Seiteneintritte (450ms)
+//   popIn        → Avatare, Badges, Dots — Spring-Bounce (600ms)
+//   fadeInUp     → Standard UI-Elemente (250ms, subtil)
+//
+// Stagger: .stagger-1 bis .stagger-8 für gestaffelte Listen
+// Reduced Motion: _interactions.scss setzt alle durations auf 0.01ms
+// =============================================================================
+
+// ---------------------------------------------------------------------------
+// BASIS KEYFRAMES — vorhanden, UI-Shell
+// ---------------------------------------------------------------------------
+
+// Shimmer (Skeleton Loader)
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+// Fade-In
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+// Fade-In + nach oben (subtil, Standard-UI)
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+// Fade-In + nach unten
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+// Scale-In (Command Palette, Modals)
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+// Slide-In from Right (Notification Drawer, Aside)
+@keyframes slideInRight {
+  from { transform: translateX(100%); opacity: 0; }
+  to   { transform: translateX(0); opacity: 1; }
+}
+
+// Slide-In from Bottom (Mobile Bottom Sheet)
+@keyframes slideInBottom {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+
+// Pulse (Bill-Dot, Dringlichkeits-Indikator)
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.5; transform: scale(0.85); }
+}
+
+// Spin (Loading Spinner)
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+// FAB Stack (Stagger für Quick-Add Actions)
+@keyframes fabItemIn {
+  from { opacity: 0; transform: translateY(8px) scale(0.95); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+// Progress Bar Fill (Sparziele)
+@keyframes progressFill {
+  from { width: 0; }
+  to   { width: var(--progress, 0%); }
+}
+
+// Gold Glow Pulse (Fokus-Highlight)
+@keyframes goldGlow {
+  0%, 100% { box-shadow: 0 0 0 0 var(--cs-gold-dim); }
+  50%       { box-shadow: 0 0 0 6px var(--cs-gold-dim); }
+}
+
+// ---------------------------------------------------------------------------
+// ENTRANCE KEYFRAMES — Große Elemente, Heroes, CTAs, Sections
+// ---------------------------------------------------------------------------
+
+// Hero Enter — dramatisches Einblenden großer Bühnenelemente
+// Kombination aus Scale + Translate + Blur für "Kino-Gefühl"
+// Einsatz: Hero-Cards, Section-Opener, Dashboard-Header
+@keyframes heroEnter {
+  from {
+    opacity: 0;
+    transform: translateY(28px) scale(0.96);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+// Blur In — futuristisches Premium-Reveal
+// Einsatz: große Zahlen (Nettovermögen), Chart-Reveal, Highlight-Momente
+@keyframes blurIn {
+  from {
+    opacity: 0;
+    filter: blur(10px);
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: scale(1);
+  }
+}
+
+// Enter from Bottom — Cards, CTAs (größerer Offset als fadeInUp)
+// Einsatz: Card-Grids, CTA-Buttons, Form-Abschnitte
+@keyframes enterUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+// Enter from Left — Elemente die von links ins Bild gleiten
+// Einsatz: Sidebar-Content, linke Spalte in Feature-Grid
+@keyframes enterLeft {
+  from { opacity: 0; transform: translateX(-32px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+// Enter from Right — Elemente die von rechts ins Bild gleiten
+// Einsatz: rechte Spalte, Aside-Content, Notification-Panel
+@keyframes enterRight {
+  from { opacity: 0; transform: translateX(32px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+// Center Reveal — Outside-in: erst unsichtbar, dann zoom-out ins Bild
+// Einsatz: Modals, Overlays, Central CTAs ("Jetzt starten")
+@keyframes centerReveal {
+  from {
+    opacity: 0;
+    transform: scale(1.06);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+}
+
+// Pop In — Spring-Effekt für kleine runde Elemente
+// Einsatz: Avatare, Badges, Status-Dots, Online-Indikator, FAB
+@keyframes popIn {
+  0%   { opacity: 0; transform: scale(0.4); }
+  55%  { opacity: 1; transform: scale(1.12); }
+  75%  { transform: scale(0.96); }
+  90%  { transform: scale(1.04); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+// Reveal Clip — Maske von links nach rechts (Chart-Linien, Daten-Reveals)
+// Einsatz: Zahlen-Reveal, Progress-Bar erscheinen, Chart-Einblend
+@keyframes revealClip {
+  from { clip-path: inset(0 100% 0 0 round var(--radius-sm)); }
+  to   { clip-path: inset(0 0% 0 0 round var(--radius-sm)); }
+}
+
+// Count Up — Container für animierte Zahlen (Wert via JS, Container via CSS)
+// Einsatz: KPI-Zahlen, Nettovermögen, Stat-Cards
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+// Stagger Fade — für Listen-Items (per index gestaffelt)
+// Einsatz: Transaktionsliste, Konto-Liste, Ziele-Liste
+@keyframes staggerFade {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+// ---------------------------------------------------------------------------
+// ANIMATION-UTILITY-KLASSEN — direkt verwendbar
+// ---------------------------------------------------------------------------
+
+// Basis
+.animFadeIn    { animation: fadeIn    var(--transition-normal) ease both; }
+.animFadeInUp  { animation: fadeInUp  var(--transition-normal) ease both; }
+.animScaleIn   { animation: scaleIn   var(--transition-fast) ease both; }
+.animSpin      { animation: spin      0.8s linear infinite; }
+.animPulse     { animation: pulse     1.5s ease-in-out infinite; }
+
+// Skeleton Shimmer
+.animShimmer {
+  background: linear-gradient(
+    90deg,
+    var(--cs-surface-2) 25%,
+    var(--cs-surface-3) 50%,
+    var(--cs-surface-2) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite linear;
+}
+
+// Entrances — nutzen --anim-* Tokens aus _tokens.scss
+.animHeroEnter    { animation: heroEnter    var(--anim-hero)    both; }
+.animBlurIn       { animation: blurIn       var(--anim-section) both; }
+.animEnterUp      { animation: enterUp      var(--anim-card)    var(--ease-out) both; }
+.animEnterLeft    { animation: enterLeft    var(--anim-section) var(--ease-out) both; }
+.animEnterRight   { animation: enterRight   var(--anim-section) var(--ease-out) both; }
+.animCenterReveal { animation: centerReveal var(--anim-section) var(--ease-out) both; }
+.animPopIn        { animation: popIn        var(--anim-spring)  both; }
+.animRevealClip   { animation: revealClip   var(--anim-section) var(--ease-out) both; }
+.animCountUp      { animation: countUp      var(--anim-card)    var(--ease-out) both; }
+.animStaggerFade  { animation: staggerFade  var(--anim-card)    var(--ease-out) both; }
+
+// ---------------------------------------------------------------------------
+// STAGGER DELAYS — gestaffelte Listen (Klasse oder data-Attribut)
+//
+// Nutzung (CSS-Klasse):
+//   <div class="animEnterUp stagger-1">...</div>
+//   <div class="animEnterUp stagger-2">...</div>
+//
+// Nutzung (data-Attribut, React-nativ via index):
+//   <div className="animStaggerFade" data-stagger={index}>
+// ---------------------------------------------------------------------------
+.stagger-0  { animation-delay: 0ms; }
+.stagger-1  { animation-delay: calc(1 * var(--anim-stagger)); }
+.stagger-2  { animation-delay: calc(2 * var(--anim-stagger)); }
+.stagger-3  { animation-delay: calc(3 * var(--anim-stagger)); }
+.stagger-4  { animation-delay: calc(4 * var(--anim-stagger)); }
+.stagger-5  { animation-delay: calc(5 * var(--anim-stagger)); }
+.stagger-6  { animation-delay: calc(6 * var(--anim-stagger)); }
+.stagger-7  { animation-delay: calc(7 * var(--anim-stagger)); }
+.stagger-8  { animation-delay: calc(8 * var(--anim-stagger)); }
+
+// Data-Attribut Stagger — für React-Index-Maps
+@for $i from 0 through 12 {
+  [data-stagger="#{$i}"] {
+    animation-delay: calc(#{$i} * var(--anim-stagger));
+  }
+}

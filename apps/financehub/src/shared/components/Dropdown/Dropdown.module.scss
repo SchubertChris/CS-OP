@@ -1,0 +1,151 @@
+// =============================================================================
+// DROPDOWN — Action-Menü, verankert am Trigger-Element
+// =============================================================================
+
+.wrapper {
+  position: relative;
+  display: inline-flex;
+}
+
+.trigger {
+  display: inline-flex;
+  cursor: pointer;
+}
+
+// ---------------------------------------------------------------------------
+// MENU — das schwebende Panel
+// ---------------------------------------------------------------------------
+.menu {
+  position: absolute;
+  min-width: 180px;
+  max-width: 280px;
+  background: var(--dropdown-bg);
+  border: 1px solid var(--dropdown-border);
+  border-radius: var(--dropdown-radius);
+  box-shadow: var(--dropdown-shadow);
+  z-index: var(--z-dropdown);
+  overflow: hidden;
+  animation: scaleIn var(--transition-fast) var(--ease-out) both;
+  transform-origin: top right;
+  padding: var(--space-1) 0;
+}
+
+// Placement
+.bottom_end  { top: calc(100% + 6px); right: 0; }
+.bottom_start { top: calc(100% + 6px); left: 0; transform-origin: top left; }
+.top_end     { bottom: calc(100% + 6px); right: 0; transform-origin: bottom right; }
+.top_start   { bottom: calc(100% + 6px); left: 0; transform-origin: bottom left; }
+
+// ---------------------------------------------------------------------------
+// MENU ITEMS
+// ---------------------------------------------------------------------------
+.item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  border: none;
+  background: none;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--cs-text);
+  cursor: pointer;
+  text-align: left;
+  overflow: hidden;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+
+  // ::before — Gold-Akzent-Linie links (skaliert von center rein)
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 20%;
+    bottom: 20%;
+    width: 2px;
+    background: var(--cs-gold);
+    border-radius: var(--radius-full);
+    transform: scaleY(0);
+    transform-origin: center;
+    transition: transform var(--transition-fast) var(--ease-out);
+  }
+
+  // ::after — subtiler Licht-Sweep von links (wie Shimmer)
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      var(--cs-gold-dim) 0%,
+      transparent 60%
+    );
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+    pointer-events: none;
+  }
+
+  &:hover:not(:disabled) {
+    background: var(--dropdown-item-hover);
+    color: var(--cs-text);
+    padding-left: calc(var(--space-3) + 4px); // leichter Nudge nach rechts
+
+    &::before { transform: scaleY(1); }
+    &::after  { opacity: 1; }
+  }
+
+  &:active:not(:disabled) {
+    background: var(--cs-surface-active);
+    padding-left: var(--space-3); // zurück beim Press
+  }
+
+  &:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  // Padding-Transition für den Nudge-Effekt
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast),
+    padding-left var(--transition-fast) var(--ease-out);
+}
+
+.danger {
+  color: var(--cs-negative);
+
+  &::before {
+    background: var(--cs-negative);
+  }
+
+  &::after {
+    background: linear-gradient(
+      90deg,
+      var(--cs-negative-bg) 0%,
+      transparent 60%
+    );
+  }
+
+  &:hover:not(:disabled) {
+    background: var(--cs-negative-bg);
+    color: var(--cs-negative);
+  }
+}
+
+.itemIcon {
+  display: flex;
+  align-items: center;
+  color: var(--cs-text-3);
+  flex-shrink: 0;
+  transition: color var(--transition-fast), transform var(--transition-fast);
+
+  .item:hover & { transform: scale(1.1); }
+  .danger & { color: var(--cs-negative); }
+}
+
+// ---------------------------------------------------------------------------
+// SEPARATOR
+// ---------------------------------------------------------------------------
+.separator {
+  height: 1px;
+  background: var(--cs-border-neutral);
+  margin: var(--space-1) 0;
+}

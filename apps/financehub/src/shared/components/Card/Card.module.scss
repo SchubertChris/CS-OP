@@ -1,0 +1,140 @@
+// =============================================================================
+// CARD — Basis + Varianten (default / titled / elevated / glass / gold)
+// =============================================================================
+
+.card {
+  background: var(--cs-surface);
+  border: 1px solid var(--cs-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  transition: box-shadow var(--transition-fast), transform var(--transition-fast);
+}
+
+.clickable {
+  cursor: pointer;
+
+  &:hover {
+    box-shadow: var(--shadow-elevated);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+    background: var(--cs-surface-active);
+    box-shadow: var(--shadow-card);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// HEADER — Titelleiste mit linkem Goldstreifen (::before)
+// ---------------------------------------------------------------------------
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-4) var(--space-3) calc(var(--space-4) + 6px);
+  background: var(--cs-card-header-bg);
+  border-bottom: 1px solid var(--cs-card-header-border);
+  position: relative;
+
+  // Goldstreifen links — after-effect als visueller Anker
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--cs-card-header-accent);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  }
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.headerIcon {
+  display: flex;
+  align-items: center;
+  color: var(--cs-gold);
+}
+
+.headerTitle {
+  font-size: var(--text-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--cs-text);
+  letter-spacing: -0.01em;
+}
+
+.headerAction {
+  color: var(--cs-text-3);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+// ---------------------------------------------------------------------------
+// BODY
+// ---------------------------------------------------------------------------
+.body {
+  padding: var(--space-5);
+}
+
+// ---------------------------------------------------------------------------
+// FOOTER — schwächerer Hintergrund + Trennlinie oben
+// ---------------------------------------------------------------------------
+.footer {
+  padding: var(--space-3) var(--space-4);
+  border-top: 1px solid var(--cs-border-subtle);
+  background: var(--cs-surface-2);
+}
+
+// ---------------------------------------------------------------------------
+// VARIANTE: elevated — tieferer Schatten, dunkleres Surface
+// ---------------------------------------------------------------------------
+.elevated {
+  background: var(--cs-surface-2);
+  box-shadow: var(--shadow-elevated);
+}
+
+// ---------------------------------------------------------------------------
+// VARIANTE: glass — Apple-Vibrancy Blur
+// ---------------------------------------------------------------------------
+.glass {
+  @include glass;
+
+  .header {
+    background: rgba(255, 255, 255, 0.06);
+    border-bottom-color: var(--cs-glass-border);
+  }
+
+  .footer {
+    background: rgba(255, 255, 255, 0.04);
+    border-top-color: var(--cs-glass-border);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// VARIANTE: gold — Gold-Glow-Rahmen für Featured Cards
+// vor- und nach-Effekt: subtiler Gold-Schein unter der Karte (::after)
+// ---------------------------------------------------------------------------
+.gold {
+  border-color: var(--cs-gold-muted);
+  box-shadow: var(--shadow-gold);
+  position: relative;
+
+  // Subtiler Gold-Glow unter der Karte
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: 0 8px 32px rgba(201, 168, 76, 0.18);
+    pointer-events: none;
+    z-index: -1;
+  }
+}

@@ -1,0 +1,35 @@
+// AppShell — Haupt-Layout-Container
+// Rail (links, fixiert) + ContextBar (oben, fixiert) + Scrollbarer Content
+
+.shell {
+  position: relative;
+  min-height: 100dvh;
+  background: var(--cs-bg);
+  font-family: var(--font-body);
+}
+
+// Content-Bereich verschiebt sich wenn Rail fixiert (pinned) ist
+.main {
+  margin-left: var(--rail-width);
+  padding-top: calc(var(--contextbar-height) + 28px);
+  padding-bottom: var(--space-10);
+  transition: margin-left var(--transition-normal);
+  min-height: 100dvh;
+
+  &.expanded {
+    margin-left: var(--rail-width-expanded);
+  }
+
+  @media (max-width: 767px) {
+    margin-left: 0;
+    padding-top: calc(var(--contextbar-height) + 20px);
+    padding-bottom: calc(var(--bottom-nav-height) + var(--space-5));
+  }
+}
+
+// Innerer Content-Container — zentriert, max-width
+.inner {
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  padding: 0 var(--space-5);
+}

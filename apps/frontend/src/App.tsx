@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import RootLayout from './components/layout/RootLayout'
 import AdminGuard from './admin/AdminGuard'
+import { ADMIN } from './admin/config'
 
 /* ── Lazy imports ──────────────────────────────────── */
 const AdminLayout = lazy(() => import('./admin/AdminLayout'))
@@ -61,13 +62,13 @@ export default function App() {
       {/* ── 404 ────────────────────────────────────────── */}
       <Route path="*" element={<S><NotFoundPage /></S>} />
 
-      {/* ── Admin Login + Setup ────────────────────────── */}
-      <Route path="/admin/login" element={<S><AdminLogin /></S>} />
-      <Route path="/admin/setup" element={<S><AdminSetup /></S>} />
+      {/* ── Admin Login + Setup — geheimer Pfad aus VITE_ADMIN_SLUG ── */}
+      <Route path={`/${ADMIN}/login`} element={<S><AdminLogin /></S>} />
+      <Route path={`/${ADMIN}/setup`} element={<S><AdminSetup /></S>} />
 
       {/* ── Admin Panel ────────────────────────────────── */}
       <Route
-        path="/admin"
+        path={`/${ADMIN}`}
         element={
           <AdminGuard>
             <S><AdminLayout /></S>

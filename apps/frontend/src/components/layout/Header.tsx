@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react'
 import { NavLink, Link, useLocation } from 'react-router-dom'
 import {
   TrendingUp, Code2, User, MessageSquare,
-  Shield, ChevronRight, Mail,
+  ChevronRight, Mail, LogIn,
 } from 'lucide-react'
 import csLogo from '../../assets/images/CandleScopeLogo.png'
 import { useTheme } from '../../contexts/ThemeContext'
@@ -95,16 +95,18 @@ export default function Header() {
         </nav>
 
         <div className="flex items-center gap-3 shrink-0">
-          <Link to="/admin" aria-label="Admin Panel"
-            className="group flex items-center gap-1.5 text-[11px] tracking-[0.12em] uppercase text-[var(--cs-text-2)] hover:text-[#C9A84C] transition-colors duration-250">
-            <Shield size={13} strokeWidth={1.5} className="group-hover:scale-110 transition-transform shrink-0" />
-            Admin
-          </Link>
-          <div className="w-px h-4 bg-[#C9A84C]/15" />
           <button onClick={toggle} aria-label="Theme wechseln"
             className="w-8 h-8 flex items-center justify-center rounded-full border border-[#C9A84C]/20 text-[#C9A84C]/60 hover:text-[#C9A84C] hover:border-[#C9A84C]/40 transition-all duration-200 cursor-pointer text-sm">
             {theme === 'dark' ? '☀' : '☽'}
           </button>
+          <a
+            href="https://app.candlescope.de"
+            aria-label="Zur CandleScope App"
+            className="flex items-center gap-1.5 text-[11px] tracking-[0.12em] uppercase px-4 py-2 rounded-full border border-[#C9A84C]/40 text-[#C9A84C] hover:bg-[#C9A84C]/10 transition-all duration-200"
+          >
+            <LogIn size={12} strokeWidth={2} />
+            Zur App
+          </a>
           <button
             onClick={() => setDlOpen(true)}
             aria-label="FinanceBoard herunterladen"
@@ -175,12 +177,12 @@ export default function Header() {
 
           <div className="h-px bg-[#C9A84C]/20 my-1 mx-2 shrink-0" />
 
-          {/* Admin */}
-          <Link to="/admin" aria-label="Admin Panel"
-            className="flex items-center gap-3 px-2 h-10 rounded-xl text-[var(--cs-text-2)] hover:bg-[#C9A84C]/8 hover:text-[#C9A84C] transition-all duration-200 shrink-0 overflow-hidden">
-            <span className="shrink-0 ml-1"><Shield size={16} strokeWidth={1.5} /></span>
-            <span className="text-[11px] tracking-[0.08em] font-medium whitespace-nowrap">Admin</span>
-          </Link>
+          {/* App Login */}
+          <a href="https://app.candlescope.de" aria-label="Zur CandleScope App"
+            className="flex items-center gap-3 px-2 h-10 rounded-xl text-[#C9A84C] hover:bg-[#C9A84C]/8 transition-all duration-200 shrink-0 overflow-hidden">
+            <span className="shrink-0 ml-1"><LogIn size={16} strokeWidth={1.5} /></span>
+            <span className="text-[11px] tracking-[0.08em] font-medium whitespace-nowrap">Zur App</span>
+          </a>
 
           {/* Hire me */}
           <Link to="/contact" aria-label="Hire me – Kontakt aufnehmen"

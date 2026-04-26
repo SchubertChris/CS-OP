@@ -1,0 +1,84 @@
+// =============================================================================
+// AVATAR — Profilbild oder Initialen-Fallback
+// =============================================================================
+
+.avatar {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+// ---------------------------------------------------------------------------
+// FORMEN
+// ---------------------------------------------------------------------------
+.circle  { border-radius: var(--radius-full); overflow: hidden; }
+.rounded { border-radius: var(--radius-lg); overflow: hidden; }
+
+// ---------------------------------------------------------------------------
+// GRÖßEN
+// ---------------------------------------------------------------------------
+.xs { width: 24px; height: 24px; }
+.sm { width: 32px; height: 32px; }
+.md { width: 40px; height: 40px; }
+.lg { width: 48px; height: 48px; }
+.xl { width: 64px; height: 64px; }
+
+// ---------------------------------------------------------------------------
+// BILD
+// ---------------------------------------------------------------------------
+.img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+// ---------------------------------------------------------------------------
+// INITIALEN-FALLBACK
+// ---------------------------------------------------------------------------
+.initials {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-family: var(--font-body);
+  font-weight: var(--fw-semibold);
+  letter-spacing: -0.01em;
+
+  .xs & { font-size: 9px; }
+  .sm & { font-size: var(--text-xs); }
+  .md & { font-size: var(--text-sm); }
+  .lg & { font-size: var(--text-base); }
+  .xl & { font-size: var(--text-lg); }
+}
+
+// 6 Hintergrundfarben via Name-Hash (gleichmäßig verteilt)
+.color0 { background: var(--cs-gold-dim);    color: var(--cs-gold); }
+.color1 { background: var(--cs-positive-bg); color: var(--cs-positive); }
+.color2 { background: var(--cs-info-bg);     color: var(--cs-info); }
+.color3 { background: var(--cs-negative-bg); color: var(--cs-negative); }
+.color4 { background: var(--cs-warning-bg);  color: var(--cs-warning); }
+.color5 { background: var(--cs-surface-3);   color: var(--cs-text-2); }
+
+// ---------------------------------------------------------------------------
+// STATUS-DOT (online / offline / away)
+// ---------------------------------------------------------------------------
+.status {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 28%;
+  height: 28%;
+  min-width: 7px;
+  min-height: 7px;
+  border-radius: var(--radius-full);
+  border: 2px solid var(--cs-bg);
+
+  &.online  { background: var(--cs-positive); }
+  &.offline { background: var(--cs-neutral); }
+  &.away    { background: var(--cs-warning); }
+}

@@ -1,0 +1,64 @@
+// =============================================================================
+// VIEW TRANSITIONS — Diagonale Theme-Wipe Animation
+//
+// Nutzt die native View Transitions API (Chrome 111+, Safari 18+, Edge 111+)
+// Fallback: instant theme switch ohne Animation
+//
+// Verwendung in JS/TS:
+//   import { applyTheme } from '@/utils/theme'
+//   applyTheme('dark')           → mit diagonaler Wipe-Animation
+//   applyTheme('light')          → gleich, andere Richtung
+//
+// Wie es funktioniert:
+//   document.startViewTransition(() => { /* theme class ändern */ })
+//   Browser macht Screenshot (old) → Callback → Screenshot (new)
+//   ::view-transition-new(root) animiert mit clip-path Dreieck
+//   Effekt: wie ein Pinsel, der diagonal von oben-links nach unten-rechts malt
+// =============================================================================
+
+// ---------------------------------------------------------------------------
+// MAIN WIPE — neuer Content fährt als Dreieck von oben-links rein
+// ---------------------------------------------------------------------------
+@keyframes theme-wipe-diagonal {
+  from { clip-path: polygon(0% 0%, 0% 0%, 0% 0%); }
+  to   { clip-path: polygon(0% 0%, 200% 0%, 0% 200%); }
+}
+
+// Variante: von rechts-unten nach links-oben (für umgekehrten Switch)
+@keyframes theme-wipe-diagonal-reverse {
+  from { clip-path: polygon(100% 100%, 100% 100%, 100% 100%); }
+  to   { clip-path: polygon(100% 100%, -100% 100%, 100% -100%); }
+}
+
+// ---------------------------------------------------------------------------
+// VIEW TRANSITION PSEUDO-ELEMENTE
+// ---------------------------------------------------------------------------
+::view-transition-new(root) {
+  // Der neue Layer wischt diagonal über den alten
+  animation: theme-wipe-diagonal 520ms cubic-bezier(0.76, 0, 0.24, 1) both;
+}
+
+::view-transition-old(root) {
+  // Alter Layer bleibt stehen — der neue malt darüber
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+// Reduced Motion: kein Wipe — sofortiger Wechsel
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-new(root),
+  ::view-transition-old(root) {
+    animation: none;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// DATA-THEME-REVERSE — umgekehrte Richtung (z.B. Dark→Light)
+// Setze [data-theme-reverse] auf <html> kurz vor startViewTransition
+// App.tsx liest direction aus previous theme und setzt das Attribut
+// ---------------------------------------------------------------------------
+html[data-wipe-reverse] {
+  &::view-transition-new(root) {
+    animation-name: theme-wipe-diagonal-reverse;
+  }
+}

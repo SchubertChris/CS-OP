@@ -1,0 +1,82 @@
+// =============================================================================
+// SELECT — Native <select> mit Custom-Styling
+// =============================================================================
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  width: 100%;
+}
+
+.label {
+  font-size: var(--text-sm);
+  font-weight: var(--fw-medium);
+  color: var(--cs-text-2);
+  letter-spacing: -0.01em;
+  cursor: pointer;
+}
+
+// ---------------------------------------------------------------------------
+// FIELD — positioniert den Custom-Pfeil
+// ---------------------------------------------------------------------------
+.field {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  &.sm { --_h: 32px; --_px: var(--space-3); --_fs: var(--text-sm); }
+  &.md { --_h: 40px; --_px: var(--space-4); --_fs: var(--text-base); }
+  &.lg { --_h: 48px; --_px: var(--space-4); --_fs: var(--text-lg); }
+}
+
+.select {
+  width: 100%;
+  height: var(--_h, 40px);
+  padding: 0 calc(var(--_px, var(--space-4)) + 24px) 0 var(--_px, var(--space-4));
+  font-size: var(--_fs, var(--text-base));
+  font-family: var(--font-body);
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: var(--radius-md);
+  color: var(--input-text);
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+
+  &:focus {
+    border-color: var(--input-border-focus);
+    box-shadow: 0 0 0 3px var(--input-focus-ring);
+  }
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+}
+
+.error {
+  border-color: var(--input-border-error) !important;
+
+  &:focus { box-shadow: 0 0 0 3px var(--cs-negative-bg) !important; }
+}
+
+// Custom-Pfeil (überschreibt den Browser-Default)
+.arrow {
+  position: absolute;
+  right: var(--_px, var(--space-4));
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--cs-text-3);
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+}
+
+// ---------------------------------------------------------------------------
+// HINT
+// ---------------------------------------------------------------------------
+.hint { font-size: var(--text-xs); color: var(--cs-text-3); padding-left: 2px; }
+.hintError { color: var(--input-border-error); }

@@ -1,0 +1,22 @@
+// Logo-Container: Fixer warm-weißer Hintergrund damit das Logo
+// auf jedem Theme (light/dark) sauber wirkt — kein Weiß-Kasten-Problem.
+
+.mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  background: #F5F1EB;
+  box-shadow: 0 0 0 1px rgba(201, 168, 76, 0.3), 0 2px 12px rgba(0, 0, 0, 0.15);
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  user-select: none;
+  pointer-events: none;
+}

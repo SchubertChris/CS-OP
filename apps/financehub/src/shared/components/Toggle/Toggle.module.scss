@@ -1,0 +1,95 @@
+// =============================================================================
+// TOGGLE / SWITCH — iOS-Stil
+// =============================================================================
+
+// ---------------------------------------------------------------------------
+// WRAPPER (Label + Track nebeneinander)
+// ---------------------------------------------------------------------------
+.wrapper {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  cursor: pointer;
+  user-select: none;
+
+  &.disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// TRACK (der klickbare Hintergrund)
+// ---------------------------------------------------------------------------
+.track {
+  position: relative;
+  border: none;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  flex-shrink: 0;
+  padding: 0;
+  -webkit-appearance: none;
+  appearance: none;
+  transition: background-color var(--transition-fast);
+
+  &.sm { width: 36px; height: 20px; }
+  &.md { width: 44px; height: 24px; }
+
+  &.off { background: var(--toggle-track-off); }
+
+  // Varianten im ON-Zustand
+  &.default.on  { background: var(--toggle-track-on); }
+  &.positive.on { background: var(--cs-positive); }
+
+  &:focus-visible {
+    outline: 2px solid var(--cs-gold);
+    outline-offset: 2px;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// THUMB (der wandernde Kreis)
+// ---------------------------------------------------------------------------
+.thumb {
+  position: absolute;
+  top: 50%;
+  background: var(--toggle-thumb);
+  border-radius: var(--radius-full);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  pointer-events: none;
+  transform: translateY(-50%) translateX(0);
+  transition: transform var(--transition-fast);
+
+  .sm & { width: 16px; height: 16px; left: 2px; }
+  .md & { width: 20px; height: 20px; left: 2px; }
+}
+
+// Thumb-Position im ON-Zustand
+// sm: 36px track - 16px thumb - 2px*2 padding = 16px versatz
+// md: 44px track - 20px thumb - 2px*2 padding = 20px versatz
+.sm.on .thumb { transform: translateY(-50%) translateX(16px); }
+.md.on .thumb { transform: translateY(-50%) translateX(20px); }
+
+// ---------------------------------------------------------------------------
+// TEXT-LABEL
+// ---------------------------------------------------------------------------
+.meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-top: 2px; // optisch mit Track-Mitte ausrichten
+}
+
+.label {
+  font-size: var(--text-sm);
+  font-weight: var(--fw-medium);
+  color: var(--cs-text);
+  line-height: var(--lh-tight);
+}
+
+.description {
+  font-size: var(--text-xs);
+  color: var(--cs-text-3);
+  line-height: var(--lh-normal);
+}

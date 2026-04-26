@@ -1,0 +1,227 @@
+// =============================================================================
+// INPUT — Standard (label + border-box) + Flat (floating-placeholder, bottom-border)
+// =============================================================================
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  width: 100%;
+}
+
+// ---------------------------------------------------------------------------
+// LABEL (Standard-Variant)
+// ---------------------------------------------------------------------------
+.label {
+  font-size: var(--text-sm);
+  font-weight: var(--fw-medium);
+  color: var(--cs-text-2);
+  letter-spacing: -0.01em;
+  cursor: pointer;
+}
+
+// ---------------------------------------------------------------------------
+// FIELD ROW
+// ---------------------------------------------------------------------------
+.field {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  &.sm { --_h: 32px; --_px: var(--space-3); --_fs: var(--text-sm); }
+  &.md { --_h: 40px; --_px: var(--space-4); --_fs: var(--text-base); }
+  &.lg { --_h: 48px; --_px: var(--space-4); --_fs: var(--text-lg); }
+}
+
+// ---------------------------------------------------------------------------
+// INPUT ELEMENT (Standard)
+// ---------------------------------------------------------------------------
+.input {
+  width: 100%;
+  height: var(--_h, 40px);
+  padding: 0 var(--_px, var(--space-4));
+  font-size: var(--_fs, var(--text-base));
+  font-family: var(--font-body);
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: var(--radius-md);
+  color: var(--input-text);
+  outline: none;
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+
+  &::placeholder {
+    color: var(--input-placeholder);
+  }
+
+  &:hover:not(:disabled) {
+    border-color: var(--cs-border-neutral);
+    filter: brightness(0.97);
+  }
+
+  &:focus {
+    border-color: var(--input-border-focus);
+    box-shadow: 0 0 0 4px var(--input-focus-ring);
+  }
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  &.withLeft  { padding-left:  calc(var(--_px, var(--space-4)) + 24px); }
+  &.withRight { padding-right: calc(var(--_px, var(--space-4)) + 28px); }
+}
+
+.inputError {
+  border-color: var(--input-border-error) !important;
+
+  &:focus {
+    box-shadow: 0 0 0 3px var(--cs-negative-bg) !important;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// FLAT VARIANT — nur Bottom-Border + Floating Placeholder-Label
+// ---------------------------------------------------------------------------
+
+// Extra Platz oben damit das floating label Raum hat
+.wrapperFlat {
+  padding-top: 18px;
+}
+
+// Das field-Element im flat-Kontext
+.floatingField {
+  // Erbt position: relative vom .field
+}
+
+// Flat-Input: nur Bottom-Border, transparent background
+.inputFlat {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--input-border);
+  border-radius: 0;
+  padding-top: 2px;
+
+  // Placeholder wird ausgeblendet — floating label übernimmt diese Rolle
+  &::placeholder {
+    color: transparent;
+  }
+
+  &:hover:not(:disabled) {
+    border-bottom-color: var(--cs-border-neutral);
+    filter: none;
+  }
+
+  &:focus {
+    border-bottom-color: var(--input-border-focus);
+    border-bottom-width: 2px;
+    box-shadow: none;
+  }
+
+  &.inputError {
+    border-bottom-color: var(--input-border-error) !important;
+
+    &:focus {
+      box-shadow: none !important;
+    }
+  }
+}
+
+// Floating Label — ruht im Feld, fliegt bei Focus/Wert nach oben
+.floatingLabel {
+  position: absolute;
+  top: 50%;
+  left: var(--_px, var(--space-4));
+  transform: translateY(-50%);
+  font-size: var(--_fs, var(--text-base));
+  font-family: var(--font-body);
+  color: var(--cs-text-3);
+  pointer-events: none;
+  white-space: nowrap;
+  cursor: text;
+  transition:
+    top      0.18s ease,
+    left     0.18s ease,
+    transform 0.18s ease,
+    font-size 0.18s ease,
+    color    0.18s ease;
+}
+
+// Mit führendem Icon: Label startet nach dem Icon
+.floatingLabelWithIcon {
+  left: calc(var(--_px, var(--space-4)) + 24px);
+}
+
+// Float-Zustand: wenn focused ODER wenn Feld einen Wert hat (:not(:placeholder-shown))
+.floatingField:has(.inputFlat:focus) .floatingLabel,
+.floatingField:has(.inputFlat:not(:placeholder-shown)) .floatingLabel {
+  top: 0;
+  left: 0;
+  transform: translateY(calc(-100% - 6px));
+  font-size: 11px;
+  color: var(--cs-accent);
+  letter-spacing: 0.02em;
+}
+
+// ---------------------------------------------------------------------------
+// ADORNMENTS
+// ---------------------------------------------------------------------------
+.adorn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  color: var(--cs-text-3);
+  pointer-events: none;
+  gap: var(--space-1);
+
+  &.adornLeft  { left:  var(--_px, var(--space-4)); }
+  &.adornRight { right: var(--_px, var(--space-4)); pointer-events: auto; }
+}
+
+// Standard: label + adorn akzentfarbe bei focus
+.wrapper:has(.input:focus) .label {
+  color: var(--cs-accent);
+  transition: color var(--transition-fast);
+}
+
+.wrapper:has(.input:focus) .adorn {
+  color: var(--cs-accent);
+  transition: color var(--transition-fast);
+}
+
+// Klickbare Icon-Buttons
+.iconBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: none;
+  color: var(--cs-text-3);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: color var(--transition-fast), background var(--transition-fast);
+
+  &:hover {
+    color: var(--cs-text);
+    background: var(--cs-surface-2);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// HINT (Helper + Error)
+// ---------------------------------------------------------------------------
+.hint {
+  font-size: var(--text-xs);
+  color: var(--cs-text-3);
+  padding-left: 2px;
+}
+
+.hintError {
+  color: var(--input-border-error);
+}

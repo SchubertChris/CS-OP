@@ -1,0 +1,155 @@
+// =============================================================================
+// MODAL — Dialog mit Overlay + Portal
+// =============================================================================
+
+// ---------------------------------------------------------------------------
+// OVERLAY — Hintergrund-Dimmer
+// ---------------------------------------------------------------------------
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  background: var(--modal-overlay);
+  backdrop-filter: blur(4px) saturate(120%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+  animation: fadeIn var(--transition-fast) var(--ease-out) both;
+}
+
+// ---------------------------------------------------------------------------
+// DIALOG — das Panel
+// ---------------------------------------------------------------------------
+.dialog {
+  position: relative;
+  background: var(--modal-bg);
+  border: 1px solid var(--cs-border-subtle);
+  border-radius: var(--modal-radius);
+  box-shadow: var(--shadow-elevated);
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100dvh - var(--space-8));
+  width: 100%;
+  animation: scaleIn var(--transition-fast) var(--ease-out) both;
+  transform-origin: center center;
+}
+
+// Größen
+.sm { max-width: var(--modal-max-sm); }
+.md { max-width: var(--modal-max-md); }
+.lg { max-width: var(--modal-max-lg); }
+
+// ---------------------------------------------------------------------------
+// BRANDED HEADER — Logo + Markenname (für Auth-Modals, Login, Register)
+// ---------------------------------------------------------------------------
+.brandedHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-6) var(--space-5) var(--space-4);
+}
+
+// brandMark-Styling ist in CandleScopeMarkImage.module.scss
+
+.brandName {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: var(--fw-bold);
+  letter-spacing: -0.02em;
+  color: var(--cs-text);
+}
+
+// ---------------------------------------------------------------------------
+// HEADER — Titelleiste
+// ---------------------------------------------------------------------------
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  border-bottom: 1px solid var(--cs-border-subtle);
+  flex-shrink: 0;
+
+  // Gold-Akzent links
+  position: relative;
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: var(--space-3);
+    bottom: var(--space-3);
+    width: 3px;
+    background: var(--cs-gold);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  }
+
+  padding-left: calc(var(--space-5) + 3px);
+}
+
+// Wenn branded: kein linker Goldstreifen + zentrierter Titel
+.headerBranded {
+  justify-content: center;
+  border-top: 1px solid var(--cs-border-subtle);
+
+  &::before { display: none; }
+
+  padding-left: var(--space-5);
+  padding-right: var(--space-5);
+
+  .title { text-align: center; }
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: var(--fw-semibold);
+  letter-spacing: -0.02em;
+  color: var(--cs-text);
+  margin: 0;
+}
+
+.close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: none;
+  color: var(--cs-text-3);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+
+  &:hover {
+    background: var(--cs-surface-3);
+    color: var(--cs-text);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// BODY — scrollbarer Inhalt
+// ---------------------------------------------------------------------------
+.body {
+  padding: var(--space-5);
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+}
+
+// ---------------------------------------------------------------------------
+// FOOTER — Aktionsleiste
+// ---------------------------------------------------------------------------
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-5);
+  border-top: 1px solid var(--cs-border-subtle);
+  flex-shrink: 0;
+}

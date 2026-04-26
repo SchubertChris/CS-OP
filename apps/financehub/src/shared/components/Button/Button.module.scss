@@ -1,0 +1,227 @@
+// Button — portiert von Website CtaButton, erweitert für App-Kontext
+// Kern: Pill-Form · Gold-Fill-Animation · Keine Emojis — nur Icons
+
+.btn {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font-family: var(--font-mono);
+  font-weight: var(--fw-medium);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: none;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: color var(--transition-fast), border-color var(--transition-fast), opacity var(--transition-fast);
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+
+  // Fill-Layer — schiebt von unten rein (identisch candlescope.de)
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    transform: translateY(100%);
+    transition: transform 300ms ease-out;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  // Inhalt über dem Fill-Layer
+  .inner {
+    position: relative;
+    z-index: 1;
+    display: inherit;
+    align-items: inherit;
+    gap: inherit;
+  }
+
+  // --------------------------------------------------------------------------
+  // SIZES
+  // --------------------------------------------------------------------------
+  &.sm {
+    font-size: 0.625rem;   // 10px
+    letter-spacing: 0.12em;
+    padding: var(--space-1) var(--space-3);
+    height: 28px;
+  }
+
+  &.md {
+    font-size: 0.6875rem;  // 11px
+    padding: var(--space-2) var(--space-5);
+    height: 40px;
+  }
+
+  &.lg {
+    font-size: 0.75rem;    // 12px
+    padding: var(--space-3) var(--space-6);
+    height: 48px;
+  }
+
+  // --------------------------------------------------------------------------
+  // PRIMARY — Gold-Outline → Gold-Fill on hover (Website-Pattern)
+  // --------------------------------------------------------------------------
+  &.primary {
+    border: 1px solid var(--cs-gold-muted);
+    color: var(--cs-gold);
+    background: transparent;
+
+    .inner {
+      text-shadow: var(--btn-primary-text-shadow);
+    }
+
+    &::before {
+      background: var(--cs-gold);
+    }
+
+    &:hover::before,
+    &:focus-visible::before {
+      transform: translateY(0);
+    }
+
+    &:hover .inner,
+    &:focus-visible .inner {
+      color: var(--btn-primary-hover-text);
+      text-shadow: none; // Shadow weg wenn Fill oben ist
+    }
+
+    &:active {
+      opacity: 0.85;
+    }
+  }
+
+  // --------------------------------------------------------------------------
+  // SECONDARY — Surface-Background, Neutral-Border
+  // --------------------------------------------------------------------------
+  &.secondary {
+    border: 1px solid var(--cs-border-neutral);
+    color: var(--cs-text);
+    background: var(--cs-surface);
+
+    &::before {
+      background: var(--cs-surface-2);
+    }
+
+    &:hover::before,
+    &:focus-visible::before {
+      transform: translateY(0);
+    }
+
+    &:hover {
+      border-color: var(--cs-border);
+    }
+
+    &:active:not(:disabled) {
+      background: var(--cs-surface-active);
+      border-color: var(--cs-border-neutral);
+    }
+  }
+
+  // --------------------------------------------------------------------------
+  // GHOST — Nur Text, kein Hintergrund
+  // --------------------------------------------------------------------------
+  &.ghost {
+    border: 1px solid transparent;
+    color: var(--cs-text-2);
+    background: transparent;
+    letter-spacing: 0.06em;
+    text-transform: none;
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+
+    &::before {
+      background: var(--cs-surface);
+    }
+
+    &:hover::before,
+    &:focus-visible::before {
+      transform: translateY(0);
+    }
+
+    &:hover .inner {
+      color: var(--cs-text);
+    }
+
+    &:active:not(:disabled) {
+      background: var(--cs-surface-2);
+    }
+  }
+
+  // --------------------------------------------------------------------------
+  // DANGER — Negativ-Rot, für destruktive Aktionen
+  // --------------------------------------------------------------------------
+  &.danger {
+    border: 1px solid rgba(192, 52, 52, 0.4);
+    color: var(--cs-negative);
+    background: transparent;
+
+    &::before {
+      background: var(--cs-negative);
+    }
+
+    &:hover::before,
+    &:focus-visible::before {
+      transform: translateY(0);
+    }
+
+    &:hover .inner,
+    &:focus-visible .inner {
+      color: #fff;
+    }
+
+    &:active:not(:disabled) {
+      opacity: 0.8;
+    }
+  }
+
+  // --------------------------------------------------------------------------
+  // DISABLED — feste Farbe statt Opacity (bleibt auf hellem BG sichtbar)
+  // --------------------------------------------------------------------------
+  &:disabled,
+  &.disabled {
+    border-color: var(--cs-border-neutral) !important;
+    color: var(--cs-neutral) !important;
+    background: var(--cs-surface) !important;
+    cursor: not-allowed;
+    pointer-events: none;
+
+    &::before { display: none; }
+  }
+
+  // --------------------------------------------------------------------------
+  // LOADING — Button vollständig sichtbar, kein Opacity-Hack
+  // --------------------------------------------------------------------------
+  &.loading {
+    border-color: var(--cs-border-neutral);
+    color: var(--cs-text-2);
+    pointer-events: none;
+
+    &::before { display: none; }
+  }
+
+  // --------------------------------------------------------------------------
+  // FOCUS (Accessibility)
+  // --------------------------------------------------------------------------
+  &:focus-visible {
+    outline: 2px solid var(--cs-gold);
+    outline-offset: 3px;
+  }
+
+  // --------------------------------------------------------------------------
+  // ICON ONLY (quadratisch)
+  // --------------------------------------------------------------------------
+  &.iconOnly {
+    padding: 0;
+    aspect-ratio: 1;
+
+    &.sm { width: 32px; }
+    &.md { width: 44px; }
+    &.lg { width: 48px; }
+  }
+}

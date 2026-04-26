@@ -1,0 +1,117 @@
+// =============================================================================
+// RADIO GROUP
+// =============================================================================
+
+.fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.legend {
+  font-size: var(--text-sm);
+  font-weight: var(--fw-medium);
+  color: var(--cs-text-2);
+  margin-bottom: var(--space-3);
+}
+
+.group {
+  display: flex;
+  gap: var(--space-3);
+
+  &.vertical   { flex-direction: column; }
+  &.horizontal { flex-direction: row; flex-wrap: wrap; }
+}
+
+// ---------------------------------------------------------------------------
+// SINGLE OPTION
+// ---------------------------------------------------------------------------
+.option {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  cursor: pointer;
+  user-select: none;
+
+  &.disabled { opacity: 0.45; cursor: not-allowed; pointer-events: none; }
+}
+
+.ctrl {
+  position: relative;
+  display: flex;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+  margin: 0;
+  z-index: 1;
+  width: var(--check-size);
+  height: var(--check-size);
+}
+
+// Visueller Radio-Kreis
+.dot {
+  width: var(--check-size);
+  height: var(--check-size);
+  border: 2px solid var(--check-border);
+  border-radius: var(--radius-full);
+  background: var(--check-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color var(--transition-fast);
+  flex-shrink: 0;
+
+  // Innerer Kreis (::after)
+  &::after {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: var(--radius-full);
+    background: transparent;
+    transition: background var(--transition-fast), transform var(--transition-fast);
+    transform: scale(0);
+  }
+}
+
+.input:checked ~ .dot {
+  border-color: var(--check-active-border);
+
+  &::after {
+    background: var(--check-active-bg);
+    transform: scale(1);
+  }
+}
+
+.input:focus-visible ~ .dot {
+  outline: 2px solid var(--cs-gold);
+  outline-offset: 2px;
+}
+
+// ---------------------------------------------------------------------------
+// LABEL
+// ---------------------------------------------------------------------------
+.meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-top: 1px;
+}
+
+.label {
+  font-size: var(--text-sm);
+  font-weight: var(--fw-medium);
+  color: var(--cs-text);
+  line-height: var(--lh-tight);
+}
+
+.desc {
+  font-size: var(--text-xs);
+  color: var(--cs-text-3);
+  line-height: var(--lh-normal);
+}

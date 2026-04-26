@@ -1,0 +1,23 @@
+# Dateien die nie zu Vercel hochgeladen werden sollen
+# (Vite baut nur dist/ — diese Dateien wären ohnehin nicht im Build,
+#  aber explizit ausschließen ist sicherer)
+
+# Dokumentation
+docs/
+apps/*/docs/
+**/*.md
+!apps/frontend/README.md
+!readme.md
+
+# Interne Notizen
+**/AUSBAU.md
+**/WORKPLAN.md
+**/superpowers/
+
+# Claude / Dev-Kontext
+CLAUDE.md
+apps/*/CLAUDE.md
+
+# Entwicklungs-Configs
+*.local
+.env.local

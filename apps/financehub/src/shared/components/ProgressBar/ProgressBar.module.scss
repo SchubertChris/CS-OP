@@ -1,0 +1,83 @@
+// =============================================================================
+// PROGRESS BAR — Fortschrittsanzeige & Ladebalken
+// Unterstützt: determinate (mit Wert) + indeterminate (unbestimmt/laden)
+// Keyframe 'progressIndeterminate' lokal definiert
+// =============================================================================
+
+@keyframes progressIndeterminate {
+  0%   { transform: translateX(-150%) scaleX(0.5); }
+  50%  { transform: translateX(0%) scaleX(1); }
+  100% { transform: translateX(250%) scaleX(0.5); }
+}
+
+// ---------------------------------------------------------------------------
+// WRAPPER
+// ---------------------------------------------------------------------------
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  width: 100%;
+}
+
+// ---------------------------------------------------------------------------
+// META — Label + Prozentwert
+// ---------------------------------------------------------------------------
+.meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.label {
+  font-size: var(--text-xs);
+  color: var(--cs-text-2);
+  font-weight: var(--fw-medium);
+}
+
+.value {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--cs-text-3);
+  font-variant-numeric: tabular-nums;
+}
+
+// ---------------------------------------------------------------------------
+// TRACK — leere Schiene
+// ---------------------------------------------------------------------------
+.track {
+  width: 100%;
+  background: var(--progress-track);
+  border-radius: var(--progress-radius);
+  overflow: hidden;
+  position: relative;
+}
+
+// ---------------------------------------------------------------------------
+// FILL — füllender Balken
+// ---------------------------------------------------------------------------
+.fill {
+  height: 100%;
+  border-radius: var(--progress-radius);
+  transition: width var(--transition-slow);
+  transform-origin: left center;
+
+  &.default   { background: var(--progress-fill-default); }
+  &.positive  { background: var(--progress-fill-positive); }
+  &.negative  { background: var(--progress-fill-negative); }
+  &.warning   { background: var(--progress-fill-warning); }
+  &.info      { background: var(--progress-fill-info); }
+}
+
+// Indeterminate: läuft hin und her
+.indeterminate {
+  width: 40% !important;
+  animation: progressIndeterminate 1.6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+// ---------------------------------------------------------------------------
+// GRÖSSEN
+// ---------------------------------------------------------------------------
+.sm .track { height: 4px; }
+.md .track { height: 8px; }
+.lg .track { height: 12px; }

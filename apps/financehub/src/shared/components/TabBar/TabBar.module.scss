@@ -1,0 +1,119 @@
+// =============================================================================
+// TAB BAR — horizontale Navigation mit Underline- oder Pill-Stil
+// =============================================================================
+
+.tabBar {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
+// ---------------------------------------------------------------------------
+// TAB BUTTON
+// ---------------------------------------------------------------------------
+.tab {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  border: none;
+  background: none;
+  cursor: pointer;
+  white-space: nowrap;
+  color: var(--cs-text-3);
+  font-family: var(--font-body);
+  font-weight: var(--fw-medium);
+  transition: color var(--transition-fast), background var(--transition-fast);
+  position: relative;
+  flex-shrink: 0;
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  &:hover:not(:disabled):not(.active) {
+    color: var(--cs-text-2);
+  }
+}
+
+.active {
+  color: var(--cs-text);
+  font-weight: var(--fw-semibold);
+}
+
+// ---------------------------------------------------------------------------
+// VARIANTE: underline — Goldlinie unter aktivem Tab
+// ---------------------------------------------------------------------------
+.underline {
+  border-bottom: 2px solid var(--cs-border-neutral);
+
+  &.sm .tab { padding: var(--space-2) var(--space-3); font-size: var(--text-sm); }
+  &.md .tab { padding: var(--space-3) var(--space-4); font-size: var(--text-base); }
+
+  .active {
+    color: var(--cs-gold);
+
+    // Goldlinie — ::after-Effekt (Indicator under active tab)
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--cs-gold);
+      border-radius: var(--radius-full) var(--radius-full) 0 0;
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// VARIANTE: pill — aktiver Tab mit gefülltem Hintergrund
+// ---------------------------------------------------------------------------
+.pill {
+  gap: var(--space-1);
+  padding: var(--space-1);
+  background: var(--cs-surface-2);
+  border-radius: var(--radius-lg);
+
+  &.sm .tab { padding: var(--space-1) var(--space-3); font-size: var(--text-sm); border-radius: var(--radius-md); }
+  &.md .tab { padding: var(--space-2) var(--space-4); font-size: var(--text-base); border-radius: var(--radius-md); }
+
+  .active {
+    background: var(--cs-surface);
+    box-shadow: var(--shadow-sm);
+    color: var(--cs-text);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// TAB INHALTE
+// ---------------------------------------------------------------------------
+.tabIcon {
+  display: flex;
+  align-items: center;
+  opacity: 0.7;
+
+  .active & { opacity: 1; }
+}
+
+.tabLabel { /* text is direct — no extra style needed */ }
+
+.tabBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 16px;
+  padding: 0 4px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: var(--fw-semibold);
+  background: var(--cs-gold-dim);
+  color: var(--cs-gold);
+  border-radius: var(--radius-full);
+  line-height: 1;
+}

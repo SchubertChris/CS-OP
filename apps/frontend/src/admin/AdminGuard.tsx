@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Navigate } from 'react-router-dom'
+import { ADMIN } from './config'
 
 type Status = 'loading' | 'ok' | 'unauthorized'
 
@@ -28,6 +29,6 @@ export default function AdminGuard({ children }: { children: React.ReactNode }) 
     )
   }
 
-  if (status === 'unauthorized') return <Navigate to="/admin/login" replace />
+  if (status === 'unauthorized') return <Navigate to={`/${ADMIN}/login`} replace />
   return <>{children}</>
 }

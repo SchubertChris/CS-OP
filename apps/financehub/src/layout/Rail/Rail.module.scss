@@ -1,0 +1,263 @@
+// Rail — Icon-Sidebar, fixiert links
+// Collapsed: 56px (icons only)  Expanded: 220px (icons + labels)
+// Expand on hover OR via Pin-Button (permanent)
+
+.rail {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: var(--rail-width);
+  z-index: var(--z-rail);
+  background: var(--cs-glass-bg);
+  backdrop-filter: blur(var(--cs-glass-blur)) saturate(var(--cs-glass-saturate));
+  -webkit-backdrop-filter: blur(var(--cs-glass-blur)) saturate(var(--cs-glass-saturate));
+  border-right: 1px solid var(--cs-glass-border);
+  box-shadow: var(--shadow-rail);
+  transition: width var(--transition-normal);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+
+  @media (max-width: 767px) { display: none; }
+}
+
+.rail[data-expanded="true"] {
+  width: var(--rail-width-expanded);
+}
+
+// ---------------------------------------------------------------------------
+// LOGO AREA
+// ---------------------------------------------------------------------------
+.logoArea {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  height: 56px;
+  padding: 0 var(--space-4);
+  border-bottom: 1px solid var(--cs-border-subtle);
+  overflow: hidden;
+  gap: var(--space-3);
+}
+
+// logoMark-Styling ist in CandleScopeMarkImage.module.scss
+
+.logoText {
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--cs-text);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  flex: 1;
+  min-width: 0;
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity var(--transition-fast), transform var(--transition-fast);
+}
+
+.rail[data-expanded="true"] .logoText {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.pinButton {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border: none;
+  background: transparent;
+  color: var(--cs-text-3);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  opacity: 0;
+  transition: opacity var(--transition-fast), color var(--transition-fast),
+    background-color var(--transition-fast);
+  padding: 0;
+
+  &:hover { color: var(--cs-text); background: var(--cs-surface-2); }
+  &:focus-visible { outline: 2px solid var(--cs-gold); outline-offset: 2px; }
+  &:active { background: var(--cs-surface-active); }
+}
+
+.rail[data-expanded="true"] .pinButton { opacity: 1; }
+
+.pinButtonActive { color: var(--cs-gold) !important; }
+
+// ---------------------------------------------------------------------------
+// NAVIGATION
+// ---------------------------------------------------------------------------
+.nav {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: var(--space-2) 0;
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
+// ---------------------------------------------------------------------------
+// NAV ITEM (shared by main nav + bottom nav)
+// ---------------------------------------------------------------------------
+.item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 9px var(--space-4);
+  color: var(--cs-text-3);
+  text-decoration: none;
+  cursor: pointer;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast);
+
+  // Gold accent line (Dropdown-Pattern)
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 15%;
+    bottom: 15%;
+    width: 2px;
+    background: var(--cs-gold);
+    transform: scaleY(0);
+    transform-origin: center;
+    transition: transform var(--transition-fast) var(--ease-out);
+    border-radius: 0 var(--radius-full) var(--radius-full) 0;
+  }
+
+  &:hover:not(.itemActive) {
+    background: var(--cs-surface-2);
+    color: var(--cs-text);
+    &::before { transform: scaleY(1); }
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--cs-gold);
+    outline-offset: -2px;
+    border-radius: var(--radius-sm);
+  }
+
+  &:active:not(.itemActive) {
+    background: var(--cs-surface-active);
+  }
+}
+
+.itemActive {
+  color: var(--cs-gold);
+  background: var(--cs-gold-dim);
+  &::before { transform: scaleY(1); }
+}
+
+.itemIcon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.itemLabel {
+  font-size: var(--text-sm);
+  font-weight: var(--fw-medium);
+  white-space: nowrap;
+  flex: 1;
+  min-width: 0;
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity var(--transition-fast), transform var(--transition-fast);
+}
+
+.rail[data-expanded="true"] .itemLabel {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.itemBadge {
+  flex-shrink: 0;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  background: var(--cs-negative);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+  font-weight: var(--fw-bold);
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity var(--transition-fast), transform var(--transition-fast) var(--ease-spring);
+}
+
+.rail[data-expanded="true"] .itemBadge {
+  opacity: 1;
+  transform: scale(1);
+}
+
+// ---------------------------------------------------------------------------
+// SEPARATOR
+// ---------------------------------------------------------------------------
+.separator {
+  height: 1px;
+  background: var(--cs-border-subtle);
+  margin: var(--space-1) var(--space-4);
+  flex-shrink: 0;
+}
+
+// ---------------------------------------------------------------------------
+// BOTTOM AREA
+// ---------------------------------------------------------------------------
+.bottomArea {
+  flex-shrink: 0;
+  border-top: 1px solid var(--cs-border-subtle);
+  padding: var(--space-1) 0;
+}
+
+// ---------------------------------------------------------------------------
+// USER AREA
+// ---------------------------------------------------------------------------
+.userArea {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-4);
+  cursor: pointer;
+  border-radius: var(--radius-md);
+  margin: var(--space-2);
+  transition: background-color var(--transition-fast);
+  overflow: hidden;
+
+  &:hover { background: var(--cs-surface-2); }
+  &:active { background: var(--cs-surface-active); }
+  &:focus-visible { outline: 2px solid var(--cs-gold); outline-offset: 2px; }
+}
+
+.userName {
+  font-size: var(--text-sm);
+  font-weight: var(--fw-medium);
+  color: var(--cs-text);
+  white-space: nowrap;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity var(--transition-fast), transform var(--transition-fast);
+}
+
+.rail[data-expanded="true"] .userName {
+  opacity: 1;
+  transform: translateX(0);
+}

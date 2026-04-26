@@ -1,0 +1,113 @@
+// =============================================================================
+// CANDLESCOPE FINANZBOARD — CSS RESET
+// Basis: modern-normalize + eigene Anpassungen
+// =============================================================================
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+  tab-size: 4;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: var(--lh-normal);
+  color: var(--cs-text);
+  background-color: var(--cs-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+}
+
+#root {
+  min-height: 100vh;
+  isolation: isolate;
+}
+
+// Typografie
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-tight);
+  color: var(--cs-text);
+}
+
+p { line-height: var(--lh-relaxed); }
+
+a {
+  color: var(--cs-gold);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+  &:hover { color: var(--cs-gold-hover); }
+}
+
+// Listen
+ul, ol { list-style: none; }
+
+// Bilder
+img, video, svg {
+  display: block;
+  max-width: 100%;
+}
+
+// Formulare
+input, button, textarea, select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+textarea {
+  resize: vertical;
+}
+
+// Tabellen
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+// Code
+code, pre, kbd {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+}
+
+// Fokus-Outline global entfernen (eigene focus-ring Mixin stattdessen)
+:focus { outline: none; }
+:focus-visible {
+  outline: 2px solid var(--cs-gold);
+  outline-offset: 2px;
+}
+
+// Selection
+::selection {
+  background: var(--cs-gold-dim);
+  color: var(--cs-text);
+}
+
+// Scrollbar global (subtil)
+:root {
+  scrollbar-width: thin;
+  scrollbar-color: var(--cs-surface-3) transparent;
+}
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--cs-surface-3);
+  border-radius: var(--radius-full);
+}

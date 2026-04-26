@@ -1,0 +1,49 @@
+// =============================================================================
+// BADGE / STATUS-LABEL
+// =============================================================================
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.04em;
+  border-radius: var(--radius-full);
+  line-height: 1;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.sm { font-size: 10px; padding: 2px 6px; }
+.md { font-size: var(--text-xs); padding: 3px 8px; }
+
+// ---------------------------------------------------------------------------
+// FARB-VARIANTEN
+// ---------------------------------------------------------------------------
+.default  { background: var(--cs-surface-3);  color: var(--cs-text-2); }
+.gold     { background: var(--cs-gold-dim);    color: var(--cs-gold); }
+.positive { background: var(--cs-positive-bg); color: var(--cs-positive); }
+.negative { background: var(--cs-negative-bg); color: var(--cs-negative); }
+.warning  { background: var(--cs-warning-bg);  color: var(--cs-warning); }
+.info     { background: var(--cs-info-bg);     color: var(--cs-info); }
+.neutral  { background: var(--cs-border-neutral); color: var(--cs-text-3); }
+
+// ---------------------------------------------------------------------------
+// DOT — nur ein farbiger Kreis (kein Text)
+// ---------------------------------------------------------------------------
+.dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+
+  &.default  { background: var(--cs-neutral); }
+  &.gold     { background: var(--cs-gold); }
+  &.positive { background: var(--cs-positive); }
+  &.negative { background: var(--cs-negative); }
+  &.warning  { background: var(--cs-warning); }
+  &.info     { background: var(--cs-info); }
+  &.neutral  { background: var(--cs-text-3); }
+}

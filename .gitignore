@@ -20,3 +20,12 @@ Thumbs.db
 
 # Vercel
 .vercel
+
+# Dokumentation & interne Notizen — nie in git / nie online
+WEBSITE-STATUS.md
+docs/
+apps/*/docs/
+apps/frontend/AUSBAU.md
+**/AUSBAU.md
+**/WORKPLAN.md
+**/superpowers/
