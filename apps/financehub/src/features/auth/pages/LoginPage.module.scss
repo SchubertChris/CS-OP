@@ -102,6 +102,50 @@
   z-index: 0;
 }
 
+// ─── Light-Mode Overrides — Orbs & Textur ────────────────────────────────────
+//
+// Im Dark Mode reichen 0.09–0.18 Opacity. Im Light Mode brauchen die Orbs
+// deutlich mehr Gewicht damit sie gegen den hellen Hintergrund ankommen.
+// Zusätzlich ein feines Punkt-Grid für Hintergrundtiefe.
+
+:global(.theme-light) {
+  .page {
+    background-image: radial-gradient(
+      circle,
+      rgba(201, 168, 76, 0.14) 1px,
+      transparent 1px
+    );
+    background-size: 28px 28px;
+  }
+
+  .page::before {
+    background: radial-gradient(
+      ellipse at center,
+      rgba(201, 168, 76, 0.42) 0%,
+      rgba(201, 168, 76, 0.18) 40%,
+      transparent 70%
+    );
+  }
+
+  .page::after {
+    background: radial-gradient(
+      ellipse at center,
+      rgba(201, 168, 76, 0.32) 0%,
+      rgba(201, 168, 76, 0.12) 45%,
+      transparent 70%
+    );
+  }
+
+  .bgOrb {
+    background: radial-gradient(
+      ellipse at center,
+      rgba(201, 168, 76, 0.22) 0%,
+      rgba(201, 168, 76, 0.08) 50%,
+      transparent 70%
+    );
+  }
+}
+
 // ─── Auth-Card ────────────────────────────────────────────────────────────────
 
 .card {
