@@ -28,6 +28,7 @@ export default function RoleSelectorPage() {
 
   return (
     <div className={styles.page}>
+      <div className={styles.bgOrb} aria-hidden="true" />
       <motion.div
         className={styles.card}
         initial={{ opacity: 0, y: 28, scale: 0.96, filter: 'blur(4px)' }}

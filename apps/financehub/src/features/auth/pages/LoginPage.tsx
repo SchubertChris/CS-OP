@@ -55,6 +55,7 @@ export default function LoginPage() {
 
   return (
     <div className={styles.page}>
+      <div className={styles.bgOrb} aria-hidden="true" />
       <motion.div
         className={styles.card}
         layout
