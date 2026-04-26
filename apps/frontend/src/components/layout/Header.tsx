@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react'
 import { NavLink, Link, useLocation } from 'react-router-dom'
 import {
   TrendingUp, Code2, User, MessageSquare,
-  ChevronRight, Mail, LogIn,
+  ChevronRight, Mail, LogIn, Sun, Moon,
 } from 'lucide-react'
 import csLogo from '../../assets/images/CandleScopeLogo.png'
 import { useTheme } from '../../contexts/ThemeContext'
@@ -96,8 +96,8 @@ export default function Header() {
 
         <div className="flex items-center gap-3 shrink-0">
           <button onClick={toggle} aria-label="Theme wechseln"
-            className="w-8 h-8 flex items-center justify-center rounded-full border border-[#C9A84C]/20 text-[#C9A84C]/60 hover:text-[#C9A84C] hover:border-[#C9A84C]/40 transition-all duration-200 cursor-pointer text-sm">
-            {theme === 'dark' ? '☀' : '☽'}
+            className="w-8 h-8 flex items-center justify-center rounded-full border border-[#C9A84C]/20 text-[#C9A84C]/60 hover:text-[#C9A84C] hover:border-[#C9A84C]/40 transition-all duration-200 cursor-pointer">
+            {theme === 'dark' ? <Sun size={14} strokeWidth={1.5} /> : <Moon size={14} strokeWidth={1.5} />}
           </button>
           <a
             href={`https://app.candlescope.de/login?theme=${theme}`}
@@ -194,7 +194,9 @@ export default function Header() {
           {/* Theme Toggle */}
           <button onClick={toggle} aria-label="Theme wechseln"
             className="flex items-center gap-3 px-2 h-10 rounded-xl text-[var(--cs-text-3)] hover:bg-[#C9A84C]/8 hover:text-[#C9A84C] transition-all duration-200 cursor-pointer shrink-0 overflow-hidden w-full">
-            <span className="shrink-0 ml-1 text-base">{theme === 'dark' ? '☀' : '☽'}</span>
+            <span className="shrink-0 ml-1">
+              {theme === 'dark' ? <Sun size={16} strokeWidth={1.5} /> : <Moon size={16} strokeWidth={1.5} />}
+            </span>
             <span className="text-[11px] tracking-[0.08em] font-medium whitespace-nowrap">
               {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
             </span>
