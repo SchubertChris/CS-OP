@@ -1,13 +1,31 @@
 import { create } from 'zustand'
 
-export type UserRole = 'admin' | 'user'
+export type UserRole = 'admin' | 'moderator' | 'user' | 'user_pro'
 
-interface User {
+export interface User {
   id: string
   email: string
   displayName: string | null
   avatarUrl: string | null
   role: UserRole
+  proExpiresAt: string | null
+}
+
+export function isPro(user: User): boolean {
+  if (user.role === 'admin' || user.role === 'moderator') return true
+  if (user.role === 'user_pro') {
+    if (!user.proExpiresAt) return true
+    return new Date(user.proExpiresAt) > new Date()
+  }
+  return false
+}
+
+export function isStaff(user: User): boolean {
+  return user.role === 'admin' || user.role === 'moderator'
+}
+
+export function isAdmin(user: User): boolean {
+  return user.role === 'admin'
 }
 
 interface AuthStore {

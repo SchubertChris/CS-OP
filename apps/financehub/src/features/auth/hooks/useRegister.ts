@@ -19,6 +19,7 @@ export function useRegister() {
       displayName: data.displayName,
       avatarUrl: null,
       role: 'user',
+      proExpiresAt: null,
     })
   }
 

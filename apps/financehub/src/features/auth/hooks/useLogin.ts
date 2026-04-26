@@ -26,6 +26,7 @@ export function useLogin() {
       displayName: isAdmin ? 'Candlescope' : data.email.split('@')[0],
       avatarUrl: null,
       role,
+      proExpiresAt: null,
     })
 
     return role
