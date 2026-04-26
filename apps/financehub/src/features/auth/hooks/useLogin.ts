@@ -3,8 +3,10 @@ import type { LoginData } from '../types/auth.types'
 import { useAuthStore, type UserRole } from '../../../store/authStore'
 
 const ADMIN_EMAIL = 'schubert_chris@rocketmail.com'
+// Proxy-Endpoints in apps/financehub/api/admin/ — same-origin, kein CORS-Problem.
+// VITE_ADMIN_API_URL kann für lokale vercel dev-Tests überschrieben werden.
 const ADMIN_API   = import.meta.env.VITE_ADMIN_API_URL as string | undefined
-  ?? 'https://candlescope.de/api/auth'
+  ?? '/api/admin'
 
 export interface LoginResult {
   role: UserRole

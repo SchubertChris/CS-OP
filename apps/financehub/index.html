@@ -7,6 +7,31 @@
     <title>CandleScope FinanzHub</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <!-- Geist fonts werden via npm gebündelt — kein Google Fonts CDN -->
+    <script>
+      (function () {
+        var html = document.documentElement;
+        // 1. ?theme= aus URL lesen (kommt von candlescope.de beim Login-Klick)
+        var urlTheme = new URLSearchParams(location.search).get('theme');
+        // 2. Fallback: persistiertes Theme aus Zustand-Store
+        var stored = 'light';
+        try {
+          var raw = localStorage.getItem('cs-app-settings');
+          if (raw) stored = JSON.parse(raw).state?.theme || 'light';
+        } catch (e) {}
+        var theme = (urlTheme === 'dark' || urlTheme === 'light') ? urlTheme : stored;
+        // 3. Sofort anwenden — vor React-Render, kein Flash
+        html.classList.remove('theme-light', 'theme-dark');
+        html.classList.add('theme-' + theme);
+        // 4. URL-Theme ins Store schreiben damit App.tsx es korrekt aufnimmt
+        if (urlTheme === 'dark' || urlTheme === 'light') {
+          try {
+            var s = JSON.parse(localStorage.getItem('cs-app-settings') || '{"state":{}}');
+            s.state = Object.assign(s.state || {}, { theme: urlTheme });
+            localStorage.setItem('cs-app-settings', JSON.stringify(s));
+          } catch (e) {}
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

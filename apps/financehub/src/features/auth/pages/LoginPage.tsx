@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -16,6 +16,7 @@ import { loginSchema, hubRegisterSchema } from '../types/auth.types'
 import type { LoginData, HubRegisterData } from '../types/auth.types'
 import type { UserRole } from '../../../store/authStore'
 import { useAuthStore } from '../../../store/authStore'
+import { useAppStore } from '../../../store/appStore'
 import styles from './LoginPage.module.scss'
 
 type AuthView = 'login' | 'register' | '2fa'
@@ -26,8 +27,17 @@ const INVITE_CODES = (import.meta.env.VITE_INVITE_CODE as string | undefined ?? 
 const CARD_TRANSITION = { duration: 0.55, ease: [0.16, 1, 0.3, 1] as const }
 
 export default function LoginPage() {
-  const navigate = useNavigate()
-  const setUser  = useAuthStore((s) => s.setUser)
+  const navigate  = useNavigate()
+  const setUser   = useAuthStore((s) => s.setUser)
+  const setTheme  = useAppStore((s) => s.setTheme)
+  const [searchParams] = useSearchParams()
+
+  // Theme-Sync: index.html hat den CSS-Wechsel bereits synchron vollzogen,
+  // hier nur noch den Zustand-Store nachziehen damit der Rest der App konsistent ist.
+  useEffect(() => {
+    const t = searchParams.get('theme')
+    if (t === 'dark' || t === 'light') setTheme(t)
+  }, [])
 
   const [view, setView]                   = useState<AuthView>('login')
   const [pendingRole, setPendingRole]     = useState<UserRole | null>(null)

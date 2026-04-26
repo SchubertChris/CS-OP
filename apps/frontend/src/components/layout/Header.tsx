@@ -100,7 +100,7 @@ export default function Header() {
             {theme === 'dark' ? '☀' : '☽'}
           </button>
           <a
-            href="https://app.candlescope.de/login"
+            href={`https://app.candlescope.de/login?theme=${theme}`}
             aria-label="Zum CandleScope Login"
             className="flex items-center gap-1.5 text-[11px] tracking-[0.12em] uppercase px-4 py-2 rounded-full border border-[#C9A84C]/40 text-[#C9A84C] hover:bg-[#C9A84C]/10 transition-all duration-200"
           >
@@ -178,7 +178,7 @@ export default function Header() {
           <div className="h-px bg-[#C9A84C]/20 my-1 mx-2 shrink-0" />
 
           {/* App Login */}
-          <a href="https://app.candlescope.de/login" aria-label="Zum CandleScope Login"
+          <a href={`https://app.candlescope.de/login?theme=${theme}`} aria-label="Zum CandleScope Login"
             className="flex items-center gap-3 px-2 h-10 rounded-xl text-[#C9A84C] hover:bg-[#C9A84C]/8 transition-all duration-200 shrink-0 overflow-hidden">
             <span className="shrink-0 ml-1"><LogIn size={16} strokeWidth={1.5} /></span>
             <span className="text-[11px] tracking-[0.08em] font-medium whitespace-nowrap">Login</span>
