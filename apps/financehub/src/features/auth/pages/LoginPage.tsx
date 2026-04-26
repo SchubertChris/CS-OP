@@ -3,37 +3,53 @@ import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { AnimatePresence, motion } from 'framer-motion'
-import { EnvelopeSimple, Lock, ShieldCheck, ArrowLeft, WarningCircle } from '@phosphor-icons/react'
+import {
+  EnvelopeSimple, Lock, ShieldCheck, ArrowLeft, WarningCircle,
+  UserPlus, User, Key,
+} from '@phosphor-icons/react'
 import { Input } from '../../../shared/components/Input/Input'
 import { Button } from '../../../shared/components/Button/Button'
 import { Alert } from '../../../shared/components/Alert/Alert'
 import { CandleScopeMarkImage } from '../../../shared/components/Logo/CandleScopeMarkImage'
 import { useLogin } from '../hooks/useLogin'
-import { loginSchema } from '../types/auth.types'
-import type { LoginData } from '../types/auth.types'
+import { loginSchema, hubRegisterSchema } from '../types/auth.types'
+import type { LoginData, HubRegisterData } from '../types/auth.types'
 import type { UserRole } from '../../../store/authStore'
+import { useAuthStore } from '../../../store/authStore'
 import styles from './LoginPage.module.scss'
 
 type AuthView = 'login' | 'register' | '2fa'
+
+const INVITE_CODES = (import.meta.env.VITE_INVITE_CODE as string | undefined ?? '')
+  .split(',').map(c => c.trim()).filter(Boolean)
 
 const CARD_TRANSITION = { duration: 0.55, ease: [0.16, 1, 0.3, 1] as const }
 
 export default function LoginPage() {
   const navigate = useNavigate()
-  const [view, setView] = useState<AuthView>('login')
-  const [pendingRole, setPendingRole] = useState<UserRole | null>(null)
-  const [pendingToken, setPendingToken] = useState<string | null>(null)
-  const [totpCode, setTotpCode] = useState('')
-  const [totpError, setTotpError] = useState<string | false>(false)
-  const [totpLoading, setTotpLoading] = useState(false)
+  const setUser  = useAuthStore((s) => s.setUser)
+
+  const [view, setView]                   = useState<AuthView>('login')
+  const [pendingRole, setPendingRole]     = useState<UserRole | null>(null)
+  const [pendingToken, setPendingToken]   = useState<string | null>(null)
+  const [totpCode, setTotpCode]           = useState('')
+  const [totpError, setTotpError]         = useState<string | false>(false)
+  const [totpLoading, setTotpLoading]     = useState(false)
+  const [inviteCode, setInviteCode]       = useState('')
+  const [inviteVerified, setInviteVerified] = useState(false)
+  const [inviteError, setInviteError]     = useState(false)
 
   const { login, verifyAdminTotp, serverError: loginError, clearError: clearLoginError } = useLogin()
 
-  const loginForm = useForm<LoginData>({ resolver: zodResolver(loginSchema) })
+  const loginForm    = useForm<LoginData>({ resolver: zodResolver(loginSchema) })
+  const registerForm = useForm<HubRegisterData>({ resolver: zodResolver(hubRegisterSchema) })
 
   const switchView = (next: AuthView) => {
     clearLoginError()
     loginForm.reset()
+    setInviteVerified(false)
+    setInviteCode('')
+    setInviteError(false)
     setView(next)
   }
 
@@ -77,7 +93,36 @@ export default function LoginPage() {
     }
   }
 
-  const cardMaxWidth = view === 'register' ? 620 : view === '2fa' ? 440 : 500
+  const onCheckInvite = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (INVITE_CODES.length > 0 && INVITE_CODES.includes(inviteCode.trim())) {
+      setInviteVerified(true)
+    } else {
+      setInviteError(true)
+      setTimeout(() => setInviteError(false), 2500)
+    }
+  }
+
+  const onRegister = async (data: HubRegisterData) => {
+    await new Promise<void>((r) => setTimeout(r, 800))
+    setUser({
+      id: `user-${Date.now()}`,
+      email: data.email,
+      displayName: data.displayName,
+      avatarUrl: null,
+      role: 'user',
+      proExpiresAt: null,
+    })
+    navigate('/app/dashboard', { replace: true })
+  }
+
+  const animKey = view === 'register'
+    ? (inviteVerified ? 'register-form' : 'register-invite')
+    : view
+
+  const cardMaxWidth =
+    view === '2fa' ? 440 :
+    (view === 'register' && inviteVerified) ? 560 : 500
 
   return (
     <div className={styles.page}>
@@ -95,18 +140,14 @@ export default function LoginPage() {
         {view !== '2fa' && (
           <div className={styles.tabs} role="tablist">
             <button
-              type="button"
-              role="tab"
-              aria-selected={view === 'login'}
+              type="button" role="tab" aria-selected={view === 'login'}
               className={`${styles.tab} ${view === 'login' ? styles.tabActive : ''}`}
               onClick={() => switchView('login')}
             >
               Anmelden
             </button>
             <button
-              type="button"
-              role="tab"
-              aria-selected={view === 'register'}
+              type="button" role="tab" aria-selected={view === 'register'}
               className={`${styles.tab} ${view === 'register' ? styles.tabActive : ''}`}
               onClick={() => switchView('register')}
             >
@@ -117,7 +158,7 @@ export default function LoginPage() {
 
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
-            key={view}
+            key={animKey}
             initial={{ filter: 'blur(8px)', opacity: 0.6 }}
             animate={{ filter: 'blur(0px)', opacity: 1 }}
             exit={{ filter: 'blur(8px)', opacity: 0.6 }}
@@ -130,7 +171,7 @@ export default function LoginPage() {
 
             <div className={styles.formContent}>
 
-              {/* ── Login ─────────────────────────────────────────────── */}
+              {/* ── Anmelden ───────────────────────────────────────────── */}
               {view === 'login' && (
                 <>
                   {loginError && (
@@ -140,22 +181,16 @@ export default function LoginPage() {
                   )}
                   <form onSubmit={loginForm.handleSubmit(onLogin)} className={styles.form} noValidate>
                     <Input
-                      id="login-email"
-                      type="email"
-                      placeholder="E-Mail"
-                      autoComplete="email"
-                      variant="flat"
+                      id="login-email" type="email" placeholder="E-Mail"
+                      autoComplete="email" variant="flat"
                       leading={<EnvelopeSimple size={16} />}
                       error={loginForm.formState.errors.email?.message}
                       {...loginForm.register('email')}
                     />
                     <div className={styles.passwordGroup}>
                       <Input
-                        id="login-password"
-                        type="password"
-                        placeholder="Passwort"
-                        autoComplete="current-password"
-                        variant="flat"
+                        id="login-password" type="password" placeholder="Passwort"
+                        autoComplete="current-password" variant="flat"
                         leading={<Lock size={16} />}
                         error={loginForm.formState.errors.password?.message}
                         {...loginForm.register('password')}
@@ -164,9 +199,7 @@ export default function LoginPage() {
                         Passwort vergessen?
                       </a>
                     </div>
-                    <Button
-                      type="submit"
-                      size="lg"
+                    <Button type="submit" size="lg"
                       loading={loginForm.formState.isSubmitting}
                       disabled={loginForm.formState.isSubmitting}
                       className={styles.submitBtn}
@@ -177,22 +210,81 @@ export default function LoginPage() {
                 </>
               )}
 
-              {/* ── Registrierung gesperrt ────────────────────────────── */}
-              {view === 'register' && (
-                <div className={styles.registerLocked}>
-                  <Lock size={32} weight="duotone" className={styles.registerLockedIcon} />
-                  <p className={styles.registerLockedTitle}>Registrierung noch nicht verfügbar</p>
-                  <p className={styles.registerLockedSub}>
-                    Der CandleScope FinanzHub befindet sich noch in der Entwicklung.
-                    Registrierungen sind aktuell nur auf Einladung möglich.
-                  </p>
+              {/* ── Registrieren: Einladungscode ───────────────────────── */}
+              {view === 'register' && !inviteVerified && (
+                <form onSubmit={onCheckInvite} className={styles.form}>
+                  <div className={styles.inviteHeader}>
+                    <UserPlus size={32} weight="duotone" className={styles.inviteIcon} />
+                    <p className={styles.registerLockedTitle}>Einladungscode erforderlich</p>
+                    <p className={styles.registerLockedSub}>
+                      Der FinanzHub ist aktuell auf Einladung beschränkt.
+                      Gib deinen persönlichen Code ein.
+                    </p>
+                  </div>
+                  <Input
+                    id="invite-code" type="text" placeholder="Einladungscode"
+                    variant="flat" leading={<Key size={16} />}
+                    autoComplete="off"
+                    error={inviteError ? 'Ungültiger Einladungscode.' : undefined}
+                    value={inviteCode}
+                    onChange={(e) => setInviteCode(e.target.value)}
+                  />
+                  <Button type="submit" size="lg" className={styles.submitBtn}
+                    disabled={!inviteCode.trim()}>
+                    Weiter
+                  </Button>
                   <a href="mailto:info@candlescope.de" className={styles.registerLockedLink}>
-                    info@candlescope.de
+                    Keinen Code? — info@candlescope.de
                   </a>
-                </div>
+                </form>
               )}
 
-              {/* ── Zwei-Faktor-Authentifizierung ─────────────────────── */}
+              {/* ── Registrieren: Formular ─────────────────────────────── */}
+              {view === 'register' && inviteVerified && (
+                <form
+                  onSubmit={registerForm.handleSubmit(onRegister)}
+                  className={styles.formGrid}
+                  noValidate
+                >
+                  <Input
+                    id="reg-name" type="text" placeholder="Anzeigename"
+                    variant="flat" leading={<User size={16} />}
+                    autoComplete="name"
+                    error={registerForm.formState.errors.displayName?.message}
+                    {...registerForm.register('displayName')}
+                  />
+                  <Input
+                    id="reg-email" type="email" placeholder="E-Mail"
+                    variant="flat" leading={<EnvelopeSimple size={16} />}
+                    autoComplete="email"
+                    error={registerForm.formState.errors.email?.message}
+                    {...registerForm.register('email')}
+                  />
+                  <Input
+                    id="reg-pw" type="password" placeholder="Passwort"
+                    variant="flat" leading={<Lock size={16} />}
+                    autoComplete="new-password"
+                    error={registerForm.formState.errors.password?.message}
+                    {...registerForm.register('password')}
+                  />
+                  <Input
+                    id="reg-pw2" type="password" placeholder="Passwort bestätigen"
+                    variant="flat" leading={<Lock size={16} />}
+                    autoComplete="new-password"
+                    error={registerForm.formState.errors.confirmPassword?.message}
+                    {...registerForm.register('confirmPassword')}
+                  />
+                  <Button
+                    type="submit" size="lg"
+                    loading={registerForm.formState.isSubmitting}
+                    disabled={registerForm.formState.isSubmitting}
+                  >
+                    Konto erstellen
+                  </Button>
+                </form>
+              )}
+
+              {/* ── Zwei-Faktor-Authentifizierung ──────────────────────── */}
               {view === '2fa' && (
                 <form onSubmit={onVerify2FA} className={styles.twoFAForm}>
                   <div className={styles.twoFAHint}>
@@ -207,9 +299,14 @@ export default function LoginPage() {
                     maxLength={6}
                     placeholder="000000"
                     value={totpCode}
-                    onChange={(e) => setTotpCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
                     autoFocus
                     autoComplete="one-time-code"
+                    onChange={(e) => setTotpCode(e.target.value.replace(/[^0-9]/g, '').slice(0, 6))}
+                    onPaste={(e) => {
+                      e.preventDefault()
+                      const pasted = e.clipboardData.getData('text').replace(/[^0-9]/g, '').slice(0, 6)
+                      setTotpCode(pasted)
+                    }}
                   />
                   {totpError && (
                     <span className={styles.totpError}>
@@ -218,8 +315,7 @@ export default function LoginPage() {
                     </span>
                   )}
                   <Button
-                    type="submit"
-                    size="lg"
+                    type="submit" size="lg"
                     loading={totpLoading}
                     disabled={totpLoading || totpCode.length < 6}
                     className={styles.submitBtn}
@@ -227,8 +323,7 @@ export default function LoginPage() {
                     Bestätigen
                   </Button>
                   <button
-                    type="button"
-                    className={styles.twoFABack}
+                    type="button" className={styles.twoFABack}
                     onClick={() => { setView('login'); setTotpCode(''); setTotpError(false) }}
                   >
                     <ArrowLeft size={14} />

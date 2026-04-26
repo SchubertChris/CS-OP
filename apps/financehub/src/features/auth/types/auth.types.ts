@@ -23,5 +23,20 @@ export const registerSchema = z
     path: ['confirmPassword'],
   })
 
-export type LoginData = z.infer<typeof loginSchema>
+export type LoginData    = z.infer<typeof loginSchema>
 export type RegisterData = z.infer<typeof registerSchema>
+
+export const hubRegisterSchema = z.object({
+  displayName: z.string().min(2, 'Mindestens 2 Zeichen').max(40, 'Maximal 40 Zeichen'),
+  email: z.string().email('Keine gültige E-Mail-Adresse'),
+  password: z.string()
+    .min(8, 'Mindestens 8 Zeichen')
+    .regex(/[A-Z]/, 'Mindestens ein Großbuchstabe')
+    .regex(/[0-9]/, 'Mindestens eine Zahl'),
+  confirmPassword: z.string(),
+}).refine(d => d.password === d.confirmPassword, {
+  message: 'Passwörter stimmen nicht überein',
+  path: ['confirmPassword'],
+})
+
+export type HubRegisterData = z.infer<typeof hubRegisterSchema>
