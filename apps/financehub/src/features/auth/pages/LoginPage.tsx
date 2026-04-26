@@ -137,7 +137,7 @@ export default function LoginPage() {
                 </form>
               ) : (
                 <div className={styles.registerLocked}>
-                  <span className={styles.registerLockedIcon}>🔒</span>
+                  <Lock size={32} weight="duotone" className={styles.registerLockedIcon} />
                   <p className={styles.registerLockedTitle}>Registrierung noch nicht verfügbar</p>
                   <p className={styles.registerLockedSub}>
                     Der CandleScope FinanzHub befindet sich noch in der Entwicklung.

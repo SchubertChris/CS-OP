@@ -125,6 +125,9 @@
 
 .gateToggle {
   margin-top: var(--space-6);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
   background: none;
   border: none;
   font-size: var(--text-xs);
@@ -180,6 +183,9 @@
 }
 
 .gateError {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
   font-size: var(--text-xs);
   color: var(--cs-negative);
   font-family: var(--font-mono);

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Key, ArrowRight, WarningCircle } from '@phosphor-icons/react'
 import { CandleScopeMarkImage } from '../Logo/CandleScopeMarkImage'
 import styles from './DevGate.module.scss'
 
@@ -55,7 +56,8 @@ export function DevGate({ children }: Props) {
 
         {!open && (
           <button className={styles.gateToggle} onClick={() => setOpen(true)}>
-            ⬡ Entwicklerzugang
+            <Key size={14} weight="duotone" />
+            Entwicklerzugang
           </button>
         )}
 
@@ -69,12 +71,17 @@ export function DevGate({ children }: Props) {
               onChange={(e) => setInput(e.target.value)}
               autoFocus
             />
-            <button className={styles.gateBtn} type="submit">→</button>
+            <button className={styles.gateBtn} type="submit">
+              <ArrowRight size={16} weight="bold" />
+            </button>
           </form>
         )}
 
         {error && (
-          <span className={styles.gateError}>Falscher Code.</span>
+          <span className={styles.gateError}>
+            <WarningCircle size={13} weight="fill" />
+            Falscher Code.
+          </span>
         )}
       </div>
     </div>
