@@ -5,3 +5,22 @@ Disallow: /admin/
 Disallow: /api/
 
 Sitemap: https://www.candlescope.de/sitemap.xml
+
+# KI-Crawler / LLM-Agenten
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+# LLM-Kontext-Datei
+# https://www.candlescope.de/llms.txt

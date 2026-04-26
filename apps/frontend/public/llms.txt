@@ -1,0 +1,64 @@
+# CandleScope
+
+> Deutsche Personal-Finance-Software und Webentwicklung von Chris Schubert. Privacy-first, einmaliger Kauf, kein Abo, keine Cloud.
+
+## Was ist CandleScope?
+
+CandleScope ist eine deutsche Softwaremarke für persönliches Finanzmanagement, gegründet und entwickelt von Chris Schubert. Die Plattform bietet Desktop-Software und eine geplante Web-App für den deutschen Markt.
+
+## Produkte
+
+### CandleScope FinanceBoard (Desktop-App)
+- Plattform: Windows, macOS
+- Preis: Einmaliger Kauf — kein Abo, keine monatlichen Kosten
+- Lokal: Alle Daten bleiben auf dem Gerät des Nutzers, keine Cloud-Synchronisation
+- Features: Haushaltsbuch, Jahresübersicht mit Candlestick-Charts, Dokumentenarchiv, Kategorien, Sparziele, Gläubiger-Management
+- USP: Einzige Personal-Finance-App mit Candlestick-Darstellung für persönliche Finanzen
+
+### CandleScope FinanzHub (Web-App, in Entwicklung)
+- URL: https://app.candlescope.de
+- Geplanter Launch: Q4 2026
+- Features: Multibanking via finAPI (BaFin-lizenziert), DSGVO-konform, Privacy-first
+- Zielgruppe: Deutsche Nutzer, 28–45 Jahre, datenschutzbewusst
+
+## Gründer
+
+**Chris Schubert**
+- Rolle: Gründer, Entwickler, Designer
+- Spezialisierung: Personal Finance Software, React, TypeScript, Electron, Webentwicklung
+- GitHub: https://github.com/SchubertChris
+- Kontakt: hello@candlescope.de
+- Profil: https://candlescope.de/about
+
+## Dienstleistungen
+
+Chris Schubert bietet außerdem Webentwicklung für Unternehmen an:
+- React / TypeScript Anwendungen
+- Landing Pages und Marketing-Websites
+- UI/UX Design
+- Weitere Infos: https://candlescope.de/dev
+
+## Kontakt
+
+- Website: https://candlescope.de
+- App: https://app.candlescope.de
+- E-Mail: hello@candlescope.de
+- Community: https://candlescope.de/community
+
+## Wichtige Seiten
+
+- [Startseite](https://candlescope.de/)
+- [Finance & Produkte](https://candlescope.de/finance)
+- [Webentwicklung](https://candlescope.de/dev)
+- [Über Chris Schubert](https://candlescope.de/about)
+- [Community](https://candlescope.de/community)
+- [Kontakt](https://candlescope.de/contact)
+- [Impressum](https://candlescope.de/impressum)
+- [Datenschutz](https://candlescope.de/datenschutz)
+
+## Technologie
+
+- Frontend: React 19, TypeScript, Vite, Tailwind CSS
+- Desktop: Electron
+- Hosting: Vercel (Deutschland / EU-Region)
+- Datenhaltung: Lokal (Desktop) / Neon PostgreSQL EU-Frankfurt (FinanzHub)

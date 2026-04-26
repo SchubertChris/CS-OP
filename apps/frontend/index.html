@@ -18,6 +18,80 @@
     <meta property="og:url" content="https://www.candlescope.de" />
     <meta property="og:type" content="website" />
     <meta name="google-site-verification" content="c5GgbBaRSAqKNj__Nd9b8K1uBZB4w7icG3GYp2XBXaM" />
+    <!-- Schema.org Structured Data — GEO / KI-Sichtbarkeit -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://candlescope.de/#organization",
+          "name": "CandleScope",
+          "url": "https://candlescope.de",
+          "logo": "https://candlescope.de/logo.png",
+          "email": "hello@candlescope.de",
+          "description": "Deutsche Personal-Finance-Software. Privacy-first, einmaliger Kauf, kein Abo, keine Cloud.",
+          "founder": { "@id": "https://candlescope.de/#chris-schubert" },
+          "sameAs": ["https://github.com/SchubertChris"]
+        },
+        {
+          "@type": "Person",
+          "@id": "https://candlescope.de/#chris-schubert",
+          "name": "Chris Schubert",
+          "jobTitle": "Gründer & Entwickler",
+          "url": "https://candlescope.de/about",
+          "email": "hello@candlescope.de",
+          "worksFor": { "@id": "https://candlescope.de/#organization" },
+          "sameAs": ["https://github.com/SchubertChris"],
+          "knowsAbout": [
+            "Personal Finance Software",
+            "React",
+            "TypeScript",
+            "Electron",
+            "Webentwicklung",
+            "Trading",
+            "Haushaltsbuch"
+          ]
+        },
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://candlescope.de/#financeboard",
+          "name": "CandleScope FinanceBoard",
+          "applicationCategory": "FinanceApplication",
+          "operatingSystem": "Windows, macOS",
+          "url": "https://candlescope.de/finance",
+          "description": "Persönliches Haushaltsbuch mit einzigartiger Candlestick-Jahresübersicht, Dokumentenarchiv und Kategoriensystem. Einmaliger Kauf, vollständig lokal, kein Abo.",
+          "author": { "@id": "https://candlescope.de/#chris-schubert" },
+          "publisher": { "@id": "https://candlescope.de/#organization" },
+          "inLanguage": "de-DE",
+          "offers": {
+            "@type": "Offer",
+            "priceCurrency": "EUR",
+            "availability": "https://schema.org/InStock",
+            "description": "Einmaliger Kauf — kein Abo, keine monatlichen Kosten"
+          },
+          "featureList": [
+            "Haushaltsbuch",
+            "Candlestick-Jahresübersicht",
+            "Dokumentenarchiv",
+            "Kategorien-System",
+            "Sparziele",
+            "Einmaliger Kauf ohne Abo",
+            "Vollständig lokal — keine Cloud"
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://candlescope.de/#website",
+          "url": "https://candlescope.de",
+          "name": "CandleScope",
+          "inLanguage": "de-DE",
+          "publisher": { "@id": "https://candlescope.de/#organization" }
+        }
+      ]
+    }
+    </script>
+
     <script>
       (function(){
         var t = localStorage.getItem('cs-theme') || 'light';
