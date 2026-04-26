@@ -3,15 +3,14 @@ import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { AnimatePresence, motion } from 'framer-motion'
-import { EnvelopeSimple, Lock, MapPin, Phone, User } from '@phosphor-icons/react'
+import { EnvelopeSimple, Lock } from '@phosphor-icons/react'
 import { Input } from '../../../shared/components/Input/Input'
 import { Button } from '../../../shared/components/Button/Button'
 import { Alert } from '../../../shared/components/Alert/Alert'
 import { CandleScopeMarkImage } from '../../../shared/components/Logo/CandleScopeMarkImage'
 import { useLogin } from '../hooks/useLogin'
-import { useRegister } from '../hooks/useRegister'
-import { loginSchema, registerSchema } from '../types/auth.types'
-import type { LoginData, RegisterData } from '../types/auth.types'
+import { loginSchema } from '../types/auth.types'
+import type { LoginData } from '../types/auth.types'
 import styles from './LoginPage.module.scss'
 
 type AuthView = 'login' | 'register'
@@ -23,16 +22,12 @@ export default function LoginPage() {
   const [view, setView] = useState<AuthView>('login')
 
   const { login, serverError: loginError, clearError: clearLoginError } = useLogin()
-  const { register: registerUser, serverError: registerError, clearError: clearRegisterError } = useRegister()
 
   const loginForm = useForm<LoginData>({ resolver: zodResolver(loginSchema) })
-  const registerForm = useForm<RegisterData>({ resolver: zodResolver(registerSchema) })
 
   const switchView = (next: AuthView) => {
     clearLoginError()
-    clearRegisterError()
     loginForm.reset()
-    registerForm.reset()
     setView(next)
   }
 
@@ -43,15 +38,8 @@ export default function LoginPage() {
     } catch { /* error in useLogin */ }
   }
 
-  const onRegister = async (data: RegisterData) => {
-    try {
-      await registerUser(data)
-      navigate('/app/dashboard', { replace: true })
-    } catch { /* error in useRegister */ }
-  }
-
-  const serverError = view === 'login' ? loginError : registerError
-  const clearError  = view === 'login' ? clearLoginError : clearRegisterError
+  const serverError = loginError
+  const clearError  = clearLoginError
 
   return (
     <div className={styles.page}>
@@ -148,77 +136,17 @@ export default function LoginPage() {
                   </Button>
                 </form>
               ) : (
-                <form onSubmit={registerForm.handleSubmit(onRegister)} className={styles.formGrid} noValidate>
-                  <Input
-                    id="register-name"
-                    type="text"
-                    placeholder="Anzeigename"
-                    autoComplete="name"
-                    variant="flat"
-                    leading={<User size={16} />}
-                    error={registerForm.formState.errors.displayName?.message}
-                    {...registerForm.register('displayName')}
-                  />
-                  <Input
-                    id="register-email"
-                    type="email"
-                    placeholder="E-Mail"
-                    autoComplete="email"
-                    variant="flat"
-                    leading={<EnvelopeSimple size={16} />}
-                    error={registerForm.formState.errors.email?.message}
-                    {...registerForm.register('email')}
-                  />
-                  <Input
-                    id="register-password"
-                    type="password"
-                    placeholder="Passwort"
-                    autoComplete="new-password"
-                    variant="flat"
-                    leading={<Lock size={16} />}
-                    error={registerForm.formState.errors.password?.message}
-                    {...registerForm.register('password')}
-                  />
-                  <Input
-                    id="register-confirm"
-                    type="password"
-                    placeholder="Passwort bestätigen"
-                    autoComplete="new-password"
-                    variant="flat"
-                    leading={<Lock size={16} />}
-                    error={registerForm.formState.errors.confirmPassword?.message}
-                    {...registerForm.register('confirmPassword')}
-                  />
-                  <Input
-                    id="register-phone"
-                    type="tel"
-                    placeholder="Telefon"
-                    autoComplete="tel"
-                    variant="flat"
-                    leading={<Phone size={16} />}
-                    helper="Optional"
-                    {...registerForm.register('phone')}
-                  />
-                  <Input
-                    id="register-address"
-                    type="text"
-                    placeholder="Adresse"
-                    autoComplete="street-address"
-                    variant="flat"
-                    leading={<MapPin size={16} />}
-                    helper="Optional"
-                    {...registerForm.register('address')}
-                  />
-                  <Button
-                    type="submit"
-                    size="lg"
-                    loading={registerForm.formState.isSubmitting}
-                    disabled={registerForm.formState.isSubmitting}
-                    className={styles.submitBtn}
-                  >
-                    Konto erstellen
-                  </Button>
-                </form>
+                <div className={styles.registerLocked}>
+                  <span className={styles.registerLockedIcon}>🔒</span>
+                  <p className={styles.registerLockedTitle}>Registrierung noch nicht verfügbar</p>
+                  <p className={styles.registerLockedSub}>
+                    Der CandleScope FinanzHub befindet sich noch in der Entwicklung.
+                    Registrierungen sind aktuell nur auf Einladung möglich.
+                  </p>
+                  <a href="mailto:kontakt@candlescope.de" className={styles.registerLockedLink}>
+                    kontakt@candlescope.de
+                  </a>
+                </div>
               )}
             </div>
           </motion.div>

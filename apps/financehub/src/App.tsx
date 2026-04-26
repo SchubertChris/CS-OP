@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 import { router } from './router'
 import { useAppStore } from './store/appStore'
 import { ToastProvider } from './shared/components/Toast/ToastContext'
+import { DevGate } from './shared/components/DevGate/DevGate'
 import { applyThemeFromStore } from './utils/theme'
 
 export default function App() {
@@ -20,8 +21,10 @@ export default function App() {
   }, [theme])
 
   return (
-    <ToastProvider>
-      <RouterProvider router={router} />
-    </ToastProvider>
+    <DevGate>
+      <ToastProvider>
+        <RouterProvider router={router} />
+      </ToastProvider>
+    </DevGate>
   )
 }
