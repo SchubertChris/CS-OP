@@ -143,8 +143,8 @@ export default function LoginPage() {
                     Der CandleScope FinanzHub befindet sich noch in der Entwicklung.
                     Registrierungen sind aktuell nur auf Einladung möglich.
                   </p>
-                  <a href="mailto:kontakt@candlescope.de" className={styles.registerLockedLink}>
-                    kontakt@candlescope.de
+                  <a href="mailto:info@candlescope.de" className={styles.registerLockedLink}>
+                    info@candlescope.de
                   </a>
                 </div>
               )}
