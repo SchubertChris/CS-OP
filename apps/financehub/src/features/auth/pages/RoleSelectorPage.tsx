@@ -29,6 +29,7 @@ export default function RoleSelectorPage() {
   return (
     <div className={styles.page}>
       <div className={styles.bgOrb} aria-hidden="true" />
+      <div className={styles.pageInner}>
       <motion.div
         className={styles.card}
         initial={{ opacity: 0, y: 28, scale: 0.96, filter: 'blur(4px)' }}
@@ -78,6 +79,7 @@ export default function RoleSelectorPage() {
         <ArrowLeft size={12} />
         Zurück zur Website
       </a>
+      </div>
     </div>
   )
 }

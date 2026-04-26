@@ -42,6 +42,15 @@
   background: var(--cs-bg);
 }
 
+.pageInner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
 // ─── Marmor-Orbs (Pseudo-Elemente + 1 Extra-Div im JSX) ──────────────────────
 
 .page::before {
@@ -402,8 +411,6 @@
 // ─── Back to Website ──────────────────────────────────────────────────────────
 
 .backToSite {
-  position: relative;
-  z-index: 1;
   display: inline-flex;
   align-items: center;
   gap: var(--space-1);

@@ -137,6 +137,7 @@ export default function LoginPage() {
   return (
     <div className={styles.page}>
       <div className={styles.bgOrb} aria-hidden="true" />
+      <div className={styles.pageInner}>
       <motion.div
         className={styles.card}
         layout
@@ -352,6 +353,7 @@ export default function LoginPage() {
         <ArrowLeft size={12} />
         Zurück zur Website
       </a>
+      </div>
     </div>
   )
 }
