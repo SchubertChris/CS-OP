@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { AnimatePresence, motion } from 'framer-motion'
-import { EnvelopeSimple, Lock } from '@phosphor-icons/react'
+import { EnvelopeSimple, Lock, ShieldCheck, ArrowLeft, WarningCircle } from '@phosphor-icons/react'
 import { Input } from '../../../shared/components/Input/Input'
 import { Button } from '../../../shared/components/Button/Button'
 import { Alert } from '../../../shared/components/Alert/Alert'
@@ -11,17 +11,23 @@ import { CandleScopeMarkImage } from '../../../shared/components/Logo/CandleScop
 import { useLogin } from '../hooks/useLogin'
 import { loginSchema } from '../types/auth.types'
 import type { LoginData } from '../types/auth.types'
+import type { UserRole } from '../../../store/authStore'
 import styles from './LoginPage.module.scss'
 
-type AuthView = 'login' | 'register'
+type AuthView = 'login' | 'register' | '2fa'
 
 const CARD_TRANSITION = { duration: 0.55, ease: [0.16, 1, 0.3, 1] as const }
 
 export default function LoginPage() {
   const navigate = useNavigate()
   const [view, setView] = useState<AuthView>('login')
+  const [pendingRole, setPendingRole] = useState<UserRole | null>(null)
+  const [pendingToken, setPendingToken] = useState<string | null>(null)
+  const [totpCode, setTotpCode] = useState('')
+  const [totpError, setTotpError] = useState<string | false>(false)
+  const [totpLoading, setTotpLoading] = useState(false)
 
-  const { login, serverError: loginError, clearError: clearLoginError } = useLogin()
+  const { login, verifyAdminTotp, serverError: loginError, clearError: clearLoginError } = useLogin()
 
   const loginForm = useForm<LoginData>({ resolver: zodResolver(loginSchema) })
 
@@ -33,13 +39,45 @@ export default function LoginPage() {
 
   const onLogin = async (data: LoginData) => {
     try {
-      const role = await login(data)
-      navigate(role === 'admin' ? '/role-select' : '/app/dashboard', { replace: true })
+      const { role, requiresTwoFactor, tempToken } = await login(data)
+      if (requiresTwoFactor) {
+        setPendingRole(role)
+        setPendingToken(tempToken ?? null)
+        setTotpCode('')
+        setTotpError(false)
+        setView('2fa')
+      } else {
+        navigate(role === 'admin' ? '/role-select' : '/app/dashboard', { replace: true })
+      }
     } catch { /* error in useLogin */ }
   }
 
-  const serverError = loginError
-  const clearError  = clearLoginError
+  const onVerify2FA = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!/^\d{6}$/.test(totpCode)) {
+      setTotpError('Bitte 6 Ziffern eingeben.')
+      setTimeout(() => setTotpError(false), 2500)
+      return
+    }
+    setTotpLoading(true)
+    try {
+      if (pendingToken) {
+        await verifyAdminTotp(totpCode, pendingToken)
+      } else {
+        await new Promise<void>((r) => setTimeout(r, 600))
+      }
+      navigate(pendingRole === 'admin' ? '/role-select' : '/app/dashboard', { replace: true })
+    } catch (err) {
+      setTotpCode('')
+      const msg = err instanceof Error ? err.message : 'Ungültiger Code.'
+      setTotpError(msg)
+      setTimeout(() => setTotpError(false), 3000)
+    } finally {
+      setTotpLoading(false)
+    }
+  }
+
+  const cardMaxWidth = view === 'register' ? 620 : view === '2fa' ? 440 : 500
 
   return (
     <div className={styles.page}>
@@ -47,35 +85,36 @@ export default function LoginPage() {
       <motion.div
         className={styles.card}
         layout
-        style={{ maxWidth: view === 'register' ? 620 : 500 }}
+        style={{ maxWidth: cardMaxWidth }}
         initial={{ opacity: 0, y: 28, scale: 0.96, filter: 'blur(4px)' }}
         animate={{ opacity: 1, y: 0,  scale: 1,    filter: 'blur(0px)' }}
         transition={CARD_TRANSITION}
       >
 
-        {/* ── Tab Toggle — Pill-Stil, card overflow:hidden clippt Ecken ── */}
-        <div className={styles.tabs} role="tablist">
-          <button
-            type="button"
-            role="tab"
-            aria-selected={view === 'login'}
-            className={`${styles.tab} ${view === 'login' ? styles.tabActive : ''}`}
-            onClick={() => switchView('login')}
-          >
-            Anmelden
-          </button>
-          <button
-            type="button"
-            role="tab"
-            aria-selected={view === 'register'}
-            className={`${styles.tab} ${view === 'register' ? styles.tabActive : ''}`}
-            onClick={() => switchView('register')}
-          >
-            Registrieren
-          </button>
-        </div>
+        {/* Tab Toggle — nur bei login/register */}
+        {view !== '2fa' && (
+          <div className={styles.tabs} role="tablist">
+            <button
+              type="button"
+              role="tab"
+              aria-selected={view === 'login'}
+              className={`${styles.tab} ${view === 'login' ? styles.tabActive : ''}`}
+              onClick={() => switchView('login')}
+            >
+              Anmelden
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={view === 'register'}
+              className={`${styles.tab} ${view === 'register' ? styles.tabActive : ''}`}
+              onClick={() => switchView('register')}
+            >
+              Registrieren
+            </button>
+          </div>
+        )}
 
-        {/* ── Inhalt — blurt kurz beim Tab-Wechsel ── */}
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={view}
@@ -84,58 +123,62 @@ export default function LoginPage() {
             exit={{ filter: 'blur(8px)', opacity: 0.6 }}
             transition={{ duration: 0.18, ease: 'easeInOut' }}
           >
-            {/* layout auf dem Header damit Framer den Gegentransform für
-                den card-layout-Wechsel anwenden kann — Logo verzerrt sonst */}
             <motion.div layout className={styles.brandedHeader}>
-              <CandleScopeMarkImage size={64} className={styles.brandMark} />
+              <CandleScopeMarkImage size={64} />
               <span className={styles.brandName}>CandleScope</span>
             </motion.div>
 
             <div className={styles.formContent}>
-              {serverError && (
-                <Alert variant="error" dismissible onDismiss={clearError}>
-                  {serverError}
-                </Alert>
+
+              {/* ── Login ─────────────────────────────────────────────── */}
+              {view === 'login' && (
+                <>
+                  {loginError && (
+                    <Alert variant="error" dismissible onDismiss={clearLoginError}>
+                      {loginError}
+                    </Alert>
+                  )}
+                  <form onSubmit={loginForm.handleSubmit(onLogin)} className={styles.form} noValidate>
+                    <Input
+                      id="login-email"
+                      type="email"
+                      placeholder="E-Mail"
+                      autoComplete="email"
+                      variant="flat"
+                      leading={<EnvelopeSimple size={16} />}
+                      error={loginForm.formState.errors.email?.message}
+                      {...loginForm.register('email')}
+                    />
+                    <div className={styles.passwordGroup}>
+                      <Input
+                        id="login-password"
+                        type="password"
+                        placeholder="Passwort"
+                        autoComplete="current-password"
+                        variant="flat"
+                        leading={<Lock size={16} />}
+                        error={loginForm.formState.errors.password?.message}
+                        {...loginForm.register('password')}
+                      />
+                      <a href="/forgot-password" className={styles.forgotLink}>
+                        Passwort vergessen?
+                      </a>
+                    </div>
+                    <Button
+                      type="submit"
+                      size="lg"
+                      loading={loginForm.formState.isSubmitting}
+                      disabled={loginForm.formState.isSubmitting}
+                      className={styles.submitBtn}
+                    >
+                      Anmelden
+                    </Button>
+                  </form>
+                </>
               )}
 
-              {view === 'login' ? (
-                <form onSubmit={loginForm.handleSubmit(onLogin)} className={styles.form} noValidate>
-                  <Input
-                    id="login-email"
-                    type="email"
-                    placeholder="E-Mail"
-                    autoComplete="email"
-                    variant="flat"
-                    leading={<EnvelopeSimple size={16} />}
-                    error={loginForm.formState.errors.email?.message}
-                    {...loginForm.register('email')}
-                  />
-                  <div className={styles.passwordGroup}>
-                    <Input
-                      id="login-password"
-                      type="password"
-                      placeholder="Passwort"
-                      autoComplete="current-password"
-                      variant="flat"
-                      leading={<Lock size={16} />}
-                      error={loginForm.formState.errors.password?.message}
-                      {...loginForm.register('password')}
-                    />
-                    <a href="/forgot-password" className={styles.forgotLink}>
-                      Passwort vergessen?
-                    </a>
-                  </div>
-                  <Button
-                    type="submit"
-                    size="lg"
-                    loading={loginForm.formState.isSubmitting}
-                    disabled={loginForm.formState.isSubmitting}
-                    className={styles.submitBtn}
-                  >
-                    Anmelden
-                  </Button>
-                </form>
-              ) : (
+              {/* ── Registrierung gesperrt ────────────────────────────── */}
+              {view === 'register' && (
                 <div className={styles.registerLocked}>
                   <Lock size={32} weight="duotone" className={styles.registerLockedIcon} />
                   <p className={styles.registerLockedTitle}>Registrierung noch nicht verfügbar</p>
@@ -148,6 +191,52 @@ export default function LoginPage() {
                   </a>
                 </div>
               )}
+
+              {/* ── Zwei-Faktor-Authentifizierung ─────────────────────── */}
+              {view === '2fa' && (
+                <form onSubmit={onVerify2FA} className={styles.twoFAForm}>
+                  <div className={styles.twoFAHint}>
+                    <ShieldCheck size={18} weight="duotone" />
+                    <p>Gib den 6-stelligen Code aus deiner Authenticator-App ein.</p>
+                  </div>
+                  <input
+                    className={`${styles.totpInput}${totpError ? ` ${styles.totpInputError}` : ''}`}
+                    type="text"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    maxLength={6}
+                    placeholder="000000"
+                    value={totpCode}
+                    onChange={(e) => setTotpCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                    autoFocus
+                    autoComplete="one-time-code"
+                  />
+                  {totpError && (
+                    <span className={styles.totpError}>
+                      <WarningCircle size={13} weight="fill" />
+                      {totpError}
+                    </span>
+                  )}
+                  <Button
+                    type="submit"
+                    size="lg"
+                    loading={totpLoading}
+                    disabled={totpLoading || totpCode.length < 6}
+                    className={styles.submitBtn}
+                  >
+                    Bestätigen
+                  </Button>
+                  <button
+                    type="button"
+                    className={styles.twoFABack}
+                    onClick={() => { setView('login'); setTotpCode(''); setTotpError(false) }}
+                  >
+                    <ArrowLeft size={14} />
+                    Zurück zur Anmeldung
+                  </button>
+                </form>
+              )}
+
             </div>
           </motion.div>
         </AnimatePresence>

@@ -2,8 +2,10 @@ import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { verifyToken, issueAdminToken, setAdminCookie } from '../_lib/auth'
 import { verifyTotp } from '../_lib/totp'
 import { isRateLimited } from '../_lib/rate-limit'
+import { setCorsHeaders } from '../_lib/cors'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
+  setCorsHeaders(req, res)
   if (req.method === 'OPTIONS') return res.status(200).end()
   if (req.method !== 'POST') return res.status(405).end()
 
