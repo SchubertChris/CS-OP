@@ -398,3 +398,22 @@
 
   &:hover { color: var(--cs-text); }
 }
+
+// ─── Back to Website ──────────────────────────────────────────────────────────
+
+.backToSite {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-top: var(--space-4);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--cs-text-3);
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  transition: color var(--transition-fast);
+
+  &:hover { color: var(--cs-text-2); }
+}

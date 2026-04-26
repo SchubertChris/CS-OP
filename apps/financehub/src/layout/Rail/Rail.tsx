@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom'
 import {
   House, ArrowsLeftRight, CreditCard, ChartLine,
   Target, Note, Buildings, FolderOpen, Envelope,
-  Desktop, Gear, PushPin, PushPinSlash,
+  Desktop, Gear, PushPin, PushPinSlash, Globe,
 } from '@phosphor-icons/react'
 import { Avatar } from '../../shared/components/Avatar/Avatar'
 import { CandleScopeMarkImage } from '../../shared/components/Logo/CandleScopeMarkImage'
@@ -127,6 +127,16 @@ export function Rail({ onExpandedChange }: RailProps) {
           </NavLink>
         ))}
       </div>
+
+      {/* Back to website */}
+      <a
+        href="https://candlescope.de"
+        className={styles.siteLink}
+        title="Zurück zur Website"
+      >
+        <span className={styles.itemIcon}><Globe size={18} weight="regular" /></span>
+        <span className={styles.itemLabel}>candlescope.de</span>
+      </a>
 
       {/* User area */}
       <button className={styles.userArea}>

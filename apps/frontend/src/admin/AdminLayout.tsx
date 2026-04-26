@@ -5,7 +5,7 @@
 
 import { useState, useEffect } from 'react'
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
-import { LayoutDashboard, FileText, Settings, LogOut, Eye } from 'lucide-react'
+import { LayoutDashboard, FileText, Settings, LogOut, Eye, Layers } from 'lucide-react'
 import { useAdminStore } from '../store/useAdminStore'
 import { usePagesStore } from '../store/usePagesStore'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -100,6 +100,11 @@ export default function AdminLayout() {
               <span className="font-mono text-[10px] text-[var(--cs-text-3)] tracking-[0.06em]">{dateStr}</span>
             </div>
             <div className="w-px h-5 bg-[#C9A84C]/15" />
+            <a href="https://app.candlescope.de" target="_blank" rel="noreferrer"
+              className="flex items-center gap-1.5 font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--cs-text-2)] hover:text-[#C9A84C] transition-colors">
+              <Layers size={13} strokeWidth={1.5} />
+              <span className="hidden sm:block">Hub</span>
+            </a>
             <button onClick={() => window.open('/', '_blank')}
               className="flex items-center gap-1.5 font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--cs-text-2)] hover:text-[#C9A84C] transition-colors">
               <Eye size={13} strokeWidth={1.5} />

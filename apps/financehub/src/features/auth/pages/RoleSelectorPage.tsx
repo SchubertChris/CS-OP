@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { SquaresFour, Shield } from '@phosphor-icons/react'
+import { SquaresFour, Shield, ArrowLeft } from '@phosphor-icons/react'
 import { useAuthStore } from '../../../store/authStore'
 import { CandleScopeMarkImage } from '../../../shared/components/Logo/CandleScopeMarkImage'
 import styles from './RoleSelectorPage.module.scss'
@@ -73,6 +73,11 @@ export default function RoleSelectorPage() {
           </motion.a>
         </div>
       </motion.div>
+
+      <a href="https://candlescope.de" className={styles.backToSite}>
+        <ArrowLeft size={12} />
+        Zurück zur Website
+      </a>
     </div>
   )
 }

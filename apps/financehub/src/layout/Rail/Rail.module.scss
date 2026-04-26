@@ -261,3 +261,42 @@
   opacity: 1;
   transform: translateX(0);
 }
+
+// ─── Back to Website ──────────────────────────────────────────────────────────
+
+.siteLink {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 0 var(--space-3);
+  height: 36px;
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  color: var(--cs-text-3);
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast);
+
+  &:hover {
+    background: var(--cs-surface-active);
+    color: var(--cs-text-2);
+  }
+
+  .itemIcon { flex-shrink: 0; }
+
+  .itemLabel {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateX(-6px);
+    transition: opacity var(--transition-fast), transform var(--transition-fast);
+  }
+}
+
+.rail[data-expanded="true"] .siteLink .itemLabel {
+  opacity: 1;
+  transform: translateX(0);
+}
+

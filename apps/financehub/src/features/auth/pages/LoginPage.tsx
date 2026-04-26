@@ -347,6 +347,11 @@ export default function LoginPage() {
         </AnimatePresence>
 
       </motion.div>
+
+      <a href="https://candlescope.de" className={styles.backToSite}>
+        <ArrowLeft size={12} />
+        Zurück zur Website
+      </a>
     </div>
   )
 }
