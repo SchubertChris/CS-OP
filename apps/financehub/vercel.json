@@ -1,6 +1,6 @@
 {
   "buildCommand": "pnpm --filter @candlescope/financehub build",
-  "outputDirectory": "apps/financehub/dist",
+  "outputDirectory": "dist",
   "installCommand": "pnpm install",
   "framework": null,
   "rewrites": [
