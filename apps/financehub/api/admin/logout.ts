@@ -11,7 +11,7 @@ export default async function handler(req: Request): Promise<Response> {
 
   // Cookie löschen
   const headers = new Headers({ 'Content-Type': 'application/json' })
-  headers.set('Set-Cookie', 'cs_admin=; HttpOnly; Secure; SameSite=Lax; Domain=.candlescope.de; Path=/; Max-Age=0')
+  headers.set('Set-Cookie', 'cs_admin=; HttpOnly; Secure; SameSite=Strict; Domain=.candlescope.de; Path=/; Max-Age=0')
 
   return new Response(JSON.stringify({ success: true }), { status: upstream.status, headers })
 }

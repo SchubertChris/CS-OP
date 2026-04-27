@@ -38,7 +38,7 @@ export default async function handler(req: Request): Promise<Response> {
   if (tokenMatch) {
     headers.set(
       'Set-Cookie',
-      `cs_admin=${tokenMatch[1]}; HttpOnly; Secure; SameSite=Lax; Domain=.candlescope.de; Path=/; Max-Age=${MAX_AGE}`,
+      `cs_admin=${tokenMatch[1]}; HttpOnly; Secure; SameSite=Strict; Domain=.candlescope.de; Path=/; Max-Age=${MAX_AGE}`,
     )
   }
 

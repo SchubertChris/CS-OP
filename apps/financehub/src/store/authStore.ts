@@ -50,7 +50,8 @@ export const useAuthStore = create<AuthStore>()(
     (set) => ({
       user: null,
       isAuthenticated: false,
-      isLoading: false,
+      // true beim Start — Bootstrap in App.tsx validiert und setzt false
+      isLoading: true,
       requiresTwoFA: false,
       roleSelected: false,
       sessionId: null,
@@ -69,10 +70,9 @@ export const useAuthStore = create<AuthStore>()(
     }),
     {
       name: 'cs-auth',
-      // Nur user + isAuthenticated persistieren — roleSelected bleibt ephemer
+      // Nur user persistieren — isAuthenticated wird bei jedem Start server-seitig validiert
       partialize: (state) => ({
         user: state.user,
-        isAuthenticated: state.isAuthenticated,
       }),
     }
   )

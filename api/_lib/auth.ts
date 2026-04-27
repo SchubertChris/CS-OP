@@ -1,9 +1,11 @@
 import { SignJWT, jwtVerify } from 'jose'
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 
-const JWT_SECRET = new TextEncoder().encode(
-  process.env.jwt_secret ?? 'fallback-dev-secret-change-in-prod'
-)
+const jwtSecretValue = process.env.jwt_secret
+if (!jwtSecretValue && process.env.VERCEL_ENV === 'production') {
+  throw new Error('FATAL: jwt_secret env var is not set in production')
+}
+const JWT_SECRET = new TextEncoder().encode(jwtSecretValue ?? 'fallback-dev-secret-change-in-prod')
 
 export async function issueTempToken(): Promise<string> {
   return new SignJWT({ step: 'totp' })
@@ -38,13 +40,13 @@ export function getTokenFromCookie(req: VercelRequest): string | null {
 
 export function setAdminCookie(res: VercelResponse, token: string) {
   res.setHeader('Set-Cookie',
-    `cs_admin=${token}; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=${8 * 3600}`
+    `cs_admin=${token}; HttpOnly; Secure; SameSite=Strict; Domain=.candlescope.de; Path=/; Max-Age=${8 * 3600}`
   )
 }
 
 export function clearAdminCookie(res: VercelResponse) {
   res.setHeader('Set-Cookie',
-    'cs_admin=; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=0'
+    'cs_admin=; HttpOnly; Secure; SameSite=Strict; Domain=.candlescope.de; Path=/; Max-Age=0'
   )
 }
 
