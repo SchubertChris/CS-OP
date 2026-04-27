@@ -7,11 +7,13 @@ interface GuardProps {
 }
 
 export function AuthGuard({ children }: GuardProps) {
-  const { isAuthenticated, isLoading, requiresTwoFA } = useAuthStore()
+  const { isAuthenticated, isLoading, requiresTwoFA, user, roleSelected } = useAuthStore()
 
   if (isLoading) return <FullPageLoader />
   if (!isAuthenticated) return <Navigate to="/login" replace />
   if (requiresTwoFA) return <Navigate to="/verify-2fa" replace />
+  // Admin muss nach jedem Neuladen die Rollenauswahl treffen
+  if (user?.role === 'admin' && !roleSelected) return <Navigate to="/role-select" replace />
 
   return <>{children}</>
 }
@@ -26,9 +28,13 @@ export function SemiAuthGuard({ children }: GuardProps) {
 }
 
 export function RedirectIfAuth({ children }: GuardProps) {
-  const { isAuthenticated, requiresTwoFA } = useAuthStore()
+  const { isAuthenticated, requiresTwoFA, user, roleSelected } = useAuthStore()
 
-  if (isAuthenticated && !requiresTwoFA) return <Navigate to="/app/dashboard" replace />
+  if (isAuthenticated && !requiresTwoFA) {
+    // Admin ohne Rollenauswahl → immer zum RoleSelector
+    if (user?.role === 'admin' && !roleSelected) return <Navigate to="/role-select" replace />
+    return <Navigate to="/app/dashboard" replace />
+  }
 
   return <>{children}</>
 }

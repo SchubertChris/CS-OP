@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 
 export type UserRole = 'admin' | 'moderator' | 'user' | 'user_pro'
 
@@ -33,27 +34,46 @@ interface AuthStore {
   isAuthenticated: boolean
   isLoading: boolean
   requiresTwoFA: boolean
+  // Ephemer (nicht persistiert): wird bei jedem Seitenaufruf zurückgesetzt.
+  // Admins müssen nach jedem Neuladen die Rollenauswahl treffen.
+  roleSelected: boolean
   sessionId: string | null
   setUser: (user: User) => void
   setRequiresTwoFA: (requires: boolean) => void
   setLoading: (loading: boolean) => void
+  selectRole: () => void
   logout: () => void
 }
 
-export const useAuthStore = create<AuthStore>((set) => ({
-  user: null,
-  isAuthenticated: false,
-  isLoading: false,
-  requiresTwoFA: false,
-  sessionId: null,
-  setUser: (user) => set({ user, isAuthenticated: true, isLoading: false }),
-  setRequiresTwoFA: (requiresTwoFA) => set({ requiresTwoFA }),
-  setLoading: (isLoading) => set({ isLoading }),
-  logout: () => set({
-    user: null,
-    isAuthenticated: false,
-    requiresTwoFA: false,
-    sessionId: null,
-    isLoading: false,
-  }),
-}))
+export const useAuthStore = create<AuthStore>()(
+  persist(
+    (set) => ({
+      user: null,
+      isAuthenticated: false,
+      isLoading: false,
+      requiresTwoFA: false,
+      roleSelected: false,
+      sessionId: null,
+      setUser: (user) => set({ user, isAuthenticated: true, isLoading: false, roleSelected: false }),
+      setRequiresTwoFA: (requiresTwoFA) => set({ requiresTwoFA }),
+      setLoading: (isLoading) => set({ isLoading }),
+      selectRole: () => set({ roleSelected: true }),
+      logout: () => set({
+        user: null,
+        isAuthenticated: false,
+        requiresTwoFA: false,
+        sessionId: null,
+        isLoading: false,
+        roleSelected: false,
+      }),
+    }),
+    {
+      name: 'cs-auth',
+      // Nur user + isAuthenticated persistieren — roleSelected bleibt ephemer
+      partialize: (state) => ({
+        user: state.user,
+        isAuthenticated: state.isAuthenticated,
+      }),
+    }
+  )
+)

@@ -17,8 +17,9 @@ const CARD_VARIANTS = {
 }
 
 export default function RoleSelectorPage() {
-  const navigate = useNavigate()
-  const user     = useAuthStore((s) => s.user)
+  const navigate    = useNavigate()
+  const user        = useAuthStore((s) => s.user)
+  const selectRole  = useAuthStore((s) => s.selectRole)
 
   if (!user) return null
 
@@ -45,7 +46,7 @@ export default function RoleSelectorPage() {
             initial="initial"
             animate="animate"
             className={styles.option}
-            onClick={() => navigate('/app/dashboard')}
+            onClick={() => { selectRole(); navigate('/app/dashboard') }}
           >
             <span className={styles.optionIcon}>
               <SquaresFour size={28} weight="duotone" />
