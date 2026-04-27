@@ -17,6 +17,7 @@ import type { LoginData, HubRegisterData } from '../types/auth.types'
 import type { UserRole } from '../../../store/authStore'
 import { useAuthStore } from '../../../store/authStore'
 import { useAppStore } from '../../../store/appStore'
+import { PageBackground } from '../../../shared/components/Background'
 import styles from './LoginPage.module.scss'
 
 type AuthView = 'login' | 'register' | '2fa'
@@ -136,7 +137,7 @@ export default function LoginPage() {
 
   return (
     <div className={styles.page}>
-      <div className={styles.bgOrb} aria-hidden="true" />
+      <PageBackground />
       <div className={styles.pageInner}>
       <motion.div
         className={styles.card}

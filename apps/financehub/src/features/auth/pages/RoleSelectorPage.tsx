@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { SquaresFour, Shield, ArrowLeft } from '@phosphor-icons/react'
 import { useAuthStore } from '../../../store/authStore'
 import { CandleScopeMarkImage } from '../../../shared/components/Logo/CandleScopeMarkImage'
+import { PageBackground } from '../../../shared/components/Background'
 import styles from './RoleSelectorPage.module.scss'
 
 const ADMIN_URL = import.meta.env.VITE_ADMIN_URL ?? 'https://candlescope.de/cs-backstage'
@@ -28,7 +29,7 @@ export default function RoleSelectorPage() {
 
   return (
     <div className={styles.page}>
-      <div className={styles.bgOrb} aria-hidden="true" />
+      <PageBackground />
       <div className={styles.pageInner}>
       <motion.div
         className={styles.card}
