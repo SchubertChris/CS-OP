@@ -27,6 +27,14 @@ export function SemiAuthGuard({ children }: GuardProps) {
   return <>{children}</>
 }
 
+// Nur Auth prüfen — kein roleSelected-Check (für /role-select selbst)
+export function AuthRequired({ children }: GuardProps) {
+  const { isAuthenticated, isLoading } = useAuthStore()
+  if (isLoading) return <FullPageLoader />
+  if (!isAuthenticated) return <Navigate to="/login" replace />
+  return <>{children}</>
+}
+
 export function RedirectIfAuth({ children }: GuardProps) {
   const { isAuthenticated, requiresTwoFA, user, roleSelected } = useAuthStore()
 

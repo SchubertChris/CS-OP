@@ -1,6 +1,6 @@
 import { lazy, Suspense } from 'react'
 import { createBrowserRouter, Navigate } from 'react-router-dom'
-import { AuthGuard, SemiAuthGuard, RedirectIfAuth } from './guards'
+import { AuthGuard, AuthRequired, SemiAuthGuard, RedirectIfAuth } from './guards'
 import { AppShell } from '../layout/AppShell/AppShell'
 
 // Lazy-geladene Seiten
@@ -92,7 +92,7 @@ export const router = createBrowserRouter([
   // AUTH-SEITEN
   // -------------------------------------------------------------------------
   { path: '/login',       element: wrap(<RedirectIfAuth><LoginPage /></RedirectIfAuth>) },
-  { path: '/role-select', element: wrap(<AuthGuard><RoleSelectorPage /></AuthGuard>) },
+  { path: '/role-select', element: wrap(<AuthRequired><RoleSelectorPage /></AuthRequired>) },
   // { path: '/verify-2fa', element: wrap(<SemiAuthGuard><TwoFAVerifyPage /></SemiAuthGuard>) },
   // { path: '/setup-2fa',  element: wrap(<SemiAuthGuard><TwoFASetupPage /></SemiAuthGuard>) },
 
