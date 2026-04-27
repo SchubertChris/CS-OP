@@ -1,12 +1,12 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import type { LoginData } from '../types/auth.types'
 import { useAuthStore, type UserRole } from '../../../store/authStore'
 
-const ADMIN_EMAIL = 'schubert_chris@rocketmail.com'
+// Admin-Email via Vercel Env (VITE_ADMIN_EMAIL) konfigurierbar.
+// Fallback nur für lokale Entwicklung — in Produktion immer setzen.
+const ADMIN_EMAIL = (import.meta.env.VITE_ADMIN_EMAIL as string | undefined) ?? ''
 // Proxy-Endpoints in apps/financehub/api/admin/ — same-origin, kein CORS-Problem.
-// VITE_ADMIN_API_URL kann für lokale vercel dev-Tests überschrieben werden.
-const ADMIN_API   = import.meta.env.VITE_ADMIN_API_URL as string | undefined
-  ?? '/api/admin'
+const ADMIN_API   = (import.meta.env.VITE_ADMIN_API_URL as string | undefined) ?? '/api/admin'
 
 export interface LoginResult {
   role: UserRole
@@ -17,11 +17,13 @@ export interface LoginResult {
 export function useLogin() {
   const setUser = useAuthStore((s) => s.setUser)
   const [serverError, setServerError] = useState<string | null>(null)
+  // Zwischenspeicher: Admin-Email zwischen Login und TOTP-Verify
+  const pendingAdminEmail = useRef<string | null>(null)
 
   async function login(data: LoginData): Promise<LoginResult> {
     setServerError(null)
 
-    const isAdmin = data.email.toLowerCase() === ADMIN_EMAIL.toLowerCase()
+    const isAdmin = ADMIN_EMAIL !== '' && data.email.toLowerCase() === ADMIN_EMAIL.toLowerCase()
 
     if (isAdmin) {
       const r = await fetch(`${ADMIN_API}/login`, {
@@ -35,15 +37,8 @@ export function useLogin() {
         throw new Error('invalid_credentials')
       }
 
-      setUser({
-        id: 'admin-1',
-        email: data.email,
-        displayName: 'Candlescope',
-        avatarUrl: null,
-        role: 'admin',
-        proExpiresAt: null,
-      })
-
+      // setUser ERST nach erfolgreichem TOTP — nicht hier
+      pendingAdminEmail.current = data.email
       return { role: 'admin', requiresTwoFactor: true, tempToken: json.tempToken }
     }
 
@@ -76,6 +71,17 @@ export function useLogin() {
     })
     const json = await r.json()
     if (!r.ok) throw new Error(json.error ?? 'Falscher Code')
+
+    // TOTP erfolgreich → jetzt erst als Admin einloggen
+    setUser({
+      id: 'admin-1',
+      email: pendingAdminEmail.current ?? '',
+      displayName: 'Candlescope',
+      avatarUrl: null,
+      role: 'admin',
+      proExpiresAt: null,
+    })
+    pendingAdminEmail.current = null
   }
 
   return {
