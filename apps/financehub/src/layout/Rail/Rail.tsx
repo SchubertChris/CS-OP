@@ -3,10 +3,11 @@ import { NavLink } from 'react-router-dom'
 import {
   House, ArrowsLeftRight, CreditCard, ChartLine,
   Target, Note, Buildings, FolderOpen, Envelope,
-  Desktop, Gear, PushPin, PushPinSlash, Globe,
+  Desktop, Gear, PushPin, PushPinSlash, Globe, ShieldStar,
 } from '@phosphor-icons/react'
 import { Avatar } from '../../shared/components/Avatar/Avatar'
 import { CandleScopeMarkImage } from '../../shared/components/Logo/CandleScopeMarkImage'
+import { useAuthStore, isAdmin } from '../../store/authStore'
 import styles from './Rail.module.scss'
 
 interface NavItem {
@@ -37,9 +38,12 @@ interface RailProps {
   onExpandedChange?: (expanded: boolean) => void
 }
 
+const ADMIN_URL = import.meta.env.VITE_ADMIN_URL ?? 'https://candlescope.de/cs-backstage'
+
 export function Rail({ onExpandedChange }: RailProps) {
   const [pinned, setPinned] = useState(false)
   const [hovered, setHovered] = useState(false)
+  const user = useAuthStore((s) => s.user)
 
   const expanded = pinned || hovered
 
@@ -127,6 +131,18 @@ export function Rail({ onExpandedChange }: RailProps) {
           </NavLink>
         ))}
       </div>
+
+      {/* Admin Panel — nur für Admins */}
+      {user && isAdmin(user) && (
+        <a
+          href={ADMIN_URL}
+          className={styles.adminLink}
+          title="Admin Panel"
+        >
+          <span className={styles.itemIcon}><ShieldStar size={18} weight="duotone" /></span>
+          <span className={styles.itemLabel}>Admin Panel</span>
+        </a>
+      )}
 
       {/* Back to website */}
       <a
