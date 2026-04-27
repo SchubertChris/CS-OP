@@ -1,5 +1,5 @@
-import { useLayoutEffect, useState } from 'react'
-import { motion } from 'framer-motion'
+import { useLayoutEffect, useState, useEffect, useRef } from 'react'
+import { motion, useMotionValue, animate } from 'framer-motion'
 
 /* ─── Mobile Check Hook ─────────────────────────────────── */
 // matchMedia statt innerWidth — kein Forced Reflow
@@ -505,6 +505,18 @@ function CommunityBg() {
 function ContactBg() {
   const cx = 75, cy = 45  // center in viewBox 0 0 100 100
   const rings = [12, 22, 32, 42]
+
+  // SVG-nativer Drehpunkt: rotate(angle cx cy) — kein CSS-Transform-Box-Problem
+  const sweepRef = useRef<SVGGElement>(null)
+  const sweepAngle = useMotionValue(0)
+  useEffect(() => {
+    const unsub = sweepAngle.on('change', v =>
+      sweepRef.current?.setAttribute('transform', `rotate(${v} ${cx} ${cy})`)
+    )
+    const anim = animate(sweepAngle, 360, { duration: 5, repeat: Infinity, ease: 'linear' })
+    return () => { unsub(); anim.stop() }
+  }, [sweepAngle])
+
   const blips = [
     { angle: 40,  r: 18, delay: 0.6 },
     { angle: 110, r: 28, delay: 1.2 },
@@ -570,17 +582,14 @@ function ContactBg() {
           stroke="#C9A84C" strokeWidth="0.2" strokeOpacity="0.1"
           initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }} />
 
-        {/* Rotating sweep */}
-        <motion.g
-          animate={{ rotate: 360 }}
-          transition={{ duration: 5, repeat: Infinity, ease: 'linear' }}
-          style={{ transformBox: 'view-box', transformOrigin: `${cx}% ${cy}%` }}>
-          <line x1={`${cx}%`} y1={`${cy}%`} x2={`${cx}%`} y2={`${cy - 43}%`}
+        {/* Rotating sweep — Drehpunkt exakt bei (cx,cy) via SVG rotate(a cx cy) */}
+        <g ref={sweepRef}>
+          <line x1={cx} y1={cy} x2={cx} y2={cy - 43}
             stroke="#C9A84C" strokeWidth="0.4" strokeOpacity="0.5" />
           <path
             d={`M ${cx} ${cy} L ${cx + 43 * Math.cos(-Math.PI / 2 - 0.8)} ${cy + 43 * Math.sin(-Math.PI / 2 - 0.8)} A 43 43 0 0 1 ${cx} ${cy - 43} Z`}
             fill="url(#sweepGrad)" opacity="0.4" />
-        </motion.g>
+        </g>
 
         {/* Blips with decay rings */}
         {blips.map((b, i) => {
