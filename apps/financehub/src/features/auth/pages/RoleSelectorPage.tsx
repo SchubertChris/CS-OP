@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { SquaresFour, Shield, ArrowLeft } from '@phosphor-icons/react'
@@ -18,12 +17,8 @@ const CARD_VARIANTS = {
 }
 
 export default function RoleSelectorPage() {
-  const navigate  = useNavigate()
-  const { user, isAuthenticated } = useAuthStore()
-
-  useEffect(() => {
-    if (!isAuthenticated) navigate('/login', { replace: true })
-  }, [isAuthenticated, navigate])
+  const navigate = useNavigate()
+  const user     = useAuthStore((s) => s.user)
 
   if (!user) return null
 

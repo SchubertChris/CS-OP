@@ -65,12 +65,11 @@ export const router = createBrowserRouter([
   { path: '/dev',         element: wrap(<DevSandboxPage />) },
 
   // -------------------------------------------------------------------------
-  // APP SHELL — Kein AuthGuard noch (kommt in Phase 1 Schritt 5-8 nach Auth-Build)
-  // TODO: <AuthGuard> einbauen wenn LoginPage + RegisterPage fertig
+  // APP SHELL — geschützt durch AuthGuard
   // -------------------------------------------------------------------------
   {
     path: '/app',
-    element: <AppShell netWorth="€24.890" notificationCount={3} />,
+    element: <AuthGuard><AppShell netWorth="€24.890" notificationCount={3} /></AuthGuard>,
     children: [
       { index: true,              element: <Navigate to="/app/dashboard" replace /> },
       { path: 'dashboard',        element: wrap(<DashboardPage />) },
@@ -92,8 +91,8 @@ export const router = createBrowserRouter([
   // -------------------------------------------------------------------------
   // AUTH-SEITEN
   // -------------------------------------------------------------------------
-  { path: '/login',       element: wrap(<LoginPage />) },
-  { path: '/role-select', element: wrap(<RoleSelectorPage />) },
+  { path: '/login',       element: wrap(<RedirectIfAuth><LoginPage /></RedirectIfAuth>) },
+  { path: '/role-select', element: wrap(<AuthGuard><RoleSelectorPage /></AuthGuard>) },
   // { path: '/verify-2fa', element: wrap(<SemiAuthGuard><TwoFAVerifyPage /></SemiAuthGuard>) },
   // { path: '/setup-2fa',  element: wrap(<SemiAuthGuard><TwoFASetupPage /></SemiAuthGuard>) },
 
