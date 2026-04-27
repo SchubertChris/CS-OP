@@ -339,3 +339,44 @@
   transform: translateX(0);
 }
 
+// ─── Logout ───────────────────────────────────────────────────────────────────
+
+.logoutButton {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 0 var(--space-3);
+  height: 36px;
+  width: 100%;
+  border: none;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--cs-text-3);
+  cursor: pointer;
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast);
+
+  &:hover {
+    background: rgba(192, 52, 52, 0.1);
+    color: var(--cs-negative);
+  }
+
+  .itemIcon { flex-shrink: 0; }
+
+  .itemLabel {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateX(-6px);
+    transition: opacity var(--transition-fast), transform var(--transition-fast);
+  }
+}
+
+.rail[data-expanded="true"] .logoutButton .itemLabel {
+  opacity: 1;
+  transform: translateX(0);
+}
+

@@ -3,8 +3,9 @@ import { NavLink } from 'react-router-dom'
 import {
   House, ArrowsLeftRight, CreditCard, ChartLine,
   Target, Note, Buildings, FolderOpen, Envelope,
-  Desktop, Gear, PushPin, PushPinSlash, Globe, ShieldStar,
+  Desktop, Gear, PushPin, PushPinSlash, Globe, ShieldStar, SignOut,
 } from '@phosphor-icons/react'
+import { useNavigate } from 'react-router-dom'
 import { Avatar } from '../../shared/components/Avatar/Avatar'
 import { CandleScopeMarkImage } from '../../shared/components/Logo/CandleScopeMarkImage'
 import { useAuthStore, isAdmin } from '../../store/authStore'
@@ -43,7 +44,17 @@ const ADMIN_URL = import.meta.env.VITE_ADMIN_URL ?? 'https://candlescope.de/cs-b
 export function Rail({ onExpandedChange }: RailProps) {
   const [pinned, setPinned] = useState(false)
   const [hovered, setHovered] = useState(false)
-  const user = useAuthStore((s) => s.user)
+  const user   = useAuthStore((s) => s.user)
+  const logout = useAuthStore((s) => s.logout)
+  const navigate = useNavigate()
+
+  const handleLogout = async () => {
+    if (user && isAdmin(user)) {
+      await fetch('/api/admin/logout', { method: 'POST', credentials: 'include' }).catch(() => {})
+    }
+    logout()
+    navigate('/login', { replace: true })
+  }
 
   const expanded = pinned || hovered
 
@@ -154,10 +165,16 @@ export function Rail({ onExpandedChange }: RailProps) {
         <span className={styles.itemLabel}>candlescope.de</span>
       </a>
 
+      {/* Logout */}
+      <button className={styles.logoutButton} onClick={handleLogout} title="Abmelden">
+        <span className={styles.itemIcon}><SignOut size={18} weight="regular" /></span>
+        <span className={styles.itemLabel}>Abmelden</span>
+      </button>
+
       {/* User area */}
       <button className={styles.userArea}>
-        <Avatar name="Chris Schubert" size="xs" status="online" />
-        <span className={styles.userName}>Chris S.</span>
+        <Avatar name={user?.displayName ?? 'User'} size="xs" status="online" />
+        <span className={styles.userName}>{user?.displayName?.split(' ')[0] ?? 'User'}</span>
       </button>
     </aside>
   )

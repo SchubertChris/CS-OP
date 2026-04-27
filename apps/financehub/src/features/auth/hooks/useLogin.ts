@@ -2,11 +2,7 @@ import { useState, useRef } from 'react'
 import type { LoginData } from '../types/auth.types'
 import { useAuthStore, type UserRole } from '../../../store/authStore'
 
-// Admin-Email via Vercel Env (VITE_ADMIN_EMAIL) konfigurierbar.
-// Fallback nur für lokale Entwicklung — in Produktion immer setzen.
-const ADMIN_EMAIL = (import.meta.env.VITE_ADMIN_EMAIL as string | undefined) ?? ''
-// Proxy-Endpoints in apps/financehub/api/admin/ — same-origin, kein CORS-Problem.
-const ADMIN_API   = (import.meta.env.VITE_ADMIN_API_URL as string | undefined) ?? '/api/admin'
+const ADMIN_API = (import.meta.env.VITE_ADMIN_API_URL as string | undefined) ?? '/api/admin'
 
 export interface LoginResult {
   role: UserRole
@@ -17,33 +13,28 @@ export interface LoginResult {
 export function useLogin() {
   const setUser = useAuthStore((s) => s.setUser)
   const [serverError, setServerError] = useState<string | null>(null)
-  // Zwischenspeicher: Admin-Email zwischen Login und TOTP-Verify
   const pendingAdminEmail = useRef<string | null>(null)
 
   async function login(data: LoginData): Promise<LoginResult> {
     setServerError(null)
 
-    const isAdmin = ADMIN_EMAIL !== '' && data.email.toLowerCase() === ADMIN_EMAIL.toLowerCase()
+    // Immer zuerst Admin-Endpoint versuchen.
+    // Backend entscheidet ob das Passwort dem Admin gehört — kein Email-Hardcoding.
+    const r = await fetch(`${ADMIN_API}/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: data.password }),
+    })
+    const json = await r.json()
 
-    if (isAdmin) {
-      const r = await fetch(`${ADMIN_API}/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password: data.password }),
-      })
-      const json = await r.json()
-      if (!r.ok) {
-        setServerError(json.error ?? 'Ungültige Anmeldedaten')
-        throw new Error('invalid_credentials')
-      }
-
-      // setUser ERST nach erfolgreichem TOTP — nicht hier
+    if (r.ok && json.tempToken) {
+      // Admin-Login erfolgreich → setUser erst NACH TOTP
       pendingAdminEmail.current = data.email
       return { role: 'admin', requiresTwoFactor: true, tempToken: json.tempToken }
     }
 
-    // Mock-Auth für alle anderen Rollen (bis Backend in Phase 1 Step 6 steht)
-    await new Promise<void>((r) => setTimeout(r, 900))
+    // Kein Admin-Passwort → normaler Hub-User (Mock bis Phase 1 Step 6)
+    await new Promise<void>((resolve) => setTimeout(resolve, 900))
 
     if (data.email.toLowerCase().includes('error')) {
       setServerError('E-Mail oder Passwort ist falsch.')
@@ -72,7 +63,7 @@ export function useLogin() {
     const json = await r.json()
     if (!r.ok) throw new Error(json.error ?? 'Falscher Code')
 
-    // TOTP erfolgreich → jetzt erst als Admin einloggen
+    // TOTP erfolgreich → jetzt als Admin einloggen
     setUser({
       id: 'admin-1',
       email: pendingAdminEmail.current ?? '',
