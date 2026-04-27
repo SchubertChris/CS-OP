@@ -574,7 +574,7 @@ function ContactBg() {
         <motion.g
           animate={{ rotate: 360 }}
           transition={{ duration: 5, repeat: Infinity, ease: 'linear' }}
-          style={{ transformOrigin: `${cx}% ${cy}%` }}>
+          style={{ transformBox: 'view-box', transformOrigin: `${cx}% ${cy}%` }}>
           <line x1={`${cx}%`} y1={`${cy}%`} x2={`${cx}%`} y2={`${cy - 43}%`}
             stroke="#C9A84C" strokeWidth="0.4" strokeOpacity="0.5" />
           <path
