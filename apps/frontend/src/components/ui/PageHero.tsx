@@ -569,13 +569,20 @@ function ContactBg() {
             <feGaussianBlur stdDeviation="0.9" />
           </filter>
           <style>{`
+            .radar-icon { opacity: 0; }
             @keyframes radarFlash {
-              0%   { opacity: 0.85; }
-              12%  { opacity: 0.45; }
-              40%  { opacity: 0.15; }
-              100% { opacity: 0.07; }
+              0%   { opacity: 0.9; }
+              18%  { opacity: 0.35; }
+              45%  { opacity: 0; }
+              100% { opacity: 0; }
             }
-            .radar-icon { opacity: 0.07; }
+            .radar-ring { stroke-opacity: 0; transform: scale(0.4); }
+            @keyframes radarPing {
+              0%   { stroke-opacity: 0.65; transform: scale(0.4); }
+              28%  { stroke-opacity: 0;    transform: scale(2.8); }
+              29%  { stroke-opacity: 0;    transform: scale(0.4); }
+              100% { stroke-opacity: 0;    transform: scale(0.4); }
+            }
           `}</style>
         </defs>
 
@@ -616,6 +623,9 @@ function ContactBg() {
               stroke="#C9A84C" strokeWidth="0.45" fill="none"
               strokeLinecap="round" strokeLinejoin="round"
             >
+              {/* Ausbreitungsring beim Ping */}
+              <circle className="radar-ring" r="3.2" fill="none" strokeWidth="0.35"
+                style={{ animation: `radarPing 5s linear ${b.delay}s infinite` }} />
               {i === 0 && /* Mail */ <>
                 <path d="M-2.5,-1.8 L2.5,-1.8 L2.5,1.8 L-2.5,1.8 Z" />
                 <polyline points="-2.5,-1.8 0,0.5 2.5,-1.8" />
