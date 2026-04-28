@@ -517,11 +517,12 @@ function ContactBg() {
     return () => { unsub(); anim.stop() }
   }, [sweepAngle])
 
-  const blips = [
-    { angle: 40,  r: 18, delay: 0.6 },
-    { angle: 110, r: 28, delay: 1.2 },
-    { angle: 200, r: 14, delay: 1.8 },
-    { angle: 310, r: 34, delay: 2.3 },
+  // delay = ((angle + 90) % 360) / 360 * 5 — exakt synchron mit Arm-Rotation
+  const icons = [
+    { angle: 40,  r: 18, delay: 1.806 }, // Mail
+    { angle: 110, r: 28, delay: 2.778 }, // Phone
+    { angle: 200, r: 14, delay: 4.028 }, // Pin
+    { angle: 310, r: 34, delay: 0.556 }, // Chat
   ]
   const toXY = (angle: number, r: number) => ({
     x: cx + r * Math.cos((angle * Math.PI) / 180),
@@ -556,13 +557,26 @@ function ContactBg() {
         viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">
         <defs>
           <radialGradient id="sweepGrad" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="#C9A84C" stopOpacity="0.18" />
+            <stop offset="0%" stopColor="#C9A84C" stopOpacity="0.15" />
             <stop offset="100%" stopColor="#C9A84C" stopOpacity="0" />
           </radialGradient>
           <filter id="bGlow" x="-100%" y="-100%" width="300%" height="300%">
             <feGaussianBlur stdDeviation="1.5" result="blur" />
             <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
           </filter>
+          {/* Weicher Schweif — blendet die harte Kante aus */}
+          <filter id="sweepBlur" x="-15%" y="-15%" width="130%" height="130%">
+            <feGaussianBlur stdDeviation="0.9" />
+          </filter>
+          <style>{`
+            @keyframes radarFlash {
+              0%   { opacity: 0.85; }
+              12%  { opacity: 0.45; }
+              40%  { opacity: 0.15; }
+              100% { opacity: 0.07; }
+            }
+            .radar-icon { opacity: 0.07; }
+          `}</style>
         </defs>
 
         {/* Rings */}
@@ -588,23 +602,35 @@ function ContactBg() {
             stroke="#C9A84C" strokeWidth="0.4" strokeOpacity="0.5" />
           <path
             d={`M ${cx} ${cy} L ${cx + 43 * Math.cos(-Math.PI / 2 - 0.8)} ${cy + 43 * Math.sin(-Math.PI / 2 - 0.8)} A 43 43 0 0 1 ${cx} ${cy - 43} Z`}
-            fill="url(#sweepGrad)" opacity="0.4" />
+            fill="url(#sweepGrad)" opacity="0.5" filter="url(#sweepBlur)" />
         </g>
 
-        {/* Blips with decay rings */}
-        {blips.map((b, i) => {
+        {/* Icons — leuchten auf wenn Arm drüberfährt, synchron mit Rotation */}
+        {icons.map((b, i) => {
           const pt = toXY(b.angle, b.r)
           return (
-            <g key={i}>
-              <motion.circle cx={`${pt.x}%`} cy={`${pt.y}%`} r="0.8%"
-                fill="#C9A84C" filter="url(#bGlow)"
-                initial={{ opacity: 0 }} animate={{ opacity: [0, 0.9, 0.5] }}
-                transition={{ delay: b.delay, duration: 0.5 }} />
-              <motion.circle cx={`${pt.x}%`} cy={`${pt.y}%`} r="3%"
-                fill="none" stroke="#C9A84C"
-                initial={{ scale: 0.3, strokeOpacity: 0 }}
-                animate={{ scale: [0.3, 1.6, 2.2], strokeOpacity: [0, 0.35, 0] }}
-                transition={{ delay: b.delay + 0.1, duration: 1.8, repeat: Infinity, repeatDelay: 5 }} />
+            <g key={i}
+              transform={`translate(${pt.x} ${pt.y})`}
+              className="radar-icon"
+              style={{ animation: `radarFlash 5s linear ${b.delay}s infinite` }}
+              stroke="#C9A84C" strokeWidth="0.45" fill="none"
+              strokeLinecap="round" strokeLinejoin="round"
+            >
+              {i === 0 && /* Mail */ <>
+                <path d="M-2.5,-1.8 L2.5,-1.8 L2.5,1.8 L-2.5,1.8 Z" />
+                <polyline points="-2.5,-1.8 0,0.5 2.5,-1.8" />
+              </>}
+              {i === 1 && /* Smartphone */ <>
+                <rect x="-1.5" y="-2.8" width="3" height="5.5" rx="0.5" />
+                <line x1="-0.6" y1="2" x2="0.6" y2="2" />
+              </>}
+              {i === 2 && /* MapPin */ <>
+                <path d="M-1.8,-1.8 A2.5,2.5,0,0,1,1.8,-1.8 Q1.5,0.5,0,3 Q-1.5,0.5,-1.8,-1.8 Z" />
+                <circle cx="0" cy="-1.2" r="0.75" />
+              </>}
+              {i === 3 && /* Chat */ <>
+                <path d="M-2.5,-2.2 L2.5,-2.2 L2.5,0.8 L0.5,0.8 L0,2.5 L-0.5,0.8 L-2.5,0.8 Z" />
+              </>}
             </g>
           )
         })}
