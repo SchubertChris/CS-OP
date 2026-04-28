@@ -4,9 +4,10 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
-  EnvelopeSimple, Lock, ShieldCheck, ArrowLeft, WarningCircle,
+  EnvelopeSimple, Lock, ArrowLeft,
   UserPlus, User, Key,
 } from '@phosphor-icons/react'
+import { TwoFAVerify } from '../components/TwoFAVerify'
 import { Input } from '../../../shared/components/Input/Input'
 import { Button } from '../../../shared/components/Button/Button'
 import { Alert } from '../../../shared/components/Alert/Alert'
@@ -298,50 +299,14 @@ export default function LoginPage() {
 
               {/* ── Zwei-Faktor-Authentifizierung ──────────────────────── */}
               {view === '2fa' && (
-                <form onSubmit={onVerify2FA} className={styles.twoFAForm}>
-                  <div className={styles.twoFAHint}>
-                    <ShieldCheck size={18} weight="duotone" />
-                    <p>Gib den 6-stelligen Code aus deiner Authenticator-App ein.</p>
-                  </div>
-                  <input
-                    className={`${styles.totpInput}${totpError ? ` ${styles.totpInputError}` : ''}`}
-                    type="text"
-                    inputMode="numeric"
-                    pattern="[0-9]*"
-                    maxLength={6}
-                    placeholder="000000"
-                    value={totpCode}
-                    autoFocus
-                    autoComplete="one-time-code"
-                    onChange={(e) => setTotpCode(e.target.value.replace(/[^0-9]/g, '').slice(0, 6))}
-                    onPaste={(e) => {
-                      e.preventDefault()
-                      const pasted = e.clipboardData.getData('text').replace(/[^0-9]/g, '').slice(0, 6)
-                      setTotpCode(pasted)
-                    }}
-                  />
-                  {totpError && (
-                    <span className={styles.totpError}>
-                      <WarningCircle size={13} weight="fill" />
-                      {totpError}
-                    </span>
-                  )}
-                  <Button
-                    type="submit" size="lg"
-                    loading={totpLoading}
-                    disabled={totpLoading || totpCode.length < 6}
-                    className={styles.submitBtn}
-                  >
-                    Bestätigen
-                  </Button>
-                  <button
-                    type="button" className={styles.twoFABack}
-                    onClick={() => { setView('login'); setTotpCode(''); setTotpError(false) }}
-                  >
-                    <ArrowLeft size={14} />
-                    Zurück zur Anmeldung
-                  </button>
-                </form>
+                <TwoFAVerify
+                  totpCode={totpCode}
+                  totpError={totpError}
+                  isLoading={totpLoading}
+                  onChange={setTotpCode}
+                  onSubmit={onVerify2FA}
+                  onBack={() => { setView('login'); setTotpCode(''); setTotpError(false) }}
+                />
               )}
 
             </div>
