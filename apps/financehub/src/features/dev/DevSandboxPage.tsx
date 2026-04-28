@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { CandlescopeLogo } from '../../shared/components/Logo/CandlescopeLogo'
 import { applyThemeFull, resetTheme } from '../../utils/theme'
 import type { BaseMode, AccentMode } from '../../utils/theme'
-import LoginPage from '../auth/pages/LoginPage'
+import { IntroAnimation } from './IntroAnimation'
 import styles from './DevSandboxPage.module.scss'
+import introStyles from './IntroAnimation.module.scss'
 
 const ACCENTS: { id: AccentMode; label: string; color: string }[] = [
   { id: 'default',  label: 'Gold',     color: '#C9A84C' },
@@ -16,8 +17,12 @@ const ACCENTS: { id: AccentMode; label: string; color: string }[] = [
 // ─── Sandbox-Page ─────────────────────────────────────────────────────────────
 
 export default function DevSandboxPage() {
-  const [mode,   setMode]   = useState<BaseMode>('light')
-  const [accent, setAccent] = useState<AccentMode>('default')
+  const [mode,    setMode]    = useState<BaseMode>('light')
+  const [accent,  setAccent]  = useState<AccentMode>('default')
+  const [playing, setPlaying] = useState(true)
+
+  const replay    = useCallback(() => setPlaying(true), [])
+  const onComplete = useCallback(() => setPlaying(false), [])
 
   // Theme bei Änderung anwenden — mit globalem Wipe
   useEffect(() => {
@@ -90,7 +95,19 @@ export default function DevSandboxPage() {
       {/* ── Canvas ── */}
       <main className={styles.canvas}>
         <div className={styles.canvasInner}>
-          <LoginPage />
+          <div className={introStyles.sandboxWrap}>
+            {playing
+              ? <IntroAnimation key={String(playing)} onComplete={onComplete} />
+              : (
+                <div className={introStyles.doneState}>
+                  <span>Animation abgeschlossen</span>
+                  <button className={introStyles.replayBtn} onClick={replay}>
+                    Replay
+                  </button>
+                </div>
+              )
+            }
+          </div>
         </div>
       </main>
 

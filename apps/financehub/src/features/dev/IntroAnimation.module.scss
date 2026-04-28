@@ -1,0 +1,207 @@
+// =============================================================================
+// INTRO ANIMATION — 3D Tunnel Fly-Through (Post-Login)
+// Immer dark (cinematisch), unabhängig vom App-Theme
+// =============================================================================
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: #080808;
+  z-index: 9999;
+  cursor: pointer;
+  transition: opacity 0.4s ease;
+  user-select: none;
+}
+
+// ─── Post-Processing ──────────────────────────────────────────────────────────
+
+.scanlines {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent,
+    transparent 2px,
+    rgba(201, 168, 76, 0.025) 2px,
+    rgba(201, 168, 76, 0.025) 4px
+  );
+  pointer-events: none;
+  z-index: 10;
+}
+
+.vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 30%, #000 120%);
+  pointer-events: none;
+  z-index: 11;
+}
+
+// ─── 3D Scene ────────────────────────────────────────────────────────────────
+
+.viewport {
+  position: absolute;
+  inset: 0;
+  perspective: 900px;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.world {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+// ─── HUD ─────────────────────────────────────────────────────────────────────
+
+.hud {
+  position: absolute;
+  inset: 1.75rem;
+  z-index: 20;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-family: 'Geist Mono', 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: rgba(201, 168, 76, 0.45);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.hudRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.hudAccent {
+  color: #C9A84C;
+  font-weight: 700;
+}
+
+.hudLine {
+  flex: 1;
+  height: 1px;
+  background: rgba(201, 168, 76, 0.2);
+  margin: 0 12px;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: -2px;
+    width: 5px;
+    height: 5px;
+    background: #C9A84C;
+  }
+}
+
+// ─── Corner Brackets ─────────────────────────────────────────────────────────
+
+.corner {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
+  z-index: 20;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    background: rgba(201, 168, 76, 0.5);
+  }
+
+  &.tl { top: 1.75rem; left: 1.75rem;
+    &::before { top: 0; left: 0; width: 20px; height: 1px; }
+    &::after  { top: 0; left: 0; width: 1px;  height: 20px; }
+  }
+  &.tr { top: 1.75rem; right: 1.75rem;
+    &::before { top: 0; right: 0; width: 20px; height: 1px; }
+    &::after  { top: 0; right: 0; width: 1px;  height: 20px; }
+  }
+  &.bl { bottom: 1.75rem; left: 1.75rem;
+    &::before { bottom: 0; left: 0; width: 20px; height: 1px; }
+    &::after  { bottom: 0; left: 0; width: 1px;  height: 20px; }
+  }
+  &.br { bottom: 1.75rem; right: 1.75rem;
+    &::before { bottom: 0; right: 0; width: 20px; height: 1px; }
+    &::after  { bottom: 0; right: 0; width: 1px;  height: 20px; }
+  }
+}
+
+// ─── Skip Hint ───────────────────────────────────────────────────────────────
+
+.skip {
+  position: absolute;
+  bottom: 1.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  font-family: 'Geist Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: rgba(201, 168, 76, 0.3);
+  text-transform: uppercase;
+  pointer-events: none;
+  animation: blinkSlow 2s ease-in-out infinite;
+}
+
+@keyframes blinkSlow {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.7; }
+}
+
+// ─── Sandbox Wrapper ─────────────────────────────────────────────────────────
+
+.sandboxWrap {
+  position: relative;
+  width: 100%;
+  height: calc(100dvh - 52px);
+  background: #111;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.replayBtn {
+  position: absolute;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 10;
+  padding: 8px 20px;
+  background: transparent;
+  border: 1px solid rgba(201, 168, 76, 0.4);
+  border-radius: 4px;
+  color: rgba(201, 168, 76, 0.7);
+  font-family: 'Geist Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: rgba(201, 168, 76, 0.08);
+    border-color: #C9A84C;
+    color: #C9A84C;
+  }
+}
+
+.doneState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  color: rgba(201, 168, 76, 0.5);
+  font-family: 'Geist Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
