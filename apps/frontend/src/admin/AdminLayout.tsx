@@ -104,7 +104,7 @@ export default function AdminLayout() {
               <span className="font-mono text-[10px] text-[var(--cs-text-3)] tracking-[0.06em]">{dateStr}</span>
             </div>
             <div className="hidden md:block w-px h-5 bg-[#C9A84C]/15" />
-            <a href="https://app.candlescope.de" target="_blank" rel="noreferrer"
+            <a href="https://app.candlescope.de/app/dashboard" target="_blank" rel="noreferrer"
               className="hidden sm:flex items-center gap-1.5 font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--cs-text-2)] hover:text-[#C9A84C] transition-colors">
               <Layers size={13} strokeWidth={1.5} />
               <span className="hidden md:block">Hub</span>

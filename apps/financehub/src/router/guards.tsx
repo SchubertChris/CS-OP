@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import { useEffect, type ReactNode } from 'react'
 import { Navigate } from 'react-router-dom'
 import { useAuthStore } from '../store/authStore'
 
@@ -9,11 +9,16 @@ interface GuardProps {
 export function AuthGuard({ children }: GuardProps) {
   const { isAuthenticated, isLoading, requiresTwoFA, user, roleSelected } = useAuthStore()
 
+  // Admin navigiert direkt zu /app/* (z.B. vom Admin-Panel) → Hub-Modus implizit aktivieren
+  useEffect(() => {
+    if (user?.role === 'admin' && !roleSelected && isAuthenticated && !isLoading) {
+      useAuthStore.getState().selectRole()
+    }
+  }, [isAuthenticated, isLoading, user, roleSelected])
+
   if (isLoading) return <FullPageLoader />
   if (!isAuthenticated) return <Navigate to="/login" replace />
   if (requiresTwoFA) return <Navigate to="/verify-2fa" replace />
-  // Admin muss nach jedem Neuladen die Rollenauswahl treffen
-  if (user?.role === 'admin' && !roleSelected) return <Navigate to="/role-select" replace />
 
   return <>{children}</>
 }
