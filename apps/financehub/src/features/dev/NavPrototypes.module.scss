@@ -1,0 +1,544 @@
+// =============================================================================
+// NAV PROTOTYPES — 5 Navigation-Varianten für die Dev-Sandbox
+// =============================================================================
+
+// ─── Root ────────────────────────────────────────────────────────────────────
+
+.root {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+// ─── Section (je 100vh) ───────────────────────────────────────────────────────
+
+.section {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background: var(--cs-bg);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid var(--cs-border-subtle);
+}
+
+// ─── Mock Background ─────────────────────────────────────────────────────────
+
+.mockBg {
+  position: absolute;
+  inset: 0;
+  padding: 72px 48px 48px;
+}
+
+.mockGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  height: 100%;
+  opacity: 0.18;
+}
+
+.mockCard {
+  background: var(--cs-surface);
+  border: 1px solid var(--cs-border-subtle);
+  border-radius: 12px;
+}
+
+.sectionLabel {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--cs-text-3);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+// ─── Shared FAB ──────────────────────────────────────────────────────────────
+
+.fab {
+  position: relative;
+  z-index: 10;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--cs-gold);
+  color: #1A1410;
+  box-shadow: 0 8px 28px color-mix(in srgb, var(--cs-gold) 45%, transparent);
+  transition:
+    transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    background 0.25s,
+    color 0.25s,
+    box-shadow 0.25s;
+
+  &:hover { transform: scale(1.08); }
+
+  &.fabOpen {
+    background: var(--cs-surface-2);
+    color: var(--cs-text-2);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    transform: rotate(45deg);
+  }
+}
+
+// =============================================================================
+// 01 — RADIAL COMMAND RING
+// =============================================================================
+
+.radialRoot {
+  position: absolute;
+  bottom: 56px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.radialItem {
+  position: absolute;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 1px solid var(--cs-border-subtle);
+  background: var(--cs-surface);
+  color: var(--cs-text-2);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  font-family: var(--font-mono);
+  font-size: 6px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition:
+    transform 0.38s cubic-bezier(0.34, 1.4, 0.64, 1),
+    opacity 0.28s ease,
+    background 0.2s,
+    border-color 0.2s,
+    color 0.2s;
+
+  &:hover {
+    background: var(--cs-surface-2);
+    color: var(--cs-text);
+  }
+
+  &.active {
+    border-color: color-mix(in srgb, var(--cs-gold) 50%, transparent);
+    background: color-mix(in srgb, var(--cs-gold) 10%, transparent);
+    color: var(--cs-gold);
+  }
+}
+
+// =============================================================================
+// 02 — COMMAND PALETTE
+// =============================================================================
+
+.cmdTrigger {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px;
+  background: var(--cs-surface);
+  border: 1px solid var(--cs-border-subtle);
+  border-radius: 8px;
+  color: var(--cs-text-3);
+  font-family: var(--font-body);
+  font-size: 13px;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s, color 0.2s;
+
+  span { flex: 1; text-align: left; }
+
+  kbd {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    padding: 2px 6px;
+    background: var(--cs-surface-2);
+    border-radius: 4px;
+    color: var(--cs-text-3);
+  }
+
+  &:hover {
+    border-color: color-mix(in srgb, var(--cs-gold) 35%, transparent);
+    background: var(--cs-surface-2);
+    color: var(--cs-text-2);
+  }
+}
+
+.paletteBackdrop {
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, var(--cs-bg) 55%, transparent);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 100px;
+  z-index: 50;
+}
+
+.palette {
+  width: 500px;
+  max-width: calc(100vw - 48px);
+  background: var(--cs-surface);
+  border: 1px solid var(--cs-border-subtle);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+
+.paletteSearch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--cs-border-subtle);
+  color: var(--cs-text-3);
+
+  input {
+    flex: 1;
+    background: none;
+    border: none;
+    outline: none;
+    font-family: var(--font-body);
+    font-size: 15px;
+    color: var(--cs-text);
+
+    &::placeholder { color: var(--cs-text-3); }
+  }
+
+  button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--cs-text-3);
+    display: flex;
+    padding: 2px;
+    border-radius: 4px;
+    transition: color 0.15s;
+
+    &:hover { color: var(--cs-text); }
+  }
+}
+
+.paletteList { padding: 6px; }
+
+.paletteItem {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 10px 12px;
+  background: none;
+  border: none;
+  border-radius: 8px;
+  color: var(--cs-text-2);
+  font-family: var(--font-body);
+  font-size: 14px;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s, color 0.15s;
+
+  &:hover {
+    background: var(--cs-surface-2);
+    color: var(--cs-text);
+  }
+}
+
+.paletteArrow {
+  margin-left: auto;
+  opacity: 0.3;
+  flex-shrink: 0;
+}
+
+.paletteEmpty {
+  padding: 16px 12px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--cs-text-3);
+  text-align: center;
+}
+
+// =============================================================================
+// 03 — MORPHING PILL DOCK
+// =============================================================================
+
+.pill {
+  position: absolute;
+  bottom: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--cs-surface);
+  border: 1px solid var(--cs-border-subtle);
+  border-radius: 100px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.28), 0 0 0 1px rgba(255, 255, 255, 0.04);
+  transition: all 0.32s cubic-bezier(0.34, 1.15, 0.64, 1);
+  white-space: nowrap;
+
+  &.pillOpen {
+    display: flex;
+    padding: 6px;
+    gap: 4px;
+  }
+}
+
+.pillClosed {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--cs-text);
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.pillDots {
+  display: flex;
+  gap: 4px;
+  margin-left: 6px;
+}
+
+.pillDot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--cs-text-3);
+  transition: all 0.22s;
+}
+
+.pillDotActive {
+  background: var(--cs-gold);
+  width: 12px;
+  border-radius: 2px;
+}
+
+.pillItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 14px;
+  background: none;
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+  color: var(--cs-text-2);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: all 0.18s;
+  white-space: nowrap;
+
+  &:hover {
+    background: var(--cs-surface-2);
+    color: var(--cs-text);
+  }
+
+  &.active {
+    background: color-mix(in srgb, var(--cs-gold) 12%, transparent);
+    color: var(--cs-gold);
+  }
+}
+
+// =============================================================================
+// 04 — EDGE PEEK DRAWER
+// =============================================================================
+
+.edgeTab {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 56px;
+  background: var(--cs-surface);
+  border: 1px solid var(--cs-border-subtle);
+  border-left: none;
+  border-radius: 0 8px 8px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  cursor: pointer;
+  z-index: 20;
+  transition: width 0.2s, background 0.2s;
+
+  &:hover, &.edgeTabOpen {
+    width: 22px;
+    background: var(--cs-surface-2);
+  }
+}
+
+.edgeTabPip {
+  width: 2px;
+  height: 8px;
+  background: var(--cs-text-3);
+  border-radius: 1px;
+}
+
+.drawer {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 256px;
+  background: var(--cs-surface);
+  border-right: 1px solid var(--cs-border-subtle);
+  box-shadow: 8px 0 32px rgba(0, 0, 0, 0.25);
+  transform: translateX(-100%);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 15;
+  display: flex;
+  flex-direction: column;
+
+  &.drawerOpen { transform: translateX(0); }
+}
+
+.drawerHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 20px 16px;
+  border-bottom: 1px solid var(--cs-border-subtle);
+}
+
+.drawerBrand {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  color: var(--cs-gold);
+  text-transform: uppercase;
+}
+
+.drawerClose {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--cs-text-3);
+  display: flex;
+  padding: 4px;
+  border-radius: 4px;
+  transition: color 0.15s, background 0.15s;
+
+  &:hover { color: var(--cs-text); background: var(--cs-surface-2); }
+}
+
+.drawerItems {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 12px 10px;
+}
+
+.drawerItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  background: none;
+  border: none;
+  border-radius: 8px;
+  color: var(--cs-text-2);
+  font-family: var(--font-body);
+  font-size: 14px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s;
+
+  &:hover {
+    background: var(--cs-surface-2);
+    color: var(--cs-text);
+  }
+
+  &.active {
+    background: color-mix(in srgb, var(--cs-gold) 10%, transparent);
+    color: var(--cs-gold);
+  }
+}
+
+// =============================================================================
+// 05 — SPEED DIAL STACK
+// =============================================================================
+
+.speedRoot {
+  position: absolute;
+  bottom: 48px;
+  right: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.speedItem {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition:
+    transform 0.3s cubic-bezier(0.34, 1.2, 0.64, 1),
+    opacity 0.24s ease;
+  cursor: pointer;
+}
+
+.speedLabel {
+  font-family: var(--font-body);
+  font-size: 12px;
+  padding: 5px 10px;
+  background: var(--cs-surface);
+  border: 1px solid var(--cs-border-subtle);
+  border-radius: 6px;
+  color: var(--cs-text-2);
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.speedBtn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--cs-border-subtle);
+  background: var(--cs-surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--cs-text-2);
+  flex-shrink: 0;
+  transition: all 0.2s;
+
+  &:hover {
+    background: var(--cs-surface-2);
+    color: var(--cs-text);
+  }
+
+  &.active {
+    background: color-mix(in srgb, var(--cs-gold) 12%, transparent);
+    border-color: color-mix(in srgb, var(--cs-gold) 40%, transparent);
+    color: var(--cs-gold);
+  }
+}
