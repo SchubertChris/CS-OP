@@ -33,24 +33,10 @@ export function useLogin() {
       return { role: 'admin', requiresTwoFactor: true, tempToken: json.tempToken }
     }
 
-    // Kein Admin-Passwort → normaler Hub-User (Mock bis Phase 1 Step 6)
+    // Kein Admin → Login abweisen bis echtes User-Auth-Backend bereit ist
     await new Promise<void>((resolve) => setTimeout(resolve, 900))
-
-    if (data.email.toLowerCase().includes('error')) {
-      setServerError('E-Mail oder Passwort ist falsch.')
-      throw new Error('invalid_credentials')
-    }
-
-    setUser({
-      id: 'mock-1',
-      email: data.email,
-      displayName: data.email.split('@')[0],
-      avatarUrl: null,
-      role: 'user',
-      proExpiresAt: null,
-    })
-
-    return { role: 'user', requiresTwoFactor: false }
+    setServerError('E-Mail oder Passwort ist falsch.')
+    throw new Error('invalid_credentials')
   }
 
   async function verifyAdminTotp(code: string, tempToken: string): Promise<void> {

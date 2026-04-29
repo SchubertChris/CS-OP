@@ -16,7 +16,6 @@ import { useLogin } from '../hooks/useLogin'
 import { loginSchema, hubRegisterSchema } from '../types/auth.types'
 import type { LoginData, HubRegisterData } from '../types/auth.types'
 import type { UserRole } from '../../../store/authStore'
-import { useAuthStore } from '../../../store/authStore'
 import { useAppStore } from '../../../store/appStore'
 import { PageBackground } from '../../../shared/components/Background'
 import styles from './LoginPage.module.scss'
@@ -30,7 +29,6 @@ const CARD_TRANSITION = { duration: 0.55, ease: [0.16, 1, 0.3, 1] as const }
 
 export default function LoginPage() {
   const navigate  = useNavigate()
-  const setUser   = useAuthStore((s) => s.setUser)
   const setTheme  = useAppStore((s) => s.setTheme)
   const [searchParams] = useSearchParams()
 
@@ -115,17 +113,10 @@ export default function LoginPage() {
     }
   }
 
-  const onRegister = async (data: HubRegisterData) => {
+  const onRegister = async (_data: HubRegisterData) => {
+    // Registrierung deaktiviert bis User-Auth-Backend bereit ist (Phase 1 Step 6)
     await new Promise<void>((r) => setTimeout(r, 800))
-    setUser({
-      id: `user-${Date.now()}`,
-      email: data.email,
-      displayName: data.displayName,
-      avatarUrl: null,
-      role: 'user',
-      proExpiresAt: null,
-    })
-    navigate('/intro', { replace: true })
+    // no-op — Einladungscode-Check verhindert echte Registrierung bereits
   }
 
   const animKey = view === 'register'
