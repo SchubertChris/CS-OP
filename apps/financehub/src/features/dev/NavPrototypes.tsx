@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import {
   SquaresFour, Wallet, ChartLineUp, Target, Gear, Archive,
-  MagnifyingGlass, X, Plus, ArrowRight,
+  MagnifyingGlass, X, Plus, ArrowRight, CaretDown,
 } from '@phosphor-icons/react'
 import styles from './NavPrototypes.module.scss'
 
@@ -266,6 +266,204 @@ function SpeedDial() {
   )
 }
 
+// ── 06 — Sliding Tab Bar ────────────────────────────────────────────────────────
+
+function TabBar() {
+  const [active, setActive] = useState(0)
+  const tabsRef  = useRef<HTMLDivElement>(null)
+  const activeRef = useRef<HTMLButtonElement>(null)
+  const [ind, setInd] = useState({ left: 0, width: 0 })
+
+  useEffect(() => {
+    const el = activeRef.current
+    const parent = tabsRef.current
+    if (el && parent) setInd({ left: el.offsetLeft, width: el.offsetWidth })
+  }, [active])
+
+  return (
+    <section className={styles.section}>
+      <MockBg title="06 — Sliding Tab Bar" />
+      <div ref={tabsRef} className={styles.tabBar}>
+        <div
+          className={styles.tabIndicator}
+          style={{ left: ind.left, width: ind.width }}
+        />
+        {NAV.map(({ Icon, label }, i) => (
+          <button
+            key={label}
+            ref={i === active ? activeRef : undefined}
+            className={`${styles.tab} ${active === i ? styles.tabActive : ''}`}
+            onClick={() => setActive(i)}
+          >
+            <Icon size={16} weight={active === i ? 'fill' : 'regular'} />
+            <span>{label}</span>
+          </button>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+// ── 07 — Dynamic Island ──────────────────────────────────────────────────────────
+
+function DynamicIsland() {
+  const [open, setOpen] = useState(false)
+  const [active, setActive] = useState(0)
+  const { Icon: ActiveIcon } = NAV[active]
+
+  return (
+    <section className={styles.section} onClick={() => setOpen(false)}>
+      <MockBg title="07 — Dynamic Island" />
+      <div
+        className={`${styles.island} ${open ? styles.islandOpen : ''}`}
+        onClick={e => { e.stopPropagation(); !open && setOpen(true) }}
+      >
+        {open
+          ? (
+            <div className={styles.islandMenu}>
+              {NAV.map(({ Icon, label }, i) => (
+                <button
+                  key={label}
+                  className={`${styles.islandItem} ${active === i ? styles.active : ''}`}
+                  onClick={() => { setActive(i); setOpen(false) }}
+                >
+                  <Icon size={18} weight={active === i ? 'fill' : 'regular'} />
+                  <span>{label}</span>
+                </button>
+              ))}
+            </div>
+          )
+          : (
+            <div className={styles.islandClosed}>
+              <ActiveIcon size={15} weight="fill" />
+              <span>{NAV[active].label}</span>
+            </div>
+          )
+        }
+      </div>
+    </section>
+  )
+}
+
+// ── 08 — Vertical Side Labels ────────────────────────────────────────────────────
+
+function SideLabels() {
+  const [active, setActive] = useState(0)
+  const [hovered, setHovered] = useState<number | null>(null)
+
+  return (
+    <section className={styles.section}>
+      <MockBg title="08 — Vertical Side Labels" />
+      <nav className={styles.sideNav}>
+        {NAV.map(({ Icon, label }, i) => {
+          const isActive = active === i
+          const isHov    = hovered === i
+          return (
+            <button
+              key={label}
+              className={`${styles.sideItem} ${isActive ? styles.active : ''}`}
+              onMouseEnter={() => setHovered(i)}
+              onMouseLeave={() => setHovered(null)}
+              onClick={() => setActive(i)}
+            >
+              <span className={`${styles.sidePip} ${isActive || isHov ? styles.sidePipActive : ''}`} />
+              <Icon size={15} weight={isActive ? 'fill' : 'regular'} />
+              <span className={styles.sideItemLabel}>{label}</span>
+            </button>
+          )
+        })}
+      </nav>
+    </section>
+  )
+}
+
+// ── 09 — Breadcrumb Flyout ───────────────────────────────────────────────────────
+
+function BreadcrumbFlyout() {
+  const [open, setOpen] = useState(false)
+  const [active, setActive] = useState(0)
+  const { Icon: ActiveIcon } = NAV[active]
+
+  return (
+    <section className={styles.section} onClick={() => setOpen(false)}>
+      <MockBg title="09 — Breadcrumb Flyout" />
+      <div className={styles.breadcrumbBar} onClick={e => e.stopPropagation()}>
+        <span className={styles.bcRoot}>CANDLESCOPE</span>
+        <span className={styles.bcSep}>/</span>
+        <button
+          className={`${styles.bcCurrent} ${open ? styles.bcCurrentOpen : ''}`}
+          onClick={() => setOpen(v => !v)}
+        >
+          <ActiveIcon size={14} weight="fill" />
+          <span>{NAV[active].label}</span>
+          <CaretDown size={12} className={`${styles.bcCaret} ${open ? styles.bcCaretOpen : ''}`} />
+        </button>
+
+        {open && (
+          <div className={styles.bcDropdown}>
+            {NAV.map(({ Icon, label }, i) => (
+              <button
+                key={label}
+                className={`${styles.bcItem} ${active === i ? styles.active : ''}`}
+                onClick={() => { setActive(i); setOpen(false) }}
+              >
+                <Icon size={15} weight={active === i ? 'fill' : 'regular'} />
+                <span>{label}</span>
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
+  )
+}
+
+// ── 10 — Corner Fan ─────────────────────────────────────────────────────────────
+
+function CornerFan() {
+  const [open, setOpen] = useState(false)
+  const [active, setActive] = useState(0)
+  const R = 115
+
+  return (
+    <section className={styles.section} onClick={() => setOpen(false)}>
+      <MockBg title="10 — Corner Fan" />
+      <div className={styles.fanRoot} onClick={e => e.stopPropagation()}>
+        {NAV.map(({ Icon, label }, i) => {
+          const angle = (i / (NAV.length - 1)) * (Math.PI / 2)
+          const x = -Math.sin(angle) * R
+          const y = -Math.cos(angle) * R
+          const isActive = active === i
+          return (
+            <button
+              key={label}
+              className={`${styles.fanItem} ${isActive ? styles.active : ''}`}
+              style={{
+                transform: open
+                  ? `translate(${x}px, ${y}px) scale(1)`
+                  : 'translate(0, 0) scale(0.3)',
+                opacity: open ? 1 : 0,
+                transitionDelay: open ? `${i * 42}ms` : `${(NAV.length - 1 - i) * 26}ms`,
+              }}
+              onClick={() => { setActive(i); setOpen(false) }}
+              title={label}
+            >
+              <Icon size={19} weight={isActive ? 'fill' : 'duotone'} />
+              <span>{label}</span>
+            </button>
+          )
+        })}
+        <button
+          className={`${styles.fab} ${open ? styles.fabOpen : ''}`}
+          onClick={() => setOpen(v => !v)}
+        >
+          {open ? <X size={22} weight="bold" /> : <Plus size={22} weight="bold" />}
+        </button>
+      </div>
+    </section>
+  )
+}
+
 // ── Export ─────────────────────────────────────────────────────────────────────
 
 export function NavPrototypes() {
@@ -276,6 +474,11 @@ export function NavPrototypes() {
       <PillDock />
       <EdgeDrawer />
       <SpeedDial />
+      <TabBar />
+      <DynamicIsland />
+      <SideLabels />
+      <BreadcrumbFlyout />
+      <CornerFan />
     </div>
   )
 }
