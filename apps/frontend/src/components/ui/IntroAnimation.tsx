@@ -30,6 +30,7 @@ const KEYFRAMES = `
 @keyframes sp-orbit-6 { from{transform:rotate(45deg)  translateX(120px) rotate(-45deg)  translateY(6px)}   to{transform:rotate(405deg)  translateX(120px) rotate(-405deg) translateY(6px)} }
 @keyframes sp-orbit-7 { from{transform:rotate(170deg) translateX(58px)  rotate(-170deg) translateY(-10px)} to{transform:rotate(530deg)  translateX(58px)  rotate(-530deg) translateY(-10px)} }
 @keyframes sp-orbit-8 { from{transform:rotate(320deg) translateX(102px) rotate(-320deg) translateY(20px)}  to{transform:rotate(680deg)  translateX(102px) rotate(-680deg) translateY(20px)} }
+@keyframes sp-blink   { 0%,100%{opacity:0.2} 50%{opacity:0.6} }
 `
 
 const PARTICLES: { w: number; delay: string; orbit: string; dur: string; blur: string; dimmed?: boolean }[] = [
@@ -78,7 +79,8 @@ export default function IntroAnimation({ onComplete }: { onComplete: () => void 
           <motion.div
             key="intro"
             className="fixed inset-0 z-[300] flex flex-col items-center justify-center"
-            style={{ background: 'var(--cs-bg)' }}
+            style={{ background: 'var(--cs-bg)', cursor: 'pointer' }}
+            onClick={complete}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5, ease: 'easeInOut' }}
           >
@@ -217,16 +219,15 @@ export default function IntroAnimation({ onComplete }: { onComplete: () => void 
               />
             ))}
 
-            {/* Skip */}
-            <motion.button
-              onClick={complete}
-              className="absolute bottom-9 right-10 font-mono text-[10px] tracking-[0.22em] uppercase hover:text-[#C9A84C] transition-colors duration-300 cursor-pointer"
-              style={{ WebkitAppearance:'none', appearance:'none', background:'none', border:'none', color:'var(--cs-text-3)' }}
+            {/* Click hint */}
+            <motion.p
+              className="absolute bottom-9 left-1/2 -translate-x-1/2 font-mono text-[9px] tracking-[0.22em] uppercase pointer-events-none"
+              style={{ color: 'var(--cs-text-3)', animation: 'sp-blink 2.5s ease-in-out infinite' }}
               initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-              transition={{ delay: 0.8 }}
+              transition={{ delay: 0.9 }}
             >
-              Skip ›
-            </motion.button>
+              Klicken zum Überspringen
+            </motion.p>
           </motion.div>
         )}
       </AnimatePresence>
