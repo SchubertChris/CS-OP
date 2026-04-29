@@ -9,6 +9,7 @@ const DashboardPage      = lazy(() => import('@features/dashboard/pages/Dashboar
 const DevSandboxPage     = lazy(() => import('@features/dev/DevSandboxPage'))
 const LoginPage          = lazy(() => import('@features/auth/pages/LoginPage'))
 const RoleSelectorPage   = lazy(() => import('@features/auth/pages/RoleSelectorPage'))
+const IntroPage          = lazy(() => import('@features/intro/IntroPage'))
 
 // Noch nicht gebaut — Platzhalter für alle /app/* Routen
 const ComingSoon = lazy(() => Promise.resolve({
@@ -92,6 +93,7 @@ export const router = createBrowserRouter([
   // AUTH-SEITEN
   // -------------------------------------------------------------------------
   { path: '/login',       element: wrap(<RedirectIfAuth><LoginPage /></RedirectIfAuth>) },
+  { path: '/intro',       element: wrap(<AuthRequired><IntroPage /></AuthRequired>) },
   { path: '/role-select', element: wrap(<AuthRequired><RoleSelectorPage /></AuthRequired>) },
   // { path: '/verify-2fa', element: wrap(<SemiAuthGuard><TwoFAVerifyPage /></SemiAuthGuard>) },
   // { path: '/setup-2fa',  element: wrap(<SemiAuthGuard><TwoFASetupPage /></SemiAuthGuard>) },

@@ -1,11 +1,9 @@
-import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { SquaresFour, Shield, ArrowLeft } from '@phosphor-icons/react'
 import { useAuthStore } from '../../../store/authStore'
 import { CandleScopeMarkImage } from '../../../shared/components/Logo/CandleScopeMarkImage'
 import { PageBackground } from '../../../shared/components/Background'
-import { IntroAnimation } from '../../intro/IntroAnimation'
 import styles from './RoleSelectorPage.module.scss'
 
 const ADMIN_URL = import.meta.env.VITE_ADMIN_URL ?? 'https://candlescope.de/cs-backstage'
@@ -22,20 +20,8 @@ export default function RoleSelectorPage() {
   const navigate     = useNavigate()
   const user         = useAuthStore((s) => s.user)
   const selectRole   = useAuthStore((s) => s.selectRole)
-  const [showIntro, setShowIntro] = useState(false)
 
   if (!user) return null
-
-  const isLight = document.documentElement.classList.contains('theme-light')
-
-  if (showIntro) {
-    return (
-      <IntroAnimation
-        isLight={isLight}
-        onComplete={() => navigate('/app/dashboard')}
-      />
-    )
-  }
 
   return (
     <div className={styles.page}>
@@ -60,7 +46,7 @@ export default function RoleSelectorPage() {
             initial="initial"
             animate="animate"
             className={styles.option}
-            onClick={() => { selectRole(); setShowIntro(true) }}
+            onClick={() => { selectRole(); navigate('/intro', { replace: true }) }}
           >
             <span className={styles.optionIcon}>
               <SquaresFour size={28} weight="duotone" />

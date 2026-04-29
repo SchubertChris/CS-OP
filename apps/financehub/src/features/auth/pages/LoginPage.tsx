@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { IntroAnimation } from '../../intro/IntroAnimation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -42,7 +41,6 @@ export default function LoginPage() {
     if (t === 'dark' || t === 'light') setTheme(t)
   }, [])
 
-  const [showIntro, setShowIntro]         = useState(false)
   const [view, setView]                   = useState<AuthView>('login')
   const [pendingRole, setPendingRole]     = useState<UserRole | null>(null)
   const [pendingToken, setPendingToken]   = useState<string | null>(null)
@@ -77,8 +75,7 @@ export default function LoginPage() {
         setTotpError(false)
         setView('2fa')
       } else {
-        if (role === 'admin') navigate('/role-select', { replace: true })
-        else setShowIntro(true)
+        navigate(role === 'admin' ? '/role-select' : '/intro', { replace: true })
       }
     } catch { /* error in useLogin */ }
   }
@@ -97,8 +94,7 @@ export default function LoginPage() {
       } else {
         await new Promise<void>((r) => setTimeout(r, 600))
       }
-      if (pendingRole === 'admin') navigate('/role-select', { replace: true })
-      else setShowIntro(true)
+      navigate(pendingRole === 'admin' ? '/role-select' : '/intro', { replace: true })
     } catch (err) {
       setTotpCode('')
       const msg = err instanceof Error ? err.message : 'Ungültiger Code.'
@@ -129,7 +125,7 @@ export default function LoginPage() {
       role: 'user',
       proExpiresAt: null,
     })
-    setShowIntro(true)
+    navigate('/intro', { replace: true })
   }
 
   const animKey = view === 'register'
@@ -139,15 +135,6 @@ export default function LoginPage() {
   const cardMaxWidth =
     view === '2fa' ? 440 :
     (view === 'register' && inviteVerified) ? 560 : 500
-
-  if (showIntro) {
-    return (
-      <IntroAnimation
-        isLight={document.documentElement.classList.contains('theme-light')}
-        onComplete={() => navigate('/app/dashboard', { replace: true })}
-      />
-    )
-  }
 
   return (
     <div className={styles.page}>
