@@ -2,7 +2,8 @@ import { useState, useRef } from 'react'
 import type { LoginData } from '../types/auth.types'
 import { useAuthStore, type UserRole } from '../../../store/authStore'
 
-const ADMIN_API = (import.meta.env.VITE_ADMIN_API_URL as string | undefined) ?? '/api/admin'
+const ADMIN_API    = (import.meta.env.VITE_ADMIN_API_URL as string | undefined) ?? '/api/admin'
+const DEV_PASSWORD = import.meta.env.VITE_DEV_PASSWORD as string | undefined
 
 export interface LoginResult {
   role: UserRole
@@ -17,6 +18,12 @@ export function useLogin() {
 
   async function login(data: LoginData): Promise<LoginResult> {
     setServerError(null)
+
+    // Dev-Bypass: nur lokal, nie in Production (VITE_DEV_PASSWORD darf nie in Vercel stehen)
+    if (DEV_PASSWORD && data.password === DEV_PASSWORD) {
+      pendingAdminEmail.current = data.email
+      return { role: 'admin', requiresTwoFactor: false }
+    }
 
     // Immer zuerst Admin-Endpoint versuchen.
     // Backend entscheidet ob das Passwort dem Admin gehört — kein Email-Hardcoding.

@@ -454,6 +454,126 @@ function LayoutD() {
   )
 }
 
+// ── Layout E — "A + Radial Ring" — wie A, rechte Toolbar → Radial top-right ──
+
+const RADIAL_ACTIONS = [
+  { Icon: Plus,           label: 'Neue Buchung' },
+  { Icon: Printer,        label: 'Drucken'      },
+  { Icon: ShareNetwork,   label: 'Teilen'       },
+  { Icon: Bookmark,       label: 'Merken'       },
+  { Icon: DownloadSimple, label: 'Export'       },
+]
+
+function LayoutE() {
+  const [active,    setActive]    = useState(0)
+  const [pillOpen,  setPillOpen]  = useState(false)
+  const [cmdOpen,   setCmdOpen]   = useState(false)
+  const [notifOpen, setNotifOpen] = useState(false)
+  const [userOpen,  setUserOpen]  = useState(false)
+  const [ringOpen,  setRingOpen]  = useState(false)
+  const unread              = NOTIFS.filter(n => n.unread).length
+  const { Icon: ActiveIcon }= NAV[active]
+
+  // Radial-Geometrie: Spreizung von 160° bis 270° (links + runter, nie aus dem Bildrand)
+  const R = 88
+  const ANGLE_START = 155
+  const ANGLE_END   = 265
+
+  const closeAll = () => { setUserOpen(false); setNotifOpen(false); setPillOpen(false); setRingOpen(false) }
+
+  return (
+    <section className={styles.section} onClick={closeAll}>
+      <span className={styles.label}>E — Floating + Radial Action Ring</span>
+
+      <div className={styles.ghost}>{NAV[active].label}</div>
+
+      {/* Top-left: ⌘K */}
+      <button className={styles.cmdTrigger} onClick={e => { e.stopPropagation(); setCmdOpen(true) }}>
+        <MagnifyingGlass size={13} /><span>Suchen oder navigieren…</span><kbd>⌘K</kbd>
+      </button>
+
+      {/* Top-right: Bell + User + Radial Ring (vertikal gestapelt) */}
+      <div className={styles.topRightCol} onClick={e => e.stopPropagation()}>
+
+        {/* Bell */}
+        <div className={styles.popWrap}>
+          <button className={`${styles.iconBtn} ${notifOpen ? styles.iconActive : ''}`}
+            onClick={() => { setNotifOpen(v => !v); setUserOpen(false); setRingOpen(false) }}>
+            <Bell size={15} weight={notifOpen ? 'fill' : 'regular'} />
+            {unread > 0 && <span className={styles.badge}>{unread}</span>}
+          </button>
+          {notifOpen && <NotifPanel onClose={() => setNotifOpen(false)} />}
+        </div>
+
+        {/* User Chip */}
+        <div className={styles.popWrap}>
+          <button className={`${styles.userChip} ${userOpen ? styles.chipActive : ''}`}
+            onClick={() => { setUserOpen(v => !v); setNotifOpen(false); setRingOpen(false) }}>
+            <div className={styles.avatar}>CS</div>
+            <span>Chris S.</span>
+            <CaretDown size={9} className={`${styles.caret} ${userOpen ? styles.caretOpen : ''}`} />
+          </button>
+          {userOpen && <UserMenu onClose={() => setUserOpen(false)} />}
+        </div>
+
+        {/* Radial Ring Anchor — sitzt direkt unter dem User-Chip */}
+        <div className={styles.ringAnchor}>
+          {RADIAL_ACTIONS.map(({ Icon, label }, i) => {
+            const angle = (ANGLE_START + ((ANGLE_END - ANGLE_START) / (RADIAL_ACTIONS.length - 1)) * i) * (Math.PI / 180)
+            const x = Math.cos(angle) * R   // negativ = links  ✓
+            const y = -Math.sin(angle) * R  // positiv = runter ✓ (CSS y-Achse invertiert)
+            return (
+              <button
+                key={label}
+                className={`${styles.ringItem} ${styles.ringItemActive}`}
+                style={{
+                  transform: ringOpen ? `translate(${x}px, ${y}px) scale(1)` : 'translate(0,0) scale(0.3)',
+                  opacity: ringOpen ? 1 : 0,
+                  transitionDelay: ringOpen ? `${i * 40}ms` : `${(RADIAL_ACTIONS.length - 1 - i) * 25}ms`,
+                }}
+                title={label}
+                onClick={() => setRingOpen(false)}
+              >
+                <Icon size={15} weight="duotone" />
+                <span>{label}</span>
+              </button>
+            )
+          })}
+
+          <button
+            className={`${styles.ringBtn} ${ringOpen ? styles.ringBtnOpen : ''}`}
+            onClick={() => { setRingOpen(v => !v); setUserOpen(false); setNotifOpen(false) }}
+          >
+            {ringOpen ? <X size={15} weight="bold" /> : <Plus size={15} weight="bold" />}
+          </button>
+        </div>
+      </div>
+
+      {/* Bottom-center: Morphing Pill Nav */}
+      <div className={`${styles.pill} ${pillOpen ? styles.pillOpen : ''}`} onClick={e => e.stopPropagation()}>
+        {pillOpen
+          ? NAV.map(({ Icon, label }, i) => (
+              <button key={label} className={`${styles.pillItem} ${active === i ? styles.pillActive : ''}`}
+                onClick={() => { setActive(i); setPillOpen(false) }}>
+                <Icon size={18} weight={active === i ? 'fill' : 'regular'} /><span>{label}</span>
+              </button>
+            ))
+          : (
+            <button className={styles.pillClosed} onClick={() => setPillOpen(true)}>
+              <ActiveIcon size={18} weight="fill" />
+              <span>{NAV[active].label}</span>
+              <div className={styles.dots}>{NAV.map((_, i) => <span key={i} className={`${styles.dot} ${i === active ? styles.dotOn : ''}`} />)}</div>
+            </button>
+          )
+        }
+      </div>
+
+      <StatusBar />
+      {cmdOpen && <CmdPalette onNavigate={setActive} onClose={() => setCmdOpen(false)} />}
+    </section>
+  )
+}
+
 // ── Export ─────────────────────────────────────────────────────────────────────
 
 export function LayoutPrototypes() {
@@ -463,6 +583,7 @@ export function LayoutPrototypes() {
       <LayoutB />
       <LayoutC />
       <LayoutD />
+      <LayoutE />
     </div>
   )
 }
