@@ -142,10 +142,18 @@ function LayoutE() {
   const [notifOpen, setNotifOpen] = useState(false)
   const [userOpen,  setUserOpen]  = useState(false)
   const [ringOpen,  setRingOpen]  = useState(false)
+  const [isDesktop, setIsDesktop] = useState(() => window.matchMedia('(min-width: 1024px)').matches)
   const unread               = NOTIFS.filter(n => n.unread).length
   const { Icon: ActiveIcon } = NAV[active]
 
-  const R           = 110
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 1024px)')
+    const fn = (e: MediaQueryListEvent) => setIsDesktop(e.matches)
+    mq.addEventListener('change', fn)
+    return () => mq.removeEventListener('change', fn)
+  }, [])
+
+  const R           = isDesktop ? 150 : 110
   const ANGLE_START = 180
   const ANGLE_END   = 268
 
@@ -188,19 +196,19 @@ function LayoutE() {
           const x = Math.cos(angle) * R
           const y = -Math.sin(angle) * R
           return (
-            <button
+            <div
               key={label}
-              className={styles.ringItem}
+              className={styles.ringItemWrap}
               style={{
-                transform: ringOpen ? `translate(${x}px, ${y}px) scale(1)` : 'translate(0,0) scale(0.3)',
+                transform: ringOpen ? `translate(${x}px, ${y}px)` : 'translate(0,0) scale(0.3)',
                 opacity: ringOpen ? 1 : 0,
                 transitionDelay: ringOpen ? `${i * 40}ms` : `${(RADIAL_ACTIONS.length - 1 - i) * 25}ms`,
               }}
-              title={label}
-              onClick={() => setRingOpen(false)}
             >
-              <Icon size={16} weight="duotone" />
-            </button>
+              <button className={styles.ringItem} title={label} onClick={() => setRingOpen(false)}>
+                <Icon size={16} weight="duotone" />
+              </button>
+            </div>
           )
         })}
         <button
