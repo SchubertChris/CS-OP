@@ -476,8 +476,8 @@ function LayoutE() {
 
   // Radial-Geometrie: Spreizung von 160° bis 270° (links + runter, nie aus dem Bildrand)
   const R = 88
-  const ANGLE_START = 155
-  const ANGLE_END   = 265
+  const ANGLE_START = 180
+  const ANGLE_END   = 268
 
   const closeAll = () => { setUserOpen(false); setNotifOpen(false); setPillOpen(false); setRingOpen(false) }
 
