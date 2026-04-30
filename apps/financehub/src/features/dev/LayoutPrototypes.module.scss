@@ -1,34 +1,48 @@
-// ── Shared Shell Base ─────────────────────────────────────────────────────────
+// ── Section Base ──────────────────────────────────────────────────────────────
 
-.shell {
+.section {
   position: relative;
   height: 100vh;
   overflow: hidden;
   background: var(--cs-bg);
   font-family: var(--font-body);
   font-size: 13px;
+  border-bottom: 2px solid var(--cs-border);
 }
 
-// Content placeholder
-.content {
+.label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin-top: -60px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cs-border);
+  pointer-events: none;
+  white-space: nowrap;
+  z-index: 0;
+}
+
+.ghost {
   position: absolute;
   inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  pointer-events: none;
-}
-
-.contentHint {
-  font-size: 48px;
+  font-size: 72px;
   font-weight: 800;
   font-family: var(--font-display);
   color: var(--cs-border);
-  letter-spacing: -0.03em;
+  letter-spacing: -0.04em;
+  pointer-events: none;
   user-select: none;
+  z-index: 0;
 }
 
-// ── Command Trigger (⌘K) ──────────────────────────────────────────────────────
+// ── Command Trigger (⌘K pill) ─────────────────────────────────────────────────
 
 .cmdTrigger {
   position: absolute;
@@ -38,7 +52,7 @@
   align-items: center;
   gap: 8px;
   height: 36px;
-  padding: 0 12px;
+  padding: 0 14px;
   border-radius: 9999px;
   border: 1px solid var(--cs-border-neutral);
   background: var(--cs-surface);
@@ -46,9 +60,10 @@
   cursor: pointer;
   font-size: 12px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-  transition: border-color 150ms, box-shadow 150ms;
+  z-index: 10;
+  transition: border-color 150ms;
 
-  span { flex: 1; white-space: nowrap; }
+  span { white-space: nowrap; }
 
   kbd {
     font-size: 10px;
@@ -59,10 +74,45 @@
     color: var(--cs-text-3);
   }
 
+  &:hover { border-color: var(--cs-gold); color: var(--cs-text-2); }
+}
+
+// Big ⌘K (Layout B)
+.bigCmd {
+  position: absolute;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 48px;
+  padding: 0 20px;
+  border-radius: 9999px;
+  border: 1px solid var(--cs-border);
+  background: var(--cs-surface);
+  color: var(--cs-text-2);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+  transition: border-color 180ms, box-shadow 180ms;
+
+  kbd {
+    font-size: 11px;
+    border: 1px solid var(--cs-border-neutral);
+    border-radius: 4px;
+    padding: 2px 7px;
+    font-family: var(--font-mono);
+    color: var(--cs-text-3);
+    margin-left: 8px;
+  }
+
   &:hover {
     border-color: var(--cs-gold);
-    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.15);
-    color: var(--cs-text-2);
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.2), 0 0 0 4px var(--cs-gold-dim);
+    color: var(--cs-text);
   }
 }
 
@@ -80,7 +130,7 @@
 
 .popWrap { position: relative; }
 
-.chipBtn {
+.iconBtn {
   width: 36px;
   height: 36px;
   border-radius: 50%;
@@ -95,7 +145,7 @@
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
   transition: border-color 150ms, color 150ms, background 150ms;
 
-  &:hover, &.chipBtnActive {
+  &:hover, &.iconActive {
     border-color: var(--cs-gold);
     color: var(--cs-gold);
     background: var(--cs-gold-dim);
@@ -106,8 +156,8 @@
   position: absolute;
   top: -4px;
   right: -4px;
-  width: 16px;
-  height: 16px;
+  width: 15px;
+  height: 15px;
   border-radius: 50%;
   background: #EF4444;
   color: white;
@@ -133,10 +183,7 @@
 
   span { font-size: 12px; font-weight: 500; color: var(--cs-text-2); }
 
-  &:hover, &.userChipActive {
-    border-color: var(--cs-gold);
-    background: var(--cs-gold-dim);
-  }
+  &:hover, &.chipActive { border-color: var(--cs-gold); background: var(--cs-gold-dim); }
 }
 
 .caret {
@@ -158,7 +205,7 @@
   justify-content: center;
 }
 
-// ── Panels (shared) ───────────────────────────────────────────────────────────
+// ── Panels ────────────────────────────────────────────────────────────────────
 
 .panel {
   position: absolute;
@@ -171,80 +218,61 @@
   z-index: 100;
   overflow: hidden;
   animation: dropIn 160ms cubic-bezier(0.34, 1.2, 0.64, 1);
+  min-width: 290px;
 }
 
-.notifPanel { width: 300px; }
-
-.panelHeader {
+.panelHead {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 13px 16px;
+  padding: 12px 14px;
   border-bottom: 1px solid var(--cs-border);
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
   color: var(--cs-text);
 }
 
 .notifCount {
-  font-size: 11px;
+  font-size: 10px;
   color: var(--cs-gold);
   background: var(--cs-gold-dim);
-  padding: 2px 8px;
+  padding: 2px 7px;
   border-radius: 9999px;
 }
 
-.notifList { padding: 8px; }
-
-.notifItem {
+.notifRow {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
-  padding: 9px 10px;
-  border-radius: 9px;
+  gap: 9px;
+  padding: 9px 12px;
   cursor: pointer;
   transition: background 120ms;
 
   &:hover { background: var(--cs-surface-2); }
-  &.unread { background: color-mix(in srgb, var(--cs-gold) 5%, transparent); }
+  &.notifUnread { background: color-mix(in srgb, var(--cs-gold) 5%, transparent); }
 }
 
-.notifText {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
+.notifBody { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.notifTitle { font-size: 11px; font-weight: 600; color: var(--cs-text); }
+.notifSub   { font-size: 10px; color: var(--cs-text-3); }
+.notifTime  { font-size: 10px; color: var(--cs-text-3); white-space: nowrap; margin-top: 2px; flex-shrink: 0; }
 
-.notifTitle { font-size: 12px; font-weight: 600; color: var(--cs-text); }
-.notifSub   { font-size: 11px; color: var(--cs-text-3); }
-
-.notifTime {
-  font-size: 10px;
-  color: var(--cs-text-3);
-  white-space: nowrap;
-  margin-top: 2px;
-  flex-shrink: 0;
-}
-
-// User panel
-.userPanel { width: 210px; padding: 8px; }
+.userPanel { min-width: 200px; padding: 8px; }
 
 .userHead {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 8px 10px 12px;
+  padding: 8px 8px 12px;
 }
 
 .avatarLg {
-  width: 36px;
-  height: 36px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   background: var(--cs-gold);
   color: #1A1410;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 800;
   display: flex;
   align-items: center;
@@ -252,23 +280,23 @@
   flex-shrink: 0;
 }
 
-.userName  { font-size: 13px; font-weight: 600; color: var(--cs-text); }
-.userEmail { font-size: 11px; color: var(--cs-text-3); }
+.userName  { font-size: 12px; font-weight: 600; color: var(--cs-text); }
+.userEmail { font-size: 10px; color: var(--cs-text-3); }
 
 .divider { height: 1px; background: var(--cs-border); margin: 4px 0; }
 
-.menuItem {
+.menuRow {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 9px;
   width: 100%;
-  padding: 9px 10px;
+  padding: 8px 10px;
   border-radius: 8px;
   border: none;
   background: transparent;
   color: var(--cs-text-2);
   cursor: pointer;
-  font-size: 13px;
+  font-size: 12px;
   transition: background 120ms, color 120ms;
 
   &:hover { background: var(--cs-surface-2); color: var(--cs-text); }
@@ -291,17 +319,17 @@
   border-radius: 12px 0 0 12px;
   padding: 8px 6px;
   box-shadow: -4px 0 20px rgba(0, 0, 0, 0.08);
+  z-index: 10;
 }
 
-.toolbarItem {
+.toolItem {
   position: relative;
   display: flex;
   align-items: center;
-
-  &:hover .toolbarLabel { opacity: 1; transform: translateX(0); }
+  &:hover .toolLabel { opacity: 1; transform: translateX(0); }
 }
 
-.toolbarLabel {
+.toolLabel {
   position: absolute;
   right: calc(100% + 8px);
   background: var(--cs-surface-2);
@@ -317,7 +345,7 @@
   pointer-events: none;
 }
 
-.toolbarBtn {
+.toolBtn {
   width: 32px;
   height: 32px;
   border-radius: 8px;
@@ -331,10 +359,10 @@
   transition: background 140ms, color 140ms;
 
   &:hover { background: var(--cs-surface-2); color: var(--cs-text-2); }
-  &.toolbarBtnActive { background: var(--cs-gold-dim); color: var(--cs-gold); }
+  &.toolBtnActive { background: var(--cs-gold-dim); color: var(--cs-gold); }
 }
 
-// ── Morphing Pill Nav ─────────────────────────────────────────────────────────
+// ── Morphing Pill Nav (Layout A) ──────────────────────────────────────────────
 
 .pill {
   position: absolute;
@@ -346,9 +374,9 @@
   background: var(--cs-surface);
   border: 1px solid var(--cs-border);
   border-radius: 9999px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.16);
   overflow: hidden;
-  transition: all 300ms cubic-bezier(0.34, 1.2, 0.64, 1);
+  transition: all 280ms cubic-bezier(0.34, 1.2, 0.64, 1);
   z-index: 10;
 }
 
@@ -356,20 +384,16 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 10px 16px;
+  padding: 11px 18px;
   background: none;
   border: none;
   cursor: pointer;
   color: var(--cs-gold);
-
-  span { font-size: 14px; font-weight: 600; }
+  font-size: 14px;
+  font-weight: 600;
 }
 
-.pillDots {
-  display: flex;
-  gap: 4px;
-  margin-left: 4px;
-}
+.dots { display: flex; gap: 4px; margin-left: 4px; }
 
 .dot {
   width: 4px;
@@ -377,7 +401,7 @@
   border-radius: 50%;
   background: var(--cs-text-3);
   transition: background 200ms, transform 200ms;
-  &.dotActive { background: var(--cs-gold); transform: scale(1.3); }
+  &.dotOn { background: var(--cs-gold); transform: scale(1.4); }
 }
 
 .pillItem {
@@ -385,20 +409,210 @@
   flex-direction: column;
   align-items: center;
   gap: 4px;
-  padding: 12px 18px;
+  padding: 13px 16px;
   background: none;
   border: none;
   border-right: 1px solid var(--cs-border-subtle);
   cursor: pointer;
   color: var(--cs-text-3);
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 500;
   white-space: nowrap;
   transition: color 140ms, background 140ms;
 
   &:last-child { border-right: none; }
   &:hover { background: var(--cs-surface-2); color: var(--cs-text-2); }
-  &.pillItemActive { color: var(--cs-gold); background: color-mix(in srgb, var(--cs-gold) 6%, transparent); }
+  &.pillActive { color: var(--cs-gold); background: color-mix(in srgb, var(--cs-gold) 7%, transparent); }
+}
+
+// ── Layout B — Top Strip ──────────────────────────────────────────────────────
+
+.topStrip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  background: var(--cs-surface);
+  border-bottom: 1px solid var(--cs-border-neutral);
+  z-index: 10;
+}
+
+.stripLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logoMini {
+  width: 24px;
+  height: 24px;
+  border-radius: 7px;
+  background: var(--cs-gold);
+  color: #1A1410;
+  font-size: 9px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stripDots {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.navDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--cs-border-neutral);
+  border: none;
+  cursor: pointer;
+  transition: background 200ms, transform 200ms;
+
+  &:hover { background: var(--cs-text-3); }
+  &.navDotOn { background: var(--cs-gold); transform: scale(1.5); }
+}
+
+.stripRight {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+// ── Layout C — Radial FAB ─────────────────────────────────────────────────────
+
+.radialRoot {
+  position: absolute;
+  bottom: 60px;
+  right: 60px;
+  width: 0;
+  height: 0;
+  z-index: 10;
+}
+
+.radialItem {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--cs-border);
+  background: var(--cs-surface);
+  color: var(--cs-text-2);
+  cursor: pointer;
+  font-size: 10px;
+  font-weight: 500;
+  white-space: nowrap;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  transition: transform 240ms cubic-bezier(0.34, 1.2, 0.64, 1), opacity 240ms;
+
+  &:hover { border-color: var(--cs-gold); color: var(--cs-gold); }
+  &.radialActive { border-color: var(--cs-gold); color: var(--cs-gold); background: var(--cs-gold-dim); }
+}
+
+.fab {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  border: none;
+  background: var(--cs-gold);
+  color: #1A1410;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(201, 168, 76, 0.35);
+  transition: transform 200ms, background 150ms;
+
+  &:hover { transform: scale(1.06); }
+  &.fabOpen { background: var(--cs-surface-2); color: var(--cs-text-2); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); border: 1px solid var(--cs-border); }
+}
+
+// ── Layout D — Top Bar with sliding tabs ──────────────────────────────────────
+
+.topBar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+  background: var(--cs-surface);
+  border-bottom: 1px solid var(--cs-border-neutral);
+  z-index: 10;
+}
+
+.tabNav {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  position: relative;
+  height: 100%;
+}
+
+.tabIndicator {
+  position: absolute;
+  bottom: 0;
+  height: 2px;
+  background: var(--cs-gold);
+  border-radius: 1px;
+  transition: left 220ms cubic-bezier(0.4, 0, 0.2, 1), width 220ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tabItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 12px;
+  height: 100%;
+  border: none;
+  background: transparent;
+  color: var(--cs-text-3);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: color 150ms;
+
+  &:hover { color: var(--cs-text-2); }
+  &.tabActive { color: var(--cs-gold); }
+}
+
+.barRight {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.searchIconBtn {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--cs-border-neutral);
+  background: transparent;
+  color: var(--cs-text-3);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 150ms, color 150ms;
+
+  &:hover { border-color: var(--cs-gold); color: var(--cs-gold); }
 }
 
 // ── Status Bar ────────────────────────────────────────────────────────────────
@@ -473,8 +687,8 @@
   animation: fadeIn 120ms ease;
 }
 
-.cmdPalette {
-  width: 460px;
+.cmdBox {
+  width: 440px;
   background: var(--cs-surface);
   border: 1px solid var(--cs-border);
   border-radius: 16px;
@@ -518,7 +732,7 @@
 
 .cmdList { padding: 8px; }
 
-.cmdItem {
+.cmdRow {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -537,14 +751,8 @@
   &:hover { background: var(--cs-surface-2); color: var(--cs-text); }
 }
 
-.cmdArrow { color: var(--cs-text-3); margin-left: auto; }
-
-.cmdEmpty {
-  padding: 16px 12px;
-  font-size: 12px;
-  color: var(--cs-text-3);
-  text-align: center;
-}
+.cmdArrow { color: var(--cs-text-3); }
+.cmdEmpty { padding: 16px 12px; font-size: 12px; color: var(--cs-text-3); text-align: center; }
 
 // ── Keyframes ─────────────────────────────────────────────────────────────────
 

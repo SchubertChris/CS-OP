@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { CandlescopeLogo } from '../../shared/components/Logo/CandlescopeLogo'
 import { applyThemeFull, resetTheme } from '../../utils/theme'
 import type { BaseMode, AccentMode } from '../../utils/theme'
-import { AppShellPrototype } from './AppShellPrototype'
+import { LayoutPrototypes } from './LayoutPrototypes'
 import { NavPrototypes } from './NavPrototypes'
 import styles from './DevSandboxPage.module.scss'
 
@@ -71,7 +71,7 @@ export default function DevSandboxPage() {
 
       <main className={styles.canvas}>
         <div className={styles.canvasInner}>
-          <AppShellPrototype />
+          <LayoutPrototypes />
           <NavPrototypes />
         </div>
       </main>
