@@ -58,6 +58,15 @@
   }
 
   &:hover { border-color: var(--cs-gold); color: var(--cs-text-2); }
+
+  @media (min-width: 1024px) {
+    top: 20px;
+    left: 20px;
+    height: 42px;
+    padding: 0 18px;
+    font-size: 13px;
+    gap: 10px;
+  }
 }
 
 // ── Top-right cluster ─────────────────────────────────────────────────────────
@@ -70,6 +79,12 @@
   align-items: center;
   gap: 8px;
   z-index: 20;
+
+  @media (min-width: 1024px) {
+    top: 20px;
+    right: 20px;
+    gap: 10px;
+  }
 }
 
 .popWrap { position: relative; }
@@ -94,6 +109,8 @@
     color: var(--cs-gold);
     background: var(--cs-gold-dim);
   }
+
+  @media (min-width: 1024px) { width: 42px; height: 42px; }
 }
 
 .badge {
@@ -128,6 +145,12 @@
   span { font-size: 12px; font-weight: 500; color: var(--cs-text-2); }
 
   &:hover, &.chipActive { border-color: var(--cs-gold); background: var(--cs-gold-dim); }
+
+  @media (min-width: 1024px) {
+    padding: 5px 14px 5px 5px;
+    gap: 9px;
+    span { font-size: 13px; }
+  }
 }
 
 .caret {
@@ -147,6 +170,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+
+  @media (min-width: 1024px) { width: 30px; height: 30px; font-size: 10px; }
 }
 
 // ── Panels ────────────────────────────────────────────────────────────────────
@@ -256,6 +281,8 @@
   width: 0;
   height: 0;
   z-index: 15;
+
+  @media (min-width: 1024px) { top: 96px; right: 60px; }
 }
 
 .ringItem {
@@ -265,6 +292,8 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
+
+  @media (min-width: 1024px) { top: -21px; right: -21px; width: 42px; height: 42px; }
   border: 1px solid var(--cs-border);
   background: var(--cs-surface);
   color: var(--cs-text-2);
@@ -288,6 +317,8 @@
   right: -16px;
   width: 32px;
   height: 32px;
+
+  @media (min-width: 1024px) { top: -19px; right: -19px; width: 38px; height: 38px; }
   border-radius: 50%;
   border: 1px solid var(--cs-border-neutral);
   background: var(--cs-surface);
@@ -452,6 +483,8 @@
   color: var(--cs-text-3);
   gap: 16px;
   z-index: 5;
+
+  @media (min-width: 1024px) { height: 32px; font-size: 11px; padding: 0 20px; }
 }
 
 .statusLeft   { display: flex; align-items: center; gap: 6px; }
