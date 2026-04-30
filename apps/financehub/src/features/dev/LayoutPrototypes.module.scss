@@ -619,9 +619,10 @@
 
 .statusBar {
   position: absolute;
-  bottom: 4px;
-  left: 8px;
-  right: 8px;
+  bottom: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 80px);
   height: 18px;
   display: flex;
   align-items: center;
