@@ -492,10 +492,8 @@ function LayoutE() {
         <MagnifyingGlass size={13} /><span>Suchen oder navigieren…</span><kbd>⌘K</kbd>
       </button>
 
-      {/* Top-right: Bell + User + Radial Ring (vertikal gestapelt) */}
-      <div className={styles.topRightCol} onClick={e => e.stopPropagation()}>
-
-        {/* Bell */}
+      {/* Top-right: Bell + User — horizontal wie Layout A */}
+      <div className={styles.topRight} onClick={e => e.stopPropagation()}>
         <div className={styles.popWrap}>
           <button className={`${styles.iconBtn} ${notifOpen ? styles.iconActive : ''}`}
             onClick={() => { setNotifOpen(v => !v); setUserOpen(false); setRingOpen(false) }}>
@@ -504,8 +502,6 @@ function LayoutE() {
           </button>
           {notifOpen && <NotifPanel onClose={() => setNotifOpen(false)} />}
         </div>
-
-        {/* User Chip */}
         <div className={styles.popWrap}>
           <button className={`${styles.userChip} ${userOpen ? styles.chipActive : ''}`}
             onClick={() => { setUserOpen(v => !v); setNotifOpen(false); setRingOpen(false) }}>
@@ -515,38 +511,38 @@ function LayoutE() {
           </button>
           {userOpen && <UserMenu onClose={() => setUserOpen(false)} />}
         </div>
+      </div>
 
-        {/* Radial Ring Anchor — sitzt direkt unter dem User-Chip */}
-        <div className={styles.ringAnchor}>
-          {RADIAL_ACTIONS.map(({ Icon, label }, i) => {
-            const angle = (ANGLE_START + ((ANGLE_END - ANGLE_START) / (RADIAL_ACTIONS.length - 1)) * i) * (Math.PI / 180)
-            const x = Math.cos(angle) * R   // negativ = links  ✓
-            const y = -Math.sin(angle) * R  // positiv = runter ✓ (CSS y-Achse invertiert)
-            return (
-              <button
-                key={label}
-                className={`${styles.ringItem} ${styles.ringItemActive}`}
-                style={{
-                  transform: ringOpen ? `translate(${x}px, ${y}px) scale(1)` : 'translate(0,0) scale(0.3)',
-                  opacity: ringOpen ? 1 : 0,
-                  transitionDelay: ringOpen ? `${i * 40}ms` : `${(RADIAL_ACTIONS.length - 1 - i) * 25}ms`,
-                }}
-                title={label}
-                onClick={() => setRingOpen(false)}
-              >
-                <Icon size={15} weight="duotone" />
-                <span>{label}</span>
-              </button>
-            )
-          })}
+      {/* Radial Ring — separates schwebendes Element unterhalb des Top-right-Clusters */}
+      <div className={styles.ringAnchor} onClick={e => e.stopPropagation()}>
+        {RADIAL_ACTIONS.map(({ Icon, label }, i) => {
+          const angle = (ANGLE_START + ((ANGLE_END - ANGLE_START) / (RADIAL_ACTIONS.length - 1)) * i) * (Math.PI / 180)
+          const x = Math.cos(angle) * R
+          const y = -Math.sin(angle) * R
+          return (
+            <button
+              key={label}
+              className={styles.ringItem}
+              style={{
+                transform: ringOpen ? `translate(${x}px, ${y}px) scale(1)` : 'translate(0,0) scale(0.3)',
+                opacity: ringOpen ? 1 : 0,
+                transitionDelay: ringOpen ? `${i * 40}ms` : `${(RADIAL_ACTIONS.length - 1 - i) * 25}ms`,
+              }}
+              title={label}
+              onClick={() => setRingOpen(false)}
+            >
+              <Icon size={15} weight="duotone" />
+              <span>{label}</span>
+            </button>
+          )
+        })}
 
-          <button
-            className={`${styles.ringBtn} ${ringOpen ? styles.ringBtnOpen : ''}`}
-            onClick={() => { setRingOpen(v => !v); setUserOpen(false); setNotifOpen(false) }}
-          >
-            {ringOpen ? <X size={15} weight="bold" /> : <Plus size={15} weight="bold" />}
-          </button>
-        </div>
+        <button
+          className={`${styles.ringBtn} ${ringOpen ? styles.ringBtnOpen : ''}`}
+          onClick={() => { setRingOpen(v => !v); setUserOpen(false); setNotifOpen(false) }}
+        >
+          {ringOpen ? <X size={15} weight="bold" /> : <Plus size={15} weight="bold" />}
+        </button>
       </div>
 
       {/* Bottom-center: Morphing Pill Nav */}

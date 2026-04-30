@@ -366,7 +366,7 @@
 
 .pill {
   position: absolute;
-  bottom: 48px;
+  bottom: 38px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -622,7 +622,7 @@
   bottom: 0;
   left: 0;
   right: 0;
-  height: 28px;
+  height: 18px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -768,11 +768,14 @@
   z-index: 10;
 }
 
-// Anchor-Punkt für den Radial-Ring (0×0, relativ dazu werden Items positioniert)
+// Anchor-Punkt für den Radial-Ring — schwebt separat unterhalb der Top-right-Cluster
 .ringAnchor {
-  position: relative;
+  position: absolute;
+  top: 68px;
+  right: 24px;
   width: 0;
   height: 0;
+  z-index: 15;
 }
 
 // Einzelne Radial-Items
