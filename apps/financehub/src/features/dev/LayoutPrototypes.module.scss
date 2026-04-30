@@ -329,6 +329,12 @@
   overflow: hidden;
   transition: all 280ms cubic-bezier(0.34, 1.2, 0.64, 1);
   z-index: 10;
+  max-width: calc(100vw - 32px);
+
+  @media (min-width: 768px) {
+    max-width: 580px;
+    bottom: 56px;
+  }
 }
 
 .pillClosed {
@@ -342,6 +348,12 @@
   color: var(--cs-gold);
   font-size: 14px;
   font-weight: 600;
+
+  @media (min-width: 768px) {
+    padding: 14px 24px;
+    font-size: 15px;
+    gap: 12px;
+  }
 }
 
 .dots { display: flex; gap: 4px; margin-left: 4px; }
@@ -353,6 +365,11 @@
   background: var(--cs-text-3);
   transition: background 200ms, transform 200ms;
   &.dotOn { background: var(--cs-gold); transform: scale(1.4); }
+
+  @media (min-width: 768px) {
+    width: 5px;
+    height: 5px;
+  }
 }
 
 .pillItem {
@@ -374,6 +391,14 @@
   &:last-child { border-right: none; }
   &:hover { background: var(--cs-surface-2); color: var(--cs-text-2); }
   &.pillActive { color: var(--cs-gold); background: color-mix(in srgb, var(--cs-gold) 7%, transparent); }
+
+  @media (min-width: 768px) {
+    padding: 14px 16px;
+    font-size: 11px;
+    gap: 5px;
+
+    svg { width: 20px; height: 20px; }
+  }
 }
 
 // ── Status Bar ────────────────────────────────────────────────────────────────
