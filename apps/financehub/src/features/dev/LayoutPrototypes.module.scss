@@ -349,6 +349,11 @@
     max-width: 580px;
     bottom: 56px;
   }
+
+  @media (min-width: 1024px) {
+    max-width: 680px;
+    bottom: 60px;
+  }
 }
 
 .pillClosed {
@@ -367,6 +372,12 @@
     padding: 14px 24px;
     font-size: 15px;
     gap: 12px;
+  }
+
+  @media (min-width: 1024px) {
+    padding: 16px 28px;
+    font-size: 16px;
+    gap: 14px;
   }
 }
 
@@ -412,6 +423,14 @@
     gap: 5px;
 
     svg { width: 20px; height: 20px; }
+  }
+
+  @media (min-width: 1024px) {
+    padding: 16px 20px;
+    font-size: 12px;
+    gap: 6px;
+
+    svg { width: 22px; height: 22px; }
   }
 }
 
