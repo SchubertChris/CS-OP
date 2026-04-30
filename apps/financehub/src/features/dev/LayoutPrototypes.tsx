@@ -475,7 +475,7 @@ function LayoutE() {
   const { Icon: ActiveIcon }= NAV[active]
 
   // Radial-Geometrie: Spreizung von 160° bis 270° (links + runter, nie aus dem Bildrand)
-  const R = 88
+  const R = 110
   const ANGLE_START = 180
   const ANGLE_END   = 268
 
@@ -531,8 +531,7 @@ function LayoutE() {
               title={label}
               onClick={() => setRingOpen(false)}
             >
-              <Icon size={15} weight="duotone" />
-              <span>{label}</span>
+              <Icon size={16} weight="duotone" />
             </button>
           )
         })}
