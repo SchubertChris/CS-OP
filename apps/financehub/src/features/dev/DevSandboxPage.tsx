@@ -3,7 +3,6 @@ import { CandlescopeLogo } from '../../shared/components/Logo/CandlescopeLogo'
 import { applyThemeFull, resetTheme } from '../../utils/theme'
 import type { BaseMode, AccentMode } from '../../utils/theme'
 import { LayoutPrototypes } from './LayoutPrototypes'
-import { NavPrototypes } from './NavPrototypes'
 import styles from './DevSandboxPage.module.scss'
 
 const ACCENTS: { id: AccentMode; label: string; color: string }[] = [
@@ -72,7 +71,6 @@ export default function DevSandboxPage() {
       <main className={styles.canvas}>
         <div className={styles.canvasInner}>
           <LayoutPrototypes />
-          <NavPrototypes />
         </div>
       </main>
 
