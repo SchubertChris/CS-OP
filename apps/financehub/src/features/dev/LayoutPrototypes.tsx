@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import {
   SquaresFour, Wallet, ChartLineUp, Target, Archive, Gear,
-  MagnifyingGlass, X, ArrowRight, CaretDown, Plus,
+  MagnifyingGlass, X, ArrowRight, CaretDown, Plus, CurrencyBtc,
   Printer, ShareNetwork, Bookmark, DownloadSimple,
   Bell, User, SignOut, CheckCircle, Info, Warning,
   ArrowCounterClockwise,
@@ -457,7 +457,7 @@ function LayoutD() {
 // ── Layout E — "A + Radial Ring" — wie A, rechte Toolbar → Radial top-right ──
 
 const RADIAL_ACTIONS = [
-  { Icon: Plus,           label: 'Neue Buchung' },
+  { Icon: CurrencyBtc,    label: 'Neue Buchung' },
   { Icon: Printer,        label: 'Drucken'      },
   { Icon: ShareNetwork,   label: 'Teilen'       },
   { Icon: Bookmark,       label: 'Merken'       },
