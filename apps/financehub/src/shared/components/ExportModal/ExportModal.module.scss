@@ -3,13 +3,16 @@
   inset: 0;
   background: transparent;
   display: flex;
-  align-items: flex-start;
-  justify-content: flex-end;
-  padding: 68px 24px 0 0;
+  align-items: center;
+  justify-content: center;
   z-index: 300;
   backdrop-filter: blur(10px);
 
-  @media (min-width: 1024px) { padding: 80px 48px 0 0; }
+  @media (min-width: 1024px) {
+    align-items: flex-start;
+    justify-content: flex-end;
+    padding: 7rem 7rem 0 0;
+  }
   animation: fadeIn 120ms ease;
 }
 
@@ -133,4 +136,5 @@
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
+
 
