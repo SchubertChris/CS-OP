@@ -1,18 +1,19 @@
 .backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.4);
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 300;
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(10px);
   animation: fadeIn 120ms ease;
 }
 
 .modal {
   width: 340px;
   max-width: calc(100vw - 32px);
+  @media (min-width: 1024px) { width: 400px; }
   background: var(--cs-surface);
   border: 1px solid var(--cs-border);
   border-radius: 20px;

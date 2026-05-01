@@ -1,12 +1,12 @@
 .backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.4);
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 300;
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(10px);
   animation: fadeIn 120ms ease;
 }
 
@@ -20,7 +20,7 @@
   overflow: hidden;
   animation: dropIn 180ms cubic-bezier(0.34, 1.2, 0.64, 1);
 
-  @media (min-width: 1024px) { width: 460px; }
+  @media (min-width: 1024px) { width: 400px; }
 }
 
 .head {
