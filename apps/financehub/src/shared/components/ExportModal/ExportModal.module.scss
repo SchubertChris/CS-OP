@@ -11,6 +11,7 @@
 }
 
 .modal {
+  position: relative;
   width: 340px;
   max-width: calc(100vw - 32px);
   @media (min-width: 1024px) { width: 400px; }
