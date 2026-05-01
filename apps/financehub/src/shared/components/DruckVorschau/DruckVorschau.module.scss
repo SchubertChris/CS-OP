@@ -1,18 +1,13 @@
 ﻿.backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.25);
+  background: rgba(0, 0, 0, 0.45);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 500;
-  backdrop-filter: blur(8px);
-  padding: 80px 16px 130px;
+  z-index: 9999;
+  backdrop-filter: blur(6px);
   animation: fadeIn 120ms ease;
-
-  @media (min-width: 1024px) {
-    padding: 100px 32px 165px;
-  }
 }
 
 .modal {
