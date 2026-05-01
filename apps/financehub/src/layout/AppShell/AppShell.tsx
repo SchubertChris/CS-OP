@@ -9,6 +9,7 @@ import {
 } from '@phosphor-icons/react'
 import { useAuthStore } from '../../store/authStore'
 import { useShellStore, type ModalKey } from '../../store/shellStore'
+import { AppFooter } from '../AppFooter/AppFooter'
 import { BuchungsModal } from '../../features/transactions/components/BuchungsModal'
 import { DruckVorschau } from '../../shared/components/DruckVorschau/DruckVorschau'
 import { NotizModal } from '../../features/notes/components/NotizModal'
@@ -258,6 +259,7 @@ export function AppShell() {
       <main className={styles.main}>
         <div className={styles.inner}>
           <Outlet />
+          <AppFooter />
         </div>
       </main>
 
