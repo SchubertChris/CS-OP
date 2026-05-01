@@ -598,7 +598,7 @@
 }
 
 .modalPlaceholder {
-  position: relative;
+  position: absolute;
   background: var(--cs-surface);
   border: 1px solid var(--cs-border);
   border-radius: 16px;
