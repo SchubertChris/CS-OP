@@ -5,15 +5,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 300;
+  z-index: 500;
   backdrop-filter: blur(10px);
+  padding: 80px 16px 130px;
+  animation: fadeIn 120ms ease;
 
   @media (min-width: 1024px) {
-    align-items: flex-start;
-    justify-content: flex-end;
-    padding: 7rem 7rem 0 0;
+    padding: 100px 32px 165px;
   }
-  animation: fadeIn 120ms ease;
 }
 
 .modal {
