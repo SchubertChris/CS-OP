@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { createPortal } from 'react-dom'
 import { Outlet, useNavigate, useLocation } from 'react-router-dom'
 import {
   SquaresFour, Wallet, ChartLineUp, Target, Archive, Gear,
@@ -324,11 +325,11 @@ export function AppShell() {
       {/* Command Palette */}
       {cmdOpen && <ShellCmdPalette onClose={() => setCmdOpen(false)} />}
 
-      {openModal === 'buchung' && <BuchungsModal onClose={() => setOpenModal(null)} />}
-      {openModal === 'druck'   && <DruckVorschau onClose={() => setOpenModal(null)} />}
-      {openModal === 'notes'   && <NotizModal    onClose={() => setOpenModal(null)} />}
-      {openModal === 'export'  && <ExportModal   onClose={() => setOpenModal(null)} />}
-      {openModal === 'teilen'  && <TeilenModal   onClose={() => setOpenModal(null)} />}
+      {openModal === 'buchung' && createPortal(<BuchungsModal onClose={() => setOpenModal(null)} />, document.body)}
+      {openModal === 'druck'   && createPortal(<DruckVorschau onClose={() => setOpenModal(null)} />, document.body)}
+      {openModal === 'notes'   && createPortal(<NotizModal    onClose={() => setOpenModal(null)} />, document.body)}
+      {openModal === 'export'  && createPortal(<ExportModal   onClose={() => setOpenModal(null)} />, document.body)}
+      {openModal === 'teilen'  && createPortal(<TeilenModal   onClose={() => setOpenModal(null)} />, document.body)}
     </div>
   )
 }
