@@ -598,10 +598,7 @@
 }
 
 .modalPlaceholder {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  position: relative;
   background: var(--cs-surface);
   border: 1px solid var(--cs-border);
   border-radius: 16px;
