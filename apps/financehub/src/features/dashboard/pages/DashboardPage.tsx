@@ -1,169 +1,201 @@
-// Placeholder Dashboard — wächst in Phase 2 zu vollständiger Seite
-// Zeigt jetzt: Shell-Test mit realistischen Mock-Daten
+import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts'
+import { TrendUp, Lightbulb } from '@phosphor-icons/react'
+import { useAuthStore } from '../../../store/authStore'
+import styles from './DashboardPage.module.scss'
 
-import { Card }        from '../../../shared/components/Card/Card'
-import { Stat }        from '../../../shared/components/Stat/Stat'
-import { Badge }       from '../../../shared/components/Badge/Badge'
-import { ProgressBar } from '../../../shared/components/ProgressBar/ProgressBar'
-import { Divider }     from '../../../shared/components/Divider/Divider'
-import { Skeleton }    from '../../../shared/components/Skeleton/Skeleton'
-import { Button }      from '../../../shared/components/Button/Button'
-import { Alert }       from '../../../shared/components/Alert/Alert'
-import { Plus, ArrowRight } from '@phosphor-icons/react'
+// ── Mock Data ─────────────────────────────────────────────────────────────────
 
-const TRANSACTIONS = [
-  { name: 'REWE Markt',          date: 'Heute, 14:22',    amount: '-€89,40',    pos: false },
-  { name: 'Gehalt Mai 2026',     date: 'Gestern, 00:01',  amount: '+€4.200,00', pos: true  },
-  { name: 'Netflix',             date: '24. Mai',          amount: '-€17,99',    pos: false },
-  { name: 'Tankstelle Shell',    date: '23. Mai',          amount: '-€62,10',    pos: false },
-  { name: 'Miete Mai',           date: '01. Mai',          amount: '-€1.150,00', pos: false },
+const SPENDING = [
+  { name: 'Wohnen',       value: 1150, pct: 36, color: '#EF4444' },
+  { name: 'Lebensmittel', value:  580, pct: 18, color: '#22C55E' },
+  { name: 'Transport',    value:  320, pct: 10, color: '#3B82F6' },
+  { name: 'Abonnements',  value:  240, pct:  8, color: '#8B5CF6' },
+  { name: 'Gesundheit',   value:  190, pct:  6, color: '#EC4899' },
+  { name: 'Sonstiges',    value:  700, pct: 22, color: '#6B7280' },
 ]
 
-const GOALS = [
-  { label: 'Notfallreserve',    value: 68, variant: 'default'  as const, target: '€10.000' },
-  { label: 'Urlaub Japan 2026', value: 42, variant: 'info'     as const, target: '€3.500'  },
-  { label: 'Neues Fahrrad',     value: 85, variant: 'positive' as const, target: '€800'    },
+const UPCOMING = [
+  { name: 'Miete Juni',       date: 'in 2 Tagen',    amount: '-€1.150', color: '#EF4444' },
+  { name: 'Spotify',          date: 'in 4 Tagen',    amount: '-€9,99',  color: '#1DB954' },
+  { name: 'KFZ-Versicherung', date: 'in 8 Tagen',    amount: '-€84,60', color: '#3B82F6' },
+  { name: 'ADAC Beitrag',     date: 'in 12 Tagen',   amount: '-€11,60', color: '#F59E0B' },
+  { name: 'GEZ Rundfunk',     date: 'in 17 Tagen',   amount: '-€18,36', color: '#6B7280' },
 ]
+
+const INSIGHTS = [
+  {
+    icon: '💡',
+    bg: 'rgba(245, 158, 11, 0.12)',
+    title: 'Sparquote gestiegen',
+    sub: 'Du sparst diesen Monat 24,3 % — 2,1 Punkte mehr als im April. Weiter so!',
+    type: 'positive' as const,
+  },
+  {
+    icon: '⚠️',
+    bg: 'rgba(239, 68, 68, 0.10)',
+    title: 'Essen-Budget fast voll',
+    sub: 'Noch €62 übrig im Lebensmittel-Budget — bis Monatsende sind es noch 18 Tage.',
+    type: 'warning' as const,
+  },
+  {
+    icon: '📅',
+    bg: 'rgba(59, 130, 246, 0.10)',
+    title: 'Miete fällig in 2 Tagen',
+    sub: '€1.150 werden am 1. Juni von Girokonto DKB abgebucht.',
+    type: 'info' as const,
+  },
+]
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+
+function getGreeting() {
+  const h = new Date().getHours()
+  if (h < 12) return 'Guten Morgen'
+  if (h < 18) return 'Guten Tag'
+  return 'Guten Abend'
+}
+
+function CustomTooltip({ active, payload }: { active?: boolean; payload?: { name: string; value: number }[] }) {
+  if (!active || !payload?.length) return null
+  return (
+    <div style={{
+      background: 'var(--cs-surface)',
+      border: '1px solid var(--cs-border)',
+      borderRadius: 8,
+      padding: '6px 10px',
+      fontSize: 12,
+      color: 'var(--cs-text)',
+      boxShadow: '0 4px 16px rgba(0,0,0,0.12)',
+    }}>
+      {payload[0].name}: <strong>€{payload[0].value.toLocaleString('de-DE')}</strong>
+    </div>
+  )
+}
+
+// ── Page ──────────────────────────────────────────────────────────────────────
 
 export default function DashboardPage() {
+  const user = useAuthStore(s => s.user)
+  const firstName = user?.displayName?.split(' ')[0] ?? user?.email?.split('@')[0] ?? 'Chris'
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-5)' }}>
+    <div className={styles.page}>
 
-      {/* Info-Banner */}
-      <Alert variant="info" title="Dashboard in Entwicklung">
-        Phase 2 baut hier die echten Karten auf. Aktuell: Shell + Layout-Test mit Mock-Daten.
-      </Alert>
-
-      {/* Hero KPIs */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 220px), 1fr))',
-        gap: 'var(--space-4)',
-      }}>
-        <Card variant="titled" title="Nettovermögen">
-          <Stat label="Gesamt" value="€24.890" trend={3.2} trendLabel="gg. Vormonat" size="md" />
-        </Card>
-        <Card variant="default">
-          <Stat label="Einnahmen Mai" value="€4.200" trend={5.1} size="md" />
-        </Card>
-        <Card variant="default">
-          <Stat label="Ausgaben Mai" value="€3.180" trend={-2.3} size="md" />
-        </Card>
-        <Card variant="default">
-          <Stat label="Sparquote" value="24.3%" trend={0} trendLabel="stabil" size="md" />
-        </Card>
+      {/* Greeting */}
+      <div className={styles.greeting}>
+        <span className={styles.greetingLine}>{getGreeting()}</span>
+        <h1 className={styles.greetingName}>{firstName} — Mai 2026</h1>
       </div>
 
-      {/* Hauptbereich */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 340px), 1fr))',
-        gap: 'var(--space-4)',
-        alignItems: 'start',
-      }}>
-
-        {/* Letzte Transaktionen */}
-        <Card
-          variant="titled"
-          title="Letzte Transaktionen"
-          action={
-            <Button variant="ghost" size="sm" iconRight={<ArrowRight size={12} />}>
-              Alle
-            </Button>
-          }
-        >
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            {TRANSACTIONS.map((tx, i) => (
-              <div key={i} style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                padding: 'var(--space-2) 0',
-                borderBottom: i < TRANSACTIONS.length - 1
-                  ? '1px solid var(--cs-border-subtle)'
-                  : undefined,
-                gap: 'var(--space-3)',
-              }}>
-                <div style={{ minWidth: 0 }}>
-                  <p style={{
-                    margin: 0,
-                    fontSize: 'var(--text-sm)',
-                    fontWeight: 'var(--fw-medium)',
-                    color: 'var(--cs-text)',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap',
-                  }}>
-                    {tx.name}
-                  </p>
-                  <p style={{ margin: 0, fontSize: 'var(--text-xs)', color: 'var(--cs-text-3)' }}>
-                    {tx.date}
-                  </p>
-                </div>
-                <span style={{
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: 'var(--text-sm)',
-                  fontVariantNumeric: 'tabular-nums',
-                  fontWeight: 'var(--fw-semibold)',
-                  color: tx.pos ? 'var(--cs-positive)' : 'var(--cs-negative)',
-                  flexShrink: 0,
-                }}>
-                  {tx.amount}
-                </span>
-              </div>
-            ))}
-          </div>
-        </Card>
-
-        {/* Sparziele */}
-        <Card
-          variant="titled"
-          title="Sparziele"
-          action={<Badge variant="gold">3 aktiv</Badge>}
-        >
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
-            {GOALS.map(goal => (
-              <div key={goal.label} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
-                <div style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                }}>
-                  <span style={{ fontSize: 'var(--text-sm)', color: 'var(--cs-text-2)', fontWeight: 'var(--fw-medium)' }}>
-                    {goal.label}
-                  </span>
-                  <span style={{
-                    fontSize: 'var(--text-xs)',
-                    fontFamily: 'var(--font-mono)',
-                    color: 'var(--cs-text-3)',
-                  }}>
-                    {goal.value}% · {goal.target}
-                  </span>
-                </div>
-                <ProgressBar value={goal.value} max={100} variant={goal.variant} size="sm" />
-              </div>
-            ))}
-            <Divider variant="subtle" />
-            <Button variant="secondary" size="sm" iconLeft={<Plus size={12} weight="bold" />}>
-              Neues Sparziel
-            </Button>
-          </div>
-        </Card>
-
+      {/* 1 — Net Worth Hero */}
+      <div className={styles.netWorthCard}>
+        <div className={styles.netWorthLabel}>Gesamtvermögen</div>
+        <div className={styles.netWorthValue}>€42.800</div>
+        <div className={styles.netWorthFooter}>
+          <span className={styles.netWorthTrend}>
+            <TrendUp size={14} weight="bold" />
+            +€1.240 · +2,9 %
+          </span>
+          <span className={styles.netWorthDate}>ggü. April 2026</span>
+        </div>
       </div>
 
-      {/* Skeleton — "noch in Entwicklung" Karte */}
-      <Card variant="titled" title="Auswertung (kommt in Phase 2)">
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
-          <Skeleton variant="rect" height={120} />
-          <div style={{ display: 'flex', gap: 'var(--space-3)' }}>
-            <Skeleton variant="rect" height={60} />
-            <Skeleton variant="rect" height={60} />
-            <Skeleton variant="rect" height={60} />
+      {/* 2 — Cash Flow */}
+      <div className={styles.cashRow}>
+        <div className={styles.cashCard}>
+          <div className={styles.cashLabel}>Einnahmen Mai</div>
+          <div className={`${styles.cashValue} ${styles.positive}`}>€4.200</div>
+          <div className={styles.cashSub}>+€200 ggü. Vormonat</div>
+        </div>
+        <div className={styles.cashCard}>
+          <div className={styles.cashLabel}>Ausgaben Mai</div>
+          <div className={`${styles.cashValue} ${styles.negative}`}>€3.180</div>
+          <div className={styles.cashSub}>−€60 ggü. Vormonat</div>
+        </div>
+      </div>
+
+      {/* 3+4+5 — Bottom Grid */}
+      <div className={styles.bottomGrid}>
+
+        {/* 3 — Spending Donut */}
+        <div className={styles.card}>
+          <div className={styles.cardHead}>
+            <span className={styles.cardTitle}>Ausgaben nach Kategorie</span>
+            <span className={styles.cardBadge}>Mai</span>
+          </div>
+          <div className={styles.donutWrap}>
+            <ResponsiveContainer width="100%" height={140}>
+              <PieChart>
+                <Pie
+                  data={SPENDING}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={42}
+                  outerRadius={64}
+                  paddingAngle={2}
+                  dataKey="value"
+                >
+                  {SPENDING.map((entry, i) => (
+                    <Cell key={i} fill={entry.color} stroke="none" />
+                  ))}
+                </Pie>
+                <Tooltip content={<CustomTooltip />} />
+              </PieChart>
+            </ResponsiveContainer>
+            <div className={styles.donutLegend}>
+              {SPENDING.map(s => (
+                <div key={s.name} className={styles.donutLegendRow}>
+                  <span style={{ background: s.color }} />
+                  <span className={styles.donutLegendLabel}>{s.name}</span>
+                  <span className={styles.donutLegendPct}>{s.pct} %</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-      </Card>
 
+        {/* 4 — Upcoming Payments */}
+        <div className={styles.card}>
+          <div className={styles.cardHead}>
+            <span className={styles.cardTitle}>Fällige Zahlungen</span>
+            <span className={styles.cardBadge}>5 offen</span>
+          </div>
+          <div className={styles.paymentList}>
+            {UPCOMING.map(p => (
+              <div key={p.name} className={styles.paymentRow}>
+                <span className={styles.paymentDot} style={{ background: p.color }} />
+                <div className={styles.paymentInfo}>
+                  <div className={styles.paymentName}>{p.name}</div>
+                  <div className={styles.paymentDate}>{p.date}</div>
+                </div>
+                <span className={styles.paymentAmount}>{p.amount}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* 5 — Smart Insights */}
+        <div className={styles.card}>
+          <div className={styles.cardHead}>
+            <span className={styles.cardTitle}>Smart Insights</span>
+            <Lightbulb size={14} weight="duotone" style={{ color: 'var(--cs-gold)' }} />
+          </div>
+          <div className={styles.insightList}>
+            {INSIGHTS.map(ins => (
+              <div key={ins.title} className={styles.insightRow}>
+                <div className={styles.insightIcon} style={{ background: ins.bg }}>
+                  {ins.icon}
+                </div>
+                <div className={styles.insightText}>
+                  <div className={styles.insightTitle}>{ins.title}</div>
+                  <div className={styles.insightSub}>{ins.sub}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+      </div>
     </div>
   )
 }

@@ -70,7 +70,7 @@ export const router = createBrowserRouter([
   // -------------------------------------------------------------------------
   {
     path: '/app',
-    element: <AuthGuard><AppShell netWorth="€24.890" notificationCount={3} /></AuthGuard>,
+    element: <AuthGuard><AppShell /></AuthGuard>,
     children: [
       { index: true,              element: <Navigate to="/app/dashboard" replace /> },
       { path: 'dashboard',        element: wrap(<DashboardPage />) },
