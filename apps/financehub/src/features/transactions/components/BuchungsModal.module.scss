@@ -1,15 +1,15 @@
-.backdrop {
+﻿.backdrop {
   position: absolute;
   inset: 0;
   background: transparent;
   display: flex;
   align-items: flex-start;
   justify-content: flex-end;
-  padding: 56px 16px 0 0;
+  padding: 68px 24px 0 0;
   z-index: 300;
   backdrop-filter: blur(10px);
 
-  @media (min-width: 1024px) { padding: 64px 24px 0 0; }
+  @media (min-width: 1024px) { padding: 80px 48px 0 0; }
   animation: fadeIn 120ms ease;
 }
 
@@ -560,3 +560,4 @@
   from { opacity: 0; transform: translateY(-8px) scale(0.97); }
   to   { opacity: 1; transform: none; }
 }
+
