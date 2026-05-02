@@ -1,5 +1,3 @@
-// ── Shell Container ───────────────────────────────────────────────────────────
-
 .shell {
   position: relative;
   width: 100%;
@@ -17,7 +15,9 @@
   overflow-y: auto;
   padding-bottom: 120px;
 
-  @media (min-width: 1024px) { bottom: 32px; }
+  @media (min-width: 1024px) {
+    bottom: 32px;
+  }
 }
 
 .inner {
@@ -25,11 +25,13 @@
   margin: 0 auto;
   padding: 80px 16px 0;
 
-  @media (min-width: 768px) { padding: 88px 24px 0; }
-  @media (min-width: 1024px) { padding: 96px 32px 0; }
+  @media (min-width: 768px) {
+    padding: 88px 24px 0;
+  }
+  @media (min-width: 1024px) {
+    padding: 96px 32px 0;
+  }
 }
-
-// ── Command Trigger (⌘K) ──────────────────────────────────────────────────────
 
 .cmdTrigger {
   position: absolute;
@@ -50,7 +52,9 @@
   z-index: 10;
   transition: border-color 150ms;
 
-  span { white-space: nowrap; }
+  span {
+    white-space: nowrap;
+  }
 
   kbd {
     font-size: 10px;
@@ -61,7 +65,10 @@
     color: var(--cs-text-3);
   }
 
-  &:hover { border-color: var(--cs-gold); color: var(--cs-text-2); }
+  &:hover {
+    border-color: var(--cs-gold);
+    color: var(--cs-text-2);
+  }
 
   @media (min-width: 1024px) {
     top: 20px;
@@ -73,8 +80,6 @@
   }
 }
 
-// ── Top-right cluster ─────────────────────────────────────────────────────────
-
 .topRight {
   position: absolute;
   top: 16px;
@@ -84,10 +89,16 @@
   gap: 8px;
   z-index: 20;
 
-  @media (min-width: 1024px) { top: 20px; right: 20px; gap: 10px; }
+  @media (min-width: 1024px) {
+    top: 20px;
+    right: 20px;
+    gap: 10px;
+  }
 }
 
-.popWrap { position: relative; }
+.popWrap {
+  position: relative;
+}
 
 .iconBtn {
   width: 36px;
@@ -102,15 +113,22 @@
   justify-content: center;
   position: relative;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-  transition: border-color 150ms, color 150ms, background 150ms;
+  transition:
+    border-color 150ms,
+    color 150ms,
+    background 150ms;
 
-  &:hover, &.iconActive {
+  &:hover,
+  &.iconActive {
     border-color: var(--cs-gold);
     color: var(--cs-gold);
     background: var(--cs-gold-dim);
   }
 
-  @media (min-width: 1024px) { width: 42px; height: 42px; }
+  @media (min-width: 1024px) {
+    width: 42px;
+    height: 42px;
+  }
 }
 
 .badge {
@@ -120,7 +138,7 @@
   width: 15px;
   height: 15px;
   border-radius: 50%;
-  background: #EF4444;
+  background: #ef4444;
   color: white;
   font-size: 9px;
   font-weight: 700;
@@ -140,23 +158,37 @@
   background: var(--cs-surface);
   cursor: pointer;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-  transition: border-color 150ms, background 150ms;
+  transition:
+    border-color 150ms,
+    background 150ms;
 
-  span { font-size: 12px; font-weight: 500; color: var(--cs-text-2); }
+  span {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--cs-text-2);
+  }
 
-  &:hover, &.chipActive { border-color: var(--cs-gold); background: var(--cs-gold-dim); }
+  &:hover,
+  &.chipActive {
+    border-color: var(--cs-gold);
+    background: var(--cs-gold-dim);
+  }
 
   @media (min-width: 1024px) {
     padding: 5px 14px 5px 5px;
     gap: 9px;
-    span { font-size: 13px; }
+    span {
+      font-size: 13px;
+    }
   }
 }
 
 .caret {
   color: var(--cs-text-3);
   transition: transform 200ms;
-  &.caretOpen { transform: rotate(-180deg); }
+  &.caretOpen {
+    transform: rotate(-180deg);
+  }
 }
 
 .avatar {
@@ -164,17 +196,19 @@
   height: 26px;
   border-radius: 50%;
   background: var(--cs-gold);
-  color: #1A1410;
+  color: #1a1410;
   font-size: 9px;
   font-weight: 800;
   display: flex;
   align-items: center;
   justify-content: center;
 
-  @media (min-width: 1024px) { width: 30px; height: 30px; font-size: 10px; }
+  @media (min-width: 1024px) {
+    width: 30px;
+    height: 30px;
+    font-size: 10px;
+  }
 }
-
-// ── Panels ────────────────────────────────────────────────────────────────────
 
 .panel {
   position: absolute;
@@ -217,16 +251,42 @@
   cursor: pointer;
   transition: background 120ms;
 
-  &:hover { background: var(--cs-surface-2); }
-  &.notifUnread { background: color-mix(in srgb, var(--cs-gold) 5%, transparent); }
+  &:hover {
+    background: var(--cs-surface-2);
+  }
+  &.notifUnread {
+    background: color-mix(in srgb, var(--cs-gold) 5%, transparent);
+  }
 }
 
-.notifBody { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
-.notifTitle { font-size: 11px; font-weight: 600; color: var(--cs-text); }
-.notifSub   { font-size: 10px; color: var(--cs-text-3); }
-.notifTime  { font-size: 10px; color: var(--cs-text-3); white-space: nowrap; margin-top: 2px; flex-shrink: 0; }
+.notifBody {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.notifTitle {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--cs-text);
+}
+.notifSub {
+  font-size: 10px;
+  color: var(--cs-text-3);
+}
+.notifTime {
+  font-size: 10px;
+  color: var(--cs-text-3);
+  white-space: nowrap;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
 
-.userPanel { min-width: 200px; padding: 8px; }
+.userPanel {
+  min-width: 200px;
+  padding: 8px;
+}
 
 .userHead {
   display: flex;
@@ -240,7 +300,7 @@
   height: 34px;
   border-radius: 50%;
   background: var(--cs-gold);
-  color: #1A1410;
+  color: #1a1410;
   font-size: 11px;
   font-weight: 800;
   display: flex;
@@ -249,10 +309,21 @@
   flex-shrink: 0;
 }
 
-.userName  { font-size: 12px; font-weight: 600; color: var(--cs-text); }
-.userEmail { font-size: 10px; color: var(--cs-text-3); }
+.userName {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--cs-text);
+}
+.userEmail {
+  font-size: 10px;
+  color: var(--cs-text-3);
+}
 
-.divider { height: 1px; background: var(--cs-border); margin: 4px 0; }
+.divider {
+  height: 1px;
+  background: var(--cs-border);
+  margin: 4px 0;
+}
 
 .menuRow {
   display: flex;
@@ -266,13 +337,21 @@
   color: var(--cs-text-2);
   cursor: pointer;
   font-size: 12px;
-  transition: background 120ms, color 120ms;
+  transition:
+    background 120ms,
+    color 120ms;
 
-  &:hover { background: var(--cs-surface-2); color: var(--cs-text); }
-  &.menuLogout { color: #EF4444; &:hover { background: rgba(239, 68, 68, 0.08); } }
+  &:hover {
+    background: var(--cs-surface-2);
+    color: var(--cs-text);
+  }
+  &.menuLogout {
+    color: #ef4444;
+    &:hover {
+      background: rgba(239, 68, 68, 0.08);
+    }
+  }
 }
-
-// ── Radial Action Ring ────────────────────────────────────────────────────────
 
 .ringAnchor {
   position: absolute;
@@ -282,16 +361,24 @@
   height: 0;
   z-index: 15;
 
-  @media (min-width: 1024px) { top: 96px; right: 60px; }
+  @media (min-width: 1024px) {
+    top: 96px;
+    right: 60px;
+  }
 }
 
 .ringItemWrap {
   position: absolute;
   top: -18px;
   right: -18px;
-  transition: transform 260ms cubic-bezier(0.34, 1.3, 0.64, 1), opacity 220ms ease;
+  transition:
+    transform 260ms cubic-bezier(0.34, 1.3, 0.64, 1),
+    opacity 220ms ease;
 
-  @media (min-width: 1024px) { top: -21px; right: -21px; }
+  @media (min-width: 1024px) {
+    top: -21px;
+    right: -21px;
+  }
 }
 
 .ringItem {
@@ -306,8 +393,11 @@
   align-items: center;
   justify-content: center;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
-  transition: transform 160ms cubic-bezier(0.34, 1.4, 0.64, 1),
-              border-color 150ms, color 150ms, background 150ms;
+  transition:
+    transform 160ms cubic-bezier(0.34, 1.4, 0.64, 1),
+    border-color 150ms,
+    color 150ms,
+    background 150ms;
 
   &:hover {
     transform: scale(1.18);
@@ -316,7 +406,10 @@
     background: var(--cs-gold-dim);
   }
 
-  @media (min-width: 1024px) { width: 42px; height: 42px; }
+  @media (min-width: 1024px) {
+    width: 42px;
+    height: 42px;
+  }
 }
 
 .ringBtn {
@@ -326,7 +419,12 @@
   width: 32px;
   height: 32px;
 
-  @media (min-width: 1024px) { top: -19px; right: -19px; width: 38px; height: 38px; }
+  @media (min-width: 1024px) {
+    top: -19px;
+    right: -19px;
+    width: 38px;
+    height: 38px;
+  }
 
   border-radius: 50%;
   border: 1px solid var(--cs-border-neutral);
@@ -337,7 +435,11 @@
   align-items: center;
   justify-content: center;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
-  transition: background 160ms, border-color 160ms, transform 200ms, color 160ms;
+  transition:
+    background 160ms,
+    border-color 160ms,
+    transform 200ms,
+    color 160ms;
 
   &:hover {
     border-color: var(--cs-gold);
@@ -348,12 +450,10 @@
   &.ringBtnOpen {
     background: var(--cs-gold);
     border-color: var(--cs-gold);
-    color: #1A1410;
+    color: #1a1410;
     transform: rotate(45deg);
   }
 }
-
-// ── Morphing Pill Nav ─────────────────────────────────────────────────────────
 
 .pill {
   position: absolute;
@@ -376,17 +476,35 @@
 
     .pillItem {
       animation: pillItemIn 300ms cubic-bezier(0.34, 1.4, 0.64, 1) both;
-      &:nth-child(1) { animation-delay: 20ms; }
-      &:nth-child(2) { animation-delay: 50ms; }
-      &:nth-child(3) { animation-delay: 80ms; }
-      &:nth-child(4) { animation-delay: 110ms; }
-      &:nth-child(5) { animation-delay: 140ms; }
-      &:nth-child(6) { animation-delay: 170ms; }
+      &:nth-child(1) {
+        animation-delay: 20ms;
+      }
+      &:nth-child(2) {
+        animation-delay: 50ms;
+      }
+      &:nth-child(3) {
+        animation-delay: 80ms;
+      }
+      &:nth-child(4) {
+        animation-delay: 110ms;
+      }
+      &:nth-child(5) {
+        animation-delay: 140ms;
+      }
+      &:nth-child(6) {
+        animation-delay: 170ms;
+      }
     }
   }
 
-  @media (min-width: 768px) { max-width: 580px; bottom: 56px; }
-  @media (min-width: 1024px) { max-width: 680px; bottom: 60px; }
+  @media (min-width: 768px) {
+    max-width: 580px;
+    bottom: 56px;
+  }
+  @media (min-width: 1024px) {
+    max-width: 680px;
+    bottom: 60px;
+  }
 }
 
 .pillClosed {
@@ -401,21 +519,41 @@
   font-size: 14px;
   font-weight: 600;
 
-  @media (min-width: 768px) { padding: 14px 24px; font-size: 15px; gap: 12px; }
-  @media (min-width: 1024px) { padding: 16px 28px; font-size: 16px; gap: 14px; }
+  @media (min-width: 768px) {
+    padding: 14px 24px;
+    font-size: 15px;
+    gap: 12px;
+  }
+  @media (min-width: 1024px) {
+    padding: 16px 28px;
+    font-size: 16px;
+    gap: 14px;
+  }
 }
 
-.dots { display: flex; gap: 4px; margin-left: 4px; }
+.dots {
+  display: flex;
+  gap: 4px;
+  margin-left: 4px;
+}
 
 .dot {
   width: 4px;
   height: 4px;
   border-radius: 50%;
   background: var(--cs-text-3);
-  transition: background 200ms, transform 200ms;
-  &.dotOn { background: var(--cs-gold); transform: scale(1.4); }
+  transition:
+    background 200ms,
+    transform 200ms;
+  &.dotOn {
+    background: var(--cs-gold);
+    transform: scale(1.4);
+  }
 
-  @media (min-width: 768px) { width: 5px; height: 5px; }
+  @media (min-width: 768px) {
+    width: 5px;
+    height: 5px;
+  }
 }
 
 .pillItem {
@@ -432,17 +570,41 @@
   font-size: 10px;
   font-weight: 500;
   white-space: nowrap;
-  transition: color 140ms, background 140ms;
+  transition:
+    color 140ms,
+    background 140ms;
 
-  &:last-child { border-right: none; }
-  &:hover { background: var(--cs-surface-2); color: var(--cs-text-2); }
-  &.pillActive { color: var(--cs-gold); background: color-mix(in srgb, var(--cs-gold) 7%, transparent); }
+  &:last-child {
+    border-right: none;
+  }
+  &:hover {
+    background: var(--cs-surface-2);
+    color: var(--cs-text-2);
+  }
+  &.pillActive {
+    color: var(--cs-gold);
+    background: color-mix(in srgb, var(--cs-gold) 7%, transparent);
+  }
 
-  @media (min-width: 768px) { padding: 14px 16px; font-size: 11px; gap: 5px; svg { width: 20px; height: 20px; } }
-  @media (min-width: 1024px) { padding: 16px 20px; font-size: 12px; gap: 6px; svg { width: 22px; height: 22px; } }
+  @media (min-width: 768px) {
+    padding: 14px 16px;
+    font-size: 11px;
+    gap: 5px;
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+  @media (min-width: 1024px) {
+    padding: 16px 20px;
+    font-size: 12px;
+    gap: 6px;
+    svg {
+      width: 22px;
+      height: 22px;
+    }
+  }
 }
-
-// ── Status Bar ────────────────────────────────────────────────────────────────
 
 .statusBar {
   position: absolute;
@@ -461,18 +623,36 @@
   gap: 16px;
   z-index: 5;
 
-  @media (min-width: 1024px) { height: 32px; font-size: 11px; padding: 0 20px; }
+  @media (min-width: 1024px) {
+    height: 32px;
+    font-size: 11px;
+    padding: 0 20px;
+  }
 }
 
-.statusLeft   { display: flex; align-items: center; gap: 6px; }
-.statusCenter { display: flex; align-items: center; gap: 6px; flex: 1; justify-content: center; }
-.statusRight  { display: flex; align-items: center; gap: 10px; }
+.statusLeft {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.statusCenter {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  justify-content: center;
+}
+.statusRight {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
 .statusDot {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #22C55E;
+  background: #22c55e;
   box-shadow: 0 0 6px rgba(34, 197, 94, 0.5);
 }
 
@@ -489,8 +669,13 @@
   justify-content: center;
   transition: color 140ms;
 
-  &:hover { color: var(--cs-gold); }
-  &.syncing { animation: spin 1s linear infinite; color: var(--cs-gold); }
+  &:hover {
+    color: var(--cs-gold);
+  }
+  &.syncing {
+    animation: spin 1s linear infinite;
+    color: var(--cs-gold);
+  }
 }
 
 .version {
@@ -501,10 +686,8 @@
   font-family: var(--font-mono);
 }
 
-// ── Command Palette ───────────────────────────────────────────────────────────
-
 .cmdBackdrop {
-  position: absolute;
+  position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.35);
   display: flex;
@@ -542,7 +725,9 @@
     outline: none;
     font-size: 14px;
     color: var(--cs-text);
-    &::placeholder { color: var(--cs-text-3); }
+    &::placeholder {
+      color: var(--cs-text-3);
+    }
   }
 
   button {
@@ -556,13 +741,24 @@
     align-items: center;
     justify-content: center;
     transition: color 140ms;
-    &:hover { color: var(--cs-text); }
+    &:hover {
+      color: var(--cs-text);
+    }
   }
 }
 
-.cmdList  { padding: 8px; }
-.cmdArrow { color: var(--cs-text-3); }
-.cmdEmpty { padding: 16px 12px; font-size: 12px; color: var(--cs-text-3); text-align: center; }
+.cmdList {
+  padding: 8px;
+}
+.cmdArrow {
+  color: var(--cs-text-3);
+}
+.cmdEmpty {
+  padding: 16px 12px;
+  font-size: 12px;
+  color: var(--cs-text-3);
+  text-align: center;
+}
 
 .cmdRow {
   display: flex;
@@ -576,14 +772,19 @@
   color: var(--cs-text-2);
   cursor: pointer;
   font-size: 13px;
-  transition: background 120ms, color 120ms;
+  transition:
+    background 120ms,
+    color 120ms;
   text-align: left;
 
-  span { flex: 1; }
-  &:hover { background: var(--cs-surface-2); color: var(--cs-text); }
+  span {
+    flex: 1;
+  }
+  &:hover {
+    background: var(--cs-surface-2);
+    color: var(--cs-text);
+  }
 }
-
-// ── Modal Placeholder ─────────────────────────────────────────────────────────
 
 .modalBackdrop {
   position: fixed;
@@ -625,31 +826,55 @@
   align-items: center;
   justify-content: center;
   transition: color 140ms;
-  &:hover { color: var(--cs-text); }
+  &:hover {
+    color: var(--cs-text);
+  }
 }
 
-// ── Keyframes ─────────────────────────────────────────────────────────────────
-
 @keyframes pillPop {
-  from { transform: translateX(-50%) scale(0.72); opacity: 0.6; }
-  to   { transform: translateX(-50%) scale(1);    opacity: 1; }
+  from {
+    transform: translateX(-50%) scale(0.72);
+    opacity: 0.6;
+  }
+  to {
+    transform: translateX(-50%) scale(1);
+    opacity: 1;
+  }
 }
 
 @keyframes pillItemIn {
-  from { opacity: 0; transform: translateY(10px) scale(0.85); }
-  to   { opacity: 1; transform: none; }
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 @keyframes dropIn {
-  from { opacity: 0; transform: translateY(-8px) scale(0.97); }
-  to   { opacity: 1; transform: none; }
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
