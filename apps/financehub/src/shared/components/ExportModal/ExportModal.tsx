@@ -22,8 +22,7 @@ export function ExportModal({ onClose, title = 'Transaktionen · April 2026' }: 
   }
 
   return (
-    <div className={styles.backdrop} onClick={onClose}>
-      <div className={styles.modal} onClick={e => e.stopPropagation()}>
+    <div className={styles.modal}>
 
         <div className={styles.head}>
           <div className={styles.headInfo}>
@@ -64,6 +63,5 @@ export function ExportModal({ onClose, title = 'Transaktionen · April 2026' }: 
         </div>
 
       </div>
-    </div>
   )
 }

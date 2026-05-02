@@ -15,8 +15,7 @@ interface DruckVorschauProps {
 
 export function DruckVorschau({ onClose }: DruckVorschauProps) {
   return (
-    <div className={styles.backdrop} onClick={onClose}>
-      <div className={styles.modal} onClick={e => e.stopPropagation()}>
+    <div className={styles.modal}>
 
         <div className={styles.head}>
           <span className={styles.title}>Druckvorschau</span>
@@ -47,6 +46,5 @@ export function DruckVorschau({ onClose }: DruckVorschauProps) {
         </div>
 
       </div>
-    </div>
   )
 }

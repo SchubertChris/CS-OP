@@ -201,8 +201,7 @@ export function BuchungsModal({ onClose }: BuchungsModalProps) {
   const selZahlungsart = MOCK_ZAHLUNGSARTEN.find(z => z.name === zahlungsart)!
 
   return (
-    <div className={styles.backdrop} onClick={() => { onClose(); setOpenDrop(null) }}>
-      <div className={styles.modal} onClick={e => e.stopPropagation()}>
+    <div className={styles.modal}>
 
         <div className={styles.head}>
           <span className={styles.headTitle}>Neue Buchung</span>
@@ -518,6 +517,5 @@ export function BuchungsModal({ onClose }: BuchungsModalProps) {
 
         <button className={styles.saveBtn} onClick={onClose}>Speichern</button>
       </div>
-    </div>
   )
 }

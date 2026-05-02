@@ -42,8 +42,7 @@ export function TeilenModal({
   const current = ACCESS_OPTS.find(o => o.key === access)!
 
   return (
-    <div className={styles.backdrop} onClick={() => { onClose(); setAccessOpen(false) }}>
-      <div className={styles.modal} onClick={e => e.stopPropagation()}>
+    <div className={styles.modal}>
 
         <div className={styles.head}>
           <ShareNetwork size={15} style={{ color: 'var(--cs-text-3)' }} />
@@ -144,6 +143,5 @@ export function TeilenModal({
         )}
 
       </div>
-    </div>
   )
 }

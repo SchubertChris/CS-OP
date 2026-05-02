@@ -324,11 +324,17 @@ export function AppShell() {
       {/* Command Palette */}
       {cmdOpen && <ShellCmdPalette onClose={() => setCmdOpen(false)} />}
 
-      {openModal === 'buchung' && <BuchungsModal onClose={() => setOpenModal(null)} />}
-      {openModal === 'druck'   && <DruckVorschau onClose={() => setOpenModal(null)} />}
-      {openModal === 'notes'   && <NotizModal    onClose={() => setOpenModal(null)} />}
-      {openModal === 'export'  && <ExportModal   onClose={() => setOpenModal(null)} />}
-      {openModal === 'teilen'  && <TeilenModal   onClose={() => setOpenModal(null)} />}
+      {openModal && (
+        <div className={styles.modalBackdrop} onClick={() => setOpenModal(null)}>
+          <div onClick={e => e.stopPropagation()}>
+            {openModal === 'buchung' && <BuchungsModal onClose={() => setOpenModal(null)} />}
+            {openModal === 'druck'   && <DruckVorschau onClose={() => setOpenModal(null)} />}
+            {openModal === 'notes'   && <NotizModal    onClose={() => setOpenModal(null)} />}
+            {openModal === 'export'  && <ExportModal   onClose={() => setOpenModal(null)} />}
+            {openModal === 'teilen'  && <TeilenModal   onClose={() => setOpenModal(null)} />}
+          </div>
+        </div>
+      )}
     </div>
   )
 }
