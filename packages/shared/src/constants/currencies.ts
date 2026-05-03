@@ -14,16 +14,3 @@ export const SUPPORTED_CURRENCIES: CurrencyConfig[] = [
 
 export const DEFAULT_CURRENCY = 'EUR'
 export const DEFAULT_LOCALE   = 'de-DE'
-
-export function formatCurrency(amountInCent: number, currency = 'EUR', locale = 'de-DE'): string {
-  return new Intl.NumberFormat(locale, {
-    style: 'currency',
-    currency,
-    minimumFractionDigits: 2,
-  }).format(amountInCent / 100)
-}
-
-export function parseCurrencyInput(value: string): number {
-  const cleaned = value.replace(/[^\d,.-]/g, '').replace(',', '.')
-  return Math.round(parseFloat(cleaned) * 100) || 0
-}

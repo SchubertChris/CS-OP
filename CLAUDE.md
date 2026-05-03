@@ -3,8 +3,13 @@
 ## Projekte
 - `apps/frontend` — Website (candlescope.de)
 - `apps/financehub` — Online-App (app.candlescope.de) ← aktiver Fokus
+- `apps/financeboard` — Offline Desktop-App (archiviert, wird später mit neuem Design-System modernisiert)
 - `api/financehub/` — Vercel Functions für die App
-- `packages/shared-types/` — geteilte TypeScript-Typen
+- `packages/shared` (`@candlescope/shared`) — plattformunabhängige Business-Logik: Types, API-Client, Utils (Web + Desktop + Mobile teilen dieses Package)
+
+## Docs-Struktur
+- `/docs/` — produktübergreifende Dokumente (Roadmap, Kosten, Rechts, Wettbewerb, Cross-Platform-Architektur)
+- `apps/financehub/docs/` — App-spezifische Dokumente (Feature-Specs, Design-System, WORKPLAN)
 
 ## Sprache
 Immer Deutsch mit dem User kommunizieren.
