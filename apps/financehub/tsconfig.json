@@ -15,12 +15,15 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
+    "ignoreDeprecations": "5.0",
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
       "@features/*": ["src/features/*"],
       "@shared/*": ["src/shared/*"],
-      "@styles/*": ["src/styles/*"]
+      "@styles/*": ["src/styles/*"],
+      "@candlescope/shared": ["../../packages/shared/src/index.ts"],
+      "@candlescope/shared/*": ["../../packages/shared/src/*"]
     }
   },
   "include": ["src", "vite.config.ts"]

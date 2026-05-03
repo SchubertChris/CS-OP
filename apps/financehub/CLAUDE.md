@@ -1,70 +1,195 @@
 # FinanzHub — Arbeitsregeln (apps/financehub)
 
-## Stack
-React 19 + TypeScript + Vite + SCSS Modules + React Router v7 + Zustand + TanStack Query
+> **Projekt:** `app.candlescope.de` | **Stack:** React 19 + TS + Vite + SCSS Modules + Router v7 + Zustand  
+> **Stand:** 02.05.2026 | **Live:** Vercel `cs-financehub` (auto-deploy via GitHub `main`)
 
-## Schriften
-`--font-display` + `--font-body` = **Geist** | `--font-mono` = **Geist Mono**
-NICHT Space Grotesk, NICHT DM Sans — die sind falsch.
+---
 
-## Wichtigste Dateien
-- `src/styles/_tokens.scss` — Single Source of Truth für alle Design-Tokens
-- `src/styles/_animations.scss` — Keyframes + Utility-Klassen + Stagger
-- `src/styles/_mixins.scss` — Grid-Mixins, Glass, Card, Flex-Shortcuts
-- `src/styles/_interactions.scss` — Tooltip CSS-only, Focus, Touch, Scroll
-- `docs/02-design-system.md` — vollständige Design-System-Doku (muss sync mit Code bleiben)
-- `docs/WORKPLAN.md` — Phase-Tracking (nach jedem Step aktualisieren)
+## Schriften — FEST, NICHT ÄNDERN
 
-## Nach JEDER abgeschlossenen Aufgabe
+| Rolle | Variable | Font |
+|-------|----------|------|
+| Display + Body | `--font-display`, `--font-body` | **Geist** |
+| Mono | `--font-mono` | **Geist Mono** |
 
-1. **WORKPLAN.md updaten** — Step auf ✅, "Nächster Schritt" aktualisieren
-2. **17-routing.md updaten** — bei JEDER Route-Änderung (neue Route, auskommentiert, freigeschaltet)
-3. **02-design-system.md updaten** — wenn Tokens, Mixins oder Komponenten geändert
-4. **Memory updaten** — `C:\Users\Dezent\.claude\projects\...\memory\project_financehub_plan.md` wenn größeres System hinzugefügt
-5. **Build prüfen** — `npx tsc --noEmit && npx vite build`
+❌ Niemals: Space Grotesk, DM Sans, JetBrains Mono — die sind falsch.
 
-## Token-Regeln
-- Niemals hardcodierte Farben in Komponenten — immer `var(--cs-*)`
-- Neue Tokens immer in `_tokens.scss` definieren, niemals inline
-- Tooltip: immer `var(--tooltip-*)` — nicht `var(--cs-anthracite)` direkt
-- Button-Border primary: `var(--cs-gold-muted)` — nicht hardcodiert rgba
+---
 
-## Grid-Regeln
-- Grid-Layouts immer via `@include grid-*` Mixins — nie inline `grid-template-columns` im TSX
-- Atemraum ist Default — dichte Layouts nur wenn User es explizit will
+## Kritische Dateien
 
-## Animations-Regeln
-- Hierarchie: `--anim-hero` (700ms) → `--anim-section` (450ms) → `--anim-card` (320ms) → `--anim-micro` (180ms)
-- Stagger immer via `.stagger-N` Klassen oder `[data-stagger="N"]` Attribut
-- Nie animieren: bereits sichtbare Texte, Error-Messages, Navigation-Hover
+| Datei | Zweck |
+|-------|-------|
+| `src/styles/_tokens.scss` | Single Source of Truth — alle Design-Tokens |
+| `src/styles/_mixins.scss` | Grid-Mixins (`@include grid-*`), Glass, Card |
+| `src/styles/_animations.scss` | Keyframes + Stagger-Klassen |
+| `src/styles/_interactions.scss` | Tooltip, Focus, Touch |
+| `src/layout/AppShell/AppShell.tsx` | Shell-Root — Pill-Nav, Ring, CmdPalette, StatusBar, Modals |
+| `src/layout/AppShell/AppShell.module.scss` | Shell-CSS — `.modalBackdrop`, `.cmdBackdrop` hier definiert |
+| `src/store/shellStore.ts` | Globaler Shell-State — `openModal`, `ringOpen`, `cmdOpen`, etc. |
+| `src/router/index.tsx` | Alle Routen + Guards |
+| `docs/WORKPLAN.md` | Phase-Tracking — nach jedem Step updaten |
+| `docs/17-routing.md` | Route-Dokumentation — nach jeder Route-Änderung updaten |
+| `docs/02-design-system.md` | Design-System-Doku — sync mit `_tokens.scss` halten |
 
-## Komponenten-Pfade
-- Shared: `src/shared/components/[Name]/[Name].tsx` + `[Name].module.scss`
-- Features: `src/features/[feature]/components/` + `pages/`
-- Layout: `src/layout/[Name]/[Name].tsx`
+---
 
-## Logo
-`src/shared/components/Logo/CandlescopeLogo.tsx`
-- Default color: `var(--cs-gold)` — theme-adaptiv
-- Auf Gold-BG (Rail logoMark, Modal brandMark): `color="#1A1410"`
+## Shell-Architektur — Regeln
+
+### Modal-Pattern (PFLICHT)
+
+Modals öffnen sich via `useShellStore` → `setOpenModal(key)`. Der Backdrop ist **zentral in AppShell.module.scss** definiert — nicht in jedem Modal einzeln.
+
+```tsx
+// AppShell.tsx — so ist es gebaut, so bleibt es
+{openModal && (
+  <div className={styles.modalBackdrop} onClick={() => setOpenModal(null)}>
+    <div onClick={e => e.stopPropagation()}>
+      {openModal === 'buchung' && <BuchungsModal onClose={() => setOpenModal(null)} />}
+      {/* ... weitere Modals */}
+    </div>
+  </div>
+)}
+```
+
+```scss
+// AppShell.module.scss — Backdrop hier, nirgendwo sonst
+.modalBackdrop {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 300; backdrop-filter: blur(6px);
+}
+```
+
+**Modal-Komponenten** rendern NUR ihren Card-Content (`<div className={styles.modal}>`) — **kein** eigenes `.backdrop`.
+
+### Neue Modals hinzufügen
+
+1. `ModalKey` in `shellStore.ts` erweitern
+2. Komponente als Card-only bauen (kein Backdrop)
+3. In AppShell.tsx einhängen
+4. Ring-Action in `RADIAL_ACTIONS` ergänzen (wenn nötig)
+
+---
+
+## Nach JEDER abgeschlossenen Aufgabe — PFLICHT
+
+```
+1. WORKPLAN.md   → Step auf ✅, "Nächster Schritt" aktualisieren
+2. 17-routing.md → bei jeder Route-Änderung (Status-Kommentar in der Tabelle)
+3. 02-design-system.md → bei Token/Mixin/Komponenten-Änderungen
+4. Memory        → C:\Users\Dezent\.claude\projects\...\memory\project_financehub_plan.md
+                   (nur bei größeren System-Änderungen, nicht nach jedem Bugfix)
+5. Build prüfen  → npx tsc --noEmit && npx vite build (im apps/financehub Verzeichnis)
+6. Push          → git add [files] && git commit -m "..." && git push origin main
+```
+
+---
 
 ## Dev-Workflow — PFLICHT für jedes neue Feature
 
 **Jedes Feature wird zuerst in der Dev-Sandbox gebaut, nie direkt in der App.**
 
 ```
-1. /dev öffnen (localhost:5173/dev)
-2. Feature-Code direkt in DevSandboxPage.tsx → in <div className={styles.canvasInner}> einfügen
-3. Alle 6 Themes testen: Light, Dark, Ocean, Forest, Rose, Midnight
-4. Design-System-Komponenten dokumentieren die das Feature nutzt
-5. Feature abgesegnet → verschieben nach src/features/[name]/
-6. Route in router/index.tsx freischalten
-7. WORKPLAN.md Step auf ✅ setzen
+1. localhost:5173/dev öffnen
+2. Feature in DevSandboxPage.tsx → <div className={styles.canvasInner}> einfügen
+3. Alle 7 Themes testen: Light, Dark, Ocean, Forest, Rose, Midnight + System
+4. Feature fertig → in src/features/[name]/ oder src/shared/components/[Name]/ verschieben
+5. Route in router/index.tsx freischalten (+ Status-Kommentar)
+6. WORKPLAN.md Step auf ✅
 ```
 
-**Sandbox-Datei:** `src/features/dev/DevSandboxPage.tsx`  
-**Theme-Utility:** `src/utils/theme.ts` → `applyThemeFull(base, accent)` — immer für Theme-Switches nutzen, nie direktes classList manipulieren (sonst kein Wipe-Effekt)
+**Sandbox:** `src/features/dev/DevSandboxPage.tsx` → Route `/dev`
 
-## Theme-Switching Regel
-Alle Theme-Änderungen NUR über `applyTheme()` oder `applyThemeFull()` aus `src/utils/theme.ts`.
-Kein direktes `document.documentElement.classList.add/remove` — der View-Transition-Wipe funktioniert sonst nicht.
+---
+
+## Code-Regeln
+
+### Design-Tokens
+- Niemals hardcodierte Farben — immer `var(--cs-*)`
+- Neue Tokens in `_tokens.scss`, nie inline
+- Tooltip: `var(--tooltip-*)` — nicht direkt auf `var(--cs-anthracite)`
+- Button-Border primary: `var(--cs-gold-muted)`
+
+### Grid & Layout
+- Grid-Layouts via `@include grid-*` Mixins — nie `grid-template-columns` inline im TSX
+- Atemraum ist Default — dichte Layouts nur wenn explizit gewünscht
+
+### Animationen
+- Hierarchie: `--anim-hero` (700ms) → `--anim-section` (450ms) → `--anim-card` (320ms) → `--anim-micro` (180ms)
+- Stagger via `.stagger-N` oder `[data-stagger="N"]`
+- Nie animieren: sichtbare Texte, Error-Messages, Navigation-Hover
+
+### Theme-Switching
+- **NUR** via `applyTheme()` / `applyThemeFull()` aus `src/utils/theme.ts`
+- Kein direktes `classList.add/remove` → View-Transition-Wipe bricht sonst
+
+### Z-Index-Skala (nie hardcoded)
+```
+base(1) → raised(10) → dropdown(100) → rail(200) → contextbar(210) → modal(300) → command(350) → toast(400) → tooltip(500)
+```
+Immer `var(--z-modal)`, `var(--z-dropdown)` etc. — nie `9999`.
+
+### Interaction States — Pflicht-Checkliste
+Jede interaktive Komponente braucht:
+- `:hover` — leichte Aufhellung (surface-2 oder fill-animation)
+- `:focus-visible` — 2px gold outline, offset 3px (global in `_interactions.scss`)
+- `:active` — surface-active BG oder `scale(0.97)`
+- `:disabled` — opacity 0.4–0.45, cursor: not-allowed
+
+### Definition of Done — ein Feature gilt als fertig wenn:
+- Alle States funktionieren: Loading, Empty, Filled, Error
+- Responsive: 375px (Mobile) + 1280px (Desktop)
+- Alle 7 Themes: Light, Dark, Ocean, Forest, Rose, Midnight, System
+- Kein TypeScript-Fehler, kein `console.error`
+- Keine hardcodierten px-Farben — nur `var(--cs-*)`
+- IBAN/Beträge mit `font-mono + tabular-nums`
+
+### Shared Types — aus `@candlescope/shared` importieren
+```typescript
+import type { Account, Transaction } from '@candlescope/shared'
+import { formatCurrency } from '@candlescope/shared'
+```
+Niemals Domain-Typen lokal in `src/` definieren — sie gehören in `packages/shared/src/types/`.
+
+---
+
+## Komponenten-Pfade
+
+| Typ | Pfad |
+|-----|------|
+| Shared | `src/shared/components/[Name]/[Name].tsx` + `[Name].module.scss` |
+| Feature | `src/features/[feature]/components/` + `pages/` |
+| Layout | `src/layout/[Name]/[Name].tsx` |
+| Store | `src/store/[name]Store.ts` |
+
+---
+
+## Logo
+`src/shared/components/Logo/CandlescopeLogo.tsx`
+- Default: `var(--cs-gold)` — theme-adaptiv
+- Auf Gold-BG: `color="#1A1410"`
+
+---
+
+## Build & Deploy
+
+```bash
+# Build prüfen (im apps/financehub Verzeichnis)
+npx tsc --noEmit && npx vite build
+
+# Deploy → auto via git push
+git push origin main
+# → Vercel baut apps/financehub automatisch → app.candlescope.de
+```
+
+**Vercel-Projekt:** `cs-financehub` | **Branch:** `main` | **Build-Command:** `pnpm --filter @candlescope/financehub build`
+
+---
+
+## Aktueller Stand (03.05.2026)
+
+**Fertig:** Design System · Auth (Admin) · IntroAnimation · AppShell · 5 Ring-Modals · DashboardPage (Mock) · `packages/shared` (alle Domain-Types)  
+**Nächster Step:** Step 14 — AccountsPage (`/app/accounts`)  
+**Backend deferred:** Steps 5–8 (User-Auth, DB-Schema) — starten wenn Core-Features stehen

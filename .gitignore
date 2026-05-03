@@ -21,7 +21,7 @@ Thumbs.db
 # Vercel
 .vercel
 
-# Dokumentation & interne Notizen — nie in git / nie online
+# Dokumentation & interne Notizen — nie in git / nie online / offline financeBoard
 WEBSITE-STATUS.md
 docs/
 apps/*/docs/
@@ -29,3 +29,4 @@ apps/frontend/AUSBAU.md
 **/AUSBAU.md
 **/WORKPLAN.md
 **/superpowers/
+**/financeboard

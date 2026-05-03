@@ -10,6 +10,7 @@ export default defineConfig({
       '@features': resolve(__dirname, 'src/features'),
       '@shared': resolve(__dirname, 'src/shared'),
       '@styles': resolve(__dirname, 'src/styles'),
+      '@candlescope/shared': resolve(__dirname, '../../packages/shared/src/index.ts'),
     },
   },
   css: {
