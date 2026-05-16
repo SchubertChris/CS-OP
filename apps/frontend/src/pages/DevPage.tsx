@@ -419,12 +419,12 @@ export default function DevPage() {
           </StaggerItem>
           <StaggerItem>
             <ProjectCard
-              title="First Portfolio"
-              description="Erste eigene Portfolio-Website — Lighthouse Score 97/100/100/92. Gebaut mit React, Vite und TypeScript."
-              tags={['React', 'TypeScript', 'SCSS']}
-              href="https://portfolio-chris-schubert.vercel.app/"
-              githubHref="https://github.com/SchubertChris/Portfolio-Chris-Schubert-"
+              title="ShopRay"
+              description="Vollständiger E-Commerce-Shop — React 19, TypeScript, Stripe, Supabase Auth mit 2FA, Admin Panel, DSGVO-konform. Production-ready."
+              tags={['React', 'TypeScript', 'Express', 'Supabase', 'Stripe']}
+              href="https://shopray-indol.vercel.app"
               status="live"
+              locked
             />
           </StaggerItem>
           <StaggerItem>
