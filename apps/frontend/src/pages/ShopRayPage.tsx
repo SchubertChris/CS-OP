@@ -189,9 +189,9 @@ function ShopRayHero() {
             <div className="flex flex-wrap items-center gap-6">
               {[
                 { val: '3',   label: 'Projekte' },
-                { val: '30+', label: 'API-Routen' },
-                { val: '12',  label: 'Pages' },
-                { val: '1×',  label: 'Zahlung' },
+                { val: '60+', label: 'API-Routen' },
+                { val: '30+', label: 'Pages' },
+                { val: '14',  label: 'Migrations' },
               ].map(({ val, label }) => (
                 <div key={label} className="flex flex-col gap-0.5">
                   <span className="font-mono text-[15px] text-[#C9A84C] leading-none tabular-nums">{val}</span>
@@ -291,7 +291,7 @@ const FEATURES = [
   {
     icon: <LayoutDashboard size={22} strokeWidth={1.5} />,
     title: 'Admin Panel',
-    desc: 'Eigenes React Admin-Panel mit 2FA (TOTP), Produkt- und Bestellverwaltung, Kundenliste, Support-Tickets, Statistiken.',
+    desc: 'Eigenes React Admin-Panel mit 2FA (TOTP), Produkt- und Bestellverwaltung, Kundenliste, Live-Chat, Support-Tickets, Statistiken.',
     badge: '2FA inklusive', badgeVariant: 'green' as const,
   },
   {
@@ -333,15 +333,15 @@ const STACK = [
 ]
 
 const INCLUDES = [
-  '12 Frontend-Seiten komplett fertig',
-  'Vollständiges Admin Panel (8 Seiten)',
-  'REST API mit 30+ Endpunkten',
-  'Datenbankschema + 9 Migrations',
-  'Seed-Daten (25 Produkte, Testkunden)',
+  '30+ Frontend-Seiten — vollständig fertig',
+  'Admin Panel mit 8+ Bereichen',
+  'REST API mit 60+ Endpunkten',
+  'Datenbankschema + 14 Migrations',
+  'Seed-Daten (Produkte, Testkunden)',
   'SETUP.md — Schritt-für-Schritt Anleitung',
-  'Stripe Test-Keys Dokumentation',
+  'Stripe + Supabase komplett dokumentiert',
   'LMIV-konformes Produktdetail (Nährwerte)',
-  'Produktbilder via Supabase Storage',
+  'Live-Chat & Support-Ticket-System',
   'Demo-Mode (schreibende Aktionen geblockt)',
 ]
 
@@ -516,8 +516,8 @@ export default function ShopRayPage() {
               icon: <Users size={22} strokeWidth={1.5} />,
               badge: 'Agenturen', badgeVariant: 'green' as const,
               title: 'Web-Agenturen',
-              desc: 'Einmal kaufen, mehrfach einsetzen. Liefere Kundenprojekte schneller aus — das Template ist die Basis.',
-              items: ['Mehrfachlizenz', 'Weiterverkäuflich', 'Dokumentiert'],
+              desc: 'Wir richten ShopRay für eure Kunden ein — als White-Label oder unter eigenem Branding. Schneller Deploy, saubere Basis.',
+              items: ['White-Label Setup', 'Mehrere Kunden', 'Agentur-Konditionen'],
             },
             {
               icon: <ShoppingBag size={22} strokeWidth={1.5} />,
@@ -565,8 +565,8 @@ export default function ShopRayPage() {
             <div className="text-center mb-10">
               <SectionHeader
                 eyebrow="Preis & Lizenz"
-                title={<>Einmal kaufen.<br /><GradientText>Für immer einsetzen.</GradientText></>}
-                description="Keine monatlichen Gebühren, keine Einschränkungen. Source Code komplett inklusive."
+                title={<>Dein Shop.<br /><GradientText>Fertig eingerichtet.</GradientText></>}
+                description="Wir richten alles ein — von der Datenbank bis zum ersten Verkauf. Hosting bei uns oder selbst, je nach Bedarf."
                 align="center"
                 className="mb-10"
               />
@@ -577,7 +577,7 @@ export default function ShopRayPage() {
                 className="absolute -inset-px rounded-3xl pointer-events-none"
                 style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(201,168,76,0.12) 0%, transparent 60%)' }}
               />
-              <Badge variant="gold" className="mb-6">Einmalige Lizenz</Badge>
+              <Badge variant="gold" className="mb-6">Setup-Service</Badge>
               <div className="mb-2">
                 <span className="font-display text-6xl text-[var(--cs-text)]">Auf Anfrage</span>
               </div>
@@ -587,10 +587,10 @@ export default function ShopRayPage() {
               <div className="grid grid-cols-2 gap-3 max-w-sm mx-auto mb-8 text-left">
                 {[
                   'Frontend + Backend + Admin',
-                  'Vollständige Dokumentation',
-                  'Stripe + Supabase Setup',
-                  'Unbegrenzte eigene Projekte',
-                  'Source Code ohne Einschränkung',
+                  'Vollständige Einrichtung inklusive',
+                  'Stripe + Supabase konfiguriert',
+                  'Hosting: bei uns oder selbst',
+                  'Source Code vollständig übergeben',
                   'Direkter Support via E-Mail',
                 ].map((f) => (
                   <div key={f} className="flex items-start gap-2">
@@ -612,7 +612,7 @@ export default function ShopRayPage() {
 
             <div className="flex items-center justify-center gap-8 flex-wrap">
               {[
-                { icon: <FileCheck size={14} />, text: 'Kein Abo' },
+                { icon: <FileCheck size={14} />, text: 'Vollständiger Setup' },
                 { icon: <Shield size={14} />, text: 'DSGVO-ready' },
                 { icon: <Code2 size={14} />, text: 'Source Code' },
                 { icon: <Zap size={14} />, text: 'Sofort lieferbar' },
