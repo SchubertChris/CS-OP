@@ -59,6 +59,19 @@ function StaggerItem({ children, className }: { children: React.ReactNode; class
   )
 }
 
+function Reveal({ children, delay = 0, className }: { children: React.ReactNode; delay?: number; className?: string }) {
+  const ref = useRef<HTMLDivElement>(null)
+  const isInView = useInView(ref, { once: true, margin: '-60px' })
+  return (
+    <motion.div ref={ref} initial={{ opacity: 0, y: 32 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.65, delay, ease: [0.22, 1, 0.36, 1] }}
+      className={className}>
+      {children}
+    </motion.div>
+  )
+}
+
 /* ── Stat Card ───────────────────────────────────────────── */
 function StatCard({ value, label, sub, loading }: {
   value: string; label: string; sub?: string; loading?: boolean
@@ -372,6 +385,40 @@ export default function CommunityPage() {
 
       <GoldDivider className="mx-8 md:mx-16 lg:mx-24" />
 
+      {/* ── Kein Bullshit ──────────────────────────────────── */}
+      <SectionWrapper>
+        <Reveal>
+          <div className="relative rounded-3xl border border-[#C9A84C]/15 overflow-hidden p-10 md:p-14 text-center">
+            <motion.div
+              className="absolute inset-0 pointer-events-none"
+              style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(201,168,76,0.08) 0%, transparent 65%)' }}
+              animate={{ opacity: [0.5, 1, 0.5] }}
+              transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+            />
+            <div className="relative">
+              <p className="font-mono text-[10px] tracking-[0.22em] uppercase text-[#C9A84C]/70 mb-4">Was wir nicht sind</p>
+              <h2 className="font-display text-2xl md:text-4xl text-[var(--cs-text)] leading-tight mb-8">
+                Kein Hype. Keine Versprechen.<br />
+                <GradientText>Nur ehrlicher Austausch.</GradientText>
+              </h2>
+              <div className="flex flex-wrap items-center justify-center gap-3">
+                {[
+                  '✗ Keine bezahlten Signale',
+                  '✗ Kein Pump & Dump',
+                  '✗ Kein Coaching-Bullshit',
+                ].map((item, i) => (
+                  <span key={i} className="px-5 py-2 rounded-full border border-[var(--cs-border-w)] bg-[var(--cs-s1)] font-mono text-[11px] tracking-[0.08em] text-[var(--cs-text-2)]">
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </Reveal>
+      </SectionWrapper>
+
+      <GoldDivider className="mx-8 md:mx-16 lg:mx-24" />
+
       {/* Features */}
       <SectionWrapper id="features">
         <SectionHeader
@@ -389,6 +436,65 @@ export default function CommunityPage() {
                   <h3 className="font-display text-lg text-[var(--cs-text)] mb-2">{f.title}</h3>
                   <p className="text-[var(--cs-text-2)] text-sm leading-relaxed">{f.desc}</p>
                 </Card>
+              </motion.div>
+            </StaggerItem>
+          ))}
+        </StaggerContainer>
+      </SectionWrapper>
+
+      <GoldDivider className="mx-8 md:mx-16 lg:mx-24" />
+
+      {/* ── Für wen? ───────────────────────────────────────── */}
+      <SectionWrapper id="audience">
+        <SectionHeader
+          eyebrow="Für wen?"
+          title={<>Ein Server — <GradientText>drei Communities</GradientText></>}
+          description="Ob du tradest, codest oder beides — hier findest du Leute die auf demselben Weg sind."
+          className="mb-14"
+        />
+        <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          {[
+            {
+              emoji: '📈',
+              label: 'Trader & Investor',
+              desc: 'Du willst nicht allein traden. Chart-Austausch, Setups, Marktanalysen — und jemand der dich auf Bullshit hinweist.',
+              tags: ['Setups', 'Chartanalyse', 'Depot', 'ETFs'],
+              href: '#features',
+            },
+            {
+              emoji: '💻',
+              label: 'Developer',
+              desc: 'Du baust Trading-Bots, automatisierst Strategien oder entwickelst Web-Apps. Hier findest du Gleichgesinnte und echte Code-Reviews.',
+              tags: ['Bots', 'APIs', 'TypeScript', 'Open Source'],
+              href: '#dev',
+            },
+            {
+              emoji: '🌱',
+              label: 'Einsteiger',
+              desc: 'Du willst Finanzen verstehen — ohne Hype, ohne Schnellreich-werden-Versprechen. Einfach lernen, Fragen stellen, wachsen.',
+              tags: ['Grundlagen', 'ETF-Start', 'Budgetplanung', 'FinanceBoard'],
+              href: '#features',
+            },
+          ].map((card, i) => (
+            <StaggerItem key={i}>
+              <motion.div whileHover={{ y: -4 }} transition={{ duration: 0.2 }} className="h-full">
+                <div className="h-full flex flex-col gap-4 p-6 rounded-2xl border border-[var(--cs-border-w)] bg-[var(--cs-s1)] hover:border-[#C9A84C]/25 hover:bg-[#C9A84C]/3 transition-all duration-300">
+                  <span className="text-3xl">{card.emoji}</span>
+                  <div className="flex-1">
+                    <h3 className="font-display text-lg text-[var(--cs-text)] mb-2">{card.label}</h3>
+                    <p className="text-[var(--cs-text-2)] text-sm leading-relaxed">{card.desc}</p>
+                  </div>
+                  <div className="flex flex-wrap gap-1.5">
+                    {card.tags.map(tag => (
+                      <span key={tag} className="px-2.5 py-1 rounded-full bg-[#C9A84C]/6 border border-[#C9A84C]/15 font-mono text-[10px] tracking-[0.08em] text-[var(--cs-text-3)]">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                  <a href={card.href} className="flex items-center gap-2 text-[11px] tracking-[0.1em] uppercase text-[var(--cs-text-2)] hover:text-[#C9A84C] transition-colors group">
+                    Mehr sehen <ArrowRight size={12} strokeWidth={1.5} className="group-hover:translate-x-1 transition-transform" />
+                  </a>
+                </div>
               </motion.div>
             </StaggerItem>
           ))}
@@ -531,6 +637,125 @@ export default function CommunityPage() {
               </div>
             </div>
           </div>
+        </div>
+      </SectionWrapper>
+
+      <GoldDivider className="mx-8 md:mx-16 lg:mx-24" />
+
+      {/* ── Live Chat Mockup ────────────────────────────────── */}
+      <SectionWrapper id="activity">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div>
+            <SectionHeader
+              eyebrow="Live Austausch"
+              title={<>So klingt die <GradientText>Community</GradientText></>}
+              description="Kein Marketing-Script. Das sind echte Gespräche — Setups, Code, Fragen und Antworten."
+              className="mb-8"
+            />
+            <StaggerContainer className="flex flex-col gap-3 mb-8">
+              {[
+                { emoji: '💬', text: 'Täglich aktiver Austausch in mehreren Channels' },
+                { emoji: '🔥', text: 'Setup-Sharing mit echtem Community-Feedback' },
+                { emoji: '🤝', text: 'Direkte Antworten statt Copy-Paste-Boilerplate' },
+                { emoji: '⚡', text: 'Trading-Bots die live in der Community gebaut werden' },
+              ].map((item, i) => (
+                <StaggerItem key={i}>
+                  <div className="flex items-center gap-3">
+                    <span className="text-sm">{item.emoji}</span>
+                    <span className="text-[var(--cs-text-2)] text-sm">{item.text}</span>
+                  </div>
+                </StaggerItem>
+              ))}
+            </StaggerContainer>
+            <a href={`https://discord.gg/${INVITE_CODE}`} target="_blank" rel="noopener noreferrer">
+              <CtaButton variant="primary" href={`https://discord.gg/${INVITE_CODE}`} external>
+                Jetzt beitreten
+              </CtaButton>
+            </a>
+          </div>
+
+          {/* Discord Chat Mockup */}
+          <Reveal delay={0.1}>
+            <div className="rounded-2xl border border-[#C9A84C]/15 bg-[var(--cs-s1)] overflow-hidden shadow-2xl shadow-black/40">
+              <div className="h-px bg-gradient-to-r from-transparent via-[#C9A84C]/30 to-transparent" />
+              <div className="px-4 py-3 border-b border-[#ffffff]/6 bg-[var(--cs-input)] flex items-center gap-2">
+                <span className="font-mono text-[12px] text-[var(--cs-text-3)]">#</span>
+                <span className="font-mono text-[11px] text-[var(--cs-text-2)]">setups</span>
+                <div className="ml-auto flex items-center gap-1.5">
+                  <motion.div className="w-1.5 h-1.5 rounded-full bg-[#00C896]"
+                    animate={{ opacity: [1, 0.4, 1] }} transition={{ duration: 2, repeat: Infinity }} />
+                  <span className="font-mono text-[9px] text-[var(--cs-text-4)]">live</span>
+                </div>
+              </div>
+              <div className="p-4 flex flex-col gap-5">
+                {[
+                  {
+                    avatar: 'AT', color: '#5865F2',
+                    name: 'Alex_T.', time: 'Heute 09:42',
+                    text: 'BTC Setup läuft — Einstieg 65k, TP 68k, SL 63.5k 🎯',
+                    code: null,
+                    reactions: [{ emoji: '🔥', count: 4 }, { emoji: '✅', count: 2 }],
+                  },
+                  {
+                    avatar: 'MD', color: '#57F287',
+                    name: 'MaxDev', time: 'Heute 10:14',
+                    text: 'Hat jemand die Binance WebSocket API im Griff? Reconnect klappt nicht...',
+                    code: `ws.on('error', () => reconnect())`,
+                    reactions: [],
+                  },
+                  {
+                    avatar: 'CS', color: '#C9A84C',
+                    name: 'Chris_S 👑', time: 'Heute 10:17',
+                    text: '@MaxDev setTimeout 3000ms vor dem reconnect() — WS braucht kurz bis die Connection wirklich closed ist.',
+                    code: null,
+                    reactions: [{ emoji: '👍', count: 3 }],
+                  },
+                  {
+                    avatar: 'SR', color: '#FEE75C',
+                    name: 'Stefan_R', time: 'Heute 11:02',
+                    text: 'ETH/USD Daily — das Wedge Pattern spannt sich zu. Breakout oder Breakdown?',
+                    code: null,
+                    reactions: [{ emoji: '📊', count: 5 }, { emoji: '🤔', count: 3 }],
+                  },
+                ].map((msg, i) => (
+                  <motion.div key={i}
+                    initial={{ opacity: 0, x: -10 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.1, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                    className="flex items-start gap-3">
+                    <div className="w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-bold text-[#080808] shrink-0 mt-0.5"
+                      style={{ background: msg.color }}>
+                      {msg.avatar}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-baseline gap-2 mb-1">
+                        <span className="font-semibold text-[12px] text-[var(--cs-text)]">{msg.name}</span>
+                        <span className="font-mono text-[9px] text-[var(--cs-text-4)]">{msg.time}</span>
+                      </div>
+                      <p className="text-[12px] text-[var(--cs-text-2)] leading-relaxed">{msg.text}</p>
+                      {msg.code && (
+                        <code className="block mt-1.5 px-3 py-2 rounded-lg bg-[var(--cs-s4)] font-mono text-[11px] text-[#7dd3fc] border border-[#ffffff]/6">
+                          {msg.code}
+                        </code>
+                      )}
+                      {msg.reactions.length > 0 && (
+                        <div className="flex gap-1.5 mt-1.5">
+                          {msg.reactions.map(r => (
+                            <span key={r.emoji} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#ffffff]/6 border border-[#ffffff]/10 text-[11px]">
+                              {r.emoji}
+                              <span className="font-mono text-[10px] text-[var(--cs-text-3)]">{r.count}</span>
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+              <div className="h-px bg-gradient-to-r from-transparent via-[#C9A84C]/20 to-transparent" />
+            </div>
+          </Reveal>
         </div>
       </SectionWrapper>
 

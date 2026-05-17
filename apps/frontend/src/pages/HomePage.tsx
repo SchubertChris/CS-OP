@@ -225,6 +225,33 @@ export default function HomePage() {
       {/* ── 2. Marquee ────────────────────────────────────── */}
       <Marquee />
 
+      {/* ── 2.5 Brand Numbers ─────────────────────────────── */}
+      <section className="px-8 md:px-16 lg:px-24 py-14 max-w-6xl mx-auto">
+        <Reveal direction="up" className="mb-8">
+          <p className="font-mono text-[10px] tracking-[0.22em] uppercase text-[var(--cs-text-4)] text-center">
+            Gebaut · Deployed · Live
+          </p>
+        </Reveal>
+        <StaggerContainer className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          {[
+            { val: '2',   label: 'Live-Apps',       sub: 'shipped & deployed' },
+            { val: '60+', label: 'API-Routen',       sub: 'REST Backend' },
+            { val: '30+', label: 'Frontend-Seiten',  sub: 'React · TypeScript' },
+            { val: '13+', label: 'Jahre Erfahrung',  sub: 'Coding & Finance' },
+          ].map((stat, i) => (
+            <StaggerItem key={i}>
+              <div className="group flex flex-col items-center text-center p-6 rounded-2xl border border-[var(--cs-border-w)] bg-[var(--cs-s1)] hover:border-[#C9A84C]/30 hover:bg-[#C9A84C]/4 transition-all duration-300 cursor-default">
+                <span className="font-display text-4xl md:text-5xl text-[#C9A84C] mb-2 tabular-nums leading-none">{stat.val}</span>
+                <span className="font-medium text-[13px] text-[var(--cs-text)] mb-1">{stat.label}</span>
+                <span className="font-mono text-[9px] tracking-[0.16em] uppercase text-[var(--cs-text-4)]">{stat.sub}</span>
+              </div>
+            </StaggerItem>
+          ))}
+        </StaggerContainer>
+      </section>
+
+      <GoldDivider className="mx-8 md:mx-16 lg:mx-24" />
+
       {/* ── 3. CandleScope — Die Marke ────────────────────── */}
       <section className="px-8 md:px-16 lg:px-24 py-24 max-w-6xl mx-auto">
         <Reveal direction="up" className="mb-16">
@@ -331,10 +358,10 @@ export default function HomePage() {
               </div>
               <div className="grid grid-cols-2 gap-3">
                 {[
-                  { icon: <BarChart2 size={18} strokeWidth={1.5} />, label: '12 Pages', sub: 'Frontend komplett' },
-                  { icon: <Code2 size={18} strokeWidth={1.5} />,    label: '30+ Routen', sub: 'REST API' },
-                  { icon: <Zap size={18} strokeWidth={1.5} />,      label: 'One-Push', sub: 'Vercel Deploy' },
-                  { icon: <Star size={18} strokeWidth={1.5} />,     label: 'Einmalig', sub: 'Keine Gebühren' },
+                  { icon: <BarChart2 size={18} strokeWidth={1.5} />, label: '30+ Seiten',   sub: 'Frontend komplett' },
+                  { icon: <Code2 size={18} strokeWidth={1.5} />,    label: '60+ Routen',   sub: 'REST Backend' },
+                  { icon: <Zap size={18} strokeWidth={1.5} />,      label: 'Vercel Ready', sub: 'One Command Deploy' },
+                  { icon: <Star size={18} strokeWidth={1.5} />,     label: 'Kein Abo',    sub: 'Einmalig kaufen' },
                 ].map((item) => (
                   <div key={item.label} className="flex items-center gap-3 p-3 rounded-2xl border border-[var(--cs-border-w)] bg-[var(--cs-s1)]">
                     <div className="w-9 h-9 rounded-xl bg-[#C9A84C]/8 border border-[#C9A84C]/15 flex items-center justify-center text-[#C9A84C]/70 shrink-0">
@@ -444,6 +471,36 @@ export default function HomePage() {
 
       <GoldDivider className="mx-8 md:mx-16 lg:mx-24" />
 
+      {/* ── Manifesto ────────────────────────────────────── */}
+      <section className="px-8 md:px-16 lg:px-24 py-20">
+        <div className="max-w-4xl mx-auto">
+          <Reveal direction="scale">
+            <div className="relative rounded-3xl border border-[#C9A84C]/20 overflow-hidden p-10 md:p-16 text-center">
+              <motion.div
+                className="absolute inset-0 pointer-events-none"
+                style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(201,168,76,0.10) 0%, transparent 65%)' }}
+                animate={{ opacity: [0.5, 1, 0.5] }}
+                transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+              />
+              <div className="relative">
+                <p className="font-mono text-[11px] tracking-[0.22em] uppercase text-[#C9A84C]/70 mb-6">Philosophie</p>
+                <h2 className="font-display text-3xl md:text-5xl text-[var(--cs-text)] leading-tight mb-5">
+                  Kein SaaS. Kein Abo.<br />
+                  <GradientText>Keine Cloud.</GradientText>
+                </h2>
+                <p className="text-[var(--cs-text-2)] max-w-xl mx-auto leading-relaxed">
+                  Software die du kaufst, installierst und für immer besitzt.
+                  Deine Daten bleiben auf deinem Gerät — nicht auf unseren Servern,
+                  nicht hinter einer Paywall, nicht in einer Subscription.
+                </p>
+              </div>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      <GoldDivider className="mx-8 md:mx-16 lg:mx-24" />
+
       {/* ── 5. Der Typ dahinter ───────────────────────────── */}
       <section className="px-8 md:px-16 lg:px-24 py-24">
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
@@ -459,12 +516,13 @@ export default function HomePage() {
             </h2>
             <div className="flex flex-col gap-4 max-w-xl">
               <p className="text-[var(--cs-text-2)] leading-relaxed">
-                Ich baue Software die ich selbst nutze — das Haushaltsbuch ist entstanden weil
-                ich nichts Besseres finden konnte. Ich trade, ich code, ich game.
+                Full-Stack Developer — ich baue Software die ich selbst nutze und verkaufe.
+                FinanceBoard weil es kein gutes offline Haushaltsbuch gab.
+                ShopRay weil professionelle Shop-Templates Unsummen kosten.
                 CandleScope ist die Marke die das alles zusammenhält.
               </p>
               <HighlightLine>
-                Kein Influencer. Kein Coach. Einfach jemand der Dinge baut.
+                Kein Influencer. Kein Coach. Jemand der Dinge baut — und deployed.
               </HighlightLine>
             </div>
             <div className="flex items-center gap-4 mt-8 flex-wrap">
@@ -525,7 +583,7 @@ export default function HomePage() {
             />
             <div className="flex items-center gap-4 justify-center flex-wrap">
               <CtaButton href="/contact" variant="primary">Kontakt aufnehmen</CtaButton>
-              <CtaButton href="/finance" variant="ghost">Produkt ansehen</CtaButton>
+              <CtaButton href="/shopray" variant="ghost">ShopRay ansehen</CtaButton>
             </div>
           </Reveal>
         </div>
