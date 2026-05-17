@@ -439,7 +439,7 @@ export default function DevPage() {
           <StaggerItem>
             <ProjectCard
               title="Candlescope FinanceBoard"
-              description="Vollständige Desktop-App für Windows. Offline-first, kein Framework, kein Cloud-Zwang."
+              description="Professionelles Haushaltsbuch für Windows — vollständig offline, kein Abo, keine Cloud. Einmal herunterladen, dauerhaft behalten."
               tags={['Electron', 'Vanilla JS', 'Chart.js', 'CSS']}
               status="wip"
               locked
