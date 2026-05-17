@@ -228,7 +228,7 @@ function ShopRayHero() {
               transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
               style={{ rotate: -1.5 }}>
               {/* Shine sweep */}
-              <div className="relative">
+              <div className="relative overflow-hidden rounded-2xl">
                 <motion.div
                   className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -skew-x-12 pointer-events-none z-10"
                   initial={{ x: '-100%' }} animate={{ x: '200%' }}
