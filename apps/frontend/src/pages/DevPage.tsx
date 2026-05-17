@@ -298,7 +298,7 @@ function ProjectCard({ title, description, tags, href, githubHref, status, locke
    PAGE
    ════════════════════════════════════════════════════════════════ */
 export default function DevPage() {
-  const STACK = ['React', 'TypeScript', 'Vite', 'Tailwind CSS', 'Node.js', 'NestJS', 'PostgreSQL', 'Prisma', 'Docker', 'Nginx', 'Git', 'Linux']
+  const STACK = ['React', 'TypeScript', 'Vite', 'SCSS', 'Node.js', 'Express.js', 'Supabase', 'PostgreSQL', 'Zod', 'Docker', 'Git', 'Linux']
   const userData = useGitHubUser('SchubertChris')
 
   return (
@@ -309,7 +309,7 @@ export default function DevPage() {
         titleLine2="zum Produkt."
         titleAccent="line2"
         description="Ich entwickle React-Apps, Desktop-Software und Backends die wirklich in Produktion gehen — sauber, schnell, wartbar. Aktuell verfügbar."
-        badge="Open for work"
+        badge="Verfügbar für Projekte"
         theme="dev"
       >
         {/* Primär-CTA: Anfragen zuerst — das ist die Conversion */}
@@ -360,7 +360,7 @@ export default function DevPage() {
           {[
             { icon: <Globe size={20} strokeWidth={1.5} />, title: 'Websites', desc: 'Schnelle, SEO-optimierte Websites mit modernem Design und echtem Mehrwert.' },
             { icon: <Smartphone size={20} strokeWidth={1.5} />, title: 'Web-Apps', desc: 'React-basierte Anwendungen — skalierbar, typsicher und production-ready.' },
-            { icon: <Terminal size={20} strokeWidth={1.5} />, title: 'Backends', desc: 'NestJS APIs, PostgreSQL, Docker — solide Architektur für echte Anforderungen.' },
+            { icon: <Terminal size={20} strokeWidth={1.5} />, title: 'Backends', desc: 'Express.js APIs, Supabase, PostgreSQL — solide Architektur für echte Anforderungen.' },
           ].map((s, i) => (
             <StaggerItem key={i}>
               <Card variant="elevated" className="h-full">
@@ -399,18 +399,17 @@ export default function DevPage() {
         <div className="mb-5">
           <SpotlightCard
             title="CandleScope.de"
-            description="Personal Brand Website mit eigenem CMS & Page Builder — vollständig selbst entwickelt. Modulares Block-System, Admin Panel mit Live-Editor, Framer Motion Animationen und ein Design das zur Marke passt."
-            tags={['React', 'TypeScript', 'Vite', 'Tailwind CSS', 'Zustand', 'Framer Motion']}
+            description="Personal Brand Website — vollständig selbst entwickelt. Eigenes Design-System, Framer Motion Animationen, Admin Dashboard für Seitenanalyse und ein Auftritt der zur Marke passt."
+            tags={['React', 'TypeScript', 'Vite', 'SCSS', 'Tailwind CSS', 'Framer Motion']}
             href="https://candlescope.de"
-            githubHref="https://github.com/SchubertChris/Candlescope-Frontend"
             status="live"
           />
         </div>
         <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <StaggerItem>
             <ProjectCard
-              title="Candlescope Dark Purple"
-              description="Neuere Portfolio-Website — React + Vite + TypeScript mit modernem Layout und Projektübersicht."
+              title="Candlescope Dark (v1)"
+              description="Erste Version der Portfolio-Website — Vorgänger des aktuellen Designs. React + Vite + TypeScript mit modernem Dark-Purple-Layout."
               tags={['React', 'TypeScript', 'Vite', 'SCSS']}
               href="https://candlescope-frontend.vercel.app/"
               githubHref="https://github.com/SchubertChris/Candlescope-Frontend"
@@ -537,7 +536,7 @@ export default function DevPage() {
             <div>
               <div className="flex items-center gap-2 mb-4">
                 <div className="w-1.5 h-1.5 rounded-full bg-[#00C896] animate-pulse" />
-                <span className="font-mono text-[10px] tracking-[0.18em] uppercase text-[#00C896]">Open for work</span>
+                <span className="font-mono text-[10px] tracking-[0.18em] uppercase text-[#00C896]">Verfügbar für Projekte</span>
               </div>
               <h2 className="font-display text-3xl md:text-4xl text-[var(--cs-text)] leading-tight mb-4">
                 Dein Projekt.<br /><GradientText>Mein Code.</GradientText>
@@ -588,7 +587,7 @@ export default function DevPage() {
             { value: userData ? String(userData.public_repos) : '…', label: 'Repositories' },
             { value: userData ? String(userData.followers) : '…', label: 'Follower' },
             { value: '5', label: 'Projekte live' },
-            { value: '13+', label: 'Jahre Service-Erfahrung' },
+            { value: '13+', label: 'Jahre Praxiserfahrung' },
           ].map((s, i) => (
             <StaggerItem key={i}>
               <div className="flex flex-col gap-1">
