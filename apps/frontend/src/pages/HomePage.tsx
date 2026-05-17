@@ -288,7 +288,73 @@ export default function HomePage() {
 
       <GoldDivider className="mx-8 md:mx-16 lg:mx-24" />
 
-      {/* ── 4. Featured Produkt ───────────────────────────── */}
+      {/* ── 4. ShopRay Teaser ─────────────────────────────── */}
+      <section className="px-8 md:px-16 lg:px-24 py-24 max-w-6xl mx-auto">
+        <Reveal direction="up" className="mb-10">
+          <SectionHeader
+            eyebrow="Web Templates"
+            title={<><GradientText>ShopRay</GradientText> — das Shop-Template.</>}
+            description="Vollständiges React + Node.js Shop-Template mit Admin-Panel, Stripe und Supabase. Einmal kaufen, sofort deployen."
+          />
+        </Reveal>
+
+        <Reveal direction="scale" delay={0.1}>
+          <div className="relative rounded-3xl border border-[#C9A84C]/20 bg-gradient-to-r from-[#C9A84C]/4 to-transparent overflow-hidden p-8">
+            <motion.div
+              className="absolute inset-0 pointer-events-none"
+              style={{ background: 'radial-gradient(ellipse at 0% 50%, rgba(201,168,76,0.08) 0%, transparent 60%)' }}
+            />
+            <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+              <div>
+                <div className="flex flex-wrap gap-2 mb-5">
+                  {['React 19', 'Node.js', 'Supabase', 'Stripe', 'Admin Panel', 'DSGVO'].map((tag) => (
+                    <span key={tag} className="font-mono text-[10px] tracking-[0.1em] px-2.5 py-1 rounded-full border border-[#C9A84C]/20 bg-[#C9A84C]/5 text-[var(--cs-text-2)]">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+                <p className="text-[var(--cs-text-2)] text-sm leading-relaxed mb-6 max-w-lg">
+                  Frontend, Backend und Admin-Panel bereits komplett implementiert — Stripe Checkout integriert, DSGVO-konform, Vercel-ready. Einmal kaufen und sofort mit eigenem Shop starten.
+                </p>
+                <div className="flex items-center gap-4 flex-wrap">
+                  <Link to="/shopray"
+                    className="relative overflow-hidden group text-[11px] tracking-[0.15em] uppercase bg-[#C9A84C] text-[#080808] px-6 py-3 rounded-full font-semibold shadow-lg shadow-[#C9A84C]/20 hover:shadow-[#C9A84C]/35 transition-shadow duration-300">
+                    <span className="relative z-10">Mehr erfahren</span>
+                    <span className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-full" />
+                  </Link>
+                  <a href="https://shopray-indol.vercel.app" target="_blank" rel="noopener noreferrer"
+                    className="flex items-center gap-2 text-[11px] tracking-[0.14em] uppercase text-[var(--cs-text-2)] hover:text-[var(--cs-text)] transition-colors group">
+                    Live-Demo
+                    <ArrowRight size={13} strokeWidth={1.5} className="group-hover:translate-x-1 transition-transform" />
+                  </a>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                {[
+                  { icon: <BarChart2 size={18} strokeWidth={1.5} />, label: '12 Pages', sub: 'Frontend komplett' },
+                  { icon: <Code2 size={18} strokeWidth={1.5} />,    label: '30+ Routen', sub: 'REST API' },
+                  { icon: <Zap size={18} strokeWidth={1.5} />,      label: 'One-Push', sub: 'Vercel Deploy' },
+                  { icon: <Star size={18} strokeWidth={1.5} />,     label: 'Einmalig', sub: 'Keine Gebühren' },
+                ].map((item) => (
+                  <div key={item.label} className="flex items-center gap-3 p-3 rounded-2xl border border-[var(--cs-border-w)] bg-[var(--cs-s1)]">
+                    <div className="w-9 h-9 rounded-xl bg-[#C9A84C]/8 border border-[#C9A84C]/15 flex items-center justify-center text-[#C9A84C]/70 shrink-0">
+                      {item.icon}
+                    </div>
+                    <div>
+                      <p className="text-[13px] font-semibold text-[var(--cs-text)]">{item.label}</p>
+                      <p className="text-[11px] text-[var(--cs-text-3)]">{item.sub}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </Reveal>
+      </section>
+
+      <GoldDivider className="mx-8 md:mx-16 lg:mx-24" />
+
+      {/* ── 5. Featured Produkt ───────────────────────────── */}
       <section id="produkt" className="px-8 md:px-16 lg:px-24 py-24">
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <Reveal direction="left">

@@ -24,6 +24,7 @@ const ImpressumPage = lazy(() => import('./pages/ImpressumPage'))
 const DatenschutzPage = lazy(() => import('./pages/DatenschutzPage'))
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'))
 const DynamicPage = lazy(() => import('./pages/DynamicPage'))
+const ShopRayPage = lazy(() => import('./pages/ShopRayPage'))
 
 /* ── Loading Fallback ──────────────────────────────── */
 function PageLoader() {
@@ -53,6 +54,7 @@ export default function App() {
         <Route path="/about" element={<S><AboutPage /></S>} />
         <Route path="/community" element={<S><CommunityPage /></S>} />
         <Route path="/contact" element={<S><ContactPage /></S>} />
+        <Route path="/shopray" element={<S><ShopRayPage /></S>} />
         <Route path="/impressum" element={<S><ImpressumPage /></S>} />
         <Route path="/datenschutz" element={<S><DatenschutzPage /></S>} />
         <Route path="/404" element={<S><NotFoundPage /></S>} />
