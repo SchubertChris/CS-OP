@@ -85,18 +85,18 @@ function BrowserMock({ title, children }: { title: string; children: React.React
 function ShopMockup() {
   return (
     <BrowserMock title="ShopRay — Shop Frontend">
-      <div className="bg-[#0d0d0d] p-6 min-h-[340px]">
+      <div className="bg-[var(--cs-s2)] p-6 min-h-[340px]">
         {/* Header */}
-        <div className="flex items-center justify-between mb-6 pb-4 border-b border-white/5">
+        <div className="flex items-center justify-between mb-6 pb-4 border-b border-[var(--cs-border-w)]">
           <div className="flex items-center gap-2">
             <div className="w-6 h-6 rounded-full bg-[#C9A84C]/20 flex items-center justify-center">
               <ShoppingBag size={11} className="text-[#C9A84C]" />
             </div>
-            <span className="text-white/80 text-[11px] font-semibold tracking-wider">ShopRay</span>
+            <span className="text-[var(--cs-text)] text-[11px] font-semibold tracking-wider">ShopRay</span>
           </div>
           <div className="flex items-center gap-3">
-            <div className="w-20 h-1.5 rounded-full bg-white/10" />
-            <div className="w-14 h-1.5 rounded-full bg-white/10" />
+            <div className="w-20 h-1.5 rounded-full bg-[var(--cs-border-w2)]" />
+            <div className="w-14 h-1.5 rounded-full bg-[var(--cs-border-w2)]" />
             <div className="w-6 h-6 rounded-full bg-[#C9A84C]/20 flex items-center justify-center">
               <ShoppingBag size={10} className="text-[#C9A84C]" />
             </div>
@@ -105,22 +105,22 @@ function ShopMockup() {
         {/* Product Grid */}
         <div className="grid grid-cols-3 gap-3">
           {[
-            { h: 'bg-[#C9A84C]/15', price: '29,90 €', badge: 'NEU' },
-            { h: 'bg-white/5', price: '49,90 €', badge: 'TOP' },
-            { h: 'bg-white/5', price: '19,90 €', badge: '' },
+            { price: '29,90 €', badge: 'NEU', highlight: true },
+            { price: '49,90 €', badge: 'TOP', highlight: false },
+            { price: '19,90 €', badge: '',    highlight: false },
           ].map((p, i) => (
-            <div key={i} className="rounded-xl overflow-hidden border border-white/6">
-              <div className={`h-20 ${p.h} flex items-center justify-center relative`}>
-                <Package size={22} className="text-white/20" />
+            <div key={i} className="rounded-xl overflow-hidden border border-[var(--cs-border-w)]">
+              <div className={`h-20 flex items-center justify-center relative ${p.highlight ? 'bg-[#C9A84C]/15' : 'bg-[var(--cs-s3)]'}`}>
+                <Package size={22} className="text-[var(--cs-text-4)]" />
                 {p.badge && (
                   <span className="absolute top-2 right-2 text-[8px] font-bold bg-[#C9A84C] text-[#080808] px-1.5 py-0.5 rounded-full">
                     {p.badge}
                   </span>
                 )}
               </div>
-              <div className="p-2.5 bg-[#161616]">
-                <div className="w-16 h-1.5 rounded-full bg-white/15 mb-1.5" />
-                <div className="w-10 h-1.5 rounded-full bg-white/8 mb-2" />
+              <div className="p-2.5 bg-[var(--cs-s4)]">
+                <div className="w-16 h-1.5 rounded-full bg-[var(--cs-border-w3)] mb-1.5" />
+                <div className="w-10 h-1.5 rounded-full bg-[var(--cs-border-w2)] mb-2" />
                 <div className="flex items-center justify-between">
                   <span className="text-[#C9A84C] text-[11px] font-bold">{p.price}</span>
                   <div className="w-16 h-5 rounded-lg bg-[#C9A84C]/20 flex items-center justify-center">
@@ -138,7 +138,7 @@ function ShopMockup() {
             <span className="text-[#C9A84C] text-[10px] font-semibold">2 Artikel im Warenkorb</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <span className="text-white/60 text-[10px]">79,80 €</span>
+            <span className="text-[var(--cs-text-2)] text-[10px]">79,80 €</span>
             <ArrowRight size={12} className="text-[#C9A84C]" />
           </div>
         </div>
@@ -151,36 +151,36 @@ function ShopMockup() {
 function AdminMockup() {
   return (
     <BrowserMock title="ShopRay Admin — Dashboard">
-      <div className="bg-[#0a0a0a] flex min-h-[260px]">
+      <div className="bg-[var(--cs-s1)] flex min-h-[260px]">
         {/* Sidebar */}
-        <div className="w-14 border-r border-white/5 flex flex-col items-center py-4 gap-4">
+        <div className="w-14 border-r border-[var(--cs-border-w)] flex flex-col items-center py-4 gap-4">
           {[LayoutDashboard, Package, ShoppingBag, Users, CreditCard].map((Icon, i) => (
-            <div key={i} className={`w-8 h-8 rounded-xl flex items-center justify-center transition-all ${i === 0 ? 'bg-[#C9A84C]/20 text-[#C9A84C]' : 'text-white/20'}`}>
+            <div key={i} className={`w-8 h-8 rounded-xl flex items-center justify-center transition-all ${i === 0 ? 'bg-[#C9A84C]/20 text-[#C9A84C]' : 'text-[var(--cs-text-4)]'}`}>
               <Icon size={14} />
             </div>
           ))}
         </div>
         {/* Content */}
         <div className="flex-1 p-4">
-          <p className="text-[9px] font-mono tracking-wider text-white/30 mb-3">DASHBOARD</p>
+          <p className="text-[9px] font-mono tracking-wider text-[var(--cs-text-3)] mb-3">DASHBOARD</p>
           <div className="grid grid-cols-2 gap-2 mb-4">
             {[
-              { label: 'Umsatz', val: '3.290 €', color: 'text-[#C9A84C]' },
-              { label: 'Bestellungen', val: '47', color: 'text-[#22c55e]' },
-              { label: 'Kunden', val: '83', color: 'text-white/70' },
-              { label: 'Produkte', val: '25', color: 'text-white/70' },
+              { label: 'Umsatz',       val: '3.290 €', color: 'text-[#C9A84C]' },
+              { label: 'Bestellungen', val: '47',      color: 'text-[#22c55e]' },
+              { label: 'Kunden',       val: '83',      color: 'text-[var(--cs-text)]' },
+              { label: 'Produkte',     val: '25',      color: 'text-[var(--cs-text)]' },
             ].map((s, i) => (
-              <div key={i} className="p-2.5 rounded-xl bg-white/3 border border-white/5">
-                <p className="text-[8px] text-white/30 mb-1">{s.label}</p>
+              <div key={i} className="p-2.5 rounded-xl bg-[var(--cs-s3)] border border-[var(--cs-border-w)]">
+                <p className="text-[8px] text-[var(--cs-text-3)] mb-1">{s.label}</p>
                 <p className={`text-[15px] font-bold ${s.color}`}>{s.val}</p>
               </div>
             ))}
           </div>
           <div className="space-y-1.5">
             {['#0042 · 49,90 € · bezahlt', '#0041 · 29,90 € · versandt', '#0040 · 79,80 € · bezahlt'].map((r, i) => (
-              <div key={i} className="flex items-center justify-between p-2 rounded-lg bg-white/2 border border-white/4">
-                <span className="text-[9px] font-mono text-white/40">{r.split('·')[0]}</span>
-                <span className="text-[9px] text-white/50">{r.split('·')[1]}</span>
+              <div key={i} className="flex items-center justify-between p-2 rounded-lg bg-[var(--cs-s2)] border border-[var(--cs-border-w)]">
+                <span className="text-[9px] font-mono text-[var(--cs-text-3)]">{r.split('·')[0]}</span>
+                <span className="text-[9px] text-[var(--cs-text-2)]">{r.split('·')[1]}</span>
                 <span className={`text-[8px] font-semibold ${r.includes('bezahlt') ? 'text-[#22c55e]' : 'text-[#C9A84C]'}`}>{r.split('·')[2]}</span>
               </div>
             ))}
