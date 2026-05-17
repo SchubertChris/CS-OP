@@ -154,12 +154,12 @@ function ShopRayHero() {
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}>
             <span className="w-6 h-px bg-[#C9A84C]" />
             <span className="text-[11px] tracking-[0.22em] uppercase text-[#C9A84C] font-medium">
-              Shop-Template · Für Entwickler
+              Shop-Setup · Schlüsselfertig
             </span>
             <motion.span className="text-[10px] tracking-[0.12em] uppercase border border-[#C9A84C]/25 text-[#C9A84C]/60 px-3 py-1 rounded-full"
               initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.4, duration: 0.4 }}>
-              v1.0 · Einmalig
+              Setup inklusive
             </motion.span>
           </motion.div>
 

@@ -100,11 +100,11 @@ function ServiceCard({ icon, title, desc, tags }: {
 
 const SKILLS_DEV = ['React', 'TypeScript', 'Vite', 'Tailwind CSS', 'Node.js', 'NestJS', 'PostgreSQL', 'Docker', 'Git', 'Linux']
 const SKILLS_FINANCE = ['Technische Analyse', 'Aktien', 'ETFs', 'Krypto', 'DeFi', 'Portfolio-Management', 'Haushaltsbuch']
-const SKILLS_OTHER = ['Automatisierung', 'KI-Tools', 'Claude AI', 'ChatGPT', 'Discord', 'Community-Building']
+const SKILLS_OTHER = ['Automatisierung', 'KI-Tools', 'Claude AI', 'ChatGPT', 'Discord', 'Community-Building', 'Prompt Engineering']
 
 const TIMELINE = [
-  { year: '1994', title: 'Potsdam — Aufgewachsen', desc: 'In Potsdam geboren und aufgewachsen — seit dem zehnten Lebensjahr am PC, immer neugierig auf Technik, Hardware und wie Dinge funktionieren. Mit 13 nach Stahnsdorf gezogen.' },
-  { year: '2007', title: 'Stahnsdorf — Neustart', desc: 'Mit 13 nach Stahnsdorf gezogen. Mit 15 erste Jobs in der Gastronomie, mit 17 den Führerschein selbst bezahlt. Selbstständigkeit war von Anfang an kein Konzept — es war Notwendigkeit.' },
+  { year: '1994', title: 'Potsdam — Aufgewachsen', desc: 'In Potsdam geboren und aufgewachsen — seit dem zehnten Lebensjahr am PC, immer neugierig auf Technik, Hardware und wie Dinge funktionieren.' },
+  { year: '2007', title: 'Stahnsdorf — Eigenverantwortung', desc: 'Mit 13 nach Stahnsdorf gezogen. Mit 15 erste eigene Jobs, mit 17 den Führerschein selbst finanziert. Eigenverantwortung war keine Entscheidung — sie war die einzige Option.' },
   { year: '2010', title: 'Gastronomie — Hotelfach bis Bundestag', desc: 'Ausbildung zum Hotelfachmann und 13 Jahre Gastronomie auf verschiedenen Levels — Das Juliette Potsdam, Käfer im Bundestag Berlin und mehr. Verlässlichkeit und Qualität unter Druck.' },
   { year: '2019', title: 'BBU — Vorstandsfahrer', desc: 'Vertrauensposition als Vorstandsfahrer für Maren Kern bei der BBU. Diskretion, Zuverlässigkeit und Professionalität auf höchstem Level.' },
   { year: '2022', title: 'CandleScope — Die Marke entsteht', desc: 'Gründung der Marke CandleScope. Finance-Dashboard, eigene Website, Community — alles aus einer Hand. Krypto und Finanzen nicht als Hobby sondern als echtes Interessensfeld mit eigenem Tool-Stack.' },
@@ -116,14 +116,14 @@ const TIMELINE = [
 const VALUES = [
   { icon: <Star size={16} strokeWidth={1.5} />, title: 'Qualität statt Quantität', desc: 'Lieber weniger Dinge — aber die richtig. Kein Bloat, kein Halbfertiges.' },
   { icon: <Zap size={16} strokeWidth={1.5} />, title: 'Effizienz durch Automatisierung', desc: 'Was automatisiert werden kann, wird automatisiert. Zeit ist das wertvollste Gut.' },
-  { icon: <Users size={16} strokeWidth={1.5} />, title: 'Community & Zusammenhalt', desc: 'Alleine kommt man weiter, gemeinsam kommt man weiter und macht mehr Spaß.' },
-  { icon: <BookOpen size={16} strokeWidth={1.5} />, title: 'Kontinuierliches Lernen', desc: 'Der Markt schläft nicht, die Technologie schläft nicht — also schlafe ich auch nicht.' },
-  { icon: <Shield size={16} strokeWidth={1.5} />, title: 'Ehrlichkeit & Transparenz', desc: 'Kein Bullshit, kein Verkaufen von Träumen. Was ich sage, meine ich so.' },
-  { icon: <Heart size={16} strokeWidth={1.5} />, title: 'Unabhängigkeit & Freiheit', desc: 'Kein Chef der mir sagt was ich zu denken habe. Freiheit ist der Grund für alles.' },
+  { icon: <Users size={16} strokeWidth={1.5} />, title: 'Community & Zusammenhalt', desc: 'Alleine kommt man schnell, gemeinsam kommt man weiter. Netzwerke und echte Verbindungen zählen mehr als Solo-Ego.' },
+  { icon: <BookOpen size={16} strokeWidth={1.5} />, title: 'Kontinuierliches Lernen', desc: 'Märkte und Technologie stehen nicht still. Wer aufhört zu lernen, wird überholt — das ist keine Option.' },
+  { icon: <Shield size={16} strokeWidth={1.5} />, title: 'Ehrlichkeit & Transparenz', desc: 'Keine leeren Versprechen, kein Verkaufen von Träumen. Klartext in jede Richtung — das erwarte ich auch von Partnern.' },
+  { icon: <Heart size={16} strokeWidth={1.5} />, title: 'Eigenverantwortung & Fokus', desc: 'Langfristige Unabhängigkeit entsteht durch konsequentes Handeln, nicht durch Warten auf die richtige Gelegenheit.' },
 ]
 
 const SERVICES = [
-  { icon: <Globe size={20} strokeWidth={1.5} />, title: 'Websites & Web-Apps', desc: 'Von der Landing Page bis zur komplexen Web-App — React, TypeScript, moderne Architektur. Sauber entwickelt, pünktlich geliefert.', tags: ['React', 'TypeScript', 'Vite', 'Node.js'] },
+  { icon: <Globe size={20} strokeWidth={1.5} />, title: 'Websites & Web-Apps', desc: 'Von der Landing Page bis zur komplexen Web-App — React, TypeScript, moderne Architektur. Klarer Code, kein Overhead, direkte Kommunikation.', tags: ['React', 'TypeScript', 'Vite', 'Node.js'] },
   { icon: <TrendingUp size={20} strokeWidth={1.5} />, title: 'Trading-Analyse & Setups', desc: 'Technische Analyse, Chart-Setups und Marktperspektiven — basierend auf eigener Erfahrung. Keine BaFin-Lizenz, keine Beratung.', tags: ['TA', 'Aktien', 'Krypto', 'ETFs'] },
   { icon: <GraduationCap size={20} strokeWidth={1.5} />, title: 'Finance Coaching', desc: 'Haushaltsbuch einrichten, Portfolio aufbauen, Grundlagen verstehen — gemeinsam statt alleine. Persönliche Meinung, kein Finanzberater.', tags: ['Budgeting', 'Portfolio', 'Grundlagen'] },
   { icon: <Bot size={20} strokeWidth={1.5} />, title: 'Automatisierung & Scripting', desc: 'Repetitive Aufgaben automatisieren, Workflows optimieren, Tools bauen die Zeit sparen. Python, Node.js, KI-Integration.', tags: ['Python', 'Node.js', 'KI', 'Workflows'] },
@@ -144,11 +144,11 @@ export default function AboutPage() {
     <>
       <PageHero
         eyebrow="Chris Schubert · Potsdam, DE"
-        titleLine1="Kein Studium."
-        titleLine2="Alles gebaut."
+        titleLine1="Selbst entwickelt."
+        titleLine2="Produktiv deployed."
         titleAccent="line2"
-        description="WebDev · Trading · Finance. 13 Jahre echte Erfahrung — selbst gelernt, selbst gebaut, selbst deployed. Quereinsteiger der liefert."
-        badge="Open for work"
+        description="WebDev · Finance · KI-Automatisierung. Praxiserfahrung aus über einem Jahrzehnt — selbst gelernt, selbst gebaut, selbst verantwortet."
+        badge="Verfügbar für Projekte"
         theme="about"
       >
         {/* Primär-CTA: Kontakt ist die Conversion dieser Seite */}
@@ -198,7 +198,7 @@ export default function AboutPage() {
           </div>
 
           <div className="flex flex-col gap-6">
-            <SectionHeader eyebrow="Die Geschichte" title={<>Quereinsteiger.<br /><GradientText>Vollgas.</GradientText></>} className="mb-2" />
+            <SectionHeader eyebrow="Die Geschichte" title={<>Eigener Weg.<br /><GradientText>Eigene Regeln.</GradientText></>} className="mb-2" />
             <HighlightLine>„Think big — then double it."</HighlightLine>
             <p className="text-[var(--cs-text-2)] leading-relaxed">
               1994 in Potsdam geboren und aufgewachsen — seit dem zehnten Lebensjahr am PC,
@@ -268,7 +268,7 @@ export default function AboutPage() {
             <TagList tags={SKILLS_FINANCE} />
           </div>
           <div>
-            <p className="font-mono text-[11px] tracking-[0.16em] text-[var(--cs-text-2)] uppercase mb-4">Tools & Sonstiges</p>
+            <p className="font-mono text-[11px] tracking-[0.16em] text-[var(--cs-text-2)] uppercase mb-4">KI & Automatisierung</p>
             <TagList tags={SKILLS_OTHER} />
           </div>
         </div>
@@ -296,7 +296,7 @@ export default function AboutPage() {
         <SectionHeader
           eyebrow="Was ich anbiete"
           title={<>Wofür du mich <GradientText>anfragen kannst</GradientText></>}
-          description="Kein Agentur-Overhead, keine aufgeblähten Angebote — direkt, ehrlich, mit echtem Mehrwert."
+          description="Direkte Zusammenarbeit ohne Agentur-Overhead. Klare Angebote, verlässliche Umsetzung, ehrliches Feedback."
           className="mb-14"
         />
         <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -360,7 +360,7 @@ export default function AboutPage() {
                 { label: 'Antwortzeit', value: 'Innerhalb 24h' },
                 { label: 'Sprachen', value: 'Deutsch · English' },
                 { label: 'Standort', value: 'Potsdam, Deutschland' },
-                { label: 'Verfügbarkeit', value: 'Abends & Wochenende' },
+                { label: 'Verfügbarkeit', value: 'Remote · Projektbasis' },
               ].map((item, i) => (
                 <StaggerItem key={i}>
                   <div className="flex items-center justify-between px-5 py-3.5 rounded-xl border border-[var(--cs-border-w)] bg-[var(--cs-backdrop)]">
