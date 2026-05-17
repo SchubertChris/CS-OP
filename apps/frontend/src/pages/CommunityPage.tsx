@@ -13,7 +13,7 @@ import {
 import {
   MessageSquare, TrendingUp,
   Shield, BarChart2, Code2, Video,
-  CheckCircle2, ArrowRight, Volume2,
+  CheckCircle2, ArrowRight, Volume2, Terminal, Zap, GitBranch,
 } from 'lucide-react'
 
 /* ── Discord Invite Hook ─────────────────────────────────── */
@@ -110,6 +110,17 @@ const DISCORD_STRUCTURE = [
       { name: 'devisen', emoji: '💱', type: 'text' },
       { name: 'exchange-traded-funds', emoji: '📦', type: 'text' },
       { name: 'rohstoffe', emoji: '🪙', type: 'text' },
+    ],
+  },
+  {
+    name: '| Coding & Tech',
+    emoji: '💻',
+    channels: [
+      { name: 'webdev', emoji: '🌐', type: 'text' },
+      { name: 'trading-bots', emoji: '🤖', type: 'text' },
+      { name: 'automatisierung', emoji: '⚡', type: 'text' },
+      { name: 'code-review', emoji: '🔍', type: 'forum' },
+      { name: 'tools', emoji: '🛠️', type: 'text' },
     ],
   },
   {
@@ -294,7 +305,8 @@ const FEATURES = [
   { icon: <Video size={20} strokeWidth={1.5} />, title: 'Live Q&A Sessions', desc: 'Regelmäßige Live-Sessions mit Chart-Analysen, Fragen und direktem Austausch.' },
   { icon: <Shield size={20} strokeWidth={1.5} />, title: 'Scam-Alarm & Warnungen', desc: 'Community-geprüfte Warnungen vor Betrug, Pump & Dump und unseriösen Angeboten.' },
   { icon: <BarChart2 size={20} strokeWidth={1.5} />, title: 'Depot-Vorstellungen', desc: 'Zeig dein Portfolio, hol dir Feedback und lern von den Strategien anderer.' },
-  { icon: <Code2 size={20} strokeWidth={1.5} />, title: 'Dev & Tech Talk', desc: 'Webentwicklung, Automatisierung, Trading-Bots — Tech-Austausch auf Augenhöhe.' },
+  { icon: <Code2 size={20} strokeWidth={1.5} />, title: 'Webdev & Open Source', desc: 'React, TypeScript, APIs — Code-Austausch, Reviews und gemeinsame Projekte mit anderen Entwicklern.' },
+  { icon: <Terminal size={20} strokeWidth={1.5} />, title: 'Trading Bots & Automatisierung', desc: 'Eigene Bots bauen, Strategien automatisieren, Broker-APIs nutzen — von der Idee bis zur Umsetzung.' },
   { icon: <MessageSquare size={20} strokeWidth={1.5} />, title: 'Gemeinsame Chartanalysen', desc: 'Technische Analyse im Team — mehrere Augen sehen mehr als eines.' },
 ]
 
@@ -310,7 +322,7 @@ export default function CommunityPage() {
         titleLine1="Finanzen lernen."
         titleLine2="Gemeinsam."
         titleAccent="line1"
-        description="Trading · Chartanalysen · Haushaltsbuch-Tipps — eine aktive Community ohne Bullshit. Kein Schnellreich-werden-Versprechen, nur ehrlicher Austausch."
+        description="Trading · Chartanalysen · Dev & Automatisierung — eine aktive Community ohne Bullshit. Kein Schnellreich-werden-Versprechen, nur ehrlicher Austausch."
         badge="Jetzt live"
         theme="community"
       >
@@ -401,6 +413,7 @@ export default function CommunityPage() {
                 { icon: '💰', text: 'Anlage & Vorsorge — Aktien · ETFs · Devisen · Rohstoffe' },
                 { icon: '🚨', text: 'Scam-Alarm für die Community' },
                 { icon: '🎙️', text: '3 Voice Channels für Live-Sessions' },
+                { icon: '💻', text: 'Coding & Tech — Bots · Webdev · Automatisierung' },
                 { icon: '🛡️', text: 'Organisierte Moderationsstruktur' },
               ].map((item, i) => (
                 <StaggerItem key={i}>
@@ -430,12 +443,95 @@ export default function CommunityPage() {
           title={<>Worüber wir <GradientText>reden</GradientText></>}
           className="mb-10"
         />
-        <TagList tags={[
-          'Aktien', 'ETFs', 'Krypto', 'Devisen', 'Rohstoffe', 'Anleihen',
-          'Technische Analyse', 'Fundamental', 'Trading Psychology',
-          'React', 'TypeScript', 'Web Dev', 'Automatisierung',
-          'Depot-Aufbau', 'DeFi', 'Options', 'Futures',
-        ]} />
+        <div className="flex flex-col gap-6">
+          <div>
+            <p className="font-mono text-[10px] tracking-[0.16em] uppercase text-[var(--cs-text-3)] mb-3">Finanzen & Trading</p>
+            <TagList tags={['Aktien', 'ETFs', 'Krypto', 'Devisen', 'Rohstoffe', 'Anleihen', 'Technische Analyse', 'Fundamental', 'Trading Psychology', 'Depot-Aufbau', 'DeFi', 'Options', 'Futures']} />
+          </div>
+          <div>
+            <p className="font-mono text-[10px] tracking-[0.16em] uppercase text-[var(--cs-text-3)] mb-3">Dev & Tech</p>
+            <TagList tags={['React', 'TypeScript', 'Node.js', 'Express.js', 'Supabase', 'REST APIs', 'Trading Bots', 'Automatisierung', 'Web Scraping', 'Open Source', 'Code Review']} />
+          </div>
+        </div>
+      </SectionWrapper>
+
+      <GoldDivider className="mx-8 md:mx-16 lg:mx-24" />
+
+      {/* Dev & Tech Hub */}
+      <SectionWrapper id="dev">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div>
+            <SectionHeader
+              eyebrow="Coding Community"
+              title={<>Nicht nur <GradientText>Trader</GradientText></>}
+              description="Ein eigener Bereich für Entwickler — egal ob du Trading-Bots baust, Web-Apps entwickelst oder einfach Gleichgesinnte suchst."
+              className="mb-8"
+            />
+            <StaggerContainer className="flex flex-col gap-3 mb-8">
+              {[
+                { icon: <Terminal size={14} strokeWidth={1.5} />, text: 'Trading Bots & Broker-API Integration' },
+                { icon: <Code2    size={14} strokeWidth={1.5} />, text: 'Code Reviews & gemeinsame Projekte' },
+                { icon: <Zap      size={14} strokeWidth={1.5} />, text: 'Automatisierung von Strategien & Workflows' },
+                { icon: <GitBranch size={14} strokeWidth={1.5} />, text: 'Open Source Tools für Trader & Entwickler' },
+              ].map((item, i) => (
+                <StaggerItem key={i}>
+                  <div className="flex items-center gap-3">
+                    <div className="w-7 h-7 rounded-lg border border-[#C9A84C]/20 bg-[#C9A84C]/5 flex items-center justify-center shrink-0 text-[#C9A84C]/70">
+                      {item.icon}
+                    </div>
+                    <span className="text-[var(--cs-text-2)] text-sm">{item.text}</span>
+                  </div>
+                </StaggerItem>
+              ))}
+            </StaggerContainer>
+            <a href={`https://discord.gg/${INVITE_CODE}`} target="_blank" rel="noopener noreferrer">
+              <CtaButton variant="primary" href={`https://discord.gg/${INVITE_CODE}`} external>
+                Dev-Channel betreten
+              </CtaButton>
+            </a>
+          </div>
+
+          {/* Code-Snippet Mockup */}
+          <div className="rounded-2xl border border-[#C9A84C]/15 bg-[var(--cs-s1)] overflow-hidden shadow-2xl shadow-black/40">
+            <div className="h-px bg-gradient-to-r from-transparent via-[#C9A84C]/30 to-transparent" />
+            <div className="px-4 py-3 border-b border-[#ffffff]/6 flex items-center gap-2 bg-[var(--cs-input)]">
+              <div className="flex gap-1.5">
+                <div className="w-2.5 h-2.5 rounded-full bg-[#FF5F57]" />
+                <div className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E]" />
+                <div className="w-2.5 h-2.5 rounded-full bg-[#28C840]" />
+              </div>
+              <span className="font-mono text-[10px] text-[var(--cs-text-3)] ml-2">trading-bot.ts</span>
+            </div>
+            <div className="p-5 font-mono text-[12px] leading-relaxed">
+              <div className="text-[#C9A84C]/60"><span className="text-[var(--cs-text-3)]">// 📌 #trading-bots Channel</span></div>
+              <div className="mt-2">
+                <span className="text-[#7dd3fc]">const</span>
+                <span className="text-[var(--cs-text)]"> bot </span>
+                <span className="text-[#C9A84C]">=</span>
+                <span className="text-[#7dd3fc]"> new</span>
+                <span className="text-[#86efac]"> TradingBot</span>
+                <span className="text-[var(--cs-text-3)]">{'({'}</span>
+              </div>
+              <div className="ml-4 text-[var(--cs-text-2)]">
+                <div><span className="text-[#fca5a5]">symbol</span><span className="text-[var(--cs-text-3)]">: </span><span className="text-[#86efac]">'BTC/USDT'</span><span className="text-[var(--cs-text-3)]">,</span></div>
+                <div><span className="text-[#fca5a5]">strategy</span><span className="text-[var(--cs-text-3)]">: </span><span className="text-[#86efac]">'RSI + EMA'</span><span className="text-[var(--cs-text-3)]">,</span></div>
+                <div><span className="text-[#fca5a5]">interval</span><span className="text-[var(--cs-text-3)]">: </span><span className="text-[#86efac]">'1h'</span><span className="text-[var(--cs-text-3)]">,</span></div>
+              </div>
+              <div className="text-[var(--cs-text-3)]">{'})'}</div>
+              <div className="mt-3">
+                <span className="text-[#7dd3fc]">await</span>
+                <span className="text-[var(--cs-text)]"> bot</span>
+                <span className="text-[#C9A84C]">.</span>
+                <span className="text-[#86efac]">start</span>
+                <span className="text-[var(--cs-text-3)]">()</span>
+              </div>
+              <div className="mt-4 pt-4 border-t border-[#ffffff]/6 flex items-center gap-2">
+                <div className="w-1.5 h-1.5 rounded-full bg-[#00C896] animate-pulse" />
+                <span className="text-[#00C896] text-[10px]">Running — 3 community members online im Channel</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </SectionWrapper>
 
       <GoldDivider className="mx-8 md:mx-16 lg:mx-24" />
