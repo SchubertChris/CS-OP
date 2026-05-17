@@ -19,7 +19,7 @@ import {
 import {
   Globe, Smartphone, Terminal, GitBranch,
   ExternalLink, Code2, Package, Zap, Users, ArrowRight,
-  CheckCircle2, BookOpen, Layers, Coffee, Loader2, AlertCircle, Lock,
+  BookOpen, Layers, Coffee, Loader2, AlertCircle, Lock,
 } from 'lucide-react'
 
 /* ════════════════════════════════════════════════════════════════
@@ -463,30 +463,16 @@ export default function DevPage() {
 
       <GoldDivider className="mx-8 md:mx-16 lg:mx-24" />
 
-      {/* ── Open Source ──────────────────────────────────── */}
+      {/* ── GitHub Repos ─────────────────────────────────── */}
       <SectionWrapper id="open-source">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
           <div>
             <SectionHeader
-              eyebrow="Open Source"
-              title={<>Code der <GradientText>geteilt wird</GradientText></>}
-              description="CandleScope.de ist offen einsehbar — der Code hinter der Website ist auf GitHub verfügbar."
+              eyebrow="GitHub"
+              title={<>Projekte auf <GradientText>GitHub</GradientText></>}
+              description="Einige Projekte sind öffentlich einsehbar — von der ersten Portfolio-Version bis zum Abschlussprojekt."
               className="mb-8"
             />
-            <StaggerContainer className="flex flex-col gap-3 mb-8">
-              {[
-                'Vollständig auf GitHub einsehbar',
-                'Issues und Feedback willkommen',
-                'Sauber strukturiert und dokumentiert',
-              ].map((item, i) => (
-                <StaggerItem key={i}>
-                  <div className="flex items-start gap-3">
-                    <CheckCircle2 size={15} strokeWidth={1.5} className="text-[#00C896] shrink-0 mt-0.5" />
-                    <span className="text-[var(--cs-text-2)] text-sm">{item}</span>
-                  </div>
-                </StaggerItem>
-              ))}
-            </StaggerContainer>
             <CtaButton variant="primary" href="https://github.com/SchubertChris" external>
               GitHub ansehen
             </CtaButton>
@@ -494,28 +480,60 @@ export default function DevPage() {
 
           <div className="rounded-xl border border-[var(--cs-border-w2)] bg-[var(--cs-s1)] overflow-hidden">
             <div className="px-6 py-4 border-b border-[var(--cs-border-w)]">
-              <span className="font-mono text-[11px] tracking-[0.14em] uppercase text-[var(--cs-text-3)]">Open Source</span>
+              <span className="font-mono text-[11px] tracking-[0.14em] uppercase text-[var(--cs-text-3)]">Repositories</span>
             </div>
-            <div className="px-6">
-              <motion.div whileHover={{ x: 4 }} transition={{ duration: 0.2 }}
-                className="flex items-start gap-4 py-5 group">
-                <div className="w-8 h-8 rounded-lg border border-[#C9A84C]/20 bg-[#C9A84C]/5 flex items-center justify-center shrink-0 mt-0.5">
-                  <Package size={14} strokeWidth={1.5} className="text-[#C9A84C]/60" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="font-display text-sm text-[var(--cs-text)]">CandleScope Frontend</span>
-                    <span className="font-mono text-[10px] tracking-[0.12em] uppercase text-[var(--cs-text-2)] px-2 py-0.5 rounded-full border border-[#C9A84C]/20">Author</span>
+            <div className="divide-y divide-[var(--cs-border-w)]">
+              {[
+                {
+                  name: 'Candlescope Dark (v1)',
+                  desc: 'Erste Portfolio-Version — Dark Purple Design, vollständig selbst entwickelt.',
+                  tags: ['React', 'TypeScript', 'SCSS'],
+                  href: 'https://github.com/SchubertChris/Candlescope-Frontend',
+                  locked: false,
+                },
+                {
+                  name: 'Learn To Grow',
+                  desc: 'Abschlussprojekt — Lernplattform Frontend mit React und modernem UI-Design.',
+                  tags: ['React', 'JavaScript', 'CSS'],
+                  href: 'https://github.com/SchubertChris/Final-Project-Frontend',
+                  locked: false,
+                },
+                {
+                  name: 'ShopRay',
+                  desc: 'Vollständiger E-Commerce-Shop — Stripe, Supabase Auth, 2FA, Admin Panel. Production-ready.',
+                  tags: ['React', 'TypeScript', 'Supabase', 'Stripe'],
+                  href: null,
+                  locked: true,
+                },
+              ].map((repo, i) => (
+                <motion.div key={i} whileHover={{ x: 4 }} transition={{ duration: 0.2 }}
+                  className="flex items-start gap-4 px-6 py-5 group">
+                  <div className="w-8 h-8 rounded-lg border border-[#C9A84C]/20 bg-[#C9A84C]/5 flex items-center justify-center shrink-0 mt-0.5">
+                    <Package size={14} strokeWidth={1.5} className="text-[#C9A84C]/60" />
                   </div>
-                  <p className="text-[var(--cs-text-2)] text-[13px] leading-relaxed">
-                    Personal Brand Website mit eigenem Page Builder — React, TypeScript, Vite, Tailwind, Zustand.
-                  </p>
-                </div>
-                <a href="https://github.com/SchubertChris/Candlescope-Frontend" target="_blank" rel="noopener noreferrer"
-                  className="text-[var(--cs-text-3)] hover:text-[#C9A84C] transition-colors shrink-0 mt-1 opacity-0 group-hover:opacity-100">
-                  <ExternalLink size={13} strokeWidth={1.5} />
-                </a>
-              </motion.div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="font-display text-sm text-[var(--cs-text)]">{repo.name}</span>
+                      {repo.locked
+                        ? <span className="flex items-center gap-1 font-mono text-[10px] tracking-[0.12em] uppercase text-[var(--cs-text-3)] px-2 py-0.5 rounded-full border border-[var(--cs-border-w2)]"><Lock size={9} strokeWidth={1.5} /> Privat</span>
+                        : <span className="font-mono text-[10px] tracking-[0.12em] uppercase text-[var(--cs-text-2)] px-2 py-0.5 rounded-full border border-[#C9A84C]/20">Public</span>
+                      }
+                    </div>
+                    <p className="text-[var(--cs-text-2)] text-[13px] leading-relaxed mb-2">{repo.desc}</p>
+                    <div className="flex flex-wrap gap-1">
+                      {repo.tags.map(t => (
+                        <span key={t} className="font-mono text-[9px] tracking-[0.08em] px-1.5 py-0.5 rounded border border-[var(--cs-border-w)] text-[var(--cs-text-3)]">{t}</span>
+                      ))}
+                    </div>
+                  </div>
+                  {repo.href && (
+                    <a href={repo.href} target="_blank" rel="noopener noreferrer"
+                      className="text-[var(--cs-text-3)] hover:text-[#C9A84C] transition-colors shrink-0 mt-1 opacity-0 group-hover:opacity-100">
+                      <ExternalLink size={13} strokeWidth={1.5} />
+                    </a>
+                  )}
+                </motion.div>
+              ))}
             </div>
           </div>
         </div>
