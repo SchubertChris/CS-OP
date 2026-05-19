@@ -1,7 +1,7 @@
 /* ============================================================
    CandleScope — Datenschutzerklärung
    src/pages/DatenschutzPage.tsx
-   DSGVO-konform für Deutschland · Stand: 2026
+   DSGVO-konform für Deutschland · Stand: Mai 2026
    ============================================================ */
 
 import { Link } from 'react-router-dom'
@@ -19,7 +19,7 @@ export default function DatenschutzPage() {
         <h1 className="font-display text-4xl md:text-5xl text-[var(--cs-text)] tracking-tight mb-4">
           Datenschutzerklärung
         </h1>
-        <p className="text-[var(--cs-text-3)] font-mono text-[12px]">Stand: April 2026</p>
+        <p className="text-[var(--cs-text-3)] font-mono text-[12px]">Stand: Mai 2026</p>
         <div className="h-px bg-gradient-to-r from-[#C9A84C]/30 to-transparent mt-4" />
       </div>
 
@@ -152,19 +152,50 @@ export default function DatenschutzPage() {
           </p>
         </section>
 
-        {/* 6. Keine Tracking-Dienste */}
+        {/* 6. Eigene Nutzungsstatistiken */}
         <section>
-          <h2 className="font-display text-xl text-[var(--cs-text)] mb-4">6. Keine Tracking-Dienste</h2>
+          <h2 className="font-display text-xl text-[var(--cs-text)] mb-4">6. Anonyme Nutzungsstatistiken</h2>
           <p className="text-[14px]">
-            Diese Website verwendet <strong className="text-[var(--cs-text)]">keine</strong> Analytics-,
-            Werbe- oder Tracking-Skripte. Es werden weder Google Analytics, Meta Pixel noch
-            vergleichbare Dienste eingesetzt.
+            Diese Website erhebt beim Seitenaufruf anonyme Nutzungsdaten (aufgerufene Seite,
+            Referrer-URL sowie eine pro Sitzung neu generierte Zufalls-ID), um den Betrieb und die
+            Weiterentwicklung des Angebots zu verbessern. Die Daten werden <strong className="text-[var(--cs-text)]">ausschließlich
+            auf eigenen Servern</strong> (Vercel-Infrastruktur, vgl. Abschnitt 2) gespeichert und
+            nicht an Dritte weitergegeben.
+          </p>
+          <p className="text-[14px] mt-3">
+            Es werden <strong className="text-[var(--cs-text)]">keine</strong> Cookies gesetzt, keine IP-Adressen dauerhaft
+            gespeichert und keine Nutzerprofile erstellt. Externe Analytics-Dienste wie Google
+            Analytics, Meta Pixel oder vergleichbare Drittanbieter werden <strong className="text-[var(--cs-text)]">nicht</strong> eingesetzt.
+          </p>
+          <p className="text-[14px] mt-3">
+            Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an der
+            Verbesserung des Angebots). Die Daten werden nach spätestens 90 Tagen gelöscht.
           </p>
         </section>
 
-        {/* 7. Betroffenenrechte */}
+        {/* 7. Calendly (externer Link) */}
         <section>
-          <h2 className="font-display text-xl text-[var(--cs-text)] mb-4">7. Ihre Rechte</h2>
+          <h2 className="font-display text-xl text-[var(--cs-text)] mb-4">7. Terminbuchung via Calendly</h2>
+          <p className="text-[14px]">
+            Auf der Kontaktseite befindet sich ein Link zu{' '}
+            <strong className="text-[var(--cs-text)]">Calendly</strong> (Calendly LLC, 271 17th Street NW,
+            Atlanta, GA 30363, USA). Beim Klick auf den Link verlassen Sie diese Website und werden
+            zu Calendly weitergeleitet. Es werden dabei <strong className="text-[var(--cs-text)]">keine Daten von dieser
+            Website an Calendly übermittelt</strong> — das Widget ist nicht eingebettet.
+          </p>
+          <p className="text-[14px] mt-3">
+            Sobald Sie auf der Calendly-Seite einen Termin buchen, gelten die dortigen
+            Datenschutzbestimmungen. Weitere Informationen:{' '}
+            <a href="https://calendly.com/privacy" target="_blank" rel="noopener noreferrer"
+              className="text-[var(--cs-text-2)] hover:text-[#C9A84C] transition-colors">
+              calendly.com/privacy
+            </a>
+          </p>
+        </section>
+
+        {/* 8. Betroffenenrechte */}
+        <section>
+          <h2 className="font-display text-xl text-[var(--cs-text)] mb-4">8. Ihre Rechte</h2>
           <p className="text-[14px] mb-4">
             Sie haben gegenüber uns folgende Rechte hinsichtlich der Sie betreffenden personenbezogenen Daten:
           </p>
@@ -198,7 +229,7 @@ export default function DatenschutzPage() {
           </p>
         </section>
 
-        {/* 8. Aktualität */}
+        {/* 9. Aktualität */}
         <section className="border border-[#C9A84C]/15 rounded-2xl p-6 bg-[var(--cs-s1)]">
           <h2 className="font-display text-lg text-[var(--cs-text)] mb-3">Aktualität dieser Erklärung</h2>
           <p className="text-[14px]">
