@@ -1,5 +1,81 @@
 # FinanzHub — Arbeitsregeln (apps/financehub)
 
+## Session-Start (PFLICHT)
+
+**Zu Beginn jeder Session `CLAUDE_SESSION.md` lesen** — dort steht der aktuelle Implementierungsstand, offene Aufgaben und der kritische Pfad bis 8. Juni 2026.
+
+### `CLAUDE_SESSION.md` updaten — wann?
+
+| Trigger | Aktion |
+|---|---|
+| Feature / Step abgeschlossen | Stand updaten, Step aus "Offen" streichen |
+| Neue Architektur-Entscheidung | Unter "Wichtige Entscheidungen" ergänzen |
+| Neue offene Aufgabe entdeckt | Unter "Offene Aufgaben" ergänzen |
+| Vor Commit | Kurzer Check: ist alles aktuell? |
+| Kontext wird voll | Sofort updaten bevor Details verloren gehen |
+
+Befehl: `/project:session`
+
+---
+
+## Agenten-System
+
+### Rollen
+
+| Rolle | subagent_type | Zuständigkeit |
+|---|---|---|
+| `orchestrator` | `general-purpose` | Zerlegt große Tasks, koordiniert alle anderen |
+| `architecture-agent` | `feature-dev:code-architect` | Systemdesign, Interfaces, Dateistruktur |
+| `frontend-agent` | `general-purpose` | React-Komponenten, SCSS Modules, Pages |
+| `backend-agent` | `general-purpose` | API-Routes, Auth, Middleware |
+| `database-agent` | `general-purpose` | DB-Schema, Migrations, RLS-Policies |
+| `code-review-agent` | `feature-dev:code-reviewer` | Code-Qualität, Bugs, CLAUDE.md-Konformität |
+| `debug-agent` | `general-purpose` | Bug-Analyse, Fehler-Reproduktion, Fix |
+| `explorer` | `Explore` | Codebase durchsuchen, Muster finden |
+
+### Workflow-Ketten
+
+**Neue Feature-Seite:**
+```
+architecture-agent → frontend-agent → code-review-agent
+```
+
+**Backend-Feature (API + DB):**
+```
+architecture-agent → [backend-agent ∥ database-agent] → code-review-agent
+```
+
+**Bug fixen:**
+```
+debug-agent → code-review-agent
+```
+
+**Full-Stack-Feature:**
+```
+orchestrator
+  architecture-agent
+  ├── frontend-agent ∥ backend-agent ∥ database-agent
+  └── code-review-agent
+```
+
+### Parallel (∥) vs. Sequenziell
+**Parallel** wenn Agenten unabhängige Dateien bearbeiten.  
+**Sequenziell** wenn Agent B den Output von Agent A braucht.
+
+---
+
+## Custom Commands
+
+| Command | Auslöser | Aktion |
+|---|---|---|
+| `/project:session` | Session-State sichern | CLAUDE_SESSION.md mit aktuellem Stand updaten |
+| `/project:feature` | Neue Seite / Feature | architecture-agent → frontend-agent → backend-agent → review |
+| `/project:fix` | Bug oder Fehler | debug-agent → code-review-agent |
+| `/project:review` | Code-Qualitätsprüfung | code-review-agent über geänderte Dateien |
+| `/project:sandbox` | Feature in Sandbox testen | Anleitung: DevSandboxPage → alle 7 Themes → dann verschieben |
+
+---
+
 > **Projekt:** `app.candlescope.de` | **Stack:** React 19 + TS + Vite + SCSS Modules + Router v7 + Zustand  
 > **Stand:** 02.05.2026 | **Live:** Vercel `cs-financehub` (auto-deploy via GitHub `main`)
 

@@ -15,11 +15,7 @@ import {
   ArrowRight, Check, Users, Globe, Lock, Server,
 } from 'lucide-react'
 
-import imgShop         from '../assets/images/Shop.webp'
-import imgAdmin        from '../assets/images/AdminDashboard.webp'
-import imgKollektionen from '../assets/images/Kollektionen.webp'
-import imgAccount      from '../assets/images/AccountDash.webp'
-import imgWunschliste  from '../assets/images/AccountWunschliste.webp'
+import { useSiteImages } from '../hooks/useSiteImages'
 
 /* ── Animation Helpers ─────────────────────────────────────── */
 function Reveal({ children, direction = 'up', delay = 0, className }: {
@@ -234,7 +230,7 @@ function ShopRayHero() {
                   initial={{ x: '-100%' }} animate={{ x: '200%' }}
                   transition={{ duration: 1.4, delay: 1.0, ease: 'easeInOut' }}
                 />
-                <ScreenshotFrame src={imgShop} alt="ShopRay Shop" />
+                <ScreenshotFrame src={img('shopray-shop')} alt="ShopRay Shop" />
               </div>
             </motion.div>
           </motion.div>
@@ -249,7 +245,7 @@ function ShopRayHero() {
               animate={{ y: [0, 8, 0] }}
               transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut', delay: 1.2 }}
               style={{ rotate: 1.5 }}>
-              <ScreenshotFrame src={imgAdmin} alt="ShopRay Admin" />
+              <ScreenshotFrame src={img('shopray-admin')} alt="ShopRay Admin" />
             </motion.div>
           </motion.div>
 
@@ -349,6 +345,7 @@ const INCLUDES = [
    PAGE
 ══════════════════════════════════════════════════════════════ */
 export default function ShopRayPage() {
+  const { img } = useSiteImages()
   return (
     <div style={{ overflowX: 'hidden' }}>
 
@@ -370,9 +367,9 @@ export default function ShopRayPage() {
         {/* Top row: 3 screenshots */}
         <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
           {[
-            { src: imgKollektionen, alt: 'Kollektionen-Seite' },
-            { src: imgShop,         alt: 'Shop-Übersicht' },
-            { src: imgAccount,      alt: 'Kunden-Dashboard' },
+            { src: img('shopray-collections'), alt: 'Kollektionen-Seite' },
+            { src: img('shopray-shop'),        alt: 'Shop-Übersicht' },
+            { src: img('shopray-account'),     alt: 'Kunden-Dashboard' },
           ].map((item, i) => (
             <StaggerItem key={i}>
               <motion.div whileHover={{ y: -4, transition: { duration: 0.2 } }}>
@@ -385,8 +382,8 @@ export default function ShopRayPage() {
         {/* Bottom row: 2 screenshots wider */}
         <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {[
-            { src: imgAdmin,       alt: 'Admin Dashboard' },
-            { src: imgWunschliste, alt: 'Wunschliste' },
+            { src: img('shopray-admin'),   alt: 'Admin Dashboard' },
+            { src: img('shopray-wishlist'),alt: 'Wunschliste' },
           ].map((item, i) => (
             <StaggerItem key={i}>
               <motion.div whileHover={{ y: -4, transition: { duration: 0.2 } }}>
@@ -467,7 +464,7 @@ export default function ShopRayPage() {
           <Reveal direction="right" delay={0.1}>
             <div className="flex flex-col gap-4">
               <motion.div whileHover={{ y: -4, transition: { duration: 0.2 } }}>
-                <ScreenshotFrame src={imgAccount} alt="Kundenprofil" />
+                <ScreenshotFrame src={img('shopray-account')} alt="Kundenprofil" />
               </motion.div>
               <div className="grid grid-cols-2 gap-4">
                 {[

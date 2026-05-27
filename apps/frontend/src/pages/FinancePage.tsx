@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Check } from 'lucide-react'
 import ComingSoonModal from '../components/ui/ComingSoonModal'
-import imgDashboard from '../assets/images/Präsentation-WebsiteBild.webp'
+import { useSiteImages } from '../hooks/useSiteImages'
 import UspStrip from '../components/finance/UspStrip'
 import ScreenshotSlider from '../components/finance/ScreenshotSlider'
 import FeatureGrid from '../components/finance/FeatureGrid'
@@ -62,6 +62,7 @@ const BENEFITS = [
 
 export default function FinancePage() {
   const [dlOpen, setDlOpen] = useState(false)
+  const { img } = useSiteImages()
 
   return (
     <div className="min-h-screen bg-[var(--cs-bg)] pt-20">
@@ -146,7 +147,7 @@ export default function FinancePage() {
                 <span className="text-[var(--cs-text-3)] text-[10px] ml-2 font-mono">Candlescope FinanceBoard v10.6</span>
               </div>
               <img
-                src={imgDashboard}
+                src={img('home-preview')}
                 alt="FinanceBoard Dashboard"
                 className="w-full object-cover"
                 loading="eager"

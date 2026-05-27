@@ -17,7 +17,7 @@ import {
   Zap, Star,
 } from 'lucide-react'
 
-import imgUebersicht from '../assets/images/Präsentation-WebsiteBild.webp'
+import { useSiteImages } from '../hooks/useSiteImages'
 
 /* ── Animation Helpers ─────────────────────────────────────── */
 function Reveal({ children, direction = 'up', delay = 0, className }: {
@@ -130,6 +130,7 @@ function Marquee() {
 ══════════════════════════════════════════════════════════════ */
 export default function HomePage() {
   const [dlOpen, setDlOpen] = useState(false)
+  const { img } = useSiteImages()
 
   return (
     <div style={{ overflowX: 'hidden' }}>
@@ -410,7 +411,7 @@ export default function HomePage() {
               <CtaButton href="/contact" variant="ghost">Frage stellen</CtaButton>
             </div>
           </Reveal>
-          <ParallaxScreenshot src={imgUebersicht} alt="CandleScope Haushaltsbuch" />
+          <ParallaxScreenshot src={img('home-preview')} alt="CandleScope Haushaltsbuch" />
         </div>
       </section>
 
@@ -458,7 +459,7 @@ export default function HomePage() {
                   transition={{ duration: 1.6, delay: 0.4, ease: 'easeInOut' }}
                 />
                 <img
-                  src={imgUebersicht}
+                  src={img('home-preview')}
                   alt="CandleScope FinanceBoard Dashboard"
                   className="w-full h-auto block"
                   loading="lazy"

@@ -1,0 +1,88 @@
+@import './tokens.css';
+@import './fonts.css';
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: var(--font-size-base);
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: var(--sans);
+  color: var(--text);
+  background: #0a0806;
+  min-height: 100dvh;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  width: 100%;
+  height: 100dvh;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Hintergrundbild-Layer */
+.bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background-size: cover;
+  background-position: center center;
+  background-attachment: fixed;
+}
+
+.bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar       { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--blue-a25);
+  border-radius: var(--r-full);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--blue-a35); }
+
+/* Selection */
+::selection {
+  background: var(--blue-a25);
+  color: var(--text);
+}
+
+/* Focus outline */
+:focus-visible {
+  outline: 2px solid var(--blue-a50);
+  outline-offset: 2px;
+  border-radius: var(--r-sm);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Typography utilities */
+.text-accent  { color: var(--blue); }
+.text-muted   { color: var(--text2); }
+.text-faint   { color: var(--text3); }
+.text-pos     { color: var(--positive); }
+.text-neg     { color: var(--negative); }
+.text-warn    { color: var(--warning); }
+.text-mono    { font-family: var(--mono); }
+.truncate     { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }

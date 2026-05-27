@@ -1,0 +1,107 @@
+:root {
+  /* ── ACCENT ──────────────────────────────────────────────────
+     --blue ist der Theme-Accent. Alle alpha-Varianten per Theme. */
+  --blue:     #d4a843;
+  --blue-a04: rgba(212, 168, 67, 0.04);
+  --blue-a08: rgba(212, 168, 67, 0.08);
+  --blue-a12: rgba(212, 168, 67, 0.12);
+  --blue-a15: rgba(212, 168, 67, 0.15);
+  --blue-a20: rgba(212, 168, 67, 0.20);
+  --blue-a25: rgba(212, 168, 67, 0.25);
+  --blue-a35: rgba(212, 168, 67, 0.35);
+  --blue-a50: rgba(212, 168, 67, 0.50);
+
+  /* ── GLASS / BLUR ────────────────────────────────────────────
+     --blur-px wird via useTheme aus Settings.blurPx gesetzt     */
+  --blur-px:    18px;
+  --blur:       blur(var(--blur-px));
+  --glass-tint:  rgba(18, 16, 12, 0.72);
+  --glass-tint2: rgba(18, 16, 12, 0.55);
+  --glass-tint3: rgba(18, 16, 12, 0.35);
+
+  /* ── SURFACES ────────────────────────────────────────────── */
+  --panel:      var(--glass-tint);
+  --panel2:     var(--glass-tint2);
+  --panel3:     var(--glass-tint3);
+  --sidebar-bg: rgba(12, 10, 6, 0.88);
+  --topbar-bg:  rgba(14, 12, 8, 0.80);
+
+  /* ── TEXT ────────────────────────────────────────────────── */
+  --text:  rgba(255, 255, 255, 0.92);
+  --text2: rgba(255, 255, 255, 0.60);
+  --text3: rgba(255, 255, 255, 0.36);
+  --text4: rgba(255, 255, 255, 0.20);
+
+  /* ── BORDERS ─────────────────────────────────────────────── */
+  --border:  rgba(255, 255, 255, 0.10);
+  --border2: rgba(255, 255, 255, 0.06);
+  --border3: rgba(255, 255, 255, 0.03);
+
+  /* ── SEMANTIC ────────────────────────────────────────────── */
+  --positive:    #4ade80;
+  --positive-bg: rgba(74, 222, 128, 0.08);
+  --positive-d:  rgba(74, 222, 128, 0.35);
+  --negative:    #f87171;
+  --negative-bg: rgba(248, 113, 113, 0.08);
+  --negative-d:  rgba(248, 113, 113, 0.35);
+  --warning:     #fbbf24;
+  --warning-bg:  rgba(251, 191, 36, 0.08);
+  --warning-d:   rgba(251, 191, 36, 0.35);
+  --info:        #60a5fa;
+  --info-bg:     rgba(96, 165, 250, 0.08);
+  --info-d:      rgba(96, 165, 250, 0.35);
+
+  /* ── TYPOGRAPHY ──────────────────────────────────────────── */
+  --sans: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  --mono: 'DM Mono', 'Fira Code', monospace;
+  --font-size-base: 15px;
+
+  /* ── SPACING ─────────────────────────────────────────────── */
+  --sp-1:  4px;
+  --sp-2:  8px;
+  --sp-3:  12px;
+  --sp-4:  16px;
+  --sp-5:  20px;
+  --sp-6:  24px;
+  --sp-8:  32px;
+  --sp-10: 40px;
+  --sp-12: 48px;
+
+  /* ── RADIUS ──────────────────────────────────────────────── */
+  --r-xs:   4px;
+  --r-sm:   6px;
+  --r-md:   10px;
+  --r-lg:   14px;
+  --r-xl:   20px;
+  --r-2xl:  28px;
+  --r-full: 999px;
+
+  /* ── SHADOWS / GLOW ──────────────────────────────────────── */
+  --shadow-sm: 0 2px 8px  rgba(0, 0, 0, 0.30);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.40);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.50);
+  --glow-sm:   0 0 8px  var(--blue-a25);
+  --glow-md:   0 0 16px var(--blue-a35);
+  --glow-lg:   0 0 32px var(--blue-a50);
+
+  /* ── TRANSITIONS ─────────────────────────────────────────── */
+  --t-fast: 0.12s ease;
+  --t-base: 0.18s ease;
+  --t-slow: 0.28s ease;
+
+  /* ── LAYOUT ──────────────────────────────────────────────── */
+  --sidebar-w:          260px;
+  --sidebar-w-compact:   52px;
+  --topbar-h:            52px;
+  --bottomnav-h:         64px;
+
+  /* ── Z-INDEX SKALA ───────────────────────────────────────── */
+  --z-base:      1;
+  --z-dropdown:  100;
+  --z-sidebar:   200;
+  --z-topbar:    200;
+  --z-bottomnav: 200;
+  --z-modal:     400;
+  --z-toast:     600;
+  --z-dialog:    800;
+}

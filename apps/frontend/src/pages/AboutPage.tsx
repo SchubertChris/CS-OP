@@ -16,7 +16,7 @@ import {
   BookOpen, Shield, Star, ArrowRight,
   Globe, Bot, GraduationCap, Briefcase,
 } from 'lucide-react'
-import chrisPhoto from '../assets/images/ChrisSchubert.webp'
+import { useSiteImages } from '../hooks/useSiteImages'
 
 function StaggerContainer({ children, className }: { children: React.ReactNode; className?: string }) {
   const ref = useRef<HTMLDivElement>(null)
@@ -140,6 +140,7 @@ const FUN_FACTS = [
 ]
 
 export default function AboutPage() {
+  const { img } = useSiteImages()
   return (
     <>
       <PageHero
@@ -186,7 +187,7 @@ export default function AboutPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
           <div className="relative">
             <div className="relative rounded-2xl overflow-hidden border border-[#C9A84C]/20">
-              <img src={chrisPhoto} alt="Chris Schubert"
+              <img src={img('about-chris')} alt="Chris Schubert"
                 className="w-full object-cover aspect-[4/5] grayscale hover:grayscale-0 transition-all duration-700" />
               <div className="absolute inset-0 bg-gradient-to-t from-[var(--cs-bg)]/80 via-transparent to-transparent" />
               <div className="absolute bottom-6 left-6 right-6">

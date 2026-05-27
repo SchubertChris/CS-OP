@@ -10,6 +10,7 @@ const DevSandboxPage     = lazy(() => import('@features/dev/DevSandboxPage'))
 const LoginPage          = lazy(() => import('@features/auth/pages/LoginPage'))
 const RoleSelectorPage   = lazy(() => import('@features/auth/pages/RoleSelectorPage'))
 const IntroPage          = lazy(() => import('@features/intro/IntroPage'))
+const SiteImagesPage     = lazy(() => import('@features/admin/SiteImagesPage'))
 
 // Noch nicht gebaut — Platzhalter für alle /app/* Routen
 const ComingSoon = lazy(() => Promise.resolve({
@@ -86,6 +87,7 @@ export const router = createBrowserRouter([
       { path: 'postbox',          element: wrap(<ComingSoon />) },
       { path: 'devices',          element: wrap(<ComingSoon />) },
       { path: 'settings',         element: wrap(<ComingSoon />) },
+      { path: 'admin/images',     element: wrap(<SiteImagesPage />) },
     ],
   },
 

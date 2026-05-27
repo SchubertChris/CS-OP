@@ -1,0 +1,39 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 8px;
+  border-radius: var(--r-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+.filled {
+  background: var(--badge-bg, var(--blue-a15));
+  color: var(--badge-color, var(--blue));
+  border: 1px solid var(--badge-border, var(--blue-a25));
+}
+
+.outline {
+  background: transparent;
+  color: var(--badge-color, var(--blue));
+  border: 1px solid var(--badge-border, var(--blue-a35));
+}
+
+.dot {
+  background: transparent;
+  color: var(--text2);
+  border: none;
+  padding: 0;
+  gap: 6px;
+}
+
+.dot span.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--badge-color, var(--blue));
+  flex-shrink: 0;
+}
