@@ -555,64 +555,139 @@ export default function ShopRayPage() {
 
       {/* ── 6. Preis & CTA ────────────────────────────────── */}
       <section className="px-8 md:px-16 lg:px-24 py-24">
-        <div className="max-w-3xl mx-auto">
-          <Reveal direction="scale">
+        <div className="max-w-5xl mx-auto">
+          <Reveal direction="up" className="text-center mb-14">
             <motion.div
               animate={{ opacity: [0.4, 1, 0.4] }}
               transition={{ duration: 3, repeat: Infinity }}
               className="w-16 h-px bg-gradient-to-r from-transparent via-[#C9A84C] to-transparent mx-auto mb-8"
             />
-            <div className="text-center mb-10">
-              <SectionHeader
-                eyebrow="Preis & Lizenz"
-                title={<>Dein Shop.<br /><GradientText>Fertig eingerichtet.</GradientText></>}
-                description="Wir richten alles ein — von der Datenbank bis zum ersten Verkauf. Hosting bei uns oder selbst, je nach Bedarf."
-                align="center"
-                className="mb-10"
-              />
-            </div>
+            <SectionHeader
+              eyebrow="Preis & Lizenz"
+              title={<>Zwei Wege.<br /><GradientText>Ein Ergebnis.</GradientText></>}
+              description="Selbst einrichten oder von uns fertig aufgesetzt bekommen — du entscheidest."
+              align="center"
+            />
+          </Reveal>
 
-            <div className="relative p-8 rounded-3xl border border-[#C9A84C]/25 bg-gradient-to-b from-[#C9A84C]/5 to-transparent text-center mb-8">
-              <motion.div
-                className="absolute -inset-px rounded-3xl pointer-events-none"
-                style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(201,168,76,0.12) 0%, transparent 60%)' }}
-              />
-              <Badge variant="gold" className="mb-6">Setup-Service</Badge>
-              <div className="mb-2">
-                <span className="font-display text-6xl text-[var(--cs-text)]">Auf Anfrage</span>
-              </div>
-              <p className="text-[var(--cs-text-3)] text-sm mb-8">
-                Preis richtet sich nach Nutzungsart — Einzelentwickler, Agentur oder White-Label.
-              </p>
-              <div className="grid grid-cols-2 gap-3 max-w-sm mx-auto mb-8 text-left">
-                {[
-                  'Frontend + Backend + Admin',
-                  'Vollständige Einrichtung inklusive',
-                  'Stripe + Supabase konfiguriert',
-                  'Hosting: bei uns oder selbst',
-                  'Source Code vollständig übergeben',
-                  'Direkter Support via E-Mail',
-                ].map((f) => (
-                  <div key={f} className="flex items-start gap-2">
-                    <Check size={13} strokeWidth={2} className="text-[#C9A84C] shrink-0 mt-0.5" />
-                    <span className="text-[var(--cs-text-2)] text-[12px]">{f}</span>
-                  </div>
-                ))}
-              </div>
-              <div className="flex items-center justify-center gap-4 flex-wrap">
-                <CtaButton href="/contact" variant="primary">Jetzt anfragen</CtaButton>
-                <a href="https://shopray-indol.vercel.app" target="_blank" rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-[11px] tracking-[0.12em] uppercase text-[var(--cs-text-2)] hover:text-[#C9A84C] transition-colors group">
-                  <Lock size={12} strokeWidth={1.5} />
-                  Demo ansehen
-                  <ArrowRight size={11} strokeWidth={1.5} className="group-hover:translate-x-1 transition-transform" />
-                </a>
-              </div>
-            </div>
+          <StaggerContainer className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
 
+            {/* ── Karte 1: Template-Lizenz ── */}
+            <StaggerItem>
+              <div className="relative h-full p-8 rounded-3xl border border-[var(--cs-border-w)] bg-[var(--cs-s1)] flex flex-col">
+                <Badge variant="muted" className="mb-6 self-start">Einmallizenz</Badge>
+                <div className="mb-1">
+                  <span className="font-display text-5xl text-[var(--cs-text)]">399 €</span>
+                </div>
+                <p className="text-[var(--cs-text-3)] text-sm mb-8">
+                  Einmalig. Kein Abo. Kein Vendor-Lock-in.
+                </p>
+
+                {/* Enthalten */}
+                <p className="font-mono text-[10px] tracking-[0.16em] uppercase text-[#C9A84C] mb-3">Enthalten</p>
+                <div className="flex flex-col gap-2 mb-6">
+                  {[
+                    'Vollständiger Source Code (Frontend + Backend + Admin)',
+                    'SETUP.md — Schritt-für-Schritt Anleitung',
+                    '32 Datenbankmigrationen + Schema',
+                    'Einmallizenz für 1 eigenes Projekt',
+                    'E-Mail Support (30 Tage)',
+                  ].map((f) => (
+                    <div key={f} className="flex items-start gap-2.5">
+                      <Check size={13} strokeWidth={2} className="text-[#C9A84C] shrink-0 mt-0.5" />
+                      <span className="text-[var(--cs-text-2)] text-[12.5px]">{f}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Nicht enthalten */}
+                <p className="font-mono text-[10px] tracking-[0.16em] uppercase text-[var(--cs-text-4)] mb-3">Nicht enthalten</p>
+                <div className="flex flex-col gap-2 mb-8">
+                  {[
+                    'Einrichtung durch uns',
+                    'Stripe & Supabase Konfiguration',
+                    'Hosting & Deployment',
+                    'Design-Anpassungen',
+                  ].map((f) => (
+                    <div key={f} className="flex items-start gap-2.5">
+                      <span className="text-[var(--cs-text-4)] shrink-0 mt-0.5 text-[11px] leading-none">✕</span>
+                      <span className="text-[var(--cs-text-3)] text-[12px]">{f}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-auto flex flex-col gap-3">
+                  <CtaButton href="/contact" variant="secondary">Lizenz kaufen</CtaButton>
+                  <a href="https://shopray-indol.vercel.app" target="_blank" rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-2 text-[11px] tracking-[0.12em] uppercase text-[var(--cs-text-3)] hover:text-[#C9A84C] transition-colors group">
+                    <Lock size={11} strokeWidth={1.5} />
+                    Live-Demo ansehen
+                    <ArrowRight size={10} strokeWidth={1.5} className="group-hover:translate-x-1 transition-transform" />
+                  </a>
+                </div>
+              </div>
+            </StaggerItem>
+
+            {/* ── Karte 2: Setup-Service ── */}
+            <StaggerItem>
+              <div className="relative h-full p-8 rounded-3xl border border-[#C9A84C]/30 bg-gradient-to-b from-[#C9A84C]/6 to-transparent flex flex-col">
+                <motion.div
+                  className="absolute -inset-px rounded-3xl pointer-events-none"
+                  style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(201,168,76,0.10) 0%, transparent 65%)' }}
+                />
+                {/* Empfohlen-Badge */}
+                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
+                  <span className="text-[10px] tracking-[0.16em] uppercase bg-[#C9A84C] text-black font-semibold px-4 py-1 rounded-full whitespace-nowrap">
+                    Empfohlen
+                  </span>
+                </div>
+
+                <Badge variant="gold" className="mb-6 self-start">Setup-Service</Badge>
+                <div className="mb-1">
+                  <span className="font-display text-5xl text-[var(--cs-text)]">Auf Anfrage</span>
+                </div>
+                <p className="text-[var(--cs-text-3)] text-sm mb-8">
+                  Wir richten alles ein — du startest sofort.
+                </p>
+
+                {/* Enthalten */}
+                <p className="font-mono text-[10px] tracking-[0.16em] uppercase text-[#C9A84C] mb-3">Alles aus der Lizenz, plus</p>
+                <div className="flex flex-col gap-2 mb-6">
+                  {[
+                    'Vollständige Einrichtung durch uns',
+                    'Stripe + Supabase fertig konfiguriert',
+                    'Deployment auf Vercel (oder eigener Server)',
+                    'Admin-Zugänge eingerichtet & erklärt',
+                    'Erste Produkte & Kategorien angelegt',
+                    'Design-Anpassungen nach Wunsch',
+                    'Direkter Support via E-Mail',
+                  ].map((f) => (
+                    <div key={f} className="flex items-start gap-2.5">
+                      <Check size={13} strokeWidth={2} className="text-[#C9A84C] shrink-0 mt-0.5" />
+                      <span className="text-[var(--cs-text-2)] text-[12.5px]">{f}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-auto flex flex-col gap-3">
+                  <CtaButton href="/contact" variant="primary">Jetzt anfragen</CtaButton>
+                  <a href="https://shopray-indol.vercel.app" target="_blank" rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-2 text-[11px] tracking-[0.12em] uppercase text-[var(--cs-text-3)] hover:text-[#C9A84C] transition-colors group">
+                    <Lock size={11} strokeWidth={1.5} />
+                    Live-Demo ansehen
+                    <ArrowRight size={10} strokeWidth={1.5} className="group-hover:translate-x-1 transition-transform" />
+                  </a>
+                </div>
+              </div>
+            </StaggerItem>
+
+          </StaggerContainer>
+
+          {/* Trust-Badges */}
+          <Reveal direction="up">
             <div className="flex items-center justify-center gap-8 flex-wrap">
               {[
-                { icon: <FileCheck size={14} />, text: 'Vollständiger Setup' },
+                { icon: <FileCheck size={14} />, text: 'Einmalig bezahlen' },
                 { icon: <Shield size={14} />, text: 'DSGVO-ready' },
                 { icon: <Code2 size={14} />, text: 'Source Code' },
                 { icon: <Zap size={14} />, text: 'Sofort lieferbar' },
