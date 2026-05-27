@@ -18,6 +18,7 @@ import {
 } from 'lucide-react'
 
 import { useSiteImages } from '../hooks/useSiteImages'
+import { isLaunched, DOWNLOAD_URL, trackDownload } from '../hooks/useLaunchGate'
 
 /* ── Animation Helpers ─────────────────────────────────────── */
 function Reveal({ children, direction = 'up', delay = 0, className }: {
@@ -131,6 +132,7 @@ function Marquee() {
 export default function HomePage() {
   const [dlOpen, setDlOpen] = useState(false)
   const { img } = useSiteImages()
+  const launched = isLaunched()
 
   return (
     <div style={{ overflowX: 'hidden' }}>
@@ -188,9 +190,14 @@ export default function HomePage() {
       >
         {/* Primär-CTA: solid gold — höchste Priorität */}
         <button
-          onClick={() => setDlOpen(true)}
+          onClick={() => {
+            if (launched) { trackDownload(crypto.randomUUID()); window.location.href = DOWNLOAD_URL }
+            else setDlOpen(true)
+          }}
           className="relative overflow-hidden group text-[11px] tracking-[0.18em] uppercase bg-[#C9A84C] text-[#080808] px-8 py-3.5 rounded-full font-semibold shadow-lg shadow-[#C9A84C]/25 hover:shadow-[#C9A84C]/40 transition-shadow duration-300 cursor-pointer">
-          <span className="relative z-10">Kostenlos herunterladen</span>
+          <span className="relative z-10">
+            {launched ? 'Kostenlos herunterladen' : 'Download · 8. Juni 2026'}
+          </span>
           <span className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-full" />
         </button>
 

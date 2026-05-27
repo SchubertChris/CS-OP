@@ -2,6 +2,7 @@
 import { Check } from 'lucide-react'
 import { SOCIALS } from '../../data/socials'
 import { useDownloadCount } from '../../hooks/useDownloadCount'
+import { isLaunched, DOWNLOAD_URL, trackDownload } from '../../hooks/useLaunchGate'
 
 const INCLUDED = [
   '10 integrierte Module',
@@ -13,17 +14,29 @@ const INCLUDED = [
 ]
 
 interface DownloadCardProps {
-  onDownload?: () => void
+  onDownload?: () => void   // nur noch als Fallback / Coming-Soon
 }
 
 export default function DownloadCard({ onDownload }: DownloadCardProps) {
   const downloads = useDownloadCount()
+  const launched  = isLaunched()
+
+  function handleDownload() {
+    if (launched) {
+      trackDownload(crypto.randomUUID())
+      window.location.href = DOWNLOAD_URL
+    } else {
+      onDownload?.()
+    }
+  }
 
   return (
     <section className="py-20 px-8 max-w-4xl mx-auto">
       <div className="text-center mb-12">
         <p className="text-[#C9A84C] text-xs tracking-[0.2em] uppercase mb-3">Download</p>
-        <h2 className="text-3xl font-bold text-[var(--cs-text)]">Ab 8. Juni 2026 verfügbar</h2>
+        <h2 className="text-3xl font-bold text-[var(--cs-text)]">
+          {launched ? 'Jetzt kostenlos herunterladen' : 'Ab 8. Juni 2026 verfügbar'}
+        </h2>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-[1.4fr_1fr] rounded-2xl overflow-hidden border border-[#C9A84C]/15">
 
@@ -45,15 +58,17 @@ export default function DownloadCard({ onDownload }: DownloadCardProps) {
           <div>
             <p className="text-[var(--cs-text-3)] line-through text-sm mb-1">39 €</p>
             <p className="text-[#C9A84C] text-5xl font-black leading-none">Gratis</p>
-            <p className="text-[var(--cs-text-3)] text-xs mt-2">Verfügbar ab 8.6.2026</p>
+            <p className="text-[var(--cs-text-3)] text-xs mt-2">
+              {launched ? 'Windows 10/11 · 64-bit' : 'Verfügbar ab 8.6.2026'}
+            </p>
           </div>
           <div className="w-full flex flex-col gap-3 mt-2">
             <button
-              onClick={onDownload}
+              onClick={handleDownload}
               className="w-full bg-[#C9A84C] text-[#080808] font-bold text-sm py-3.5 rounded-lg
                          hover:opacity-90 transition-opacity duration-200 text-center cursor-pointer"
             >
-              ↓ Windows herunterladen
+              {launched ? '↓ Windows herunterladen' : '↓ Am 8. Juni verfügbar'}
             </button>
             {SOCIALS.kofi && (
               <a
