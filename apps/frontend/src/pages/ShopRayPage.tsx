@@ -191,7 +191,7 @@ function ShopRayHero() {
                 { val: '3',   label: 'Projekte' },
                 { val: '60+', label: 'API-Routen' },
                 { val: '30+', label: 'Pages' },
-                { val: '14',  label: 'Migrations' },
+                { val: '32',  label: 'Migrations' },
               ].map(({ val, label }) => (
                 <div key={label} className="flex flex-col gap-0.5">
                   <span className="font-mono text-[15px] text-[#C9A84C] leading-none tabular-nums">{val}</span>
@@ -336,7 +336,7 @@ const INCLUDES = [
   '30+ Frontend-Seiten — vollständig fertig',
   'Admin Panel mit 8+ Bereichen',
   'REST API mit 60+ Endpunkten',
-  'Datenbankschema + 14 Migrations',
+  'Datenbankschema + 32 Migrations',
   'Seed-Daten (Produkte, Testkunden)',
   'SETUP.md — Schritt-für-Schritt Anleitung',
   'Stripe + Supabase komplett dokumentiert',
