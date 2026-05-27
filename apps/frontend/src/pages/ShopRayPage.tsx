@@ -643,8 +643,9 @@ export default function ShopRayPage() {
                 </div>
 
                 <Badge variant="gold" className="mb-6 self-start">Setup-Service</Badge>
-                <div className="mb-1">
-                  <span className="font-display text-5xl text-[var(--cs-text)]">Auf Anfrage</span>
+                <div className="mb-1 flex items-baseline gap-2">
+                  <span className="font-mono text-[var(--cs-text-3)] text-base">ab</span>
+                  <span className="font-display text-5xl text-[var(--cs-text)]">2.990 €</span>
                 </div>
                 <p className="text-[var(--cs-text-3)] text-sm mb-8">
                   Wir richten alles ein — du startest sofort.
