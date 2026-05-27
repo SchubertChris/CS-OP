@@ -617,7 +617,7 @@ export default function ShopRayPage() {
                 </div>
 
                 <div className="mt-auto flex flex-col gap-3">
-                  <CtaButton href="/contact" variant="secondary">Lizenz kaufen</CtaButton>
+                  <CtaButton href="/contact" variant="ghost">Lizenz kaufen</CtaButton>
                   <a href="https://shopray-indol.vercel.app" target="_blank" rel="noopener noreferrer"
                     className="flex items-center justify-center gap-2 text-[11px] tracking-[0.12em] uppercase text-[var(--cs-text-3)] hover:text-[#C9A84C] transition-colors group">
                     <Lock size={11} strokeWidth={1.5} />
