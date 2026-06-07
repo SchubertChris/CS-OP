@@ -6,6 +6,20 @@ dist-ssr
 .env
 .env.local
 .env.*.local
+.env.production
+
+# Credentials & private keys — NEVER in git
+CREDENTIALS*.txt
+CREDENTIALS*.md
+*_PRIVATE.*
+*_PRIVATE
+secrets.*
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.cert
 
 # OS
 .DS_Store

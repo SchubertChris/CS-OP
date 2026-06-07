@@ -3,11 +3,13 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import './styles/index.css'
 import App from './App'
+import CalendlyBadge from './components/CalendlyBadge'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
       <App />
+      <CalendlyBadge />
     </BrowserRouter>
   </StrictMode>
 )

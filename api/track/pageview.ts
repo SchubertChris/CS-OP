@@ -2,6 +2,7 @@ import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { sql } from '../_lib/db'
 import { parseUA } from '../_lib/ua'
 import { getCountry } from '../_lib/ip'
+import { isRateLimited } from '../_lib/rate-limit'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method === 'OPTIONS') return res.status(200).end()
@@ -10,6 +11,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const ua = req.headers['user-agent'] ?? ''
   if (/bot|crawler|spider|googlebot|bingbot|slurp/i.test(ua)) {
     return res.status(200).json({ ok: true })
+  }
+
+  const ip = (req.headers['x-forwarded-for'] as string)?.split(',')[0]?.trim() ?? 'unknown'
+  if (await isRateLimited(`track:pv:${ip}`, 60, 60 * 1000)) {
+    return res.status(429).json({ error: 'Too many requests' })
   }
 
   const { path, referrer, sessionId } = req.body ?? {}

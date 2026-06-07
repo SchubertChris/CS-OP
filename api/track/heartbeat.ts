@@ -2,17 +2,23 @@ import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { sql } from '../_lib/db'
 import { parseUA } from '../_lib/ua'
 import { getCountry } from '../_lib/ip'
+import { isRateLimited } from '../_lib/rate-limit'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method === 'OPTIONS') return res.status(200).end()
   if (req.method !== 'POST') return res.status(405).end()
 
+  const ip = (req.headers['x-forwarded-for'] as string)?.split(',')[0]?.trim() ?? 'unknown'
+  if (await isRateLimited(`track:hb:${ip}`, 10, 60 * 1000)) {
+    return res.status(429).json({ error: 'Too many requests' })
+  }
+
   const { sessionId } = req.body ?? {}
   if (!sessionId) return res.status(400).json({ error: 'sessionId fehlt' })
 
-  const ua               = req.headers['user-agent'] ?? ''
-  const { device, browser } = parseUA(ua)
-  const country          = getCountry(req)
+  const ua                   = req.headers['user-agent'] ?? ''
+  const { device, browser }  = parseUA(ua)
+  const country              = getCountry(req)
 
   await sql`
     INSERT INTO sessions (session_id, last_seen, country, device, browser)
