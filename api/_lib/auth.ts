@@ -40,6 +40,7 @@ export async function issueAdminToken(): Promise<string> {
  * läuft weiter, unabhängig davon wie oft erneuert wird.
  */
 export async function refreshAdminToken(existingRootIat: number): Promise<string> {
+  if (!Number.isFinite(existingRootIat)) throw new Error('Ungültiger rootIat')
   return new SignJWT({ role: 'admin', rootIat: existingRootIat })
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
@@ -101,14 +102,17 @@ export async function requireAdmin(
   }
 
   // Absolute Session-Grenze: 24h ab ursprünglichem Login (rootIat)
-  const rootIat = typeof payload.rootIat === 'number' ? payload.rootIat : null
-  if (rootIat !== null) {
-    const sessionAgeSeconds = Math.floor(Date.now() / 1000) - rootIat
-    if (sessionAgeSeconds > SESSION_MAX_AGE_SECONDS) {
-      clearAdminCookie(res)
-      res.status(401).json({ error: 'Sitzung abgelaufen. Bitte erneut anmelden.' })
-      return null
-    }
+  // Fehlendes oder ungültiges rootIat = Ablehnung (fail-closed)
+  if (typeof payload.rootIat !== 'number' || !Number.isFinite(payload.rootIat)) {
+    clearAdminCookie(res)
+    res.status(401).json({ error: 'Sitzung abgelaufen. Bitte erneut anmelden.' })
+    return null
+  }
+  const sessionAgeSeconds = Math.floor(Date.now() / 1000) - payload.rootIat
+  if (sessionAgeSeconds > SESSION_MAX_AGE_SECONDS) {
+    clearAdminCookie(res)
+    res.status(401).json({ error: 'Sitzung abgelaufen. Bitte erneut anmelden.' })
+    return null
   }
 
   return payload

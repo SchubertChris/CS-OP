@@ -1,14 +1,14 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { sql } from '../_lib/db'
 import { parseUA } from '../_lib/ua'
-import { getCountry } from '../_lib/ip'
+import { getCountry, getClientIp } from '../_lib/ip'
 import { isRateLimited } from '../_lib/rate-limit'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method === 'OPTIONS') return res.status(200).end()
   if (req.method !== 'POST') return res.status(405).end()
 
-  const ip = (req.headers['x-forwarded-for'] as string)?.split(',')[0]?.trim() ?? 'unknown'
+  const ip = getClientIp(req)
   if (await isRateLimited(`track:hb:${ip}`, 10, 60 * 1000)) {
     return res.status(429).json({ error: 'Too many requests' })
   }
