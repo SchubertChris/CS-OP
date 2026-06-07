@@ -117,6 +117,7 @@ function ScreenshotFrame({ src, alt, className = '' }: { src: string; alt: strin
 
 /* ── Custom ShopRay Hero ────────────────────────────────────── */
 function ShopRayHero() {
+  const { img } = useSiteImages()
   return (
     <section className="relative min-h-[92vh] flex flex-col justify-end pb-20 md:pb-28 px-8 md:px-16 lg:px-24 pt-28 overflow-hidden">
 
