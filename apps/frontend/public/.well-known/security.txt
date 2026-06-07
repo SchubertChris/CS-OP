@@ -1,0 +1,4 @@
+Contact: mailto:schubertchris8@gmail.com
+Expires: 2027-06-08T23:59:00.000Z
+Preferred-Languages: de, en
+Canonical: https://candlescope.de/.well-known/security.txt
