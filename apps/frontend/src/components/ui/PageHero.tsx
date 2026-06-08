@@ -576,12 +576,12 @@ function ContactBg() {
               45%  { opacity: 0; }
               100% { opacity: 0; }
             }
-            .radar-ring { stroke-opacity: 0; transform: scale(0.4); }
+            .radar-ring { opacity: 0; transform: scale(0.4); }
             @keyframes radarPing {
-              0%   { stroke-opacity: 0.65; transform: scale(0.4); }
-              28%  { stroke-opacity: 0;    transform: scale(2.8); }
-              29%  { stroke-opacity: 0;    transform: scale(0.4); }
-              100% { stroke-opacity: 0;    transform: scale(0.4); }
+              0%   { opacity: 0.65; transform: scale(0.4); }
+              28%  { opacity: 0;    transform: scale(2.8); }
+              29%  { opacity: 0;    transform: scale(0.4); }
+              100% { opacity: 0;    transform: scale(0.4); }
             }
           `}</style>
         </defs>
@@ -677,8 +677,9 @@ function HomeBg() {
             <stop offset="100%" stopColor="#C9A84C" stopOpacity="0" />
           </linearGradient>
           <mask id="mSpMask">
-            <motion.rect x="0" y="0" height="44" fill="white"
-              initial={{ width: 0 }} animate={{ width: 220 }}
+            <motion.rect x="0" y="0" width="220" height="44" fill="white"
+              initial={{ scaleX: 0 }} animate={{ scaleX: 1 }}
+              style={{ transformOrigin: 'left center', transformBox: 'fill-box' }}
               transition={{ duration: 2, ease: [0.22, 1, 0.36, 1], delay: 0.3 }} />
           </mask>
         </defs>
@@ -753,8 +754,9 @@ function HomeBg() {
                     <stop offset="100%" stopColor="#C9A84C" stopOpacity="0" />
                   </linearGradient>
                   <mask id="spMask">
-                    <motion.rect x="0" y="0" height="44" fill="white"
-                      initial={{ width: 0 }} animate={{ width: 220 }}
+                    <motion.rect x="0" y="0" width="220" height="44" fill="white"
+                      initial={{ scaleX: 0 }} animate={{ scaleX: 1 }}
+                      style={{ transformOrigin: 'left center', transformBox: 'fill-box' }}
                       transition={{ duration: 1.8, ease: [0.22, 1, 0.36, 1], delay: 1.0 }} />
                   </mask>
                 </defs>
@@ -792,8 +794,9 @@ function HomeBg() {
                       <span className="text-[8px] font-mono text-[#C9A84C]/50">{cat.pct}%</span>
                     </div>
                     <div className="h-0.5 w-full bg-[#C9A84C]/08 rounded-full overflow-hidden">
-                      <motion.div className="h-full bg-[#C9A84C]/50 rounded-full"
-                        initial={{ width: 0 }} animate={{ width: `${cat.pct}%` }}
+                      <motion.div className="h-full bg-[#C9A84C]/50 rounded-full origin-left"
+                        style={{ width: `${cat.pct}%` }}
+                        initial={{ scaleX: 0 }} animate={{ scaleX: 1 }}
                         transition={{ delay: 1.4 + i * 0.2, duration: 1, ease: [0.22, 1, 0.36, 1] }} />
                     </div>
                   </div>
