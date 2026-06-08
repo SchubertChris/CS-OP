@@ -130,9 +130,21 @@ function Marquee() {
    PAGE
 ══════════════════════════════════════════════════════════════ */
 export default function HomePage() {
-  const [dlOpen, setDlOpen] = useState(false)
+  const [dlOpen, setDlOpen]           = useState(false)
+  const [downloading, setDownloading] = useState(false)
   const { img } = useSiteImages()
   const launched = isLaunched()
+
+  function handleDownload() {
+    if (launched) {
+      setDownloading(true)
+      trackDownload(crypto.randomUUID())
+      window.location.href = DOWNLOAD_URL
+      setTimeout(() => setDownloading(false), 3000)
+    } else {
+      setDlOpen(true)
+    }
+  }
 
   return (
     <div style={{ overflowX: 'hidden' }}>
@@ -190,13 +202,11 @@ export default function HomePage() {
       >
         {/* Primär-CTA: solid gold — höchste Priorität */}
         <button
-          onClick={() => {
-            if (launched) { trackDownload(crypto.randomUUID()); window.location.href = DOWNLOAD_URL }
-            else setDlOpen(true)
-          }}
-          className="relative overflow-hidden group text-[11px] tracking-[0.18em] uppercase bg-[#C9A84C] text-[#080808] px-8 py-3.5 rounded-full font-semibold shadow-lg shadow-[#C9A84C]/25 hover:shadow-[#C9A84C]/40 transition-shadow duration-300 cursor-pointer">
+          onClick={handleDownload}
+          disabled={downloading}
+          className="relative overflow-hidden group text-[11px] tracking-[0.18em] uppercase bg-[#C9A84C] text-[#080808] px-8 py-3.5 rounded-full font-semibold shadow-lg shadow-[#C9A84C]/25 hover:shadow-[#C9A84C]/40 transition-shadow duration-300 cursor-pointer disabled:opacity-80 disabled:cursor-default">
           <span className="relative z-10">
-            {launched ? 'Kostenlos herunterladen' : 'Download · 8. Juni 2026'}
+            {downloading ? '✓ Download startet…' : launched ? 'Kostenlos herunterladen' : 'Download · 8. Juni 2026'}
           </span>
           <span className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-full" />
         </button>

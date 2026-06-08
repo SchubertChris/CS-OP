@@ -40,9 +40,20 @@ function DesktopTooltip({ text }: { text: string }) {
 
 
 export default function Header() {
-  const [scrolled, setScrolled]       = useState(false)
-  const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [dlOpen, setDlOpen]           = useState(false)
+  const [scrolled, setScrolled]         = useState(false)
+  const [sidebarOpen, setSidebarOpen]   = useState(false)
+  const [dlOpen, setDlOpen]             = useState(false)
+  const [downloading, setDownloading]   = useState(false)
+
+  function handleDownload() {
+    if (isLaunched()) {
+      setDownloading(true)
+      window.location.href = DOWNLOAD_URL
+      setTimeout(() => setDownloading(false), 3000)
+    } else {
+      setDlOpen(true)
+    }
+  }
   const { pathname } = useLocation()
   const { theme, toggle } = useTheme()
 
@@ -109,11 +120,12 @@ export default function Header() {
             Login
           </a>
           <button
-            onClick={() => isLaunched() ? (window.location.href = DOWNLOAD_URL) : setDlOpen(true)}
+            onClick={handleDownload}
+            disabled={downloading}
             aria-label="FinanceBoard herunterladen"
-            className="relative overflow-hidden group text-[11px] tracking-[0.15em] uppercase bg-[#C9A84C] text-[#080808] font-bold px-5 py-2.5 rounded-full transition-opacity duration-200 hover:opacity-90 cursor-pointer"
+            className="relative overflow-hidden group text-[11px] tracking-[0.15em] uppercase bg-[#C9A84C] text-[#080808] font-bold px-5 py-2.5 rounded-full transition-opacity duration-200 hover:opacity-90 cursor-pointer disabled:opacity-80 disabled:cursor-default"
           >
-            ↓ Gratis laden
+            {downloading ? '✓ Startet…' : '↓ Gratis laden'}
           </button>
         </div>
       </header>

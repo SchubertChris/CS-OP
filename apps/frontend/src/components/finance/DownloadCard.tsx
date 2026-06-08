@@ -1,4 +1,5 @@
 // src/components/finance/DownloadCard.tsx
+import { useState } from 'react'
 import { Check } from 'lucide-react'
 import { SOCIALS } from '../../data/socials'
 import { useDownloadCount } from '../../hooks/useDownloadCount'
@@ -20,11 +21,14 @@ interface DownloadCardProps {
 export default function DownloadCard({ onDownload }: DownloadCardProps) {
   const downloads = useDownloadCount()
   const launched  = isLaunched()
+  const [downloading, setDownloading] = useState(false)
 
   function handleDownload() {
     if (launched) {
+      setDownloading(true)
       trackDownload(crypto.randomUUID())
       window.location.href = DOWNLOAD_URL
+      setTimeout(() => setDownloading(false), 3000)
     } else {
       onDownload?.()
     }
@@ -65,10 +69,12 @@ export default function DownloadCard({ onDownload }: DownloadCardProps) {
           <div className="w-full flex flex-col gap-3 mt-2">
             <button
               onClick={handleDownload}
+              disabled={downloading}
               className="w-full bg-[#C9A84C] text-[#080808] font-bold text-sm py-3.5 rounded-lg
-                         hover:opacity-90 transition-opacity duration-200 text-center cursor-pointer"
+                         hover:opacity-90 transition-opacity duration-200 text-center cursor-pointer
+                         disabled:opacity-80 disabled:cursor-default"
             >
-              {launched ? '↓ Windows herunterladen' : '↓ Am 8. Juni verfügbar'}
+              {downloading ? '✓ Download startet…' : launched ? '↓ Windows herunterladen' : '↓ Am 8. Juni verfügbar'}
             </button>
             {SOCIALS.kofi && (
               <a
