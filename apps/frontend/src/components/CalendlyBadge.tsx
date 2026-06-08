@@ -39,8 +39,9 @@ export default function CalendlyBadge() {
     document.head.appendChild(script)
 
     return () => {
-      document.head.removeChild(link)
-      document.head.removeChild(script)
+      try { document.head.removeChild(link) } catch (_) {}
+      try { document.head.removeChild(script) } catch (_) {}
+      document.querySelector('.calendly-badge-widget')?.remove()
     }
   }, [])
 
