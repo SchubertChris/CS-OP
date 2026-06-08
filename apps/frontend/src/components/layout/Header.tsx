@@ -12,6 +12,7 @@ import {
 import csLogo from '../../assets/images/CandleScopeLogo.png'
 import { useTheme } from '../../contexts/ThemeContext'
 import ComingSoonModal from '../ui/ComingSoonModal'
+import { isLaunched, DOWNLOAD_URL } from '../../hooks/useLaunchGate'
 
 interface NavItem {
   to: string
@@ -30,7 +31,7 @@ const navItems: NavItem[] = [
 
 function DesktopTooltip({ text }: { text: string }) {
   return (
-    <div className="absolute top-full left-1/2 -translate-x-1/2 mt-3 px-3 py-1.5 bg-[var(--cs-s2)] border border-[#C9A84C]/20 text-[var(--cs-text-2)] text-[10px] tracking-[0.1em] uppercase whitespace-nowrap rounded-lg shadow-xl shadow-black/60 pointer-events-none opacity-0 group-hover:opacity-100 translate-y-1 group-hover:translate-y-0 transition-all duration-200 delay-100 z-50">
+    <div className="absolute top-full left-1/2 -translate-x-1/2 mt-3 px-3 py-1.5 bg-[var(--cs-s2)] border border-[#C9A84C]/20 text-[var(--cs-text-2)] text-[10px] tracking-[0.1em] uppercase whitespace-nowrap rounded-lg shadow-xl shadow-black/60 pointer-events-none opacity-0 group-hover:opacity-100 translate-y-1 group-hover:translate-y-0 transition-[opacity,transform] duration-200 delay-100 z-50">
       {text}
       <span className="absolute -top-[5px] left-1/2 -translate-x-1/2 w-2 h-2 bg-[var(--cs-s2)] border-l border-t border-[#C9A84C]/20 rotate-45" />
     </div>
@@ -96,19 +97,19 @@ export default function Header() {
 
         <div className="flex items-center gap-3 shrink-0">
           <button onClick={toggle} aria-label="Theme wechseln"
-            className="w-8 h-8 flex items-center justify-center rounded-full border border-[#C9A84C]/20 text-[#C9A84C]/60 hover:text-[#C9A84C] hover:border-[#C9A84C]/40 transition-all duration-200 cursor-pointer">
+            className="w-8 h-8 flex items-center justify-center rounded-full border border-[#C9A84C]/20 text-[#C9A84C]/60 hover:text-[#C9A84C] hover:border-[#C9A84C]/40 transition-colors duration-200 cursor-pointer">
             {theme === 'dark' ? <Sun size={14} strokeWidth={1.5} /> : <Moon size={14} strokeWidth={1.5} />}
           </button>
           <a
             href={`https://app.candlescope.de/login?theme=${theme}`}
             aria-label="Zum CandleScope Login"
-            className="flex items-center gap-1.5 text-[11px] tracking-[0.12em] uppercase px-4 py-2 rounded-full border border-[#C9A84C]/40 text-[#C9A84C] hover:bg-[#C9A84C]/10 transition-all duration-200"
+            className="flex items-center gap-1.5 text-[11px] tracking-[0.12em] uppercase px-4 py-2 rounded-full border border-[#C9A84C]/40 text-[#C9A84C] hover:bg-[#C9A84C]/10 transition-colors duration-200"
           >
             <LogIn size={12} strokeWidth={2} />
             Login
           </a>
           <button
-            onClick={() => setDlOpen(true)}
+            onClick={() => isLaunched() ? (window.location.href = DOWNLOAD_URL) : setDlOpen(true)}
             aria-label="FinanceBoard herunterladen"
             className="relative overflow-hidden group text-[11px] tracking-[0.15em] uppercase bg-[#C9A84C] text-[#080808] font-bold px-5 py-2.5 rounded-full transition-opacity duration-200 hover:opacity-90 cursor-pointer"
           >
@@ -135,7 +136,7 @@ export default function Header() {
 
         {/* Sidebar Panel */}
         <div
-          className="flex flex-col gap-1 py-3 backdrop-blur-xl border border-[#C9A84C]/15 rounded-l-2xl overflow-hidden transition-all duration-300"
+          className="flex flex-col gap-1 py-3 backdrop-blur-xl border border-[#C9A84C]/15 rounded-l-2xl overflow-hidden transition-[opacity] duration-300"
           style={{
             background: 'var(--cs-sidebar-mob)',
             width: sidebarOpen ? '164px' : '0px',
@@ -159,7 +160,7 @@ export default function Header() {
           {navItems.map(({ to, label, icon }) => (
             <NavLink key={to} to={to} aria-label={label}
               className={({ isActive }) => `
-                relative flex items-center gap-3 px-2 h-10 rounded-xl transition-all duration-200 shrink-0 overflow-hidden
+                relative flex items-center gap-3 px-2 h-10 rounded-xl transition-[background-color,color] duration-200 shrink-0 overflow-hidden
                 ${isActive
                   ? 'bg-[#C9A84C]/15 text-[#C9A84C]'
                   : 'text-[var(--cs-text-2)] hover:bg-[#C9A84C]/8 hover:text-[#C9A84C]'
@@ -167,7 +168,7 @@ export default function Header() {
               `}>
               {({ isActive }) => (
                 <>
-                  <span className={`absolute left-0 top-2 bottom-2 w-0.5 rounded-full transition-all duration-300 ${isActive ? 'bg-[#C9A84C] opacity-100' : 'opacity-0'}`} />
+                  <span className={`absolute left-0 top-2 bottom-2 w-0.5 rounded-full transition-opacity duration-300 ${isActive ? 'bg-[#C9A84C] opacity-100' : 'opacity-0'}`} />
                   <span className="shrink-0 ml-1">{icon}</span>
                   <span className="text-[11px] tracking-[0.08em] font-medium whitespace-nowrap">{label}</span>
                 </>
@@ -179,21 +180,21 @@ export default function Header() {
 
           {/* App Login */}
           <a href={`https://app.candlescope.de/login?theme=${theme}`} aria-label="Zum CandleScope Login"
-            className="flex items-center gap-3 px-2 h-10 rounded-xl text-[#C9A84C] hover:bg-[#C9A84C]/8 transition-all duration-200 shrink-0 overflow-hidden">
+            className="flex items-center gap-3 px-2 h-10 rounded-xl text-[#C9A84C] hover:bg-[#C9A84C]/8 transition-colors duration-200 shrink-0 overflow-hidden">
             <span className="shrink-0 ml-1"><LogIn size={16} strokeWidth={1.5} /></span>
             <span className="text-[11px] tracking-[0.08em] font-medium whitespace-nowrap">Login</span>
           </a>
 
           {/* Hire me */}
           <Link to="/contact" aria-label="Hire me – Kontakt aufnehmen"
-            className="flex items-center gap-3 px-2 h-10 rounded-xl text-[var(--cs-text-2)] hover:bg-[#C9A84C]/8 hover:text-[#C9A84C] transition-all duration-200 shrink-0 overflow-hidden">
+            className="flex items-center gap-3 px-2 h-10 rounded-xl text-[var(--cs-text-2)] hover:bg-[#C9A84C]/8 hover:text-[#C9A84C] transition-colors duration-200 shrink-0 overflow-hidden">
             <span className="shrink-0 ml-1"><Mail size={16} strokeWidth={1.5} /></span>
             <span className="text-[11px] tracking-[0.08em] font-medium whitespace-nowrap">Hire me</span>
           </Link>
 
           {/* Theme Toggle */}
           <button onClick={toggle} aria-label="Theme wechseln"
-            className="flex items-center gap-3 px-2 h-10 rounded-xl text-[var(--cs-text-3)] hover:bg-[#C9A84C]/8 hover:text-[#C9A84C] transition-all duration-200 cursor-pointer shrink-0 overflow-hidden w-full">
+            className="flex items-center gap-3 px-2 h-10 rounded-xl text-[var(--cs-text-3)] hover:bg-[#C9A84C]/8 hover:text-[#C9A84C] transition-colors duration-200 cursor-pointer shrink-0 overflow-hidden w-full">
             <span className="shrink-0 ml-1">
               {theme === 'dark' ? <Sun size={16} strokeWidth={1.5} /> : <Moon size={16} strokeWidth={1.5} />}
             </span>

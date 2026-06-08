@@ -61,7 +61,7 @@ export default function ScreenshotSlider() {
           <button
             key={label}
             onClick={() => go(i)}
-            className={`px-4 py-1.5 rounded-full text-xs tracking-[0.1em] uppercase transition-all duration-200 cursor-pointer
+            className={`px-4 py-1.5 rounded-full text-xs tracking-[0.1em] uppercase transition-colors duration-200 cursor-pointer
               ${active === i
                 ? 'bg-[#C9A84C]/15 border border-[#C9A84C]/35 text-[var(--cs-text)]'
                 : 'border border-transparent text-[var(--cs-text-2)] hover:text-[var(--cs-text)]'
@@ -145,10 +145,10 @@ export default function ScreenshotSlider() {
       <div className="flex items-center justify-center gap-2 mt-8">
         {SCREENSHOTS.map(({ label }, i) => (
           <button key={label} onClick={() => go(i)} aria-label={label} className="cursor-pointer">
-            <span className={`block rounded-full transition-all duration-300
+            <span className={`block w-6 h-1.5 rounded-full origin-left transition-[transform,opacity] duration-300
               ${active === i
-                ? 'w-6 h-1.5 bg-[#C9A84C]'
-                : 'w-1.5 h-1.5 bg-[#C9A84C]/25 hover:bg-[#C9A84C]/50'
+                ? 'scale-x-100 bg-[#C9A84C] opacity-100'
+                : 'scale-x-[0.25] bg-[#C9A84C] opacity-25 hover:opacity-50'
               }`}
             />
           </button>

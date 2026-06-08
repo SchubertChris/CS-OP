@@ -84,7 +84,7 @@ function ParallaxScreenshot({ src, alt }: { src: string; alt: string }) {
             className="absolute inset-0 bg-gradient-to-r from-transparent via-white/4 to-transparent -skew-x-12 pointer-events-none z-10"
             initial={{ x: '-100%' }} whileInView={{ x: '200%' }} viewport={{ once: true }}
             transition={{ duration: 1.2, delay: 0.4, ease: 'easeInOut' }} />
-          <img src={src} alt={alt} className="w-full h-auto block" loading="eager" fetchPriority="high" />
+          <img src={src} alt={alt} className="w-full h-auto block" width="1907" height="1074" loading="eager" fetchPriority="high" />
         </motion.div>
       </div>
     </Reveal>
@@ -248,7 +248,7 @@ export default function HomePage() {
             { val: '13+', label: 'Jahre Erfahrung',  sub: 'Coding & Finance' },
           ].map((stat, i) => (
             <StaggerItem key={i}>
-              <div className="group flex flex-col items-center text-center p-6 rounded-2xl border border-[var(--cs-border-w)] bg-[var(--cs-s1)] hover:border-[#C9A84C]/30 hover:bg-[#C9A84C]/4 transition-all duration-300 cursor-default">
+              <div className="group flex flex-col items-center text-center p-6 rounded-2xl border border-[var(--cs-border-w)] bg-[var(--cs-s1)] hover:border-[#C9A84C]/30 hover:bg-[#C9A84C]/4 transition-colors duration-300 cursor-default">
                 <span className="font-display text-4xl md:text-5xl text-[#C9A84C] mb-2 tabular-nums leading-none">{stat.val}</span>
                 <span className="font-medium text-[13px] text-[var(--cs-text)] mb-1">{stat.label}</span>
                 <span className="font-mono text-[9px] tracking-[0.16em] uppercase text-[var(--cs-text-4)]">{stat.sub}</span>
@@ -469,6 +469,7 @@ export default function HomePage() {
                   src={img('home-preview')}
                   alt="CandleScope FinanceBoard Dashboard"
                   className="w-full h-auto block"
+                  width="1907" height="1074"
                   loading="lazy"
                 />
               </div>
@@ -554,15 +555,15 @@ export default function HomePage() {
               ].map((item, i) => (
                 <StaggerItem key={i}>
                   <Link to={item.href}
-                    className="group flex items-center gap-5 p-4 border border-[var(--cs-border-w)] rounded-2xl bg-[var(--cs-s1)] hover:border-[#C9A84C]/25 hover:bg-[#C9A84C]/3 transition-all duration-200">
-                    <div className="w-11 h-11 rounded-xl bg-[#C9A84C]/8 border border-[#C9A84C]/15 flex items-center justify-center text-[#C9A84C]/70 group-hover:text-[#C9A84C] group-hover:border-[#C9A84C]/30 transition-all shrink-0">
+                    className="group flex items-center gap-5 p-4 border border-[var(--cs-border-w)] rounded-2xl bg-[var(--cs-s1)] hover:border-[#C9A84C]/25 hover:bg-[#C9A84C]/3 transition-colors duration-200">
+                    <div className="w-11 h-11 rounded-xl bg-[#C9A84C]/8 border border-[#C9A84C]/15 flex items-center justify-center text-[#C9A84C]/70 group-hover:text-[#C9A84C] group-hover:border-[#C9A84C]/30 transition-colors shrink-0">
                       {item.icon}
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-[14px] font-medium text-[var(--cs-text)] group-hover:text-[#C9A84C] transition-colors">{item.label}</p>
                       <p className="text-[12px] text-[var(--cs-text-2)] mt-0.5">{item.desc}</p>
                     </div>
-                    <ArrowRight size={15} strokeWidth={1.5} className="text-[var(--cs-text-4)] group-hover:text-[#C9A84C]/60 group-hover:translate-x-1 transition-all shrink-0" />
+                    <ArrowRight size={15} strokeWidth={1.5} className="text-[var(--cs-text-4)] group-hover:text-[#C9A84C]/60 group-hover:translate-x-1 transition-[color,transform] shrink-0" />
                   </Link>
                 </StaggerItem>
               ))}

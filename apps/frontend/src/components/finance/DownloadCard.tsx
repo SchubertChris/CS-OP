@@ -76,7 +76,7 @@ export default function DownloadCard({ onDownload }: DownloadCardProps) {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full border border-[#C9A84C]/20 text-[var(--cs-text-2)] text-sm py-3 rounded-lg
-                           hover:border-[#C9A84C]/35 hover:text-[var(--cs-text)] transition-all duration-200
+                           hover:border-[#C9A84C]/35 hover:text-[var(--cs-text)] transition-colors duration-200
                            flex items-center justify-center gap-2"
               >
                 <span>☕</span>

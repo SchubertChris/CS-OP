@@ -209,7 +209,7 @@ export default function ContactPage() {
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                     {TOPICS.map(t => (
                       <button key={t.value} type="button" onClick={() => update('topic', t.label)}
-                        className={`flex items-center gap-2 px-3.5 py-2.5 rounded-xl border text-[13px] transition-all duration-150 ${form.topic === t.label ? 'border-[#C9A84C]/50 bg-[#C9A84C]/10 text-[#C9A84C]' : 'border-[#ffffff]/6 bg-[var(--cs-s1)] text-[var(--cs-text-2)] hover:border-[#C9A84C]/20 hover:text-[var(--cs-text)]'}`}>
+                        className={`flex items-center gap-2 px-3.5 py-2.5 rounded-xl border text-[13px] transition-colors duration-150 ${form.topic === t.label ? 'border-[#C9A84C]/50 bg-[#C9A84C]/10 text-[#C9A84C]' : 'border-[#ffffff]/6 bg-[var(--cs-s1)] text-[var(--cs-text-2)] hover:border-[#C9A84C]/20 hover:text-[var(--cs-text)]'}`}>
                         <span className={form.topic === t.label ? 'text-[#C9A84C]' : 'text-[var(--cs-text-3)]'}>{t.icon}</span>
                         {t.label}
                       </button>
@@ -255,8 +255,8 @@ export default function ContactPage() {
               <div className="flex flex-col gap-3">
                 {CONTACTS.map((c, i) => (
                   <a key={i} href={c.href} {...('external' in c && c.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                    className="group flex items-center gap-4 p-4 border border-[#ffffff]/6 rounded-xl bg-[var(--cs-s1)] hover:border-[#C9A84C]/25 hover:bg-[#C9A84C]/3 transition-all duration-200">
-                    <div className="w-10 h-10 rounded-lg bg-[var(--cs-s5)] border border-[#ffffff]/6 flex items-center justify-center text-[var(--cs-text-2)] group-hover:text-[#C9A84C] group-hover:border-[#C9A84C]/20 transition-all shrink-0">
+                    className="group flex items-center gap-4 p-4 border border-[#ffffff]/6 rounded-xl bg-[var(--cs-s1)] hover:border-[#C9A84C]/25 hover:bg-[#C9A84C]/3 transition-colors duration-200">
+                    <div className="w-10 h-10 rounded-lg bg-[var(--cs-s5)] border border-[#ffffff]/6 flex items-center justify-center text-[var(--cs-text-2)] group-hover:text-[#C9A84C] group-hover:border-[#C9A84C]/20 transition-colors shrink-0">
                       {c.icon}
                     </div>
                     <div className="min-w-0 flex-1">
@@ -281,7 +281,7 @@ export default function ContactPage() {
               </div>
               <p className="text-[13px] text-[var(--cs-text-2)] leading-relaxed mb-4">Lieber direkt sprechen? Buch dir einen kostenlosen Slot.</p>
               <a href="https://calendly.com/" target="_blank" rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 w-full py-2.5 border border-[var(--cs-text)]/15 rounded-xl font-mono text-[12px] tracking-[0.1em] uppercase text-[var(--cs-text-2)] hover:text-[#C9A84C] hover:border-[#C9A84C]/45 hover:bg-[#C9A84C]/5 transition-all">
+                className="flex items-center justify-center gap-2 w-full py-2.5 border border-[var(--cs-text)]/15 rounded-xl font-mono text-[12px] tracking-[0.1em] uppercase text-[var(--cs-text-2)] hover:text-[#C9A84C] hover:border-[#C9A84C]/45 hover:bg-[#C9A84C]/5 transition-colors">
                 <Calendar size={13} strokeWidth={1.5} />
                 Kalender öffnen
               </a>

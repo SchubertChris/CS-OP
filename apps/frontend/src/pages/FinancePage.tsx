@@ -122,7 +122,7 @@ export default function FinancePage() {
                 <button
                   onClick={() => document.getElementById('screenshots')?.scrollIntoView({ behavior: 'smooth' })}
                   className="border border-[#C9A84C]/25 text-[var(--cs-text-2)] px-5 py-3.5 rounded-lg
-                             hover:border-[#C9A84C]/40 hover:text-[var(--cs-text)] transition-all duration-200 text-sm"
+                             hover:border-[#C9A84C]/40 hover:text-[var(--cs-text)] transition-colors duration-200 text-sm"
                 >
                   Demo ansehen →
                 </button>

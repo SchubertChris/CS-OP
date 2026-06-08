@@ -29,7 +29,7 @@ const SESSION_KEY = 'cs_intro_seen'
 
 export default function RootLayout() {
   const [introComplete, setIntroComplete] = useState(
-    () => sessionStorage.getItem(SESSION_KEY) === '1'
+    () => sessionStorage.getItem(SESSION_KEY) === '1' || navigator.webdriver
   )
 
   const handleIntroComplete = () => {

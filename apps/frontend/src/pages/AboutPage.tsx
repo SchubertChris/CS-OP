@@ -172,7 +172,7 @@ export default function AboutPage() {
             <span className="font-mono text-[9px] tracking-[0.16em] uppercase text-[var(--cs-text-3)]">Flagship</span>
             <span className="w-px h-3 bg-[var(--cs-text)]/12" />
             <Link to="/finance"
-              className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#C9A84C]/6 border border-[#C9A84C]/30 hover:border-[#C9A84C]/50 hover:bg-[#C9A84C]/10 transition-all group">
+              className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#C9A84C]/6 border border-[#C9A84C]/30 hover:border-[#C9A84C]/50 hover:bg-[#C9A84C]/10 transition-colors group">
               <div className="w-1 h-1 rounded-full bg-[#22c55e]" />
               <span className="font-mono text-[9px] tracking-[0.12em] uppercase text-[var(--cs-text-2)] group-hover:text-[#C9A84C] transition-colors">FinanceBoard v10.6</span>
               <ArrowRight size={9} strokeWidth={1.5} className="text-[var(--cs-text-3)] group-hover:text-[#C9A84C] transition-colors" />
@@ -188,7 +188,7 @@ export default function AboutPage() {
           <div className="relative">
             <div className="relative rounded-2xl overflow-hidden border border-[#C9A84C]/20">
               <img src={img('about-chris')} alt="Chris Schubert"
-                className="w-full object-cover aspect-[4/5] grayscale hover:grayscale-0 transition-all duration-700" />
+                className="w-full object-cover aspect-[4/5] grayscale hover:grayscale-0 transition-[filter] duration-700" />
               <div className="absolute inset-0 bg-gradient-to-t from-[var(--cs-bg)]/80 via-transparent to-transparent" />
               <div className="absolute bottom-6 left-6 right-6">
                 <p className="font-display text-xl text-[var(--cs-text)] tracking-wide">Chris Schubert</p>

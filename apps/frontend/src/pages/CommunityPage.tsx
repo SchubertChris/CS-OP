@@ -364,7 +364,7 @@ export default function CommunityPage() {
             </div>
             <span className="w-px h-3 bg-[#C9A84C]/12" />
             <Link to="/finance"
-              className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#C9A84C]/5 border border-[#C9A84C]/20 hover:border-[#C9A84C]/40 hover:bg-[#C9A84C]/8 transition-all group">
+              className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#C9A84C]/5 border border-[#C9A84C]/20 hover:border-[#C9A84C]/40 hover:bg-[#C9A84C]/8 transition-colors group">
               <span className="font-mono text-[9px] tracking-[0.12em] uppercase text-[var(--cs-text-2)] group-hover:text-[#C9A84C] transition-colors">FinanceBoard · Gratis</span>
               <ArrowRight size={9} strokeWidth={1.5} className="text-[var(--cs-text-3)] group-hover:text-[#C9A84C] transition-colors" />
             </Link>
@@ -478,7 +478,7 @@ export default function CommunityPage() {
           ].map((card, i) => (
             <StaggerItem key={i}>
               <motion.div whileHover={{ y: -4 }} transition={{ duration: 0.2 }} className="h-full">
-                <div className="h-full flex flex-col gap-4 p-6 rounded-2xl border border-[var(--cs-border-w)] bg-[var(--cs-s1)] hover:border-[#C9A84C]/25 hover:bg-[#C9A84C]/3 transition-all duration-300">
+                <div className="h-full flex flex-col gap-4 p-6 rounded-2xl border border-[var(--cs-border-w)] bg-[var(--cs-s1)] hover:border-[#C9A84C]/25 hover:bg-[#C9A84C]/3 transition-colors duration-300">
                   <span className="text-3xl">{card.emoji}</span>
                   <div className="flex-1">
                     <h3 className="font-display text-lg text-[var(--cs-text)] mb-2">{card.label}</h3>

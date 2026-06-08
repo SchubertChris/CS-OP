@@ -250,7 +250,7 @@ export default function TestimonialsSection() {
             onClick={() => setModalOpen(true)}
             className="inline-flex items-center gap-2 border border-[#C9A84C]/20 text-[var(--cs-text-2)]
                        text-sm px-5 py-2.5 rounded-lg hover:border-[#C9A84C]/35 hover:text-[var(--cs-text)]
-                       transition-all duration-200 cursor-pointer"
+                       transition-colors duration-200 cursor-pointer"
           >
             ✉ Bewertung einreichen
           </button>

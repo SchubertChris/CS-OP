@@ -236,7 +236,7 @@ export function Card({
     rounded-2xl
     ${variantClasses[variant]}
     ${padClasses[padding]}
-    transition-all duration-300
+    transition-colors duration-300
     ${href || onClick ? 'cursor-pointer group' : ''}
     ${className}
   `
@@ -338,7 +338,7 @@ export function CtaButton({
     relative overflow-hidden group
     inline-flex items-center gap-2
     text-[11px] tracking-[0.16em] uppercase
-    rounded-full transition-all duration-300
+    rounded-full transition-colors duration-300
     ${variant === 'primary'
       ? 'border border-[#C9A84C]/40 text-[#C9A84C] px-7 py-3.5'
       : 'text-[var(--cs-text-2)] hover:text-[var(--cs-text)] px-2 py-1'

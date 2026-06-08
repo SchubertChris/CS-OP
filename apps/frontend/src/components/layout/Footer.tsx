@@ -50,15 +50,15 @@ export default function Footer() {
             </p>
             <div className="flex items-center gap-3">
               <a href="https://github.com/SchubertChris" target="_blank" rel="noopener noreferrer"
-                className="w-9 h-9 flex items-center justify-center rounded-full border border-[var(--cs-border-w2)] text-[var(--cs-text-2)] hover:text-[#C9A84C] hover:border-[#C9A84C]/30 transition-all duration-300" aria-label="GitHub">
+                className="w-9 h-9 flex items-center justify-center rounded-full border border-[var(--cs-border-w2)] text-[var(--cs-text-2)] hover:text-[#C9A84C] hover:border-[#C9A84C]/30 transition-colors duration-300" aria-label="GitHub">
                 <Github size={15} strokeWidth={1.5} />
               </a>
               <a href={SOCIALS.discord} target="_blank" rel="noopener noreferrer"
-                className="w-9 h-9 flex items-center justify-center rounded-full border border-[var(--cs-border-w2)] text-[var(--cs-text-2)] hover:text-[#C9A84C] hover:border-[#C9A84C]/30 transition-all duration-300" aria-label="Discord">
+                className="w-9 h-9 flex items-center justify-center rounded-full border border-[var(--cs-border-w2)] text-[var(--cs-text-2)] hover:text-[#C9A84C] hover:border-[#C9A84C]/30 transition-colors duration-300" aria-label="Discord">
                 <DiscordIcon />
               </a>
               <a href="mailto:info@candlescope.de"
-                className="w-9 h-9 flex items-center justify-center rounded-full border border-[var(--cs-border-w2)] text-[var(--cs-text-2)] hover:text-[#C9A84C] hover:border-[#C9A84C]/30 transition-all duration-300" aria-label="E-Mail">
+                className="w-9 h-9 flex items-center justify-center rounded-full border border-[var(--cs-border-w2)] text-[var(--cs-text-2)] hover:text-[#C9A84C] hover:border-[#C9A84C]/30 transition-colors duration-300" aria-label="E-Mail">
                 <Mail size={15} strokeWidth={1.5} />
               </a>
             </div>

@@ -17,7 +17,7 @@ const KEYFRAMES = `
 @keyframes sp-halo-ccw-58 { from { transform: rotateX(58deg) rotateZ(0deg)   } to { transform: rotateX(58deg) rotateZ(-360deg)  } }
 @keyframes sp-halo-cw-80  { from { transform: rotateX(80deg) rotateZ(0deg)   } to { transform: rotateX(80deg) rotateZ(360deg)   } }
 @keyframes sp-logo-in     { from { opacity:0; transform:scale(0.88) translateY(8px) } to { opacity:1; transform:scale(1) translateY(0) } }
-@keyframes sp-beam        { from { width:0 } to { width:260px } }
+@keyframes sp-beam        { from { transform: scaleX(0) } to { transform: scaleX(1) } }
 @keyframes sp-dots        { from { opacity:0 } to { opacity:1 } }
 @keyframes sp-title       { from { clip-path:inset(0 100% 0 0) } to { clip-path:inset(0 0% 0 0) } }
 @keyframes sp-sub         { from { opacity:0 } to { opacity:1 } }
@@ -166,9 +166,11 @@ export default function IntroAnimation({ onComplete }: { onComplete: () => void 
               position:'relative', display:'flex', alignItems:'center', justifyContent:'center',
             }}>
               <div style={{
-                height:1, width:0,
+                height:1, width:260,
                 background:GOLD,
                 boxShadow:`0 0 12px 2px rgba(201,168,76,0.35),0 0 40px 8px rgba(201,168,76,0.15)`,
+                transformOrigin:'center',
+                transform:'scaleX(0)',
                 animation:'sp-beam 0.65s cubic-bezier(0.22,1,0.36,1) 0.62s forwards',
               }} />
               {/* Endpoint dot — left */}
