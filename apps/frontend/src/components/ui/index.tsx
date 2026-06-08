@@ -356,7 +356,7 @@ export function CtaButton({
   ) : (
     <>
       {children}
-      <span className="w-4 h-px bg-current transition-all duration-300 group-hover:w-6" />
+      <span className="w-4 h-px bg-current transition-transform duration-300 group-hover:scale-x-[1.5] origin-left" />
     </>
   )
 

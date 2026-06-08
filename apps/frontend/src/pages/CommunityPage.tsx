@@ -350,7 +350,7 @@ export default function CommunityPage() {
         <a href="#features"
           className="text-[11px] tracking-[0.16em] uppercase text-[var(--cs-text-3)] hover:text-[var(--cs-text)] transition-colors duration-300 flex items-center gap-2 group">
           Was dich erwartet
-          <span className="w-4 h-px bg-current transition-all duration-300 group-hover:w-6" />
+          <span className="w-4 h-px bg-current transition-transform duration-300 group-hover:scale-x-[1.5] origin-left" />
         </a>
 
         {/* Live-Status + Tool-Tipp */}

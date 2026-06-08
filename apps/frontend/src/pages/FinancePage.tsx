@@ -151,6 +151,7 @@ export default function FinancePage() {
                 alt="FinanceBoard Dashboard"
                 className="w-full object-cover"
                 loading="eager"
+                fetchPriority="high"
               />
             </div>
           </motion.div>

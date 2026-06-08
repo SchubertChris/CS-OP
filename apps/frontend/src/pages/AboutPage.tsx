@@ -163,7 +163,7 @@ export default function AboutPage() {
         <a href="https://github.com/SchubertChris" target="_blank" rel="noopener noreferrer"
           className="text-[11px] tracking-[0.16em] uppercase text-[var(--cs-text-3)] hover:text-[var(--cs-text)] transition-colors duration-300 flex items-center gap-2 group">
           GitHub ansehen
-          <span className="w-4 h-px bg-current transition-all duration-300 group-hover:w-6" />
+          <span className="w-4 h-px bg-current transition-transform duration-300 group-hover:scale-x-[1.5] origin-left" />
         </a>
 
         {/* Credibility Strip: echtes Shipped Product als Beweis */}

@@ -200,9 +200,6 @@ importers:
       '@neondatabase/serverless':
         specifier: ^0.9.5
         version: 0.9.5
-      '@types/three':
-        specifier: ^0.183.1
-        version: 0.183.1
       bcryptjs:
         specifier: ^2.4.3
         version: 2.4.3
@@ -236,9 +233,6 @@ importers:
       react-router-dom:
         specifier: ^7.13.1
         version: 7.13.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
-      three:
-        specifier: ^0.183.2
-        version: 0.183.2
       ua-parser-js:
         specifier: ^1.0.41
         version: 1.0.41

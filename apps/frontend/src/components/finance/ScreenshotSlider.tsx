@@ -161,9 +161,9 @@ export default function ScreenshotSlider() {
           <div className="h-px bg-[#C9A84C]/8 rounded-full overflow-hidden">
             <motion.div
               key={active}
-              className="h-full bg-[#C9A84C]/35"
-              initial={{ width: '0%' }}
-              animate={{ width: '100%' }}
+              className="h-full bg-[#C9A84C]/35 origin-left"
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
               transition={{ duration: AUTOPLAY_MS / 1000, ease: 'linear' }}
             />
           </div>

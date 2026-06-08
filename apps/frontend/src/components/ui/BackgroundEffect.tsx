@@ -20,10 +20,12 @@ export default function BackgroundEffect() {
   const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
+    let timer: ReturnType<typeof setTimeout>
     const check = () => setIsMobile(window.innerWidth < 768)
+    const debounced = () => { clearTimeout(timer); timer = setTimeout(check, 150) }
     check()
-    window.addEventListener('resize', check)
-    return () => window.removeEventListener('resize', check)
+    window.addEventListener('resize', debounced, { passive: true })
+    return () => { window.removeEventListener('resize', debounced); clearTimeout(timer) }
   }, [])
 
   // Auf Mobile nur statische Orbs — kein Infinite-Animation

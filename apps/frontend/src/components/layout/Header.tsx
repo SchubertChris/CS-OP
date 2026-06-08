@@ -60,7 +60,7 @@ export default function Header() {
         fixed top-0 left-0 right-0 z-50
         hidden lg:flex items-center justify-between
         px-12 xl:px-20
-        transition-all duration-500
+        transition-[background-color,border-color,box-shadow] duration-500
         ${scrolled
           ? 'h-16 backdrop-blur-2xl border-b border-[#C9A84C]/10 shadow-xl shadow-black/40'
           : 'h-20 bg-transparent'
@@ -69,8 +69,8 @@ export default function Header() {
       style={scrolled ? { background: 'var(--cs-header-bg)' } : undefined}>
         <Link to="/" aria-label="CandleScope Startseite" className="group flex items-center gap-3 shrink-0">
           <img src={csLogo} alt="CandleScope Logo"
-            className={`object-contain transition-all duration-500 group-hover:scale-105 ${scrolled ? 'w-8 h-8' : 'w-10 h-10'}`} />
-          <span className={`font-display tracking-[0.15em] text-[var(--cs-text)] uppercase transition-all duration-500 ${scrolled ? 'text-sm' : 'text-base'}`}>
+            className={`object-contain transition-transform duration-300 group-hover:scale-105 ${scrolled ? 'w-8 h-8' : 'w-10 h-10'}`} />
+          <span className={`font-display tracking-[0.15em] text-[var(--cs-text)] uppercase ${scrolled ? 'text-sm' : 'text-base'}`}>
             Candle<span className="text-[#C9A84C]">Scope</span>
           </span>
         </Link>

@@ -1,6 +1,5 @@
 // src/components/finance/FaqAccordion.tsx
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
 import { Plus, Minus } from 'lucide-react'
 
 const FAQ = [
@@ -52,19 +51,17 @@ export default function FaqAccordion() {
                 : <Plus  size={16} strokeWidth={1.5} className="text-[var(--cs-text-2)] shrink-0" />
               }
             </button>
-            <AnimatePresence>
-              {open === i && (
-                <motion.div
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: 'auto', opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
-                  className="overflow-hidden"
-                >
-                  <p className="px-6 pb-5 text-[var(--cs-text-2)] text-sm leading-relaxed">{a}</p>
-                </motion.div>
-              )}
-            </AnimatePresence>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateRows: open === i ? '1fr' : '0fr',
+                transition: 'grid-template-rows 250ms cubic-bezier(0.4,0,0.2,1)',
+              }}
+            >
+              <div className="overflow-hidden">
+                <p className="px-6 pb-5 text-[var(--cs-text-2)] text-sm leading-relaxed">{a}</p>
+              </div>
+            </div>
           </div>
         ))}
       </div>

@@ -84,7 +84,7 @@ function ParallaxScreenshot({ src, alt }: { src: string; alt: string }) {
             className="absolute inset-0 bg-gradient-to-r from-transparent via-white/4 to-transparent -skew-x-12 pointer-events-none z-10"
             initial={{ x: '-100%' }} whileInView={{ x: '200%' }} viewport={{ once: true }}
             transition={{ duration: 1.2, delay: 0.4, ease: 'easeInOut' }} />
-          <img src={src} alt={alt} className="w-full h-auto block" loading="lazy" />
+          <img src={src} alt={alt} className="w-full h-auto block" loading="eager" fetchPriority="high" />
         </motion.div>
       </div>
     </Reveal>
@@ -205,7 +205,7 @@ export default function HomePage() {
         <a href="#produkt"
           className="text-[11px] tracking-[0.16em] uppercase text-[var(--cs-text-3)] hover:text-[var(--cs-text)] transition-colors duration-300 flex items-center gap-2 group">
           App entdecken
-          <span className="w-4 h-px bg-current transition-all duration-300 group-hover:w-6" />
+          <span className="w-4 h-px bg-current transition-transform duration-300 group-hover:scale-x-[1.5] origin-left" />
         </a>
 
         {/* Vertrauens-Strip: konkrete Zahlen statt Mini-Tags */}
@@ -539,7 +539,7 @@ export default function HomePage() {
                 className="flex items-center gap-2 text-[11px] tracking-[0.14em] uppercase text-[var(--cs-text-2)] hover:text-[var(--cs-text)] transition-colors group">
                 <Github size={14} strokeWidth={1.5} />
                 GitHub
-                <span className="w-4 h-px bg-current transition-all duration-300 group-hover:w-6" />
+                <span className="w-4 h-px bg-current transition-transform duration-300 group-hover:scale-x-[1.5] origin-left" />
               </a>
             </div>
           </Reveal>
