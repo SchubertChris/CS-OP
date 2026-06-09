@@ -4,10 +4,11 @@
    ============================================================ */
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Cookie, Shield, ChevronDown, ChevronUp } from 'lucide-react'
+import { BarChart2, Shield, ChevronDown, ChevronUp } from 'lucide-react'
+import { CONSENT_EVENT } from '../../hooks/useAnalytics'
 
 const STORAGE_KEY = 'candlescope-cookie-consent'
-type Consent = 'accepted' | 'declined' | null
+type Consent = 'accepted' | 'rejected' | null
 
 export default function CookieBanner() {
   const [consent, setConsent]   = useState<Consent>(null)
@@ -16,8 +17,8 @@ export default function CookieBanner() {
 
   useEffect(() => {
     const stored = localStorage.getItem(STORAGE_KEY) as Consent
-    if (stored) {
-      setTimeout(() => setConsent(stored), 0)
+    if (stored === 'accepted' || stored === 'rejected') {
+      setConsent(stored)
       return
     }
     const t = setTimeout(() => setVisible(true), 800)
@@ -26,13 +27,14 @@ export default function CookieBanner() {
 
   const handleAccept = () => {
     localStorage.setItem(STORAGE_KEY, 'accepted')
+    window.dispatchEvent(new CustomEvent(CONSENT_EVENT))
     setConsent('accepted')
     setVisible(false)
   }
 
   const handleDecline = () => {
-    localStorage.setItem(STORAGE_KEY, 'declined')
-    setConsent('declined')
+    localStorage.setItem(STORAGE_KEY, 'rejected')
+    setConsent('rejected')
     setVisible(false)
   }
 
@@ -66,19 +68,22 @@ export default function CookieBanner() {
                   <div className="flex items-start justify-between mb-5">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-xl bg-[#C9A84C]/10 border border-[#C9A84C]/20 flex items-center justify-center">
-                        <Cookie size={18} strokeWidth={1.5} className="text-[#C9A84C]" />
+                        <BarChart2 size={18} strokeWidth={1.5} className="text-[#C9A84C]" />
                       </div>
                       <div>
-                        <h2 className="font-display text-lg text-[var(--cs-text)] tracking-wide">Cookie-Einstellungen</h2>
+                        <h2 className="font-display text-lg text-[var(--cs-text)] tracking-wide">Datenschutz-Einstellungen</h2>
                         <p className="font-mono text-[10px] tracking-[0.14em] uppercase text-[var(--cs-text-2)] mt-0.5">CandleScope · DSGVO</p>
                       </div>
                     </div>
                   </div>
+
                   <p className="text-[var(--cs-text-2)] text-sm leading-relaxed mb-5">
-                    Diese Website verwendet ausschließlich <span className="text-[var(--cs-text)]">technisch notwendige Cookies</span> —
-                    keine Tracking-, Werbe- oder Analyse-Cookies.
-                    Deine Daten verlassen nicht deinen Browser.
+                    Wir nutzen ein minimales, <span className="text-[var(--cs-text)]">selbstgehostetes Analyse-Tool</span>,
+                    um Candlescope performanter und intuitiver zu gestalten. Die Daten werden anonymisiert
+                    verarbeitet, verbleiben ausschließlich auf unseren Servern und werden{' '}
+                    <span className="text-[var(--cs-text)]">niemals an Dritte weitergegeben</span>.
                   </p>
+
                   <button
                     onClick={() => setExpanded(v => !v)}
                     className="flex items-center gap-2 text-[11px] tracking-[0.1em] uppercase text-[var(--cs-text-3)] hover:text-[var(--cs-text-2)] transition-colors mb-4 cursor-pointer bg-transparent border-none outline-none"
@@ -86,6 +91,7 @@ export default function CookieBanner() {
                     {expanded ? <ChevronUp size={13} strokeWidth={1.5} /> : <ChevronDown size={13} strokeWidth={1.5} />}
                     Details anzeigen
                   </button>
+
                   <AnimatePresence>
                     {expanded && (
                       <motion.div
@@ -96,23 +102,30 @@ export default function CookieBanner() {
                         className="overflow-hidden"
                       >
                         <div className="mb-5 p-4 rounded-xl border border-[var(--cs-border-w)] bg-[var(--cs-bg)] flex flex-col gap-3">
+                          {/* Technisch notwendig */}
                           <div className="flex items-start gap-3">
                             <Shield size={14} strokeWidth={1.5} className="text-[#00C896] mt-0.5 shrink-0" />
                             <div>
-                              <p className="font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--cs-text)] mb-1">Technisch notwendig</p>
+                              <p className="font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--cs-text)] mb-1">
+                                Technisch notwendig
+                                <span className="ml-2 text-[#00C896] normal-case tracking-normal font-sans text-[10px]">Immer aktiv</span>
+                              </p>
                               <p className="text-[var(--cs-text-2)] text-[12px] leading-relaxed">
-                                Session-Cookies für das Admin-Panel, Cookie-Consent Speicherung im localStorage.
-                                Keine externen Dienste, kein Tracking, keine Weitergabe an Dritte.
+                                Session-Cookie für das Admin-Panel, Consent-Einstellung im localStorage.
+                                Keine externen Dienste, keine Weitergabe an Dritte.
                               </p>
                             </div>
                           </div>
+                          {/* Analytics */}
                           <div className="flex items-start gap-3">
-                            <div className="w-3.5 h-3.5 rounded-full border border-[var(--cs-text-3)] mt-0.5 shrink-0 flex items-center justify-center">
-                              <div className="w-1.5 h-1.5 rounded-full bg-[var(--cs-text-3)]" />
-                            </div>
+                            <BarChart2 size={14} strokeWidth={1.5} className="text-[#C9A84C]/60 mt-0.5 shrink-0" />
                             <div>
-                              <p className="font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--cs-text-3)] mb-1">Analytics / Tracking</p>
-                              <p className="text-[var(--cs-text-3)] text-[12px]">Nicht vorhanden — wird nicht verwendet.</p>
+                              <p className="font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--cs-text-2)] mb-1">Analyse (optional)</p>
+                              <p className="text-[var(--cs-text-3)] text-[12px] leading-relaxed">
+                                Selbstgehostetes Analyse-System: besuchte Seiten, anonyme Sitzungs-ID
+                                (nur im Arbeitsspeicher), Gerätekategorie und Herkunftsland.
+                                Keine IP-Speicherung · Keine externen Dienste · Löschung nach 90 Tagen.
+                              </p>
                             </div>
                           </div>
                         </div>
@@ -120,7 +133,6 @@ export default function CookieBanner() {
                     )}
                   </AnimatePresence>
 
-                  {/* Buttons — nebeneinander, feste Größe auf Mobile */}
                   <div className="flex flex-row gap-3">
                     <div
                       onClick={handleAccept}
@@ -143,8 +155,12 @@ export default function CookieBanner() {
                       Nur notwendige
                     </div>
                   </div>
+
                   <p className="font-mono text-[10px] tracking-[0.08em] text-center mt-4 text-[var(--cs-text-4)]">
-                    Weitere Infos in Datenschutz &amp; Impressum — nach Bestätigung zugänglich.
+                    Weitere Details in der{' '}
+                    <a href="/datenschutz" className="hover:text-[#C9A84C] transition-colors underline underline-offset-2">
+                      Datenschutzerklärung
+                    </a>
                   </p>
                 </div>
                 <div className="h-px bg-gradient-to-r from-transparent via-[#C9A84C]/30 to-transparent" />

@@ -1,7 +1,7 @@
 /* ============================================================
    CandleScope — Datenschutzerklärung
    src/pages/DatenschutzPage.tsx
-   DSGVO-konform für Deutschland · Stand: Mai 2026
+   DSGVO-konform für Deutschland · Stand: Juni 2026
    ============================================================ */
 
 import { Link } from 'react-router-dom'
@@ -19,7 +19,7 @@ export default function DatenschutzPage() {
         <h1 className="font-display text-4xl md:text-5xl text-[var(--cs-text)] tracking-tight mb-4">
           Datenschutzerklärung
         </h1>
-        <p className="text-[var(--cs-text-3)] font-mono text-[12px]">Stand: Mai 2026</p>
+        <p className="text-[var(--cs-text-3)] font-mono text-[12px]">Stand: Juni 2026</p>
         <div className="h-px bg-gradient-to-r from-[#C9A84C]/30 to-transparent mt-4" />
       </div>
 
@@ -154,22 +154,66 @@ export default function DatenschutzPage() {
 
         {/* 6. Eigene Nutzungsstatistiken */}
         <section>
-          <h2 className="font-display text-xl text-[var(--cs-text)] mb-4">6. Anonyme Nutzungsstatistiken</h2>
+          <h2 className="font-display text-xl text-[var(--cs-text)] mb-4">6. Selbstgehostetes Analyse-System (einwilligungspflichtig)</h2>
           <p className="text-[14px]">
-            Diese Website erhebt beim Seitenaufruf anonyme Nutzungsdaten (aufgerufene Seite,
-            Referrer-URL sowie eine pro Sitzung neu generierte Zufalls-ID), um den Betrieb und die
-            Weiterentwicklung des Angebots zu verbessern. Die Daten werden <strong className="text-[var(--cs-text)]">ausschließlich
-            auf eigenen Servern</strong> (Vercel-Infrastruktur, vgl. Abschnitt 2) gespeichert und
-            nicht an Dritte weitergegeben.
+            Diese Website betreibt ein selbstgehostetes, datenschutzfreundliches Analyse-System.
+            Es wird <strong className="text-[var(--cs-text)]">ausschließlich nach Ihrer ausdrücklichen Einwilligung</strong> aktiviert —
+            standardmäßig ist das Tracking vollständig deaktiviert.
           </p>
-          <p className="text-[14px] mt-3">
-            Es werden <strong className="text-[var(--cs-text)]">keine</strong> Cookies gesetzt, keine IP-Adressen dauerhaft
-            gespeichert und keine Nutzerprofile erstellt. Externe Analytics-Dienste wie Google
-            Analytics, Meta Pixel oder vergleichbare Drittanbieter werden <strong className="text-[var(--cs-text)]">nicht</strong> eingesetzt.
+
+          <p className="text-[14px] mt-4 font-medium text-[var(--cs-text)]">Zweck und Rechtsgrundlage</p>
+          <p className="text-[14px] mt-1">
+            Rechtsgrundlage ist Art. 6 Abs. 1 lit. a DSGVO (Einwilligung). Das System dient
+            ausschließlich dazu, die Struktur und Benutzerführung der Website zu optimieren.
           </p>
-          <p className="text-[14px] mt-3">
-            Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an der
-            Verbesserung des Angebots). Die Daten werden nach spätestens 90 Tagen gelöscht.
+
+          <p className="text-[14px] mt-4 font-medium text-[var(--cs-text)]">Verarbeitete Daten (nur bei erteilter Einwilligung)</p>
+          <div className="flex flex-col gap-2 mt-2 text-[14px]">
+            {[
+              'Aufgerufene Seite (URL-Pfad)',
+              'Referrer-URL (verweisende Website, sofern vom Browser übermittelt)',
+              'Anonyme Sitzungs-ID — wird ausschließlich im flüchtigen Arbeitsspeicher des Browsers gehalten (sessionStorage) und beim Schließen des Tabs automatisch verworfen',
+              'Herkunftsland (auf Basis der IP-Adresse, ermittelt durch Vercel — ohne dauerhafte IP-Speicherung)',
+              'Gerätetyp (Desktop / Tablet / Mobile)',
+              'Browsertyp und Betriebssystem',
+            ].map((item, i) => (
+              <div key={i} className="flex items-start gap-3">
+                <div className="w-1.5 h-1.5 rounded-full bg-[#C9A84C]/50 mt-2 shrink-0" />
+                <p>{item}</p>
+              </div>
+            ))}
+          </div>
+
+          <p className="text-[14px] mt-4 font-medium text-[var(--cs-text)]">Ausdrücklich nicht verarbeitet</p>
+          <div className="flex flex-col gap-2 mt-2 text-[14px]">
+            {[
+              'IP-Adressen werden nicht dauerhaft gespeichert',
+              'Es werden keine Cookies für Analyse-Zwecke gesetzt',
+              'Es werden keine Nutzerprofile erstellt oder Daten mit anderen Quellen verknüpft',
+              'Externe Analyse-Dienste (Google Analytics, Meta Pixel o. Ä.) werden nicht eingesetzt',
+            ].map((item, i) => (
+              <div key={i} className="flex items-start gap-3">
+                <div className="w-1.5 h-1.5 rounded-full bg-[#00C896]/50 mt-2 shrink-0" />
+                <p>{item}</p>
+              </div>
+            ))}
+          </div>
+
+          <p className="text-[14px] mt-4">
+            Die Daten werden <strong className="text-[var(--cs-text)]">ausschließlich auf eigenen Servern</strong> (Vercel-Infrastruktur,
+            vgl. Abschnitt 2) gespeichert und nach spätestens <strong className="text-[var(--cs-text)]">90 Tagen automatisch gelöscht</strong>.
+          </p>
+
+          <p className="text-[14px] mt-4 font-medium text-[var(--cs-text)]">Widerrufsrecht</p>
+          <p className="text-[14px] mt-1">
+            Sie können Ihre Einwilligung jederzeit mit Wirkung für die Zukunft widerrufen, indem Sie
+            den Eintrag <code className="font-mono text-[12px] bg-[var(--cs-s3)] px-1.5 py-0.5 rounded">candlescope-cookie-consent</code> aus
+            dem Browser-localStorage löschen oder uns unter{' '}
+            <a href="mailto:info@candlescope.de" className="text-[var(--cs-text-2)] hover:text-[#C9A84C] transition-colors">
+              info@candlescope.de
+            </a>{' '}
+            kontaktieren. Die Rechtmäßigkeit der bis zum Widerruf erfolgten Verarbeitung bleibt davon unberührt
+            (Art. 7 Abs. 3 DSGVO).
           </p>
         </section>
 
