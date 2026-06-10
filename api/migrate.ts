@@ -2,7 +2,12 @@ import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { sql } from './_lib/db'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  if (req.headers['x-migrate-token'] !== process.env.setup_token) {
+  if (req.method !== 'POST') return res.status(405).end()
+
+  const setupToken = process.env.setup_token
+  const bearer = (req.headers['authorization'] ?? '').replace(/^Bearer\s+/i, '')
+  // Fail-closed: fehlendes setup_token Env-Var blockiert immer (nie undefined === undefined)
+  if (!setupToken || bearer !== setupToken) {
     return res.status(401).json({ error: 'Unauthorized' })
   }
 

@@ -3,13 +3,14 @@ import bcrypt from 'bcryptjs'
 import { issueTempToken } from '../_lib/auth'
 import { isRateLimited } from '../_lib/rate-limit'
 import { setCorsHeaders } from '../_lib/cors'
+import { getClientIp } from '../_lib/ip'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   setCorsHeaders(req, res)
   if (req.method === 'OPTIONS') return res.status(200).end()
   if (req.method !== 'POST') return res.status(405).end()
 
-  const ip = (req.headers['x-forwarded-for'] as string)?.split(',')[0] ?? 'unknown'
+  const ip = getClientIp(req)
 
   if (await isRateLimited(`login:${ip}`, 5, 15 * 60 * 1000)) {
     return res.status(429).json({ error: 'Zu viele Versuche. Bitte 15 Minuten warten.' })

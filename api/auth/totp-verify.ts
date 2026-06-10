@@ -3,13 +3,14 @@ import { verifyToken, issueAdminToken, setAdminCookie } from '../_lib/auth'
 import { verifyTotp } from '../_lib/totp'
 import { isRateLimited } from '../_lib/rate-limit'
 import { setCorsHeaders } from '../_lib/cors'
+import { getClientIp } from '../_lib/ip'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   setCorsHeaders(req, res)
   if (req.method === 'OPTIONS') return res.status(200).end()
   if (req.method !== 'POST') return res.status(405).end()
 
-  const ip = (req.headers['x-forwarded-for'] as string)?.split(',')[0] ?? 'unknown'
+  const ip = getClientIp(req)
 
   const { code, tempToken } = req.body ?? {}
   if (!code || !tempToken || typeof tempToken !== 'string') {
