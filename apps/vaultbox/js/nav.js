@@ -18,11 +18,9 @@ function _modalPush(overlayId) {
 }
 
 function _modalPop(overlayId) {
-  const idx = _modalStack.findLastIndex ? _modalStack.findLastIndex(x => x.id === overlayId)
-    : [..._modalStack].reverse().findIndex(x => x.id === overlayId);
+  const idx = _modalStack.findLastIndex(x => x.id === overlayId);
   if (idx >= 0) {
-    const realIdx = _modalStack.findLastIndex ? idx : _modalStack.length - 1 - [..._modalStack].reverse().findIndex(x => x.id === overlayId);
-    _modalStack.splice(realIdx, 1);
+    _modalStack.splice(idx, 1);
     const el = document.getElementById(overlayId);
     if (el) el.style.zIndex = "";
   }
@@ -81,6 +79,12 @@ function nav(el, page) {
     document.removeEventListener("keydown",   _vbOnSpaceDown);
     document.removeEventListener("keyup",     _vbOnSpaceUp);
     document.body.classList.remove("has-visionboard");
+    // Schwebenden Drag-rAF abbrechen — sonst feuert er nach Page-Wechsel
+    // auf nicht mehr vorhandene VisionBoard-DOM-Knoten.
+    if (typeof _vbRaf !== "undefined" && _vbRaf) {
+      cancelAnimationFrame(_vbRaf);
+      _vbRaf = null;
+    }
   }
   // Pvt-Popover schließen
   document.getElementById("pvPopover")?.remove();

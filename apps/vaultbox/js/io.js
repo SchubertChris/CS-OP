@@ -162,7 +162,7 @@ function _ioAskPassword(cfg) {
     ov.appendChild(box);
     document.body.appendChild(ov);
 
-    const done = (val) => { ov.remove(); resolve(val); };
+    const done = (val) => { inA.value = ""; if (inB) inB.value = ""; ov.remove(); resolve(val); };
 
     btnCancel.onclick = () => done(undefined);
     if (btnSkip) btnSkip.onclick = () => done(null);
@@ -191,7 +191,7 @@ function _ioAskPassword(cfg) {
 //  EXPORT
 // ══════════════════════════════════════
 async function exportAll() {
-  const pw = await _ioAskPassword({
+  let pw = await _ioAskPassword({
     title: "Backup exportieren",
     sub: "Passwort für AES-256-Verschlüsselung setzen — oder ohne Passwort als Klartext exportieren.",
     confirm: true,
@@ -200,6 +200,7 @@ async function exportAll() {
   if (pw === undefined) return;
 
   const snapshot = _buildSnapshot("manual");
+  const encrypted = !!pw;
   let content;
   if (pw) {
     if (typeof showToast === "function") showToast("Verschlüssele…", "info", 1800);
@@ -208,14 +209,15 @@ async function exportAll() {
   } else {
     content = JSON.stringify(snapshot, null, 2);
   }
+  pw = null;
 
   const blob = new Blob([content], { type: "application/json" });
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
-  a.download = `finanzboard_${new Date().toISOString().slice(0, 10)}${pw ? ".enc" : ""}.fbs`;
+  a.download = `finanzboard_${todayIso()}${encrypted ? ".enc" : ""}.fbs`;
   a.click();
   URL.revokeObjectURL(a.href);
-  if (typeof showToast === "function") showToast(pw ? "Verschlüsselt exportiert 🔒" : "Exportiert", "success");
+  if (typeof showToast === "function") showToast(encrypted ? "Verschlüsselt exportiert 🔒" : "Exportiert", "success");
 }
 
 // ══════════════════════════════════════
@@ -243,7 +245,7 @@ function importAll() {
         let raw = JSON.parse(ev.target.result);
 
         if (raw.encrypted === true) {
-          const pw = await _ioAskPassword({
+          let pw = await _ioAskPassword({
             title: "Backup entschlüsseln",
             sub: "Dieses Backup ist AES-256-verschlüsselt. Gib das Passwort ein, das du beim Export verwendet hast.",
             confirm: false,
@@ -256,6 +258,8 @@ function importAll() {
           } catch (_) {
             appAlert("Falsches Passwort oder beschädigte Datei.", { icon: "❌", title: "Entschlüsselung fehlgeschlagen" });
             return;
+          } finally {
+            pw = null;
           }
         }
 

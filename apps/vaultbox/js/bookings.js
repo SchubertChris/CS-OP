@@ -214,7 +214,7 @@ function _generatePastBookings() {
   });
 
   if (newBookings.length > 0) {
-    S.bookings.push(...newBookings);
+    S.bookings = S.bookings.concat(newBookings);
     // Sortieren: neueste zuerst
     S.bookings.sort((a, b) => String(b.date).localeCompare(String(a.date)));
     persist();

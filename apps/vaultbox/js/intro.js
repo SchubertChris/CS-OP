@@ -490,15 +490,27 @@ function _ensurePanel() {
   minBtn.addEventListener('click', () => panel.classList.toggle('tut-minimized'));
 }
 
-// Drag-Logik
-let _tutUserDragged = false; // merkt ob User das Panel manuell verschoben hat
-
+// Drag-Logik — window-Listener nur während aktivem Drag registriert (kein Leak)
 function _makeDraggable(panel, handle) {
-  let dragging = false, ox = 0, oy = 0;
+  let ox = 0, oy = 0;
+
+  function onMouseMove(e) {
+    const x = Math.max(0, Math.min(window.innerWidth  - panel.offsetWidth,  e.clientX - ox));
+    const y = Math.max(0, Math.min(window.innerHeight - panel.offsetHeight, e.clientY - oy));
+    panel.style.left = x + 'px';
+    panel.style.top  = y + 'px';
+  }
+
+  function onMouseUp() {
+    window.removeEventListener('mousemove', onMouseMove);
+    window.removeEventListener('mouseup', onMouseUp);
+    handle.style.cursor = '';
+    // Transition nach Drag wieder aktivieren (kurz verzögert)
+    setTimeout(() => panel.classList.remove('tut-dragging'), 50);
+  }
+
   handle.addEventListener('mousedown', (e) => {
     if (e.target.closest('.tut-panel-close, .tut-panel-minimize')) return;
-    dragging = true;
-    _tutUserDragged = true;
     panel.classList.add('tut-dragging');
     const rect = panel.getBoundingClientRect();
     panel.style.right  = 'auto';
@@ -508,22 +520,9 @@ function _makeDraggable(panel, handle) {
     ox = e.clientX - rect.left;
     oy = e.clientY - rect.top;
     handle.style.cursor = 'grabbing';
+    window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('mouseup', onMouseUp);
     e.preventDefault();
-  });
-  window.addEventListener('mousemove', (e) => {
-    if (!dragging) return;
-    const x = Math.max(0, Math.min(window.innerWidth  - panel.offsetWidth,  e.clientX - ox));
-    const y = Math.max(0, Math.min(window.innerHeight - panel.offsetHeight, e.clientY - oy));
-    panel.style.left = x + 'px';
-    panel.style.top  = y + 'px';
-  });
-  window.addEventListener('mouseup', () => {
-    if (dragging) {
-      dragging = false;
-      handle.style.cursor = '';
-      // Transition nach Drag wieder aktivieren (kurz verzögert)
-      setTimeout(() => panel.classList.remove('tut-dragging'), 50);
-    }
   });
 }
 
