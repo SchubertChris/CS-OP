@@ -1,0 +1,57 @@
+# ── Abhängigkeiten ──────────────────────────────────────
+node_modules/
+__pycache__/
+*.pyc
+*.pyo
+
+# ── IDE ─────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ── Secrets & Umgebung ──────────────────────────────────
+.env
+.env.local
+.env.*.local
+
+# ── Build-Output & Distribution ─────────────────────────
+dist/
+build/
+*.o
+*.a
+*.so
+
+# ── Logs ────────────────────────────────────────────────
+logs/
+*.log
+npm-debug.log*
+
+# ── OS-Artefakte ────────────────────────────────────────
+Thumbs.db
+.DS_Store
+
+# ── Package-Manager ─────────────────────────────────────
+package-lock.json
+yarn.lock
+
+# ── Markdown ─────────────────────────────────────────────
+# CLAUDE.md bleibt — wird von Claude Code zur Laufzeit gelesen
+*.md
+!CLAUDE.md
+
+# ── Claude Code intern ───────────────────────────────────
+.agents/
+skills-lock.json
+.claude/
+
+# ── Docs-Ordner (Pläne, Audits, lokale Notizen) ──────────
+docs/
+
+# ── Ungenutzte / temporäre Assets ────────────────────────
+images/pexels-*
+
+# ── App-Exporte & lokale Datendateien ────────────────────
+*.fbs
+js/archive/

@@ -1,0 +1,22 @@
+/* ══════════════════════════════════════
+   BADGES — Globale Status-Badges
+══════════════════════════════════════ */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-size: 0.67em;
+  font-weight: 600;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+.badge.in       { background: var(--green-bg);  color: var(--green);  border-color: var(--green-d); }
+.badge.out      { background: var(--red-bg);    color: var(--red);    border-color: var(--red-d); }
+.badge.warn     { background: var(--amber-bg);  color: var(--amber);  border-color: var(--amber-d); }
+.badge.ok       { background: var(--green-bg);  color: var(--green);  border-color: var(--green-d); }
+.badge.info     { background: var(--blue-bg);   color: var(--blue);   border-color: var(--blue-a25); }
+.badge.gray     { background: var(--panel3);    color: var(--text3);  border-color: var(--border2); }
+.badge.expired  { background: var(--red-bg);    color: var(--red);    border-color: var(--red-d); }
+.badge.transfer { background: rgba(0,212,204,.1); color: var(--teal); border-color: rgba(0,212,204,.25); }

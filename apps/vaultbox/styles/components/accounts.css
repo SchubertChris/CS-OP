@@ -1,0 +1,434 @@
+/* ══════════════════════════════════════
+   ACCOUNTS — Liste · IBAN · Gruppen · Badges · Drag
+══════════════════════════════════════ */
+
+/* ── ACCOUNT LIST ── */
+.acc-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.acc-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 18px;
+  border-bottom: 1px solid var(--border);
+  cursor: default;
+  transition: background 0.1s;
+}
+.acc-row:last-child { border-bottom: none; }
+.acc-row:hover { background: var(--panel2); }
+.acc-row-l {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.acc-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.acc-name {
+  font-size: 0.8em;
+  font-weight: 500;
+}
+.acc-type-tag {
+  font-size: 0.62em;
+  color: var(--text3);
+}
+.acc-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.acc-inp-r {
+  position: relative;
+  width: 120px;
+}
+.acc-inp {
+  width: 100%;
+  background: var(--panel3);
+  border: 1px solid var(--border2);
+  border-radius: 6px;
+  padding: 5px 24px 5px 8px;
+  font-family: var(--mono);
+  font-size: 0.85em;
+  color: var(--text);
+  outline: none;
+  text-align: right;
+  transition: border-color 0.12s;
+}
+.acc-inp:focus { border-color: var(--blue); }
+.acc-sfx {
+  position: absolute;
+  right: 7px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--mono);
+  font-size: 0.65em;
+  color: var(--text3);
+  pointer-events: none;
+}
+.acc-chk {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 3px;
+}
+.acc-chk input {
+  accent-color: var(--blue);
+  width: 11px;
+  height: 11px;
+  cursor: pointer;
+}
+.acc-chk label {
+  font-size: 0.62em;
+  color: var(--text3);
+  cursor: pointer;
+}
+
+.income-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 18px;
+  border-top: 1px solid var(--border);
+}
+.income-lbl {
+  font-size: 0.72em;
+  color: var(--text2);
+  flex-shrink: 0;
+}
+.income-inp-wrap {
+  position: relative;
+  flex: 1;
+}
+.income-inp {
+  width: 100%;
+  background: var(--panel3);
+  border: 1px solid var(--border2);
+  border-radius: 6px;
+  padding: 6px 24px 6px 10px;
+  font-family: var(--mono);
+  font-size: 0.95em;
+  font-weight: 500;
+  color: var(--green);
+  outline: none;
+  transition: border-color 0.12s;
+}
+.income-inp:focus { border-color: var(--green); }
+.income-sfx {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--mono);
+  font-size: 0.65em;
+  color: var(--text3);
+  pointer-events: none;
+}
+.acc-manager-footer {
+  padding: 10px 18px;
+  border-top: 1px solid var(--border);
+}
+
+/* ── IBAN DISPLAY ── */
+.acc-iban {
+  font-family: var(--mono);
+  font-size: 0.67em;
+  color: var(--text3);
+  letter-spacing: 0.5px;
+  margin-top: 1px;
+}
+
+/* ── ACCOUNT TYPE DROPDOWN ── */
+.acc-type-select {
+  width: 100%;
+  background: var(--input-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--r1);
+  padding: 7px 10px;
+  color: var(--text1);
+  font-family: var(--sans);
+  font-size: 0.82em;
+  cursor: pointer;
+  transition: border-color 0.12s;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7a99' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  padding-right: 30px;
+}
+.acc-type-select:focus {
+  outline: none;
+  border-color: var(--blue);
+}
+.acc-type-select option { background: var(--bg2); color: var(--text1); }
+
+/* ── KONTO-NUMMERNFELDER ── */
+.cc-blocks {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.cc-block {
+  width: 60px;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 0.95em;
+  letter-spacing: 2px;
+  background: var(--panel2);
+  border: 1px solid var(--border2);
+  border-radius: var(--r1);
+  padding: 7px 6px;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.12s, box-shadow 0.12s;
+}
+.cc-block:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 2px var(--blue-a15);
+}
+.cc-sep {
+  color: var(--text3);
+  font-size: 0.8em;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+/* ── CC TYPE BADGES ── */
+.cc-type-badge {
+  font-size: 0.58em;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  padding: 1px 5px;
+  border-radius: 3px;
+  text-transform: uppercase;
+}
+.cc-type-badge.stichtag { background: var(--blue-a12); color: var(--blue); }
+.cc-type-badge.direkt   { background: rgba(0, 229, 160, 0.1); color: var(--green); }
+.cc-type-badge.prepaid  { background: rgba(255, 181, 71, 0.12); color: var(--amber); }
+
+.cockpit-cc-type-badge {
+  display: inline-block;
+  font-size: 0.62em;
+  font-family: var(--mono);
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.cockpit-cc-type-badge.prepaid  { background: var(--green-a10); color: var(--green); border: 1px solid var(--green-a25); }
+.cockpit-cc-type-badge.direkt   { background: var(--amber-a10); color: var(--amber); border: 1px solid var(--amber-a25); }
+.cockpit-cc-type-badge.stichtag { background: var(--red-a10); color: var(--red); border: 1px solid var(--red-a25); }
+
+/* ── MAIN ACCOUNT BADGE ── */
+.acc-main-badge {
+  display: inline-block;
+  font-size: 0.62em;
+  font-family: var(--mono);
+  background: var(--blue-a12);
+  color: var(--blue);
+  border: 1px solid var(--blue-a25);
+  padding: 1px 7px;
+  border-radius: 10px;
+  margin-left: 6px;
+  vertical-align: middle;
+  font-weight: 600;
+}
+.acc-row-main .acc-name { color: var(--blue); }
+
+/* ── VL BADGE ── */
+.acc-type-badge.vl {
+  display: inline-block;
+  font-size: 0.58em;
+  font-family: var(--mono);
+  background: var(--green-a10);
+  color: var(--green);
+  border: 1px solid var(--green-a25);
+  padding: 1px 6px;
+  border-radius: 8px;
+  margin-left: 5px;
+  vertical-align: middle;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+/* ── DAUERAUFTRAG BADGE ── */
+.trf-recurring-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.62em;
+  font-family: var(--mono);
+  background: var(--blue-a08);
+  color: var(--blue);
+  border: 1px solid var(--blue-a20);
+  padding: 1px 6px;
+  border-radius: 8px;
+  vertical-align: middle;
+}
+
+/* ── ACCOUNT GROUPS ── */
+.acc-group {
+  border-radius: var(--r2);
+  overflow: hidden;
+  border: 1px solid transparent;
+  transition: border-color 0.15s ease, opacity 0.15s ease;
+  margin-bottom: 4px;
+}
+.acc-group--dragging { opacity: 0.45; cursor: grabbing; }
+.acc-group--over {
+  border-color: var(--blue-a35);
+  background: var(--blue-a08);
+}
+.acc-group-header {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 12px 9px 8px;
+  font-size: 0.65em;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--text3);
+  background: var(--panel2);
+  border-bottom: 1px solid var(--border);
+  cursor: grab;
+  user-select: none;
+}
+.acc-group-header:active { cursor: grabbing; }
+.acc-group-drag {
+  font-size: 1.1em;
+  color: var(--text3);
+  opacity: 0.5;
+  flex-shrink: 0;
+  line-height: 1;
+}
+.acc-group-name { color: var(--text); flex: 1; font-size: 0.84em; font-weight: 700; }
+.acc-group-bal {
+  font-family: var(--mono);
+  font-size: 0.88em;
+  font-weight: 700;
+  margin-left: auto;
+}
+.acc-bank-group-tag {
+  font-size: 0.6em;
+  font-family: var(--mono);
+  color: var(--text3);
+  background: var(--panel2);
+  border: 1px solid var(--border);
+  padding: 1px 6px;
+  border-radius: 6px;
+  display: inline-block;
+  margin-top: 2px;
+}
+
+/* ── SORT HEADER + DROPDOWN ── */
+.acc-sort-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-bottom: 1px solid var(--border);
+  background: var(--panel2);
+}
+.acc-sort-label {
+  font-size: 0.75em;
+  color: var(--text2);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.acc-sort-dropdown { position: relative; }
+.acc-sort-trigger {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  border-radius: 10px;
+  font-size: 0.78em;
+  font-weight: 600;
+  background: var(--blue-a08);
+  color: var(--blue);
+  border: 1px solid var(--blue-a25);
+  cursor: pointer;
+  transition: background 0.1s;
+}
+.acc-sort-trigger:hover { background: var(--blue-a12); }
+.acc-sort-trigger svg { color: var(--blue); }
+.acc-sort-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: 120;
+  background: var(--panel2);
+  border: 1px solid var(--border2);
+  border-radius: var(--r2);
+  box-shadow: 0 8px 24px rgba(0,0,0,.35);
+  min-width: 190px;
+  overflow: hidden;
+}
+.acc-sort-menu.open { display: block; }
+.acc-sort-opt {
+  padding: 10px 16px;
+  font-size: 0.82em;
+  color: var(--text2);
+  cursor: pointer;
+  transition: background 0.1s;
+}
+.acc-sort-opt:hover { background: var(--blue-a08); color: var(--blue); }
+.acc-sort-opt.active { color: var(--blue); font-weight: 600; }
+
+/* ── DRAG HANDLES ── */
+.acc-drag-handle {
+  flex-shrink: 0;
+  width: 16px;
+  color: var(--text3);
+  opacity: 0.4;
+  font-size: 0.9em;
+  cursor: grab;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 2px;
+}
+.acc-drag-handle--ref { opacity: 0; pointer-events: none; cursor: default; }
+.acc-row-draggable:hover .acc-drag-handle { opacity: 0.7; }
+.acc-row-draggable { cursor: default; }
+.acc-row--dragging { opacity: 0.4; }
+.acc-row--over {
+  background: var(--blue-a08) !important;
+  outline: 1px solid var(--blue-a25);
+}
+
+/* ── REF + DIVIDER BADGES ── */
+.acc-ref-badge {
+  display: inline-block;
+  font-size: 0.58em;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: var(--amber);
+  background: var(--amber-a10);
+  border: 1px solid var(--amber-a25);
+  padding: 1px 5px;
+  border-radius: 5px;
+  margin-left: 4px;
+  vertical-align: middle;
+}
+.acc-group-divider {
+  font-size: 0.6em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text3);
+  padding: 8px 10px 4px;
+  border-top: 1px solid var(--border);
+  margin-top: 4px;
+}

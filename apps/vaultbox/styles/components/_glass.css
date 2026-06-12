@@ -1,0 +1,23 @@
+/* ══════════════════════════════════════
+   GLASS — Outer-Wrap Utility
+   .glass-wrap  = äußerer Container, liefert Farbton für den Blur
+   Direktes Kind (.panel/.card) bekommt backdrop-filter
+══════════════════════════════════════ */
+
+/* ── OUTER WRAP ── */
+.glass-wrap {
+  background: var(--glass-tint);
+  border-radius: var(--r-lg);
+  padding: 2px;
+}
+
+.glass-wrap-strong {
+  background: var(--glass-tint-strong);
+  border-radius: var(--r-lg);
+  padding: 2px;
+}
+
+/* ── GLASS-BORDER UTILITY ── */
+.glass-border {
+  border: 1px solid var(--cs-glass-border);
+}

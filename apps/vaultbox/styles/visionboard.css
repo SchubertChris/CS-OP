@@ -1,0 +1,1108 @@
+﻿/* ══════════════════════════════════════
+   VISIONBOARD — Styles
+   3-spaltig: Toolbar · Canvas · Props
+══════════════════════════════════════ */
+
+/* ── PAGE OVERRIDE ── */
+.vb-page {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+.vb-page.active {
+  display: block;
+}
+
+/* ── SHELL ── */
+.vb-shell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 116px);
+  overflow: hidden;
+}
+
+/* ── TOPBAR — floating pill over canvas ── */
+.vb-topbar {
+  position: absolute;
+  top: 12px;
+  left: 80px;
+  right: 248px;
+  z-index: 101;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: color-mix(in srgb, var(--panel) 94%, transparent);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0,0,0,.38), 0 0 0 1px var(--border);
+  min-height: 40px;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.vb-shell.vb-props-hidden .vb-topbar {
+  right: 14px;
+}
+
+/* Hint group: collapses at medium widths */
+.vb-topbar-hint-group {
+  display: contents; /* children participate in topbar flex directly */
+}
+
+/* At ≤1050px window: hide hint text + its dividers */
+@media (max-width: 1050px) {
+  .vb-topbar-hint-group {
+    display: none;
+  }
+}
+
+/* At ≤850px window: icon-only buttons (hide labels) */
+@media (max-width: 850px) {
+  .vb-btn-label {
+    display: none;
+  }
+  .vb-topbar-btn {
+    padding: 4px 6px;
+  }
+}
+
+.vb-topbar-name-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text2);
+  cursor: text;
+}
+
+.vb-board-name {
+  font-size: 0.88em;
+  font-weight: 700;
+  color: var(--text);
+  outline: none;
+  border-radius: 4px;
+  padding: 2px 5px;
+  min-width: 60px;
+  max-width: 250px;
+  cursor: text;
+  transition: background 0.12s;
+}
+.vb-board-name:focus {
+  background: var(--panel2);
+  box-shadow: 0 0 0 1px var(--blue-a25);
+}
+
+.vb-topbar-divider {
+  width: 1px;
+  height: 18px;
+  background: var(--border2);
+  flex-shrink: 0;
+}
+
+.vb-board-sel {
+  background: var(--panel2);
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  padding: 5px 10px;
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 0.76em;
+  cursor: pointer;
+  outline: none;
+  max-width: 180px;
+}
+.vb-board-sel:hover { border-color: var(--blue); }
+
+.vb-topbar-spacer { flex: 1; }
+
+.vb-topbar-hint {
+  font-size: 0.62em;
+  color: var(--text3);
+  white-space: nowrap;
+  letter-spacing: 0.1px;
+  opacity: 0.7;
+}
+
+.vb-topbar-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.76em;
+  white-space: nowrap;
+}
+
+/* ── ZOOM CONTROLS ── */
+.vb-zoom-ctrl {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  background: var(--panel2);
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  padding: 2px 4px;
+}
+.vb-zoom-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border: none;
+  background: transparent;
+  color: var(--text2);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+}
+.vb-zoom-btn:hover {
+  background: var(--blue-a08);
+  color: var(--blue);
+}
+.vb-zoom-pct {
+  font-size: 0.72em;
+  font-weight: 600;
+  color: var(--text2);
+  min-width: 36px;
+  text-align: center;
+  letter-spacing: 0.02em;
+  user-select: none;
+}
+.vb-zoom-pct:hover { color: var(--blue); }
+
+/* ── MAIN ── */
+.vb-main {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* ── TOOLBAR (links, 56px) ── */
+.vb-toolbar {
+  width: 56px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 0;
+  gap: 4px;
+  border-right: 1px solid var(--border);
+  background: var(--panel);
+}
+
+.vb-tool-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text3);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.12s;
+  padding: 0;
+}
+.vb-tool-btn:hover {
+  background: var(--panel2);
+  color: var(--text);
+  border-color: var(--border);
+}
+.vb-tool-btn.active {
+  background: var(--blue-a10);
+  color: var(--blue);
+  border-color: var(--blue-a25);
+}
+
+.vb-tool-sep {
+  width: 24px;
+  height: 1px;
+  background: var(--border);
+  margin: 4px 0;
+  flex-shrink: 0;
+}
+
+.vb-tool-spacer { flex: 1; }
+
+.vb-tool-del:hover {
+  background: rgba(255,77,106,.1);
+  color: var(--red);
+  border-color: rgba(255,77,106,.3);
+}
+
+/* ── CANVAS WRAP ── */
+:root,
+[data-theme="candlescope"],
+[data-theme="electric"],
+[data-theme="aurora"],
+[data-theme="red"],
+[data-theme="mono"] {
+  --vb-canvas-bg:  #0e0e0e;
+  --vb-canvas-dot: rgba(255, 255, 255, 0.08);
+}
+[data-theme="light"] {
+  --vb-canvas-bg:  #eeede5;
+  --vb-canvas-dot: rgba(0, 0, 0, 0.09);
+}
+[data-theme="ivory"] {
+  --vb-canvas-bg:  #f0e9d4;
+  --vb-canvas-dot: rgba(100, 70, 10, 0.10);
+}
+
+.vb-canvas-wrap {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  background-color: var(--vb-canvas-bg);
+  /* Dot-Grid */
+  background-image: radial-gradient(circle, var(--vb-canvas-dot) 1px, transparent 1px);
+  background-size: 28px 28px;
+  transition: background-color 0.28s ease;
+}
+
+/* Cursor states */
+.vb-canvas-wrap[data-tool="node"],
+.vb-canvas-wrap[data-tool="sticky"],
+.vb-canvas-wrap[data-tool="goal"],
+.vb-canvas-wrap[data-tool="text"],
+.vb-canvas-wrap[data-tool="image"] {
+  cursor: crosshair;
+}
+.vb-canvas-wrap[data-tool="connect"],
+.vb-canvas-wrap[data-tool="arrow"],
+.vb-canvas-wrap.vb-connecting {
+  cursor: cell;
+}
+.vb-canvas-wrap[data-tool="select"] {
+  cursor: grab;
+}
+.vb-canvas-wrap[data-tool="select"]:active {
+  cursor: grabbing;
+}
+
+/* ── STAGE (transformed container for pan/zoom) ── */
+.vb-stage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: 0 0;
+  /* large enough to never clip dragged nodes */
+  width: 4000px;
+  height: 4000px;
+}
+
+/* SVG overlay */
+.vb-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+}
+.vb-svg * { pointer-events: auto; }
+
+/* ── RESIZE HANDLES ── */
+.vb-rh {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  background: var(--blue);
+  border: 2px solid var(--panel);
+  border-radius: 2px;
+  z-index: 10;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.vb-node:hover .vb-rh,
+.vb-node.vb-selected .vb-rh {
+  opacity: 1;
+}
+.vb-rh-se { bottom: -5px; right: -5px; cursor: se-resize; }
+.vb-rh-e  { top: 50%; right: -5px; transform: translateY(-50%); cursor: e-resize; }
+.vb-rh-s  { bottom: -5px; left: 50%; transform: translateX(-50%); cursor: s-resize; }
+
+/* ── CONNECTIONS ── */
+.vb-conn-path {
+  stroke: var(--border2);
+  transition: stroke 0.12s, stroke-width 0.12s;
+}
+.vb-conn-sel { stroke: var(--blue) !important; }
+
+/* Hover glow — invisible by default, fades in on group hover */
+.vb-conn-glow {
+  stroke: var(--blue);
+  opacity: 0;
+  transition: opacity 0.15s;
+  pointer-events: none;
+}
+.vb-conn-g:hover .vb-conn-glow {
+  opacity: 0.18;
+}
+.vb-conn-g:hover .vb-conn-path {
+  stroke: var(--blue);
+}
+/* Selected group keeps glow visible */
+.vb-conn-g-sel .vb-conn-glow {
+  opacity: 0.25;
+}
+.vb-conn-g-sel .vb-conn-path {
+  stroke: var(--blue);
+}
+
+/* ── MULTI-SELECT ACTION BAR ── */
+.vb-multi-bar {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  background: var(--panel);
+  border: 1px solid var(--blue-a35);
+  border-radius: 40px;
+  box-shadow: 0 4px 24px rgba(0,0,0,.5), 0 0 0 1px var(--blue-a10);
+  color: var(--text2);
+  font-size: 0.78em;
+  white-space: nowrap;
+  animation: vb-bar-in 0.18s cubic-bezier(.2,0,.2,1);
+}
+@keyframes vb-bar-in {
+  from { opacity: 0; transform: translateX(-50%) translateY(8px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+.vb-multi-bar svg { color: var(--blue); flex-shrink: 0; }
+.vb-multi-bar-lbl {
+  font-weight: 700;
+  color: var(--text);
+}
+.vb-multi-bar-sep {
+  width: 1px;
+  height: 16px;
+  background: var(--border2);
+  flex-shrink: 0;
+}
+.vb-multi-bar-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border-radius: 20px;
+  border: 1px solid var(--border2);
+  background: var(--panel2);
+  color: var(--text2);
+  font-size: 0.78em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.12s;
+  font-family: var(--sans);
+}
+.vb-multi-bar-btn:hover {
+  background: var(--panel2);
+  border-color: var(--border);
+  color: var(--text);
+}
+.vb-multi-bar-del:hover {
+  background: rgba(255,77,106,.12);
+  border-color: rgba(255,77,106,.35);
+  color: var(--red);
+}
+
+/* ── DRAG-TO-CREATE PREVIEW ── */
+.vb-create-preview {
+  position: absolute;
+  border: 2px dashed var(--blue);
+  background: var(--blue-a08);
+  border-radius: 8px;
+  pointer-events: none;
+  z-index: 50;
+  transition: none;
+}
+
+/* ── RUBBER-BAND SELECTION ── */
+.vb-rubber-band {
+  position: absolute;
+  border: 1px solid var(--blue);
+  background: var(--blue-a08);
+  border-radius: 3px;
+  pointer-events: none;
+  display: none;
+  z-index: 50;
+}
+
+/* ── NODES ── */
+.vb-node {
+  position: absolute;
+  cursor: grab;
+  user-select: none;
+  border-radius: 12px;
+  border: 2px solid var(--node-color, var(--border2));
+  background: color-mix(in srgb, var(--node-color, #1a1a1a) 10%, var(--panel));
+  box-shadow: 0 2px 12px rgba(0,0,0,.35);
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: box-shadow 0.14s, border-color 0.14s;
+  min-width: 120px;
+  box-sizing: border-box;
+}
+.vb-node:hover {
+  box-shadow: 0 6px 24px rgba(0,0,0,.5);
+}
+.vb-node.vb-selected {
+  border-color: var(--blue) !important;
+  box-shadow: 0 0 0 3px var(--blue-a20), 0 6px 24px rgba(0,0,0,.5);
+}
+.vb-node.vb-conn-start {
+  border-color: var(--green) !important;
+  box-shadow: 0 0 0 3px rgba(0,200,150,.2);
+}
+.vb-node.vb-dragging {
+  cursor: grabbing;
+  opacity: 0.88;
+  box-shadow: 0 12px 40px rgba(0,0,0,.6);
+  z-index: 100;
+}
+
+/* Node kinds */
+.vb-node-sticky {
+  background: color-mix(in srgb, #BA7517 12%, var(--panel));
+  border-color: #BA7517;
+}
+.vb-node-goal {
+  background: color-mix(in srgb, #00c896 10%, var(--panel));
+  border-color: #00c896;
+  border-style: dashed;
+}
+.vb-node-text {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 4px 8px;
+}
+.vb-node-text:hover { box-shadow: none; border: 1px dashed var(--border2); }
+.vb-node-text.vb-selected { border: 1px solid var(--blue); box-shadow: none; }
+
+/* Node content */
+.vb-node-label {
+  font-size: 0.62em;
+  font-weight: 700;
+  color: var(--node-color, var(--text3));
+  text-transform: uppercase;
+  letter-spacing: .6px;
+  line-height: 1;
+}
+.vb-node-title {
+  font-size: 0.85em;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.3;
+  word-break: break-word;
+}
+.vb-node-note {
+  font-size: 0.72em;
+  color: var(--text3);
+  line-height: 1.4;
+  word-break: break-word;
+  opacity: .85;
+}
+.vb-node-text-content {
+  font-size: 0.95em;
+  font-weight: 600;
+  color: var(--text);
+  word-break: break-word;
+}
+.vb-node-img {
+  width: 100%;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 7px;
+  margin-bottom: 4px;
+  flex-shrink: 0;
+}
+.vb-node-img-ph {
+  width: 100%;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--panel2);
+  border-radius: 7px;
+  color: var(--text3);
+  margin-bottom: 4px;
+  flex-shrink: 0;
+}
+
+/* ── PROPERTIES PANEL ── */
+.vb-props {
+  width: 200px;
+  flex-shrink: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border-left: 1px solid var(--border);
+  background: var(--panel);
+  display: flex;
+  flex-direction: column;
+  transition: width 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.18s ease,
+              border-color 0.18s ease;
+}
+.vb-props.vb-props-open {
+  width: 200px;
+}
+/* Collapsed state (toggled via .vb-props-hidden on .vb-shell) */
+.vb-shell.vb-props-hidden .vb-props {
+  width: 0;
+  opacity: 0;
+  border-left-color: transparent;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* ── ASIDE SECTIONS (idle state) ── */
+.vb-aside-section {
+  padding: 12px 12px 8px;
+  border-bottom: 1px solid var(--border);
+}
+.vb-aside-title {
+  font-size: 0.65em;
+  font-weight: 700;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: .6px;
+  margin-bottom: 8px;
+}
+.vb-aside-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+}
+.vb-aside-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 8px 4px;
+  background: var(--panel2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.7em;
+  color: var(--text2);
+  cursor: pointer;
+  transition: all var(--t-fast);
+}
+.vb-aside-btn:hover {
+  background: var(--blue-a08);
+  border-color: var(--blue-a25);
+  color: var(--blue);
+}
+.vb-aside-canvas-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.vb-aside-canvas-btn {
+  width: 100%;
+  text-align: left;
+  padding: 7px 10px;
+  background: var(--panel2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.72em;
+  color: var(--text2);
+  cursor: pointer;
+  font-family: var(--sans);
+  transition: all var(--t-fast);
+}
+.vb-aside-canvas-btn:hover {
+  border-color: var(--border2);
+  color: var(--text);
+}
+
+/* No-selection: show minimap only (no width) */
+.vb-minimap-wrap {
+  padding: 12px;
+}
+.vb-minimap {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  display: block;
+}
+
+.vb-props-head {
+  padding: 12px 14px 10px;
+  font-size: 0.75em;
+  font-weight: 700;
+  color: var(--text2);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+.vb-props-close {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  border: 1px solid var(--border2);
+  background: transparent;
+  color: var(--text3);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.12s;
+}
+.vb-props-close:hover {
+  background: rgba(255,77,106,.1);
+  color: var(--red);
+  border-color: rgba(255,77,106,.3);
+}
+
+.vb-props-row {
+  padding: 10px 14px 0;
+}
+.vb-props-lbl {
+  font-size: 0.66em;
+  font-weight: 600;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  margin-bottom: 5px;
+}
+.vb-props-val { }
+
+.vb-props-input {
+  width: 100%;
+  background: var(--panel2);
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  padding: 6px 8px;
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 0.78em;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.12s;
+}
+.vb-props-input:focus { border-color: var(--blue); }
+.vb-props-ta { resize: none; min-height: 60px; }
+
+.vb-props-minimap-wrap {
+  margin-top: auto;
+  padding: 10px 14px 14px;
+}
+
+/* Color swatches */
+.vb-color-swatches {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.vb-color-swatch {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: transform 0.12s, border-color 0.12s;
+  flex-shrink: 0;
+}
+.vb-color-swatch:hover { transform: scale(1.15); }
+.vb-color-swatch.active {
+  border-color: #fff;
+  transform: scale(1.15);
+  box-shadow: 0 0 0 1px rgba(255,255,255,.3);
+}
+
+/* Font size group */
+.vb-fs-grp {
+  display: flex;
+  gap: 4px;
+}
+.vb-fs-btn {
+  flex: 1;
+  padding: 4px 0;
+  border-radius: 7px;
+  border: 1px solid var(--border2);
+  background: var(--panel2);
+  color: var(--text3);
+  cursor: pointer;
+  font-size: 0.76em;
+  font-weight: 600;
+  transition: all 0.12s;
+  font-family: var(--sans);
+}
+.vb-fs-btn:hover { border-color: var(--border); color: var(--text); }
+.vb-fs-btn.active {
+  background: var(--blue-a10);
+  border-color: var(--blue-a25);
+  color: var(--blue);
+}
+
+/* ── PANEL TOGGLE BUTTON ── */
+.vb-panel-toggle-btn {
+  padding: 4px 7px;
+  color: var(--text3);
+  flex-shrink: 0;
+}
+.vb-panel-toggle-btn:hover {
+  color: var(--blue);
+}
+
+/* ── FULL HEIGHT when VisionBoard active ── */
+body.has-visionboard main.main {
+  overflow-y: auto;
+  padding: 0 !important;
+}
+
+/* ── SHELL: feste Höhe, kein Rand ── */
+.vb-shell {
+  margin: 0;
+  height: calc(100vh - 116px);
+  min-height: unset;
+  border-radius: 0;
+  border: none;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+/* ── NODE DELETE BUTTON (hover-visible) ── */
+.vb-node-del-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  border: 1px solid var(--border2);
+  background: var(--panel);
+  color: var(--text3);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.12s, background 0.12s, color 0.12s, border-color 0.12s;
+  padding: 0;
+  flex-shrink: 0;
+}
+.vb-node:hover .vb-node-del-btn {
+  opacity: 1;
+}
+.vb-node-del-btn:hover {
+  background: rgba(255,77,106,.15);
+  color: var(--red);
+  border-color: rgba(255,77,106,.4);
+}
+
+/* ── GOAL NODE — distinctive ── */
+.vb-node-goal {
+  background: color-mix(in srgb, #00c896 12%, var(--panel));
+  border-color: #00c896;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 16px;
+  box-shadow: 0 0 0 1px rgba(0,200,150,.15), 0 4px 20px rgba(0,200,150,.12), 0 2px 12px rgba(0,0,0,.35);
+}
+.vb-node-goal.vb-selected {
+  box-shadow: 0 0 0 3px rgba(0,200,150,.35), 0 6px 28px rgba(0,200,150,.2), 0 6px 24px rgba(0,0,0,.5) !important;
+}
+.vb-node-goal-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #00c896;
+  margin-bottom: 4px;
+  opacity: 0.85;
+}
+
+/* ── IMAGE NODE — distinctive ── */
+.vb-node-image {
+  background: color-mix(in srgb, #534AB7 10%, var(--panel));
+  border-color: #534AB7;
+  border-radius: 14px;
+  padding: 8px;
+}
+.vb-node-image .vb-node-img {
+  height: 100px;
+  border-radius: 9px;
+}
+.vb-node-image .vb-node-img-ph {
+  height: 90px;
+}
+
+/* ── PROPS DELETE BUTTON ── */
+.vb-props-delbtn {
+  width: 100%;
+  color: var(--red);
+  border-color: rgba(255,77,106,.3);
+  background: rgba(255,77,106,.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  font-size: 0.76em;
+  font-weight: 600;
+}
+.vb-props-delbtn:hover {
+  background: rgba(255,77,106,.14);
+  border-color: rgba(255,77,106,.5);
+}
+
+/* ── DASHBOARD CARD ── */
+.vb-dash-card {
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--panel2);
+  overflow: hidden;
+  transition: border-color 0.14s, transform 0.12s;
+}
+.vb-dash-card:hover {
+  border-color: var(--border2);
+  transform: translateY(-1px);
+}
+.vb-dash-card-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 12px 7px;
+  font-size: 0.76em;
+  font-weight: 600;
+  color: var(--text2);
+  border-bottom: 1px solid var(--border);
+}
+.vb-dash-card-title { flex: 1; }
+.vb-dash-card-meta {
+  font-size: 0.85em;
+  color: var(--text3);
+  font-weight: 400;
+}
+.vb-dash-preview {
+  padding: 8px;
+  background: var(--vb-canvas-bg);
+  transition: background-color 0.28s ease;
+}
+.vb-dash-preview canvas {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 4px;
+}
+
+/* ══════════════════════════════════════
+   FLOATING CHROME LAYOUT
+   Toolbar + Topbar + Props float over
+   the full-bleed canvas.
+══════════════════════════════════════ */
+
+/* Main: relative block so floaters position against it */
+.vb-main {
+  position: relative;
+  display: block;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Canvas fills entire main area */
+.vb-canvas-wrap {
+  position: absolute;
+  inset: 0;
+  flex: unset;
+  border-radius: 0;
+}
+
+/* ── FLOATING TOOLBAR (left pill) ── */
+.vb-toolbar {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: auto;
+  border-right: none;
+  border-radius: 16px;
+  background: var(--panel);
+  box-shadow: 0 8px 32px rgba(0,0,0,.42), 0 0 0 1px var(--border);
+  padding: 10px 0;
+  margin: 0;
+}
+
+/* ── FLOATING PROPS PANEL (right) ── */
+.vb-props {
+  position: absolute;
+  right: 14px;
+  top: 14px;
+  bottom: 14px;
+  width: 220px;
+  max-height: calc(100% - 28px);
+  border-left: none;
+  border-radius: 16px;
+  background: var(--panel);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  box-shadow: 0 8px 32px rgba(0,0,0,.38), 0 0 0 1px var(--border);
+  overflow-y: auto;
+  overflow-x: hidden;
+  z-index: 100;
+  transition: opacity 0.18s ease;
+}
+.vb-props.vb-props-open {
+  width: 220px;
+}
+
+/* Hidden state: fade out */
+.vb-shell.vb-props-hidden .vb-props {
+  opacity: 0;
+  pointer-events: none;
+  width: 220px;
+  border-left-color: transparent;
+  overflow: hidden;
+}
+
+/* Multi-select bar stays at bottom center */
+.vb-multi-bar {
+  z-index: 110;
+}
+
+/* Toolbar separator */
+.vb-tool-sep {
+  width: 28px;
+}
+
+/* Tool buttons */
+.vb-tool-btn {
+  border-radius: 10px;
+}
+
+/* ══════════════════════════════════════
+   VISION BOARD — DOKUMENTATION
+   Sektion unterhalb des Canvas
+══════════════════════════════════════ */
+
+.vb-docs {
+  padding: 40px 24px 60px;
+  background: var(--panel);
+  border-top: 1px solid var(--border);
+}
+
+.vb-docs-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+.vb-docs-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--blue-a08);
+  border: 1px solid var(--blue-a20);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--blue);
+  flex-shrink: 0;
+}
+
+.vb-docs-title {
+  font-size: 1.1em;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.vb-docs-sub {
+  font-size: 0.8em;
+  color: var(--text3);
+  margin-top: 2px;
+}
+
+.vb-docs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px;
+}
+
+.vb-docs-card {
+  background: var(--panel2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px 18px 16px;
+  transition: border-color 0.14s;
+}
+
+.vb-docs-card:hover {
+  border-color: var(--border2);
+}
+
+.vb-docs-card-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.vb-docs-card-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: var(--blue-a08);
+  border: 1px solid var(--blue-a15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--blue);
+  flex-shrink: 0;
+}
+
+.vb-docs-card-title {
+  font-size: 0.82em;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.vb-docs-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.vb-docs-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.vb-docs-key {
+  font-size: 0.69em;
+  font-family: var(--mono);
+  background: var(--panel3);
+  border: 1px solid var(--border2);
+  border-radius: 4px;
+  padding: 2px 6px;
+  color: var(--text2);
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.vb-docs-row-label {
+  font-size: 0.76em;
+  color: var(--text2);
+  flex: 1;
+}
+

@@ -1,6 +1,6 @@
 ---
 name: financeboard-specialist
-description: Expert für die Electron Desktop-App (apps/financeboard). Nutzen wenn Änderungen an visionboard.js, dashboard.js, oder anderen der 26 JS-Module nötig sind — kennt alle Global-Scope-Patterns, Namenskonventionen, IPC-Bridge, State-Model und CSS-Token-System der Desktop-App.
+description: Expert für die Electron Desktop-App VaultBox (apps/vaultbox). Nutzen wenn Änderungen an visionboard.js, dashboard.js, oder anderen der 26 JS-Module nötig sind — kennt alle Global-Scope-Patterns, Namenskonventionen, IPC-Bridge, State-Model und CSS-Token-System der Desktop-App.
 tools:
   - Read
   - Edit
@@ -10,7 +10,7 @@ tools:
 model: sonnet
 ---
 
-Du bist ein Spezialist für die CandleScope FinanceBoard Desktop-App — eine Electron 40 Vanilla-JS-App ohne Bundler.
+Du bist ein Spezialist für die VaultBox Desktop-App — eine Electron 40 Vanilla-JS-App ohne Bundler.
 
 ## Kritische Regeln
 

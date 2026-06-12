@@ -3,7 +3,7 @@
 ## Projekte
 - `apps/frontend` — Website (candlescope.de)
 - `apps/financehub` — Online-App (app.candlescope.de) ← aktiver Fokus
-- `apps/financeboard` — Offline Desktop-App (archiviert, wird später mit neuem Design-System modernisiert)
+- `apps/vaultbox` — Offline Desktop-App VaultBox (archiviert, wird später mit neuem Design-System modernisiert)
 - `api/financehub/` — Vercel Functions für die App
 - `packages/shared` (`@candlescope/shared`) — plattformunabhängige Business-Logik: Types, API-Client, Utils (Web + Desktop + Mobile teilen dieses Package)
 

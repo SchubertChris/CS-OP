@@ -1,0 +1,192 @@
+﻿/* ══════════════════════════════════════
+   RESPONSIVE — Breakpoints
+══════════════════════════════════════ */
+
+/* ══════════════════════════════════════
+   RESPONSIVE — Auto Compact-Mode ≤1100px
+   Sidebar bleibt 52px im Grid. Beim Aufklappen
+   schiebt sie sich als Fixed-Overlay über den Content.
+══════════════════════════════════════ */
+@media (max-width: 1100px) {
+  /* Shell: Sidebar-Spalte immer 52px (Content bleibt unberührt) */
+  .shell:not(.sidebar-open) { grid-template-columns: 52px 1fr; }
+  .shell.sidebar-open       { grid-template-columns: 52px 1fr; }
+  .shell:not(.sidebar-open) .sidebar { overflow: hidden; }
+
+  /* Brand — kompakt */
+  .shell:not(.sidebar-open) .sbar-brand { padding: 14px 0; justify-content: center; align-items: center; gap: 0; }
+  .shell:not(.sidebar-open) .sbar-brand-info { flex: 0; width: 0; overflow: hidden; min-width: 0; }
+  .shell:not(.sidebar-open) .sbar-brand-icon img { width: 28px; height: 28px; }
+  .shell:not(.sidebar-open) .sbar-brand-icon { width: 28px; height: 28px; }
+  .shell:not(.sidebar-open) .sbar-brand::after { display: none; }
+
+  /* Nav-Labels ausblenden */
+  .shell:not(.sidebar-open) .sbar-brand-name,
+  .shell:not(.sidebar-open) .sbar-brand-sub,
+  .shell:not(.sidebar-open) .sbar-brand-pulse,
+  .shell:not(.sidebar-open) .nav-divider,
+  .shell:not(.sidebar-open) .sbar-help > span,
+  .shell:not(.sidebar-open) #saveLabel { max-width: 0; opacity: 0; margin: 0; }
+  .shell:not(.sidebar-open) .nav-item > span:not(.nav-icon) { max-width: 0; opacity: 0; }
+  .shell:not(.sidebar-open) .nav-divider { padding: 4px 0; }
+
+  /* Nav Items */
+  .shell:not(.sidebar-open) nav { padding: 6px; }
+  .shell:not(.sidebar-open) .nav-item { padding: 0; justify-content: center; border-radius: 10px; width: 40px; margin: 0 auto 3px; background: none !important; box-shadow: none !important; }
+  .shell:not(.sidebar-open) .nav-icon { width: 40px; height: 40px; border-radius: 10px; }
+  .shell:not(.sidebar-open) .nav-icon svg { width: 17px; height: 17px; }
+  .shell:not(.sidebar-open) .nav-item.active .nav-icon { background: var(--blue-a08) !important; }
+  .shell:not(.sidebar-open) .nav-item:hover .nav-icon { background: var(--cs-overlay-md) !important; }
+  .shell:not(.sidebar-open) .nav-item.active::after { left: 0; height: 20px; }
+  .shell:not(.sidebar-open) .nav-badge { top: 5px; right: 5px; }
+
+  /* Footer */
+  .shell:not(.sidebar-open) .sbar-foot { padding: 6px 6px 10px; align-items: center; border-image: none; border-top: 1px solid var(--border); }
+  .shell:not(.sidebar-open) .sbar-help { padding: 0; width: 40px; height: 40px; justify-content: center; }
+  .shell:not(.sidebar-open) .save-status { justify-content: center; padding: 4px 0; }
+  .shell:not(.sidebar-open) #sidebarGreeting { display: none !important; }
+
+  /* Quick-Actions: quadratisch wie Nav-Icons */
+  .shell:not(.sidebar-open) .sbar-actions { flex-direction: column; padding: 8px 6px; gap: 3px; align-items: center; }
+  .shell:not(.sidebar-open) .sbar-act { width: 40px; height: 40px; flex: none; padding: 0; border-radius: 10px; justify-content: center; gap: 0; }
+  .shell:not(.sidebar-open) .sbar-act > span { display: none; }
+  .shell:not(.sidebar-open) .sbar-act svg { width: 16px; height: 16px; opacity: 0.8; }
+
+  /* Topbar: Datum ausblenden, Search-Pill auf Icon reduzieren */
+  .topbar-date { display: none; }
+  .topbar-search-pill > span { display: none; }
+  .topbar-search-pill kbd { display: none; }
+  .topbar-search-pill { padding: 6px 8px; gap: 0; border-radius: 8px; }
+
+  /* ── SIDEBAR OVERLAY (ausgeklappt) ── */
+  .shell.sidebar-open .sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 240px;
+    height: 100vh;
+    z-index: 1500;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-shadow:
+      4px 0 40px rgba(0, 0, 0, 0.65),
+      inset -1px 0 0 var(--blue-a15),
+      inset -3px 0 16px var(--blue-a06);
+    animation: sidebarSlideIn 0.22s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  /* Sidebar ist position:fixed → raus aus Grid-Flow.
+     Topbar + Main explizit in Spalte 2 halten, sonst landen sie in Spalte 1 (52px). */
+  .shell.sidebar-open .topbar { grid-column: 2; }
+  .shell.sidebar-open .main   { grid-column: 2; }
+
+  /* ── Overlay aufgeklappt: compact-Stile zurücksetzen ──
+     data-sidebar="compact" bleibt nach Resize gesetzt → überschreibt Overlay-Content.
+     Hier alles explizit auf volle Sidebar-Ansicht zurückstellen. */
+  .shell.sidebar-open .sbar-brand { padding: 14px 12px 14px 16px; justify-content: flex-start; align-items: center; gap: 10px; }
+  .shell.sidebar-open .sbar-brand-info { flex: 1; width: auto; overflow: hidden; min-width: 0; }
+  .shell.sidebar-open .sbar-brand-icon img { width: 32px; height: 32px; }
+  .shell.sidebar-open .sbar-brand-icon { width: 32px; height: 32px; }
+  .shell.sidebar-open .sbar-brand::after { display: block; }
+  .shell.sidebar-open .sbar-brand-name,
+  .shell.sidebar-open .sbar-brand-sub,
+  .shell.sidebar-open .sbar-brand-pulse,
+  .shell.sidebar-open .nav-divider,
+  .shell.sidebar-open .sbar-help > span,
+  .shell.sidebar-open #saveLabel { max-width: 200px; opacity: 1; margin: revert; }
+  .shell.sidebar-open .nav-item > span:not(.nav-icon) { max-width: 100%; opacity: 1; }
+  .shell.sidebar-open nav { padding: 6px 8px; }
+  .shell.sidebar-open .nav-item { padding: 2px 10px 2px 2px; justify-content: flex-start; width: auto; margin: 0 0 3px 0; }
+  .shell.sidebar-open .nav-icon { width: 36px; height: 36px; border-radius: 10px; }
+  .shell.sidebar-open .nav-icon svg { width: 16px; height: 16px; }
+  .shell.sidebar-open .nav-divider { padding: revert; }
+  .shell.sidebar-open .sbar-foot { padding: 12px 10px; align-items: stretch; border-image: revert; border-top: 1px solid var(--border); }
+  .shell.sidebar-open .sbar-help { padding: 6px 8px; width: auto; height: auto; justify-content: flex-start; }
+  .shell.sidebar-open .save-status { justify-content: flex-start; padding: 4px 8px; }
+  .shell.sidebar-open #sidebarGreeting { display: block !important; }
+  .shell.sidebar-open .sbar-actions { flex-direction: row; padding: 8px; gap: 4px; align-items: stretch; }
+  .shell.sidebar-open .sbar-act { width: auto; height: auto; flex: 1; padding: 6px 8px; border-radius: 8px; justify-content: center; gap: 6px; }
+  .shell.sidebar-open .sbar-act > span { display: inline; }
+  .shell.sidebar-open .sbar-act svg { width: 14px; height: 14px; opacity: 1; }
+}
+
+@keyframes sidebarSlideIn {
+  from { transform: translateX(-100%); opacity: 0.6; }
+  to   { transform: translateX(0);     opacity: 1; }
+}
+
+/* Sidebar-Backdrop — transparent, nur für Click-outside-Detection */
+.sidebar-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: transparent;
+  z-index: 1499;
+}
+.sidebar-backdrop.show { display: block; }
+
+/* Close-Button im Overlay-Modus */
+.sbar-overlay-close {
+  display: none;
+}
+@media (max-width: 1100px) {
+  .shell.sidebar-open .sbar-overlay-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    margin-left: auto;
+    flex-shrink: 0;
+    background: var(--cs-overlay-md);
+    border: 1px solid var(--border2);
+    border-radius: 7px;
+    color: var(--text3);
+    cursor: pointer;
+    transition: background 0.12s, color 0.12s;
+  }
+  .shell.sidebar-open .sbar-overlay-close:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: var(--text);
+  }
+}
+
+@media (max-width: 1024px) {
+  /* Gruppe 1 (Print/Export/Import) verstecken — Platz für wichtige Buttons */
+  .topbar-right > .topbar-divider:first-of-type { display: none; }
+  .topbar-right > .topbar-group:first-of-type { display: none; }
+}
+
+@media (max-width: 700px) {
+  /* Topbar komprimieren: Divider + Search-Pill weg, weniger Gap */
+  .topbar-divider { display: none; }
+  .topbar-search-pill { display: none; }
+  .topbar-right { gap: 4px; }
+  .topbar-group { gap: 2px; }
+  /* Seitenname kürzen damit er nicht überläuft */
+  .topbar-title {
+    max-width: 120px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+
+/* Aktiv-State für Topbar-Button */
+.icon-btn-active {
+  color: var(--blue) !important;
+  background: var(--blue-a12) !important;
+  border-color: var(--blue-a25) !important;
+}
+
+/* Settings divider zwischen Theme-Grid und Glass-Row */
+.settings-section-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 14px 20px 12px;
+}
+
+/* ── Custom-Background: kein Overlay, kein Blur, kein Darken ── */
+.bg.has-custom-bg { filter: none !important; }
+.bg.has-custom-bg::after { display: none !important; }

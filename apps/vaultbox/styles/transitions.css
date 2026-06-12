@@ -1,0 +1,175 @@
+/* ══════════════════════════════════════
+   TRANSITIONS — Seiten · Scroll · Haptik
+══════════════════════════════════════ */
+
+/* Seiten-Übergang: fade + slide up */
+.page {
+  display: none;
+  animation: none;
+}
+.page.active {
+  display: block;
+  animation: page-in 0.28s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Scroll: smooth global */
+html {
+  scroll-behavior: smooth;
+}
+main {
+  scroll-behavior: smooth;
+}
+
+/* Panels: leichtes Erscheinen */
+.panel {
+  animation: panel-in 0.22s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+@keyframes panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Modal: slide up + fade */
+.overlay .modal {
+  animation: none;
+}
+.overlay.open .modal {
+  animation: modal-in 0.24s cubic-bezier(0.34, 1.2, 0.64, 1) both;
+}
+@keyframes modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Accordion / Detail-Panel */
+.cc-detail-panel {
+  max-height: 0;
+  overflow: hidden;
+  transition:
+    max-height 0.32s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.22s ease;
+  opacity: 0;
+}
+.cc-detail-panel.open {
+  max-height: 400px;
+  opacity: 1;
+}
+
+/* Buttons: snappy press */
+.btn,
+.icon-btn,
+.nav-item,
+.theme-option,
+.font-option,
+.goal-icon-opt,
+.color-swatch {
+  transition:
+    transform 0.08s ease,
+    background 0.12s ease,
+    border-color 0.12s ease,
+    color 0.12s ease,
+    box-shadow 0.12s ease;
+}
+.btn:active,
+.icon-btn:active {
+  transform: scale(0.96);
+}
+
+/* KPI Cards */
+.kpi {
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+.kpi:hover {
+  transform: translateY(-2px);
+}
+
+/* Balken */
+.prog-fill,
+.goal-prog-fill,
+.goal-mini-fill,
+.ct-prog-fill {
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Accordion chevron */
+.cc-chevron {
+  transition: transform 0.22s ease;
+}
+.cc-chevron.open {
+  transform: rotate(90deg);
+}
+
+/* Nav-Item hover */
+.nav-item {
+  transition:
+    background 0.12s ease,
+    color 0.12s ease,
+    border-left-color 0.12s ease;
+}
+
+/* Theme/Font switch */
+:root {
+  transition: color 0.18s ease;
+}
+/* ── TOOLTIP ICON ── */
+.tt-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  font-size: 0.7em;
+  color: var(--text3);
+  cursor: help;
+  transition: color 0.12s;
+  vertical-align: middle;
+  margin-left: 3px;
+  opacity: 0.7;
+}
+.tt-icon:hover {
+  color: var(--blue);
+  opacity: 1;
+}
+
+#appTooltip {
+  position: fixed;
+  z-index: 9999;
+  max-width: 240px;
+  padding: 8px 12px;
+  background: var(--panel2);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  font-size: 0.72em;
+  line-height: 1.5;
+  color: var(--text2);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  font-family: var(--sans);
+}

@@ -1,0 +1,611 @@
+/* ══════════════════════════════════════
+   PIVOT-TABELLE v2
+   styles/components/pivot.css
+══════════════════════════════════════ */
+
+/* ── TOOLBAR ── */
+.pivot-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.pivot-vtoggle {
+  display: flex;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  overflow: hidden;
+  background: var(--panel2);
+}
+.pvt-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 11px;
+  font-size: 0.72em;
+  font-weight: 500;
+  font-family: var(--sans);
+  color: var(--text3);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.13s;
+  white-space: nowrap;
+}
+.pvt-btn:hover {
+  color: var(--text2);
+  background: var(--cs-overlay-xs);
+}
+.pvt-btn.active {
+  background: var(--blue-a12);
+  color: var(--blue);
+}
+.pvt-btn + .pvt-btn {
+  border-left: 1px solid var(--border);
+}
+
+.pvt-icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text3);
+  cursor: pointer;
+  transition: all 0.13s;
+}
+.pvt-icon-btn:hover {
+  color: var(--text2);
+  border-color: var(--border2);
+  background: var(--cs-overlay-xs);
+}
+
+.pivot-sel {
+  background: var(--panel2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 4px 10px;
+  color: var(--text);
+  font-size: 0.76em;
+  font-family: var(--sans);
+  cursor: pointer;
+  outline: none;
+}
+
+/* ── SCROLL-WRAPPER ── */
+.pv-scroll {
+  overflow-x: auto;
+  overflow-y: visible;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  /* Maus-Drag-Scroll via JS (touch-action erlauben) */
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.pv-scroll.pv-dragging-scroll {
+  cursor: grabbing;
+}
+.pv-scroll:active {
+  cursor: grabbing;
+}
+
+/* Scrollbar immer sichtbar + styled — überschreibt base.css hide */
+.pv-scroll::-webkit-scrollbar {
+  height: 8px;
+  display: block !important;
+}
+.pv-scroll::-webkit-scrollbar-track {
+  background: var(--panel2);
+  border-radius: 4px;
+  margin: 0 2px;
+}
+.pv-scroll::-webkit-scrollbar-thumb {
+  background: var(--border2);
+  border-radius: 4px;
+  border: 2px solid var(--panel2);
+  transition: background 0.15s;
+}
+.pv-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--text3);
+}
+/* Firefox */
+.pv-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border2) var(--panel2);
+}
+
+/* ── TABLE ── */
+.pv-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: auto;
+}
+
+/* ── HEADER ── */
+.pv-th-drag {
+  width: 22px;
+  background: var(--panel2);
+  background-clip: padding-box;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  left: 0;
+  z-index: 4;
+}
+.pv-th-name {
+  text-align: left;
+  padding: 8px 12px;
+  background: var(--panel2);
+  background-clip: padding-box;
+  box-shadow: 2px 0 6px rgba(0, 0, 0, 0.25);
+  color: var(--text3);
+  font-size: 0.63em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.9px;
+  position: sticky;
+  left: 22px;
+  z-index: 3;
+  white-space: nowrap;
+  min-width: 220px;
+  max-width: 220px;
+  border-bottom: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+}
+.pv-th-col {
+  text-align: center;
+  padding: 8px 5px;
+  background: var(--panel2);
+  color: var(--text3);
+  font-size: 0.63em;
+  font-weight: 600;
+  white-space: nowrap;
+  min-width: 68px;
+  border-bottom: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+}
+.pv-th-cur {
+  color: var(--blue);
+  border-bottom: 2px solid var(--blue);
+}
+.pv-th-sum {
+  text-align: center;
+  padding: 8px 8px;
+  background: var(--panel2);
+  color: var(--text3);
+  font-size: 0.63em;
+  font-weight: 700;
+  white-space: nowrap;
+  min-width: 80px;
+  border-bottom: 1px solid var(--border);
+  border-left: 1px solid var(--border2);
+}
+
+/* ── SECTION HEADERS ── */
+.pv-section-head td {
+  background: var(--panel2);
+  color: var(--text3);
+  font-size: 0.58em;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1.3px;
+  padding: 5px 12px;
+  border-bottom: 1px solid var(--border);
+  border-top: 1px solid var(--border);
+  display: table-cell;
+}
+.pv-section-head td:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  background: var(--panel2);
+  width: 22px;
+}
+
+/* ── DATA ROWS ── */
+.pv-row {
+  transition: background 0.1s;
+}
+.pv-row:hover .pv-td-name,
+.pv-row:hover .pv-td {
+  background: var(--cs-overlay-xs);
+}
+
+.pv-td-drag {
+  width: 22px;
+  padding: 0 4px;
+  text-align: center;
+  cursor: grab;
+  color: var(--text3);
+  background: var(--panel);
+  background-clip: padding-box;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  left: 0;
+  z-index: 2;
+}
+.pv-td-drag:active {
+  cursor: grabbing;
+}
+
+.pv-td-name {
+  text-align: left;
+  padding: 5px 8px;
+  background: var(--panel);
+  background-clip: padding-box;
+  box-shadow: 2px 0 6px rgba(0, 0, 0, 0.25);
+  border-bottom: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  position: sticky;
+  left: 22px;
+  z-index: 1;
+  /* Breite durch .pv-name-inner gesteuert */
+  width: 220px;
+}
+
+.pv-td {
+  text-align: center;
+  padding: 6px 4px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  white-space: nowrap;
+}
+.pv-td-sum {
+  border-left: 1px solid var(--border2);
+  min-width: 80px;
+}
+.pv-col-cur {
+  background: var(--blue-a08) !important;
+}
+
+/* ── DRAG STATES ── */
+.pv-dragging {
+  opacity: 0.4;
+}
+.pv-drag-over {
+  outline: 2px solid var(--blue);
+  outline-offset: -2px;
+}
+
+/* ── NAME CELL ── */
+
+/* Inner flex wrapper — td selbst kann kein flex sein */
+.pv-name-inner {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  width: 200px; /* feste Breite → gleichlanger Slot */
+  min-width: 200px;
+}
+
+/* Dot */
+.pv-acc-dot {
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* Name — truncation nach ~20 Zeichen */
+.pv-name-txt {
+  font-size: 0.78em;
+  font-weight: 500;
+  color: var(--text);
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Intervall-Badge — nie umbrechen */
+.pv-itv {
+  font-size: 0.58em;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 4px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.pv-itv-in {
+  background: var(--green-a10);
+  color: var(--green);
+  border: 1px solid var(--green-a18);
+}
+.pv-itv-out {
+  background: var(--blue-a08);
+  color: var(--blue);
+  border: 1px solid var(--blue-a20);
+}
+.pv-itv-trf {
+  background: rgba(0, 200, 170, 0.08);
+  color: var(--teal);
+  border: 1px solid rgba(0, 200, 170, 0.2);
+}
+
+/* Stift-Icon — rechtsbündig, erscheint bei Hover */
+.pv-name-hint {
+  font-size: 0.72em;
+  color: var(--text3);
+  flex-shrink: 0;
+  margin-left: auto; /* schiebt Stift ans rechte Ende */
+  opacity: 0;
+  transition: opacity 0.12s;
+  line-height: 1;
+  padding: 1px 3px;
+  border-radius: 4px;
+}
+.pv-td-name.pv-td-clickable:hover .pv-name-hint {
+  opacity: 1;
+  background: var(--panel2);
+  color: var(--blue);
+}
+
+/* ── AMOUNTS ── */
+.pv-amt {
+  font-family: var(--mono);
+  font-size: 0.71em;
+  display: inline-block;
+  white-space: nowrap;
+}
+.pv-bold {
+  font-weight: 700;
+  font-size: 0.74em;
+}
+.pv-in {
+  color: var(--green);
+}
+.pv-out {
+  color: var(--red);
+}
+.pv-trf {
+  color: var(--teal);
+}
+.pv-zero {
+  font-size: 0.68em;
+  color: var(--text3);
+  opacity: 0.3;
+}
+
+/* ── SUMMENZEILEN ── */
+.pv-grp-sum .pv-td-name,
+.pv-grp-sum .pv-td,
+.pv-grp-diff .pv-td-name,
+.pv-grp-diff .pv-td {
+  background: var(--panel2);
+}
+.pv-grp-sum-in .pv-td-name {
+  border-top: 1px solid var(--border2);
+}
+.pv-grp-diff .pv-td-name {
+  border-bottom: 2px solid var(--border2);
+}
+
+.pv-total-row .pv-td-name,
+.pv-total-row .pv-td {
+  background: var(--panel2);
+  border-top: 1px solid var(--border2);
+}
+.pv-total-bal .pv-td-name,
+.pv-total-bal .pv-td {
+  border-top: 2px solid var(--border2);
+  border-bottom: none;
+}
+.pv-sum-lbl {
+  font-size: 0.72em !important;
+  font-weight: 700 !important;
+  color: var(--text2) !important;
+  display: table-cell !important;
+  padding: 5px 10px !important;
+}
+
+/* ── FOOTER PILLS ── */
+.pv-pills {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+.pv-pill {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 7px 14px;
+  border-radius: 10px;
+}
+.pv-pill-lbl {
+  font-size: 0.67em;
+  color: var(--text3);
+}
+.pv-pill-val {
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 0.9em;
+}
+.pv-pill-in {
+  background: var(--green-a10);
+  border: 1px solid var(--green-a18);
+}
+.pv-pill-in .pv-pill-val {
+  color: var(--green);
+}
+.pv-pill-out {
+  background: var(--red-a10);
+  border: 1px solid var(--red-a20);
+}
+.pv-pill-out .pv-pill-val {
+  color: var(--red);
+}
+.pv-pill-bal-pos {
+  background: var(--panel2);
+  border: 1px solid var(--border2);
+}
+.pv-pill-bal-pos .pv-pill-val {
+  color: var(--green);
+}
+.pv-pill-bal-neg {
+  background: var(--red-bg, var(--red-a10));
+  border: 1px solid var(--red-d, var(--red-a20));
+}
+.pv-pill-bal-neg .pv-pill-val {
+  color: var(--red);
+}
+
+/* ── CLICKABLE CELLS ── */
+.pv-td-clickable {
+  cursor: pointer;
+}
+.pv-td-clickable:hover {
+  background: var(--blue-a08) !important;
+}
+.pv-td-clickable:hover .pv-amt {
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 2px;
+}
+.pv-td-name.pv-td-clickable {
+  cursor: pointer;
+}
+.pv-td-name.pv-td-clickable:hover {
+  background: var(--blue-a08) !important;
+}
+.pv-td-name.pv-td-clickable:hover .pv-name-txt {
+  color: var(--blue);
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 2px;
+}
+
+/* Popover-Styles → styles/modal.css */
+/* ── AUSGESETZTE BUCHUNG ── */
+.pv-zero-paused {
+  font-size: 0.68em;
+  color: var(--amber) !important;
+  opacity: 0.7;
+  cursor: pointer;
+}
+.pv-td-override {
+  background: rgba(255, 173, 50, 0.06) !important;
+}
+/* Override mit 0: rötlicher Ton */
+.pv-td-override .pv-zero-paused {
+  color: var(--amber) !important;
+}
+
+/* ── BEGLICHENE BUCHUNG ── */
+.pv-td-settled {
+  background: rgba(0, 229, 160, 0.05) !important;
+}
+.pv-settled-mark {
+  font-size: 0.62em;
+  color: var(--green);
+  opacity: 0.7;
+  margin-left: 3px;
+  vertical-align: super;
+}
+.pv-settled-zero {
+  font-size: 0.78em;
+  color: var(--green);
+  opacity: 0.6;
+}
+
+/* ── JAHRES-SELECTOR ── */
+.pivot-yr-sel {
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 0.8em;
+  color: var(--blue);
+  min-width: 70px;
+}
+
+/* ── NEU-DROPDOWN ── */
+.pvt-new-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+.pvt-new-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.76em !important;
+  padding: 5px 10px !important;
+  white-space: nowrap;
+}
+.pvt-new-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 600;
+  width: 230px;
+  background: var(--glass-tint);
+  border: 1px solid var(--border2);
+  border-radius: 12px;
+  box-shadow:
+    0 16px 40px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(255, 255, 255, 0.05);
+  padding: 6px;
+  display: none;
+  flex-direction: column;
+  gap: 1px;
+  animation: modalIn 0.15s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.pvt-new-menu.open {
+  display: flex;
+}
+
+.pvt-new-label {
+  font-size: 0.58em;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--text3);
+  padding: 6px 10px 3px;
+}
+.pvt-new-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 4px 6px;
+}
+.pvt-new-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  border-radius: 8px;
+  background: none;
+  border: none;
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 0.78em;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  transition: background 0.1s;
+  position: relative;
+}
+.pvt-new-item:hover {
+  background: var(--panel2);
+}
+.pvt-new-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.pvt-new-hint {
+  font-size: 0.82em;
+  color: var(--text3);
+  font-weight: 400;
+  margin-left: auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 110px;
+}

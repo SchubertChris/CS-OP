@@ -1,0 +1,1631 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VaultBox</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&family=Barlow+Condensed:wght@400;600;700;800&family=Syne:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+    <script src="https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
+
+    <!-- Styles -->
+    <!-- Basis -->
+    <link rel="stylesheet" href="styles/base.css" />
+    <link rel="stylesheet" href="styles/shell.css" />
+    <link rel="stylesheet" href="styles/sidebar.css" />
+    <link rel="stylesheet" href="styles/topbar.css" />
+    <link rel="stylesheet" href="styles/responsive.css" />
+    <link rel="stylesheet" href="styles/transitions.css" />
+    <link rel="stylesheet" href="styles/tables.css" />
+    <!-- components/ Unterordner -->
+    <link rel="stylesheet" href="styles/components/badges.css" />
+    <link rel="stylesheet" href="styles/components/dialog.css" />
+    <link rel="stylesheet" href="styles/components/dashboard.css" />
+    <link rel="stylesheet" href="styles/components/accounts.css" />
+    <link rel="stylesheet" href="styles/components/posten.css" />
+    <link rel="stylesheet" href="styles/components/contracts.css" />
+    <link rel="stylesheet" href="styles/components/jahresuebersicht.css" />
+    <link rel="stylesheet" href="styles/components/search.css" />
+    <link rel="stylesheet" href="styles/components/goals-layout.css" />
+    <link rel="stylesheet" href="styles/components/io.css" />
+    <link rel="stylesheet" href="styles/components/pivot.css" />
+    <link rel="stylesheet" href="styles/components/toast.css" />
+    <link rel="stylesheet" href="styles/components/categories.css" />
+    <link rel="stylesheet" href="styles/components/kreditoren.css" />
+    <link rel="stylesheet" href="styles/components/krypto.css" />
+    <link rel="stylesheet" href="styles/components/user-chip.css" />
+    <link rel="stylesheet" href="styles/components/_glass.css" />
+    <!-- Feature-Styles (bleiben wo sie sind) -->
+    <link rel="stylesheet" href="styles/modal.css" />
+    <link rel="stylesheet" href="styles/goals.css" />
+    <link rel="stylesheet" href="styles/settings.css" />
+    <link rel="stylesheet" href="styles/docs.css" />
+    <link rel="stylesheet" href="styles/intro.css" />
+    <link rel="stylesheet" href="styles/archive.css" />
+    <link rel="stylesheet" href="styles/notes.css" />
+    <link rel="stylesheet" href="styles/lockscreen.css" />
+    <link rel="stylesheet" href="styles/print.css" />
+    <link rel="stylesheet" href="styles/visionboard.css" />
+  </head>
+  <body>
+    <!-- ═══════════ SPLASH ═══════════ -->
+    <div id="splash">
+      <!-- 3D orbital rings -->
+      <div class="sp-halo-wrap">
+        <div class="sp-halo sp-halo--a"></div>
+        <div class="sp-halo sp-halo--b"></div>
+        <div class="sp-halo sp-halo--c"></div>
+      </div>
+      <div class="splash-logo-wrap">
+        <!-- Floating orbital particles -->
+        <div class="sp-particle sp-p1"></div>
+        <div class="sp-particle sp-p2"></div>
+        <div class="sp-particle sp-p3"></div>
+        <div class="sp-particle sp-p4"></div>
+        <div class="sp-particle sp-p5"></div>
+        <div class="sp-particle sp-p6"></div>
+        <div class="sp-particle sp-p7"></div>
+        <div class="sp-particle sp-p8"></div>
+        <div class="splash-logo-box">
+          <span class="splash-logo-emoji">🔐</span>
+        </div>
+      </div>
+      <div class="splash-beam-wrap">
+        <div class="splash-beam"></div>
+      </div>
+      <div class="splash-wordmark">
+        <div class="splash-title">VaultBox</div>
+        <div class="splash-sub">Offline. Sicher. Dein Vermögen. · 2026</div>
+      </div>
+    </div>
+
+    <!-- Tutorial Panel wird dynamisch durch intro.js erzeugt -->
+
+    <!-- ═══════════ ARCHIV-ÜBERSICHT ═══════════ -->
+    <div
+      id="archiveOverlay"
+      onclick="if (event.target === this) closeArchiveOverview();"
+    >
+      <div id="archiveModal">
+        <div class="arch-modal-header">
+          <div class="arch-modal-title">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              width="16"
+              height="16"
+            >
+              <path
+                d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"
+              />
+            </svg>
+            Dokumentenarchiv
+          </div>
+          <button class="arch-modal-close" onclick="closeArchiveOverview()">
+            ✕
+          </button>
+        </div>
+        <div id="archiveBody"></div>
+      </div>
+    </div>
+    <div id="tutorialOverlay" style="display: none"></div>
+    <!-- Toast Notifications -->
+    <div id="toastContainer"></div>
+    <!-- Hintergrund -->
+    <div class="bg"></div>
+
+    <div class="shell">
+      <!-- ── CMD TRIGGER (Strg+K) ── -->
+      <button id="cmdTrigger" onclick="openSearch()" onmouseenter="_showTooltip('Schnellsuche (Strg+K)', this)" onmouseleave="_hideTooltip()">
+        <img src="img/icon.png" alt="" aria-hidden="true">
+        <span>Suchen…</span>
+      </button>
+
+      <!-- ── FLOATING PAGE TITLE ── -->
+      <div id="pageTitle">Dashboard</div>
+
+      <!-- ── TOP-RIGHT AKTIONEN ── -->
+      <div id="topActions">
+        <button class="icon-btn" onclick="openPrintPreview()" onmouseenter="_showTooltip('Druckansicht öffnen', this)" onmouseleave="_hideTooltip()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        </button>
+        <button class="icon-btn" onclick="openNotesPanel()" id="btnNotes" onmouseenter="_showTooltip('Notizen öffnen', this)" onmouseleave="_hideTooltip()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        </button>
+        <button class="icon-btn" onclick="_showShortcutOverlay()" onmouseenter="_showTooltip('Tastenkürzel anzeigen (?)', this)" onmouseleave="_hideTooltip()" style="font-size:13px;font-weight:700;opacity:0.6;">?</button>
+        <div class="topbar-divider"></div>
+        <button id="ucChip" class="icon-btn uc-chip" onclick="_ucToggle()" onmouseenter="_showTooltip('Profil & Einstellungen', this)" onmouseleave="_hideTooltip()">
+          <div id="ucAvatarSm" class="uc-avatar-sm">CS</div>
+          <span id="ucChipName" class="uc-chip-name">Benutzer</span>
+          <svg class="uc-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+      </div>
+
+      <!-- USER CHIP PANEL -->
+      <div id="ucPanel" class="uc-panel" style="display:none" onclick="event.stopPropagation()">
+        <div class="uc-panel-inner">
+          <!-- Profile -->
+          <div class="uc-profile-row">
+            <label class="uc-avatar-wrap" onmouseenter="_showTooltip('Profilbild ändern', this)" onmouseleave="_hideTooltip()">
+              <div id="ucAvatarLg" class="uc-avatar-lg">CS</div>
+              <div class="uc-avatar-overlay">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              </div>
+              <input type="file" id="ucAvatarInput" accept="image/*" onchange="_ucPickAvatar(this)" style="display:none">
+            </label>
+            <div class="uc-name-block">
+              <input id="ucNameInput" class="uc-name-input" placeholder="Dein Name" oninput="_ucSaveName(this.value)">
+            </div>
+          </div>
+
+          <div class="uc-sep"></div>
+
+          <!-- Theme -->
+          <div>
+            <div class="uc-label">Theme</div>
+            <div id="ucThemeGrid" class="uc-theme-grid"></div>
+          </div>
+
+          <div class="uc-sep"></div>
+
+          <!-- Blur -->
+          <div class="uc-slider-block">
+            <div class="uc-label">
+              Blur / Schärfe
+              <span id="ucBlurPx" class="uc-alpha-pct">20px</span>
+            </div>
+            <input type="range" id="ucBlurSlider" class="uc-slider" min="0" max="200" step="5" value="20"
+              oninput="_ucSetBlur(this.value)" onchange="_ucSaveBlur()">
+            <div class="uc-slider-ticks">
+              <span class="uc-slider-tick">0px</span>
+              <span class="uc-slider-tick">100px</span>
+              <span class="uc-slider-tick">200px</span>
+            </div>
+          </div>
+
+          <div class="uc-sep"></div>
+
+          <!-- Footer -->
+          <button class="uc-footer-link" onclick="_ucClose();nav(document.querySelector('.nav-item[data-label=Einstellungen]'),'settings')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+            Alle Einstellungen
+          </button>
+        </div>
+      </div>
+
+      <!-- ── RING AKTIONEN ── -->
+      <div id="ringAnchor">
+        <button id="ringBtn" onclick="_toggleRing()" onmouseenter="_showTooltip('Aktionen', this)" onmouseleave="_hideTooltip()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <button class="ring-item" style="--rp:translate(0px,120px)" onclick="importAll();_ringClose()" onmouseenter="_showTooltip('Importieren (.fbs)', this)" onmouseleave="_hideTooltip()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        </button>
+        <button class="ring-item" style="--rp:translate(-46px,111px)" onclick="_navTo('archiv');_ringClose()" onmouseenter="_showTooltip('Archiv öffnen', this)" onmouseleave="_hideTooltip()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+        </button>
+        <button class="ring-item icon-btn-emoji" id="btnManualSave" style="--rp:translate(-85px,85px);font-size:0.9em;" onclick="manualSave();_ringClose()" onmouseenter="_showTooltip('Speichern (Strg+S)', this)" onmouseleave="_hideTooltip()">💾</button>
+        <button class="ring-item" style="--rp:translate(-111px,46px)" onclick="exportAll();_ringClose()" onmouseenter="_showTooltip('Exportieren (.fbs)', this)" onmouseleave="_hideTooltip()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        </button>
+        <button class="ring-item" style="--rp:translate(-120px,0px);font-size:0.95em;font-weight:700;" onclick="openModal();_ringClose()" onmouseenter="_showTooltip('Neuer Posten', this)" onmouseleave="_hideTooltip()">€</button>
+      </div>
+      <!-- ═══════════ MAIN ═══════════ -->
+      <main class="main">
+        <!-- ═══ DASHBOARD ═══ -->
+        <div class="page active" id="p-dashboard">
+
+          <!-- ZONE 1: Status heute (Hero) -->
+          <div id="kpiRow"></div>
+
+          <!-- ZONE 2: Was läuft grade? — Monatsbudget + Zahlungsübersicht -->
+          <div class="dash-today-row">
+
+            <div id="monthBudget"></div>
+
+            <div class="panel dash-cockpit-card">
+              <div class="panel-head">
+                <div>
+                  <div class="panel-title">Zahlungsübersicht</div>
+                  <div class="panel-sub" id="cockpitSub">Bis nächstem Zahltag</div>
+                </div>
+                <div class="panel-tag" id="cockpitTag">—</div>
+              </div>
+              <div id="cockpitCols"></div>
+            </div>
+
+          </div>
+
+          <!-- ZONE 3: Was habe ich? — Konten -->
+          <div class="panel dash-konten-panel" id="kontenPanel">
+            <div class="panel-head">
+              <div class="panel-title">Konten</div>
+              <div style="display:flex;gap:6px;align-items:center">
+                <span id="kontenSaldoTag" style="font-family:var(--mono);font-size:.75em"></span>
+              </div>
+            </div>
+            <div class="acc-list" id="accList"></div>
+          </div>
+
+          <!-- ZONE 4: Analyse — Cashflow + Fixkosten + Nettovermögen -->
+          <div id="monthInsights"></div>
+
+          <!-- ZONE 5: Ausgaben aufgeschlüsselt — Donut + Kategorien -->
+          <div class="dash-bottom-row">
+
+            <div class="panel dash-donut-panel dash-donut-side">
+              <div class="panel-head">
+                <div class="panel-title">Ausgabenverteilung</div>
+                <div style="display:flex;align-items:center;gap:6px">
+                  <div class="donut-mode-toggle">
+                    <button class="donut-mode-btn active" id="donutBtnPosten" onclick="_donutMode='posten';document.getElementById('donutBtnPosten').classList.add('active');document.getElementById('donutBtnKat').classList.remove('active');renderDonut()" onmouseenter="_showTooltip('Nach Posten gruppieren', this)" onmouseleave="_hideTooltip()">Posten</button>
+                    <button class="donut-mode-btn" id="donutBtnKat" onclick="_donutMode='category';document.getElementById('donutBtnKat').classList.add('active');document.getElementById('donutBtnPosten').classList.remove('active');renderDonut()" onmouseenter="_showTooltip('Nach Kategorie gruppieren', this)" onmouseleave="_hideTooltip()">Kategorie</button>
+                  </div>
+                  <div class="panel-tag">Ø / Monat</div>
+                </div>
+              </div>
+              <div class="panel-body">
+                <div class="donut-chart-wrap">
+                  <div class="donut-canvas-wrap">
+                    <canvas id="donutChart"></canvas>
+                    <div class="donut-center">
+                      <div class="donut-center-lbl">Gesamt</div>
+                      <div id="donutTotal">—</div>
+                    </div>
+                  </div>
+                </div>
+                <div id="donutLegend"></div>
+              </div>
+            </div>
+
+            <div id="katAuswertung"></div>
+
+          </div>
+
+        </div>
+        <!-- /DASHBOARD -->
+
+        <!-- UMSÄTZE -->
+        <div class="page" id="p-posten">
+          <div class="ph page-hdr">
+            <div>
+              <div class="ph-title">Umsätze</div>
+              <div class="ph-sub" id="postenCount">—</div>
+            </div>
+            <div class="btn-row">
+              <button class="btn" onclick="openModal(null, 'transfer')">
+                ⇄ Umbuchung
+              </button>
+              <button class="btn primary" onclick="openModal()">
+                + Neuer Posten
+              </button>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-head">
+              <div class="panel-title">Alle festen Posten</div>
+              <div
+                id="postenSaldo"
+                style="font-family: var(--mono); font-size: 0.8em"
+              ></div>
+            </div>
+            <div class="tbl-wrap">
+              <table>
+                <thead>
+                  <tr id="postenThead">
+                    <th class="sortable" data-k="name" style="min-width: 160px">
+                      <span class="th-inner"
+                        >Bezeichnung <span class="sort-arr">↕</span></span
+                      >
+                    </th>
+                    <th class="sortable" data-k="type">
+                      <span class="th-inner"
+                        >Typ <span class="sort-arr">↕</span></span
+                      >
+                    </th>
+                    <th class="sortable" data-k="interval">
+                      <span class="th-inner"
+                        >Intervall <span class="sort-arr">↕</span></span
+                      >
+                    </th>
+                    <th class="sortable" data-k="due">
+                      <span class="th-inner"
+                        >Fällig
+                        <span
+                          class="tt-icon"
+                          data-tt="tt-posten-faellig"
+                          onmouseenter="
+                            if (CFG && CFG.tooltips)
+                              _showTooltip(TOOLTIPS['tt-posten-faellig'], this);
+                          "
+                          onmouseleave="_hideTooltip()"
+                          >ⓘ</span
+                        >
+                        <span class="sort-arr">↕</span></span
+                      >
+                    </th>
+                    <th class="sortable" data-k="accountId">
+                      <span class="th-inner"
+                        >Konto <span class="sort-arr">↕</span></span
+                      >
+                    </th>
+                    <th class="sortable r" data-k="amount">
+                      <span class="th-inner"
+                        >Betrag <span class="sort-arr">↕</span></span
+                      >
+                    </th>
+                    <th class="r">
+                      Ø/Mon
+                      <span
+                        class="tt-icon"
+                        data-tt="tt-avg-monthly"
+                        onmouseenter="
+                          if (CFG && CFG.tooltips)
+                            _showTooltip(TOOLTIPS['tt-avg-monthly'], this);
+                        "
+                        onmouseleave="_hideTooltip()"
+                        >ⓘ</span
+                      >
+                    </th>
+                    <th>
+                      Laufzeit
+                      <span
+                        class="tt-icon"
+                        data-tt="tt-vertrag-end"
+                        onmouseenter="
+                          if (CFG && CFG.tooltips)
+                            _showTooltip(TOOLTIPS['tt-vertrag-end'], this);
+                        "
+                        onmouseleave="_hideTooltip()"
+                        >ⓘ</span
+                      >
+                    </th>
+                    <th class="r">Aktion</th>
+                  </tr>
+                </thead>
+                <tbody id="postenBody"></tbody>
+                <tfoot id="postenFoot"></tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- JAHRESÜBERSICHT -->
+        <div class="page" id="p-jahr">
+          <div class="ph">
+            <div>
+              <div class="ph-title">Jahresübersicht 2026</div>
+              <div class="ph-sub">Monatliche Saldi — feste Posten</div>
+            </div>
+          </div>
+          <div class="year-grid" id="yearGrid"></div>
+        </div>
+
+        <!-- VERTRÄGE -->
+        <div class="page" id="p-vertraege">
+          <div class="panel" id="contractList"></div>
+        </div>
+
+        <!-- KREDITOREN -->
+        <div class="page" id="p-kreditoren"></div>
+
+        <!-- GOALS -->
+        <div class="page" id="p-goals"></div>
+
+        <!-- KRYPTO -->
+        <div class="page" id="p-krypto"></div>
+
+        <!-- SETTINGS -->
+        <div class="page" id="p-settings"></div>
+        <div class="page" id="p-docs"></div>
+        <div class="page" id="p-vision"></div>
+        <div class="page" id="p-archiv"></div>
+      </main>
+
+      <!-- ── PILL NAV ── -->
+      <nav id="pill">
+        <!-- Geschlossener Zustand: aktive Seite + Punkte -->
+        <button class="pill-closed-btn" onclick="_pillExpand()">
+          <span class="pill-closed-icon" id="pillClosedIcon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+          </span>
+          <span id="pillClosedLabel">Dashboard</span>
+          <div class="pill-dots"><span></span><span></span><span></span></div>
+        </button>
+        <!-- Offener Zustand: alle Seiten -->
+        <div class="nav-item active" onclick="nav(this,'dashboard')" data-label="Dashboard" data-page="dashboard">
+          <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg></span>
+          <span>Dashboard</span>
+        </div>
+        <div class="nav-item" onclick="nav(this,'posten')" data-label="Transaktionen" data-page="posten">
+          <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></span>
+          <span>Umsätze</span>
+        </div>
+        <div class="nav-item" onclick="nav(this,'jahr')" data-label="Analyse" data-page="jahr">
+          <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><polyline points="8 14 11 17 16 11"/></svg></span>
+          <span>Analyse</span>
+        </div>
+        <div class="pill-divider"></div>
+        <div class="nav-item" onclick="nav(this,'vertraege')" data-label="Verträge" data-page="vertraege">
+          <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span>
+          <span>Verträge</span>
+          <span class="nav-badge" id="contractBadge" style="display:none"></span>
+        </div>
+        <div class="nav-item" onclick="nav(this,'kreditoren')" data-label="Kreditoren" data-page="kreditoren">
+          <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></span>
+          <span>Kreditoren</span>
+        </div>
+        <div class="nav-item" onclick="nav(this,'goals')" data-label="Sparziele" data-page="goals">
+          <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span>
+          <span>Sparziele</span>
+        </div>
+        <div class="nav-item" onclick="nav(this,'vision')" data-label="Pinnwand" data-page="vision">
+          <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/><line x1="7" y1="8" x2="7.01" y2="8"/><line x1="12" y1="8" x2="17" y2="8"/><line x1="12" y1="12" x2="17" y2="12"/></svg></span>
+          <span>Pinnwand</span>
+        </div>
+        <div class="nav-item" onclick="nav(this,'krypto')" data-label="Krypto" data-page="krypto">
+          <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9 8h4a2 2 0 010 4H9v4"/><line x1="9" y1="12" x2="14" y2="12"/></svg></span>
+          <span>Krypto</span>
+        </div>
+        <div class="nav-item" onclick="nav(this,'archiv')" data-label="Archiv" data-page="archiv">
+          <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg></span>
+          <span>Archiv</span>
+        </div>
+        <div class="pill-divider"></div>
+        <div class="nav-item" onclick="nav(this,'settings')" data-label="Einstellungen" data-page="settings">
+          <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></span>
+          <span>Settings</span>
+        </div>
+        <div class="nav-item" onclick="nav(this,'docs')" data-label="Über die App" data-page="docs">
+          <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg></span>
+          <span>Über</span>
+        </div>
+        <div class="nav-item nav-item--tut" onclick="localStorage.removeItem('csf_tut_done');openTutorial(0)" data-label="Tutorial" onmouseenter="_showTooltip('Tutorial neu starten',this)" onmouseleave="_hideTooltip()">
+          <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></span>
+          <span>Tutorial</span>
+        </div>
+      </nav>
+
+      <!-- ── STATUS BAR ── -->
+      <div id="statusBar">
+        <div class="status-left">
+          <div class="save-dot" id="saveDot"></div>
+          <span class="status-lbl" id="saveLabel">autosave · on</span>
+        </div>
+        <div class="status-center">
+          <button class="status-reload-btn" onclick="location.reload()" onmouseenter="_showTooltip('App neu laden', this)" onmouseleave="_hideTooltip()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+            Neu laden
+          </button>
+        </div>
+        <div class="status-right">
+          <span id="todayStr" class="status-lbl">—</span>
+          <span class="status-version">v10.6</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ═══════════ MODAL: POSTEN / TRANSFER ═══════════ -->
+    <div class="overlay" id="modalOverlay" onclick="overlayClick(event)">
+      <div class="modal">
+        <div class="modal-header">
+          <h3 id="modalH">Neuer Posten</h3>
+          <div class="modal-close" onclick="closeModal()">✕</div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="modal-tabs">
+          <div
+            class="modal-tab active"
+            data-tab="posten"
+            onclick="switchModalTab('posten')"
+          >
+            Posten
+          </div>
+          <div
+            class="modal-tab"
+            data-tab="transfer"
+            onclick="switchModalTab('transfer')"
+            style="display:none"
+          >
+            Umbuchung
+          </div>
+          <div
+            class="modal-tab"
+            data-tab="archive"
+            onclick="switchModalTab('archive')"
+            id="modalTabArchive"
+          >
+            📎 Dokumente
+          </div>
+        </div>
+
+        <!-- TAB: POSTEN -->
+        <div class="modal-pane active" id="mpane-posten">
+          <!-- Modus-Auswahl: Segmented Control -->
+          <div class="modal-mode-toggle">
+            <button id="btnModeSerie" class="mode-btn active" type="button" onclick="_setPostenMode('serie')">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+              Serienbuchung
+            </button>
+            <button id="btnModeEinzel" class="mode-btn" type="button" onclick="_setPostenMode('einmalig')">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+              Einzelbuchung
+            </button>
+          </div>
+          <div class="frow c2">
+            <div class="fg">
+              <label>Bezeichnung</label>
+              <input
+                id="fName"
+                type="text"
+                placeholder="z.B. Miete, Spotify..."
+              />
+            </div>
+            <div class="fg">
+              <label>Zahlungsempfänger</label>
+              <div class="empf-input-row">
+                <input id="fEmpfaenger" type="text" placeholder="z.B. Vermieter GmbH..." />
+                <button type="button" class="empf-acc-btn" id="btnEmpfKonto" onclick="_toggleEmpfMode()" onmouseenter="_showTooltip('Umbuchung — internes Konto', this)" onmouseleave="_hideTooltip()">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+                </button>
+              </div>
+              <div class="acc-select-wrap" id="fEmpfAccWrap" style="display:none; margin-top:6px;">
+                <select id="fEmpfAcc" class="acc-select-hidden"></select>
+                <div class="acc-select-trigger" id="fEmpfAccTrigger" onclick="_toggleAccDropdown('fEmpfAcc')" tabindex="0">
+                  <span class="acc-select-dot" id="fEmpfAccDot"></span>
+                  <span class="acc-select-label" id="fEmpfAccLabel">— Zielkonto wählen —</span>
+                  <svg class="acc-select-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+                <div class="acc-select-menu" id="fEmpfAccMenu" style="display:none"></div>
+              </div>
+            </div>
+          </div>
+          <div class="frow" id="fCreditorRow">
+            <div class="fg">
+              <label>Kreditor</label>
+              <div class="kr-inline-row">
+                <select class="kr-inline-select" id="fCreditor">
+                  <option value="">— kein Kreditor —</option>
+                </select>
+                <button type="button" class="btn sm kr-inline-new" onclick="openCreditorModal()">+ Neu</button>
+              </div>
+            </div>
+          </div>
+          <div class="frow c3">
+            <div class="fg">
+              <label>Betrag €</label>
+              <input
+                id="fAmount"
+                type="number"
+                step="0.01"
+                placeholder="0.00"
+              />
+            </div>
+            <div class="fg">
+              <label>Typ</label>
+              <select id="fType">
+                <option value="ausgabe" selected>Ausgabe</option>
+                <option value="einnahme">Einnahme</option>
+              </select>
+            </div>
+            <div class="fg" id="fIntervalRow">
+              <label>Intervall</label>
+              <select id="fInterval" onchange="_togglePostenMode()">
+                <option value="monatl.">Monatlich</option>
+                <option value="viertelj.">Vierteljährlich</option>
+                <option value="halbjährl.">Halbjährlich</option>
+                <option value="jährl.">Jährlich</option>
+                <option value="einmalig" hidden>Einmalig</option>
+              </select>
+            </div>
+          </div>
+          <div class="frow c2">
+            <!-- Fällig-Tag: nur bei Serie -->
+            <div class="fg" id="fDueRow">
+              <label>Fällig (Tag)</label>
+              <input
+                id="fDue"
+                type="number"
+                min="1"
+                max="31"
+                placeholder="1–31"
+              />
+            </div>
+            <!-- Buchungsdatum: nur bei Einmalig -->
+            <div class="fg" id="fBookingDateRow" style="display:none">
+              <label>Buchungsdatum</label>
+              <input id="fBookingDate" type="date" />
+            </div>
+            <div class="fg">
+              <label>Konto</label>
+              <div class="acc-select-wrap" id="fAccountWrap">
+                <select id="fAccount" class="acc-select-hidden">
+                  <!-- wird per JS befüllt -->
+                </select>
+                <div class="acc-select-trigger" id="fAccountTrigger" onclick="_toggleAccDropdown('fAccount')" tabindex="0">
+                  <span class="acc-select-dot" id="fAccountDot"></span>
+                  <span class="acc-select-label" id="fAccountLabel">— nicht zugeordnet —</span>
+                  <svg class="acc-select-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+                <div class="acc-select-menu" id="fAccountMenu" style="display:none"></div>
+              </div>
+            </div>
+          </div>
+          <!-- Laufzeit: nur bei Serie -->
+          <div class="frow c2" id="fLaufzeitRow">
+            <div class="fg">
+              <label id="fStartLabel">Laufzeit ab</label>
+              <input id="fStart" type="date" />
+            </div>
+            <div class="fg">
+              <label id="fEndLabel">Laufzeit bis</label>
+              <input id="fEnd" type="date" placeholder="leer = unbefristet" />
+            </div>
+          </div>
+          <div class="frow c2" id="fCancellationRow" style="display:none">
+            <div class="fg">
+              <label>Kündigungsfrist (Tage)</label>
+              <input id="fCancellationDays" type="number" min="0" max="730" placeholder="z.B. 30" />
+            </div>
+          </div>
+          <div class="frow c2">
+            <div class="fg">
+              <label>Notiz</label>
+              <input
+                id="fNote"
+                type="text"
+                placeholder="z.B. Kündigungsfrist..."
+              />
+            </div>
+          </div>
+          <div class="frow" id="fCategoryRow">
+            <div class="fg">
+              <label>Kategorie</label>
+              <div class="cat-picker" id="fCategoryPicker"></div>
+            </div>
+          </div>
+          <div class="modal-actions">
+            <button
+              class="btn danger"
+              id="postenModalDelete"
+              onclick="deletePosten()"
+              style="display: none; margin-right: auto"
+            >
+              Löschen
+            </button>
+            <button class="btn" onclick="closeModal()">Abbrechen</button>
+            <button class="btn primary" onclick="savePosten()">
+              Speichern
+            </button>
+          </div>
+        </div>
+
+        <!-- TAB: ARCHIV -->
+        <div class="modal-pane" id="mpane-archive">
+          <div id="modalArchivePanel" style="padding: 4px 0 8px"></div>
+        </div>
+
+        <!-- TAB: UMBUCHUNG -->
+        <div class="modal-pane" id="mpane-transfer">
+          <div class="frow c2">
+            <div class="fg">
+              <label>Von Konto</label>
+              <div class="acc-select-wrap" id="fTrfFromWrap">
+                <select id="fTrfFrom" class="acc-select-hidden"></select>
+                <div class="acc-select-trigger" id="fTrfFromTrigger" onclick="_toggleAccDropdown('fTrfFrom')" tabindex="0">
+                  <span class="acc-select-dot" id="fTrfFromDot"></span>
+                  <span class="acc-select-label" id="fTrfFromLabel">— nicht zugeordnet —</span>
+                  <svg class="acc-select-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+                <div class="acc-select-menu" id="fTrfFromMenu" style="display:none"></div>
+              </div>
+            </div>
+            <div class="fg">
+              <label>Nach Konto</label>
+              <div class="acc-select-wrap" id="fTrfToWrap">
+                <select id="fTrfTo" class="acc-select-hidden"></select>
+                <div class="acc-select-trigger" id="fTrfToTrigger" onclick="_toggleAccDropdown('fTrfTo')" tabindex="0">
+                  <span class="acc-select-dot" id="fTrfToDot"></span>
+                  <span class="acc-select-label" id="fTrfToLabel">— nicht zugeordnet —</span>
+                  <svg class="acc-select-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+                <div class="acc-select-menu" id="fTrfToMenu" style="display:none"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="transfer-arrow">⇅</div>
+          <div class="frow c2">
+            <div class="fg">
+              <label>Betrag €</label>
+              <input
+                id="fTrfAmount"
+                type="number"
+                step="0.01"
+                placeholder="0.00"
+              />
+            </div>
+            <div class="fg">
+              <label>Wiederholung</label>
+              <select id="fTrfInterval" onchange="_toggleTrfInterval()">
+                <option value="einmalig">Einmalig</option>
+                <option value="monatl.">Monatlich</option>
+                <option value="viertelj.">Vierteljährlich</option>
+                <option value="halbjährl.">Halbjährlich</option>
+                <option value="jährl.">Jährlich</option>
+              </select>
+            </div>
+          </div>
+          <div class="frow c2">
+            <div class="fg" id="fTrfDateRow">
+              <label id="fTrfDateLabel">Buchungsdatum</label>
+              <input id="fTrfDate" type="date" />
+            </div>
+            <div class="fg" id="fTrfDayRow" style="display: none">
+              <label>Ausführungstag (1–31)</label>
+              <input
+                id="fTrfExecDay"
+                type="number"
+                min="1"
+                max="31"
+                placeholder="z.B. 2"
+              />
+            </div>
+          </div>
+          <div class="frow">
+            <div class="fg">
+              <label>Notiz</label>
+              <input
+                id="fTrfNote"
+                type="text"
+                placeholder="z.B. Monatsrücklage..."
+              />
+            </div>
+          </div>
+          <div class="modal-actions">
+            <button
+              class="btn danger"
+              id="trfModalDelete"
+              onclick="deleteTransfer()"
+              style="display: none; margin-right: auto"
+            >
+              Löschen
+            </button>
+            <button class="btn" onclick="closeModal()">Abbrechen</button>
+            <button class="btn primary" onclick="saveTransfer()">
+              Speichern
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ MODAL: KONTO ═══════════ -->
+    <div
+      class="overlay"
+      id="accModalOverlay"
+      onclick="if (_accOverlayMousedownOnBg && event.target === this) closeAccountModal();"
+    >
+      <div class="modal">
+        <div class="modal-header">
+          <h3 id="accModalTitle">Neues Konto</h3>
+          <div class="modal-close" onclick="closeAccountModal()">✕</div>
+        </div>
+        <div class="frow c2">
+          <div class="fg">
+            <label>Kontoname</label>
+            <input id="accFLabel" type="text" placeholder="z.B. DKB Giro" />
+          </div>
+          <div class="fg">
+            <label>Kontoart</label>
+            <select id="accFType" class="acc-type-select">
+              <option value="girokonto">Girokonto</option>
+              <option value="kreditkarte">Kreditkarte</option>
+              <option value="tagesgeld">Tagesgeld</option>
+              <option value="sparkonto">Sparkonto</option>
+              <option value="depot">Depot</option>
+              <option value="festgeld">Festgeld</option>
+              <option value="vl">VL-Konto</option>
+              <option value="sonstiges">Sonstiges</option>
+            </select>
+          </div>
+        </div>
+        <div class="frow c2">
+          <div class="fg">
+            <label>Aktueller Stand €</label>
+            <input id="accFBalance" type="text" placeholder="0,00" />
+          </div>
+          <div class="fg">
+            <!-- accFSub hidden, preserved for data compat -->
+            <input id="accFSub" type="hidden" value="" />
+          </div>
+        </div>
+        <!-- Nummernfeld: wechselt je nach Kontoart -->
+        <div class="frow" id="accNumberRow">
+          <!-- wird per JS befüllt via updateAccNumberFields() -->
+        </div>
+        <!-- Abrechnungsfelder: nur bei Kreditkarte -->
+        <div class="frow" id="accBillingRow" style="display: none">
+          <!-- wird per JS befüllt via _updateBillingFields() -->
+        </div>
+        <!-- Hauptkonto -->
+        <div class="frow c2">
+          <div class="fg">
+            <label
+              style="
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                cursor: pointer;
+                font-weight: normal;
+                user-select: none;
+              "
+            >
+              <input
+                type="checkbox"
+                id="accFIsMain"
+                style="
+                  accent-color: var(--blue);
+                  width: 15px;
+                  height: 15px;
+                  cursor: pointer;
+                "
+                onchange="_toggleMainIncomeField()"
+              />
+              <span>Als <strong>Hauptkonto</strong> festlegen</span>
+            </label>
+          </div>
+          <div class="fg">
+            <label
+              >Bank / Gruppe
+              <span style="opacity: 0.5; font-size: 0.85em"
+                >(optional)</span
+              ></label
+            >
+            <select id="accFBankGroup" onchange="_onBankGroupChange(this)">
+              <!-- wird per JS befüllt -->
+            </select>
+            <input
+              id="accFBankGroupNew"
+              type="text"
+              placeholder="Neue Gruppe eingeben..."
+              style="display:none;margin-top:6px"
+            />
+          </div>
+        </div>
+        <div class="frow" id="accFGroupRefRow" style="display: none">
+          <div class="fg" style="grid-column: 1/-1">
+            <label
+              style="
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                cursor: pointer;
+                font-weight: normal;
+                user-select: none;
+              "
+            >
+              <input
+                type="checkbox"
+                id="accFIsGroupRef"
+                style="
+                  accent-color: var(--amber);
+                  width: 15px;
+                  height: 15px;
+                  cursor: pointer;
+                "
+              />
+              <span
+                >Als <strong>Referenzkonto</strong> dieser Gruppe
+                festlegen</span
+              >
+              <span style="font-size: 0.72em; color: var(--text3)"
+                >(steht immer oben, nicht verschiebbar)</span
+              >
+            </label>
+          </div>
+        </div>
+        <div class="frow" id="accFMainIncomeRow" style="display: none">
+          <div class="fg" style="grid-column: 1/-1">
+            <label
+              >Monatlicher Gehaltseingang
+              <span style="opacity: 0.5; font-size: 0.82em">
+                — Grundlage für Cockpit-Berechnung</span
+              >
+            </label>
+            <input
+              id="accFMonthlyIncome"
+              type="text"
+              placeholder="z.B. 3200,00"
+            />
+          </div>
+        </div>
+        <div class="frow" id="accFIncomeDetailsRow" style="display: none">
+          <div class="fg">
+            <label>Zahltag
+              <span style="opacity: 0.5; font-size: 0.82em">— Tag des Monats (1–31)</span>
+            </label>
+            <input
+              id="accFZahltag"
+              type="number"
+              min="1"
+              max="31"
+              placeholder="z.B. 15"
+            />
+          </div>
+          <div class="fg">
+            <label>Erste Buchung seit
+              <span style="opacity: 0.5; font-size: 0.82em">— rückwirkend generieren</span>
+            </label>
+            <input id="accFContractStart" type="date" />
+          </div>
+        </div>
+        <div class="frow" id="accFVlRateRow" style="display: none">
+          <div class="fg">
+            <label>Monatlicher VL-Beitrag
+              <span style="opacity: 0.5; font-size: 0.82em">— wird als Einnahme gebucht</span>
+            </label>
+            <input id="accFVlRate" type="text" placeholder="z.B. 40,00" />
+          </div>
+          <div class="fg">
+            <label>Buchungsstart
+              <span style="opacity: 0.5; font-size: 0.82em">— rückwirkend generieren</span>
+            </label>
+            <input id="accFVlStart" type="date" />
+          </div>
+        </div>
+        <div class="frow">
+          <div class="fg">
+            <label>Farbe</label>
+            <div class="color-row" id="accColorRow"></div>
+          </div>
+        </div>
+        <div class="frow">
+          <div class="fg" style="grid-column: 1/-1">
+            <label
+              >Notiz
+              <span style="opacity: 0.5; font-size: 0.85em"
+                >(optional)</span
+              ></label
+            >
+            <textarea
+              id="accFNote"
+              rows="2"
+              placeholder="Eigene Notizen zu diesem Konto..."
+              style="
+                width: 100%;
+                box-sizing: border-box;
+                background: var(--input-bg);
+                border: 1px solid var(--border);
+                border-radius: var(--r1);
+                padding: 8px 10px;
+                color: var(--text1);
+                font-family: var(--sans);
+                font-size: 0.85em;
+                resize: vertical;
+                outline: none;
+              "
+            ></textarea>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button
+            class="btn danger"
+            id="accModalDelete"
+            onclick="deleteAccount()"
+            style="display: none; margin-right: auto"
+          >
+            Löschen
+          </button>
+          <button class="btn" onclick="closeAccountModal()">Abbrechen</button>
+          <button class="btn primary" onclick="saveAccountModal()">
+            Speichern
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ MODAL: SPARZIEL ═══════════ -->
+    <div
+      class="overlay"
+      id="goalModalOverlay"
+      onclick="if (_goalOverlayMousedownOnBg && event.target === this) closeGoalModal();"
+    >
+      <div class="modal">
+        <div class="modal-header">
+          <h3 id="goalModalTitle">Neues Ziel</h3>
+          <div class="modal-close" onclick="closeGoalModal()">✕</div>
+        </div>
+        <div class="frow c2">
+          <div class="fg">
+            <label>Bezeichnung</label>
+            <input
+              id="gfName"
+              type="text"
+              placeholder="z.B. Notgroschen, Urlaub..."
+            />
+          </div>
+          <div class="fg">
+            <label>Icon</label>
+            <div class="goal-icon-picker" id="goalIconPicker">
+              <span class="goal-icon-opt" onclick="selectGoalIcon('🎯')"
+                >🎯</span
+              >
+              <span class="goal-icon-opt" onclick="selectGoalIcon('🏖️')"
+                >🏖️</span
+              >
+              <span class="goal-icon-opt" onclick="selectGoalIcon('🚗')"
+                >🚗</span
+              >
+              <span class="goal-icon-opt" onclick="selectGoalIcon('🏠')"
+                >🏠</span
+              >
+              <span class="goal-icon-opt" onclick="selectGoalIcon('💻')"
+                >💻</span
+              >
+              <span class="goal-icon-opt" onclick="selectGoalIcon('✈️')"
+                >✈️</span
+              >
+              <span class="goal-icon-opt" onclick="selectGoalIcon('💰')"
+                >💰</span
+              >
+              <span class="goal-icon-opt" onclick="selectGoalIcon('📈')"
+                >📈</span
+              >
+              <span class="goal-icon-opt" onclick="selectGoalIcon('🎓')"
+                >🎓</span
+              >
+              <span class="goal-icon-opt" onclick="selectGoalIcon('💍')"
+                >💍</span
+              >
+            </div>
+          </div>
+        </div>
+        <div class="frow c2">
+          <div class="fg">
+            <label>Zielbetrag €</label>
+            <input id="gfTarget" type="text" placeholder="5.000,00" />
+          </div>
+          <div class="fg">
+            <label>Bereits gespart €</label>
+            <input id="gfCurrent" type="text" placeholder="0,00" />
+          </div>
+        </div>
+        <div class="frow c2">
+          <div class="fg">
+            <label>Startdatum <span style="color:var(--text3);font-weight:400">(Sparbeginn)</span></label>
+            <input id="gfStart" type="date" oninput="_goalAutoRate()" />
+          </div>
+          <div class="fg">
+            <label>Zieldatum</label>
+            <input id="gfDeadline" type="date" oninput="_goalAutoRate()" />
+          </div>
+        </div>
+        <div class="frow">
+          <div class="fg" style="grid-column:1/-1">
+            <label>Monatliche Sparrate € <span id="gfRateHint" style="color:var(--text3);font-weight:400;font-size:.8em"></span></label>
+            <input id="gfRate" type="text" placeholder="200,00" oninput="_goalOnRateInput()" />
+            <div class="gf-slider-wrap">
+              <span class="gf-slider-lbl" id="gfSliderMin">0 €</span>
+              <input type="range" id="gfRateSlider" class="gf-slider" min="0" max="1000" step="5" oninput="_goalOnSliderInput()" />
+              <span class="gf-slider-lbl" id="gfSliderMax">1.000 €</span>
+            </div>
+          </div>
+          <div id="gfFeedbackPanel" class="gf-feedback-panel" style="display:none;grid-column:1/-1">
+            <div class="gf-fb-rows">
+              <div class="gf-fb-row"><span class="gf-fb-key">Ziel</span><span class="gf-fb-val" id="gfFbTarget">—</span></div>
+              <div class="gf-fb-row"><span class="gf-fb-key">Bereits gespart</span><span class="gf-fb-val" id="gfFbCurrent">—</span></div>
+              <div class="gf-fb-row"><span class="gf-fb-key">Noch nötig</span><span class="gf-fb-val" id="gfFbRemaining">—</span></div>
+              <div class="gf-fb-row"><span class="gf-fb-key">Zeitraum</span><span class="gf-fb-val" id="gfFbMonths">—</span></div>
+            </div>
+            <div class="gf-fb-status" id="gfFbStatus"></div>
+          </div>
+        </div>
+        <div class="frow">
+          <div class="fg" style="grid-column: 1/-1">
+            <label
+              style="
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                cursor: pointer;
+                font-weight: normal;
+                user-select: none;
+              "
+            >
+              <input
+                type="checkbox"
+                id="gfCreatePosten"
+                checked
+                style="
+                  accent-color: var(--blue);
+                  width: 15px;
+                  height: 15px;
+                  cursor: pointer;
+                "
+                onchange="_goalCreatePosten = this.checked"
+              />
+              <span
+                >Monatlichen <strong>Fixkosten-Posten</strong> automatisch
+                anlegen</span
+              >
+              <span style="font-size: 0.72em; color: var(--text3)"
+                >(sichtbar in Zahlungsplan)</span
+              >
+            </label>
+          </div>
+        </div>
+        <div class="frow">
+          <div class="fg">
+            <label>Farbe</label>
+            <div class="color-row" id="goalColorRow"></div>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button
+            class="btn danger"
+            id="goalModalDelete"
+            style="display: none; margin-right: auto"
+            onclick="deleteGoal()"
+          >
+            Löschen
+          </button>
+          <button class="btn" onclick="closeGoalModal()">Abbrechen</button>
+          <button class="btn primary" onclick="saveGoal()">Speichern</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ MODAL: KREDITOR ═══════════ -->
+    <div
+      class="overlay"
+      id="creditorModalOverlay"
+      onclick="creditorOverlayClick(event)"
+    >
+      <div class="modal">
+        <div class="kr-modal-header">
+          <h3 id="creditorModalTitle">Neuer Kreditor</h3>
+          <div class="modal-close" onclick="closeCreditorModal()">✕</div>
+        </div>
+        <div class="kr-modal-body">
+          <div class="kr-form-row">
+            <div class="kr-fg">
+              <label>Name *</label>
+              <input class="kr-inp" id="krName" type="text" placeholder="z.B. PayPal, Vermieter GmbH…" />
+            </div>
+            <div class="kr-fg">
+              <label>Website</label>
+              <input class="kr-inp" id="krWebsite" type="text" placeholder="paypal.com" />
+            </div>
+          </div>
+          <div class="kr-form-row">
+            <div class="kr-fg">
+              <label>E-Mail</label>
+              <input class="kr-inp" id="krEmail" type="email" placeholder="kontakt@beispiel.de" />
+            </div>
+            <div class="kr-fg">
+              <label>Telefon</label>
+              <input class="kr-inp" id="krPhone" type="tel" placeholder="+49 30 …" />
+            </div>
+          </div>
+          <div class="kr-form-row full">
+            <div class="kr-fg">
+              <label>Verknüpftes Konto <span style="color:var(--text3);font-weight:400">(optional)</span></label>
+              <select class="kr-inp" id="krAccountId"></select>
+              <div id="krAccountHint" style="font-size:.7em;color:var(--text3);margin-top:4px;min-height:14px"></div>
+            </div>
+          </div>
+          <div class="kr-form-row full">
+            <div class="kr-fg">
+              <label>Adresse</label>
+              <input class="kr-inp" id="krAddress" type="text" placeholder="Musterstraße 1, 12345 Berlin" />
+            </div>
+          </div>
+          <div class="kr-form-row full">
+            <div class="kr-fg">
+              <label>Logo</label>
+              <div class="kr-logo-picker" id="krLogoPicker">
+                <!-- wird per JS befüllt -->
+              </div>
+              <div class="kr-logo-custom-row">
+                <input class="kr-inp" id="krIcon" type="text" placeholder="oder eigenes Kürzel / Emoji" maxlength="4" oninput="krClearLogoPicker()" />
+                <input class="kr-color-inp" id="krColor" type="color" value="#4d9eff" onmouseenter="_showTooltip('Akzentfarbe', this)" onmouseleave="_hideTooltip()" />
+              </div>
+              <input type="hidden" id="krLogoDomain" value="" />
+            </div>
+          </div>
+          <div class="kr-form-row full">
+            <div class="kr-fg">
+              <label>Notiz</label>
+              <input class="kr-inp" id="krNote" type="text" placeholder="Interne Notiz…" />
+            </div>
+          </div>
+        </div>
+        <div id="krTemplates" class="kr-templates">
+          <div class="kr-templates-label">Schnellvorlagen</div>
+          <div class="kr-tpl-chips">
+            <button class="kr-tpl-chip" onclick="krApplyTemplate('PayPal')">PayPal</button>
+            <button class="kr-tpl-chip" onclick="krApplyTemplate('Klarna')">Klarna</button>
+            <button class="kr-tpl-chip" onclick="krApplyTemplate('Amazon')">Amazon</button>
+            <button class="kr-tpl-chip" onclick="krApplyTemplate('Apple')">Apple</button>
+            <button class="kr-tpl-chip" onclick="krApplyTemplate('Google')">Google</button>
+            <button class="kr-tpl-chip" onclick="krApplyTemplate('Stripe')">Stripe</button>
+            <button class="kr-tpl-chip" onclick="krApplyTemplate('SEPA Lastschrift')">SEPA</button>
+          </div>
+        </div>
+        <div class="kr-modal-actions">
+          <button class="btn danger" id="creditorModalDelete" style="display:none;margin-right:auto" onclick="deleteCreditor()">Löschen</button>
+          <button class="btn" onclick="closeCreditorModal()">Abbrechen</button>
+          <button class="btn primary" onclick="saveCreditor()">Speichern</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PDF Container -->
+    <div id="pdf-root"></div>
+
+    <!-- ═══════════ LIZENZ-AKTIVIERUNG ═══════════ -->
+    <div id="licenseScreen" style="display:none">
+      <div id="licenseBox">
+        <div class="lic-logo">🔐</div>
+        <div class="lic-title">VaultBox aktivieren</div>
+        <div class="lic-sub">Gib deinen Lizenzschlüssel ein um fortzufahren.<br>Einmalig online — danach vollständig offline.</div>
+        <input class="lic-inp" id="licenseKeyInput" type="text" placeholder="XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
+          onkeydown="if(event.key==='Enter')activateLicense()" autocomplete="off" spellcheck="false" />
+        <div class="lic-error" id="licenseError"></div>
+        <button class="lic-btn" id="licenseActivateBtn" onclick="activateLicense()">Jetzt aktivieren</button>
+        <div class="lic-hint">Lizenzschlüssel erhalten bei <strong>vaultbox.de</strong> · 149€ einmalig · kein Abo</div>
+      </div>
+    </div>
+
+    <!-- ═══════════ LOCKSCREEN ═══════════ -->
+    <div id="lockScreen">
+      <div id="lockBox">
+        <div class="lock-logo">
+          <div class="lock-logo-box">
+            <span style="font-size:2rem;line-height:1">🔐</span>
+          </div>
+        </div>
+        <div id="lockTitle">VaultBox entsperren</div>
+        <div id="lockSubtitle">Bitte Passwort eingeben um fortzufahren</div>
+        <div class="lock-inp-wrap">
+          <input
+            class="lock-inp"
+            id="lockPw"
+            type="password"
+            placeholder="Passwort"
+            onkeydown="lockKeydown(event)"
+          />
+          <span class="lock-inp-eye" onclick="toggleLockPwVis('lockPw', this)"
+            >👁</span
+          >
+        </div>
+        <div class="lock-inp-wrap" id="lockConfirmRow" style="display: none">
+          <input
+            class="lock-inp"
+            id="lockPwConfirm"
+            type="password"
+            placeholder="Passwort wiederholen"
+            onkeydown="lockKeydown(event)"
+          />
+          <span
+            class="lock-inp-eye"
+            onclick="toggleLockPwVis('lockPwConfirm', this)"
+            >👁</span
+          >
+        </div>
+        <div id="lockError"></div>
+        <button id="lockBtn">Entsperren</button>
+        <div class="lock-hint">VaultBox · Alle Daten lokal · Keine Cloud</div>
+      </div>
+    </div>
+
+    <!-- ═══════════ JS MODULE ═══════════ -->
+    <script src="js/license.js"></script>
+    <script src="js/toast.js"></script>
+    <script>
+      window.onerror = function(msg) {
+        if (typeof showToast === "function") showToast("Fehler: " + msg, "error", 6000);
+        return false;
+      };
+      window.onunhandledrejection = function() {
+        if (typeof showToast === "function") showToast("Unerwarteter Fehler", "error", 4000);
+      };
+    </script>
+    <script src="js/state.js"></script>
+    <script src="js/tooltips.js"></script>
+    <script src="js/dialog.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/nav.js"></script>
+    <script src="js/accounts.js"></script>
+    <script src="js/modal.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/umsaetze.js"></script>
+    <script src="js/jahresuebersicht.js"></script>
+    <script src="js/vertraege.js"></script>
+    <script src="js/io.js"></script>
+    <script src="js/print.js"></script>
+    <script src="js/archive.js"></script>
+    <script src="js/notes.js"></script>
+    <script src="js/intro.js"></script>
+    <script src="js/lockscreen.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/goals.js"></script>
+    <script src="js/docs.js"></script>
+    <script src="js/kreditoren.js"></script>
+    <script src="js/pivot.js"></script>
+    <script src="js/visionboard.js"></script>
+    <script src="js/krypto.js"></script>
+    <script src="js/bookings.js"></script>
+    <script>
+      // ── INIT ──
+      document.addEventListener("DOMContentLoaded", () => {
+        loadSettings();
+        checkLicense().then(() => {
+          checkLock();
+          const had = hydrate();
+          if (!had) { seedData(); if (typeof seedCryptoData === "function") seedCryptoData(); }
+          migrateState();
+          if (typeof initBookings === "function") initBookings();
+          if (typeof _upsertMonthCloseEntry === "function" && (S.closedMonths || []).length > 0) {
+            (S.closedMonths || []).forEach(mk => _upsertMonthCloseEntry(mk));
+            persist();
+          }
+          renderDashboard();
+          runSplash();
+          checkFirstVisit();
+          if (typeof initSafepoints === "function") initSafepoints();
+          setTimeout(() => {
+            if (typeof bindTooltips === "function") bindTooltips();
+          }, 500);
+          document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape") {
+              closeModal();
+              closeAccountModal();
+              closeGoalModal();
+              closeTutorial();
+            }
+          });
+        });
+      });
+
+      function toggleLockPwVis(id, btn) {
+        const inp = document.getElementById(id);
+        if (!inp) return;
+        inp.type = inp.type === "password" ? "text" : "password";
+        btn.textContent = inp.type === "password" ? "👁" : "🙈";
+      }
+    </script>
+
+    <!-- ══ CUSTOM DIALOG ══ -->
+    <div id="appDialogOverlay">
+      <div id="appDialogBox">
+        <div class="dlg-icon" id="dlgIcon"></div>
+        <div class="dlg-title" id="dlgTitle"></div>
+        <div class="dlg-body" id="dlgBody"></div>
+        <div class="dlg-actions" id="dlgActions"></div>
+      </div>
+    </div>
+
+    <!-- ── SIDEBAR MODE + COMPACT TOOLTIPS ── -->
+    <script>
+      // ── Sidebar Toggle ──
+      const SIDEBAR_KEY = "csf_sidebar_mode";
+
+      function _isSidebarOverlayMode() {
+        return window.innerWidth <= 1100;
+      }
+
+      function _closeSidebarOverlay() {
+        document.querySelector(".shell").classList.remove("sidebar-open");
+        const bd = document.getElementById("sidebarBackdrop");
+        if (bd) {
+          bd.classList.remove("show");
+          setTimeout(function() { if (bd.parentNode) bd.parentNode.removeChild(bd); }, 200);
+        }
+      }
+
+      function toggleSidebarMode() {
+        const shell = document.querySelector(".shell");
+
+        // ── Overlay-Modus bei schmalen Fenstern (≤1100px) ──
+        if (_isSidebarOverlayMode()) {
+          if (shell.classList.contains("sidebar-open")) {
+            _closeSidebarOverlay();
+          } else {
+            shell.classList.add("sidebar-open");
+            var bd = document.getElementById("sidebarBackdrop");
+            if (!bd) {
+              bd = document.createElement("div");
+              bd.id = "sidebarBackdrop";
+              bd.className = "sidebar-backdrop";
+              bd.addEventListener("click", _closeSidebarOverlay);
+              document.body.appendChild(bd);
+            }
+            requestAnimationFrame(function() { bd.classList.add("show"); });
+          }
+          return;
+        }
+
+        // ── Normaler Compact-Toggle bei breitem Fenster ──
+        var isCompact = shell.dataset.sidebar === "compact";
+        shell.dataset.sidebar = isCompact ? "" : "compact";
+        localStorage.setItem(SIDEBAR_KEY, shell.dataset.sidebar);
+        // Icon-Update via data-Attribut (CSS zeigt richtiges Icon)
+        var btn = document.getElementById("sidebarToggleBtn");
+        if (btn) btn.dataset.compact = isCompact ? "" : "true";
+      }
+
+      // Overlay schließen wenn Fenster größer wird + compact-Attribut synchronisieren
+      window.addEventListener("resize", function() {
+        const shell = document.querySelector(".shell");
+        if (window.innerWidth > 1100) {
+          _closeSidebarOverlay();
+          // compact-Attribut wiederherstellen falls in localStorage gespeichert
+          const saved = localStorage.getItem("csf_sidebar_mode");
+          if (saved === "compact" && shell.dataset.sidebar !== "compact") {
+            shell.dataset.sidebar = "compact";
+          }
+        } else {
+          // Bei ≤1100px: compact-Attribut entfernen (Overlay-Modus übernimmt)
+          if (shell.dataset.sidebar === "compact") {
+            shell.dataset.sidebar = "";
+          }
+        }
+      });
+
+      // ── Restore saved mode ──
+      // Bei ≤1100px wird Compact über media-query + .shell:not(.sidebar-open) gesteuert,
+      // data-sidebar="compact" darf dort nicht gesetzt sein (überschreibt Overlay-Styles).
+      (function () {
+        const saved = localStorage.getItem("csf_sidebar_mode");
+        if (saved === "compact" && window.innerWidth > 1100) {
+          document.querySelector(".shell").dataset.sidebar = "compact";
+        }
+      })();
+
+      // ── Compact Tooltip ──
+      (function () {
+        const tip = document.createElement("div");
+        tip.className = "nav-compact-tooltip";
+        document.body.appendChild(tip);
+        let hideTimer;
+
+        function isCompact() {
+          const shell = document.querySelector(".shell");
+          if (!shell) return false;
+          // Compact wenn: manuell compact ODER auto-compact (≤1100px) und Overlay nicht offen
+          return shell.dataset.sidebar === "compact" ||
+                 (window.innerWidth <= 1100 && !shell.classList.contains("sidebar-open"));
+        }
+
+        document.addEventListener("mouseover", function (e) {
+          if (!isCompact()) return;
+          const el = e.target.closest(".nav-item[data-label]");
+          if (!el) return;
+          clearTimeout(hideTimer);
+          const r = el.getBoundingClientRect();
+          tip.textContent = el.dataset.label;
+          tip.style.top = r.top + r.height / 2 + "px";
+          tip.classList.add("show");
+        });
+
+        document.addEventListener("mouseout", function (e) {
+          if (!isCompact()) return;
+          const el = e.target.closest(".nav-item[data-label]");
+          if (!el) return;
+          hideTimer = setTimeout(() => tip.classList.remove("show"), 80);
+        });
+      })();
+    </script>
+    <script>
+      // ── AKTUELLE SEITE NEU LADEN ──────────
+      function refreshCurrentPage() {
+        const active = document.querySelector(".page.active");
+        if (!active) return;
+        const id = active.id; // z.B. "p-dashboard"
+        const page = id.replace("p-", "");
+        const renderMap = {
+          dashboard: () =>
+            typeof renderDashboard === "function" && renderDashboard(),
+          posten: () => typeof renderPosten === "function" && renderPosten(),
+          jahr: () => typeof renderJahr === "function" && renderJahr(),
+          vertraege: () =>
+            typeof renderVertraege === "function" && renderVertraege(),
+          goals: () => typeof renderGoals === "function" && renderGoals(),
+          settings: () =>
+            typeof renderSettings === "function" && renderSettings(),
+          docs: () => typeof renderDocs === "function" && renderDocs(),
+        };
+        renderMap[page]?.();
+      }
+
+      // openPrintPreview() ist in js/print.js definiert und öffnet
+      // eine eigene BrowserWindow via csf.print.html (Electron IPC)
+    </script>
+
+    <!-- ── RING TOGGLE ── -->
+    <script>
+      var _ringOpen = false;
+
+      function _toggleRing() {
+        _ringOpen = !_ringOpen;
+        document.getElementById('ringAnchor').classList.toggle('ring-is-open', _ringOpen);
+        if (_ringOpen) {
+          setTimeout(function() {
+            document.addEventListener('click', _ringClickOutside);
+          }, 50);
+        } else {
+          document.removeEventListener('click', _ringClickOutside);
+        }
+      }
+
+      function _ringClose() {
+        if (!_ringOpen) return;
+        _ringOpen = false;
+        document.getElementById('ringAnchor').classList.remove('ring-is-open');
+        document.removeEventListener('click', _ringClickOutside);
+      }
+
+      function _ringClickOutside(e) {
+        var anchor = document.getElementById('ringAnchor');
+        if (anchor && !anchor.contains(e.target)) {
+          _ringClose();
+        }
+      }
+    </script>
+
+    <!-- ── PILL TOGGLE ── -->
+    <script>
+      var _pillOpen = false;
+
+      function _pillExpand() {
+        if (_pillOpen) return;
+        _pillOpen = true;
+        document.getElementById('pill').classList.add('pill-open');
+        setTimeout(function() {
+          document.addEventListener('click', _pillClickOutside);
+        }, 50);
+      }
+
+      function _pillClose() {
+        if (!_pillOpen) return;
+        _pillOpen = false;
+        document.getElementById('pill').classList.remove('pill-open');
+        document.removeEventListener('click', _pillClickOutside);
+      }
+
+      function _pillSyncClosedState() {
+        var pill = document.getElementById('pill');
+        if (!pill) return;
+        var activeItem = pill.querySelector('.nav-item.active');
+        if (!activeItem) return;
+        var srcIcon = activeItem.querySelector('.nav-icon');
+        var destIcon = document.getElementById('pillClosedIcon');
+        if (srcIcon && destIcon) destIcon.innerHTML = srcIcon.innerHTML;
+        var destLabel = document.getElementById('pillClosedLabel');
+        if (destLabel) {
+          var spans = activeItem.querySelectorAll('span');
+          for (var i = 0; i < spans.length; i++) {
+            if (!spans[i].classList.contains('nav-icon') && !spans[i].classList.contains('nav-badge')) {
+              destLabel.textContent = spans[i].textContent;
+              break;
+            }
+          }
+        }
+      }
+
+      function _pillClickOutside(e) {
+        var pill = document.getElementById('pill');
+        if (pill && !pill.contains(e.target)) _pillClose();
+      }
+    </script>
+  </body>
+</html>

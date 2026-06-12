@@ -1,0 +1,148 @@
+{
+  "name": "vaultbox",
+  "version": "1.0.0",
+  "description": "VaultBox — Offline-First Finanzverwaltung & Krypto-Steuer-Engine",
+  "main": "main.js",
+  "author": "Chris Schubert",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electronmon .",
+    "build": "electron-builder",
+    "build:win": "electron-builder --win",
+    "build:mac": "electron-builder --mac",
+    "build:linux": "electron-builder --linux",
+    "gen-assets": "python3 build/generate-assets.py",
+    "postinstall": "electron-rebuild -f -w better-sqlite3"
+  },
+  "dependencies": {
+    "better-sqlite3": "^12.10.0",
+    "electron-updater": "^6.8.9"
+  },
+  "devDependencies": {
+    "@electron/rebuild": "^4.0.4",
+    "electron": "^40.6.0",
+    "electron-builder": "^24.13.3",
+    "electronmon": "^2.0.2"
+  },
+  "build": {
+    "appId": "de.vaultbox.app",
+    "productName": "VaultBox",
+    "copyright": "Copyright © 2026 Chris Schubert",
+    "directories": {
+      "output": "dist",
+      "buildResources": "assets"
+    },
+    "files": [
+      "**/*",
+      "!node_modules/.cache/**",
+      "!dist/**",
+      "!build/**",
+      "!*.md",
+      "!.git/**",
+      "!.gitignore"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "assets/favicon.ico",
+      "publisherName": "Chris Schubert",
+      "legalTrademarks": "VaultBox",
+      "requestedExecutionLevel": "asInvoker"
+    },
+    "mac": {
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ],
+      "icon": "assets/icon.icns",
+      "category": "public.app-category.finance",
+      "darkModeSupport": true,
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.plist"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "icon": "assets/icon.png",
+      "category": "Office",
+      "description": "Persönliche Finanzverwaltung"
+    },
+    "dmg": {
+      "title": "VaultBox ${version}",
+      "background": "assets/dmg-background.png",
+      "icon": "assets/icon.icns",
+      "iconSize": 100,
+      "window": {
+        "width": 540,
+        "height": 380
+      },
+      "contents": [
+        {
+          "x": 130,
+          "y": 220,
+          "type": "file"
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "SchubertChris",
+        "repo": "CS-OP",
+        "releaseType": "release"
+      }
+    ],
+    "nsis": {
+      "oneClick": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "VaultBox",
+      "include": "build/installer.nsh",
+      "installerHeader": "assets/installer-header.bmp",
+      "installerHeaderIcon": "assets/favicon.ico",
+      "installerSidebar": "assets/installer-sidebar.bmp",
+      "uninstallerSidebar": "assets/installer-sidebar.bmp",
+      "installerIcon": "assets/favicon.ico",
+      "uninstallerIcon": "assets/favicon.ico",
+      "displayLanguageSelector": true,
+      "installerLanguages": [
+        "de_DE",
+        "en_US"
+      ],
+      "unicode": true,
+      "deleteAppDataOnUninstall": false,
+      "runAfterFinish": true
+    }
+  }
+}

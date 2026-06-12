@@ -1,0 +1,373 @@
+﻿/* ══════════════════════════════════════
+   TOPBAR — Bar · Groups · Save · Icon Buttons
+══════════════════════════════════════ */
+
+
+/* ══════════════════════════════════════
+   TOPBAR
+══════════════════════════════════════ */
+.topbar {
+  grid-column: 2;
+  grid-row: 1;
+  min-height: 60px;
+  background: var(--glass-tint-strong);
+  border-bottom: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px 0 18px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(var(--user-blur-px));
+  -webkit-backdrop-filter: blur(var(--user-blur-px));
+  box-shadow: 0 1px 0 var(--border);
+  transition: background 0.2s ease, backdrop-filter 0.2s ease;
+}
+.topbar-title {
+  font-size: 0.9em;
+  font-weight: 600;
+  letter-spacing: 0.1px;
+  color: var(--text);
+  position: relative;
+}
+.topbar-title::before {
+  content: "/";
+  color: var(--blue);
+  opacity: 0.5;
+  margin-right: 6px;
+  font-weight: 300;
+  font-family: var(--mono);
+}
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  position: relative;
+}
+.topbar-date {
+  font-family: var(--mono);
+  font-size: 0.65em;
+  color: var(--text3);
+  background: var(--cs-overlay-xs);
+  border: 1px solid var(--border);
+  padding: 3px 9px;
+  border-radius: 7px;
+  letter-spacing: 0.3px;
+}
+
+/* ── Icon Buttons ── */
+.icon-btn {
+  height: 30px;
+  min-width: 30px;
+  border-radius: var(--r-md);
+  background: var(--cs-overlay-sm);
+  border: 1px solid var(--border);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text2);
+  transition: all var(--t-smooth);
+  padding: 0 10px;
+  gap: 5px;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  font-family: var(--sans);
+  white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+}
+.icon-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent);
+  pointer-events: none;
+}
+.icon-btn:hover {
+  background: var(--cs-overlay-md);
+  color: var(--blue);
+  border-color: var(--blue-a25);
+  transform: translateY(-1px);
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.2),
+    0 1px 3px rgba(0, 0, 0, 0.15);
+}
+.icon-btn:hover svg {
+  filter: drop-shadow(0 0 5px var(--blue-a35));
+}
+.icon-btn:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+.icon-btn svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  transition: filter 200ms ease, color 200ms ease;
+}
+.icon-btn.primary {
+  background: linear-gradient(135deg, var(--blue-a20), var(--blue-a08));
+  color: var(--blue);
+  border-color: var(--blue-a25);
+}
+.icon-btn.primary:hover {
+  background: linear-gradient(135deg, var(--blue-a25), var(--blue-a12));
+  box-shadow: 0 4px 14px var(--blue-a15);
+}
+.icon-btn.danger {
+  color: var(--red);
+  border-color: rgba(255, 77, 106, 0.25);
+}
+.icon-btn.danger:hover {
+  background: rgba(255, 77, 106, 0.08);
+}
+.topbar-divider {
+  width: 1px;
+  height: 18px;
+  background: var(--border2);
+  margin: 0 2px;
+}
+
+/* ── Topbar linke Seite ── */
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ── Toggle-Button ── */
+.sidebar-toggle-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  background: transparent;
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text3);
+  flex-shrink: 0;
+  transition: all 0.15s;
+}
+.sidebar-toggle-btn:hover {
+  background: var(--cs-overlay-md);
+  color: var(--text2);
+  border-color: var(--border2);
+}
+.sidebar-toggle-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* ── Icon-only Buttons: Tooltip via title ── */
+.icon-btn[title]:not(:has(span)):hover::after {
+  content: attr(title);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--panel2);
+  border: 1px solid var(--border2);
+  color: var(--text);
+  font-size: 0.65em;
+  font-weight: 600;
+  white-space: nowrap;
+  padding: 4px 8px;
+  border-radius: 6px;
+  pointer-events: none;
+  z-index: 999;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* ══════════════════════════════════════
+   SAVE-BUTTON — Interaktiv
+══════════════════════════════════════ */
+#btnManualSave {
+  position: relative;
+  transition:
+    color 0.15s,
+    background 0.15s,
+    border-color 0.15s;
+}
+
+/* ── Ungespeichert: gelb leuchtend ── */
+#btnManualSave.save-btn-unsaved {
+  border-color: var(--blue-a35);
+  color: var(--blue);
+  background: var(--blue-a08);
+  box-shadow: 0 0 12px var(--blue-a20);
+}
+
+/* Pulsierender Dot oben rechts */
+#btnManualSave.save-btn-unsaved::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--blue);
+  box-shadow: 0 0 8px var(--blue-a35);
+  animation: save-dot-pulse 1.8s ease-in-out infinite;
+}
+@keyframes save-dot-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(0.6);
+  }
+}
+
+/* ── Shake-Animation beim Vibrieren ── */
+@keyframes save-shake {
+  0%,
+  100% {
+    transform: translateX(0) rotate(0);
+  }
+  15% {
+    transform: translateX(-3px) rotate(-5deg);
+  }
+  30% {
+    transform: translateX(3px) rotate(5deg);
+  }
+  45% {
+    transform: translateX(-2px) rotate(-3deg);
+  }
+  60% {
+    transform: translateX(2px) rotate(3deg);
+  }
+  80% {
+    transform: translateX(-1px) rotate(-1deg);
+  }
+}
+#btnManualSave.save-btn-pulse {
+  animation: save-shake 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+/* ── Gespeichert: grüner Flash ── */
+@keyframes save-success-flash {
+  0% {
+    background: rgba(0, 200, 122, 0.18);
+    border-color: rgba(0, 200, 122, 0.45);
+    color: var(--green);
+    box-shadow: 0 0 14px rgba(0, 200, 122, 0.3);
+  }
+  70% {
+    background: rgba(0, 200, 122, 0.1);
+    border-color: rgba(0, 200, 122, 0.25);
+    color: var(--green);
+  }
+  100% {
+    background: transparent;
+    border-color: var(--border);
+    color: var(--text3);
+    box-shadow: none;
+  }
+}
+#btnManualSave.save-btn-success {
+  animation: save-success-flash 1.4s ease forwards;
+}
+
+/* ── Autosave: kurzer blauer Blink ── */
+@keyframes save-autosave-blink {
+  0% {
+    border-color: var(--blue-a25);
+    color: var(--blue);
+  }
+  100% {
+    border-color: var(--border);
+    color: var(--text3);
+  }
+}
+#btnManualSave.save-btn-autosave {
+  animation: save-autosave-blink 0.8s ease forwards;
+}
+
+/* ── TOPBAR GRUPPEN ── */
+.topbar-group {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  background: var(--cs-overlay-xs);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 2px;
+}
+.topbar-group .icon-btn {
+  border: none;
+  background: transparent;
+  border-radius: 7px;
+}
+.topbar-group .icon-btn:hover {
+  background: var(--cs-overlay-md);
+  border: none;
+}
+.topbar-group .icon-btn.primary {
+  background: var(--blue);
+  border: none;
+}
+.topbar-group .icon-btn.primary:hover {
+  background: color-mix(in srgb, var(--blue) 85%, white);
+}
+
+
+/* ── EMOJI / SYMBOL BUTTONS ── */
+.icon-btn-emoji {
+  font-size: 0.85em;
+  line-height: 1;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Alle Emojis desaturieren → solid/monochrome Look */
+  filter: grayscale(1) brightness(1.4);
+  transition:
+    filter 0.15s,
+    transform 0.12s,
+    border-color 0.15s,
+    background 0.15s;
+  color: var(--text2);
+}
+.icon-btn-emoji:hover {
+  filter: grayscale(1) brightness(1.8);
+  transform: scale(1.12);
+  color: var(--text);
+}
+/* Speichern-Button: gelb wenn ungespeichert → filter override */
+#btnManualSave.save-btn-unsaved {
+  filter: grayscale(0) brightness(1) !important;
+}
+#btnManualSave.save-btn-success {
+  filter: grayscale(1) brightness(2) !important;
+}
+
+/* ── NEUER POSTEN BUTTON — kein Hintergrund ── */
+.icon-btn-new {
+  color: var(--blue);
+  font-size: 1.3em;
+  font-weight: 300;
+  background: transparent !important;
+  border-color: var(--blue-a25);
+  line-height: 1;
+  transition:
+    color 0.15s,
+    border-color 0.15s,
+    transform 0.12s;
+}
+.icon-btn-new:hover {
+  color: #fff;
+  border-color: var(--blue);
+  background: var(--blue) !important;
+  transform: scale(1.1);
+}

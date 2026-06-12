@@ -1,0 +1,666 @@
+﻿/* ══════════════════════════════════════
+   SIDEBAR — Brand · Nav · Footer · Compact
+══════════════════════════════════════ */
+
+
+/* ══════════════════════════════════════
+   SIDEBAR
+══════════════════════════════════════ */
+.sidebar {
+  grid-column: 1;
+  grid-row: 1/3;
+  background: var(--glass-tint-strong);
+  border-right: none;
+  backdrop-filter: blur(var(--user-blur-px));
+  -webkit-backdrop-filter: blur(var(--user-blur-px));
+  box-shadow:
+    inset -1px 0 0 var(--blue-a15),
+    inset -3px 0 16px var(--blue-a06),
+    1px 0 0 var(--border);
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
+  transition: background 0.2s ease, backdrop-filter 0.2s ease;
+}
+.sidebar::-webkit-scrollbar {
+  width: 2px;
+}
+.sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.sidebar::-webkit-scrollbar-thumb {
+  background: var(--border2);
+  border-radius: 2px;
+}
+
+/* ══════════════════════════════════════
+   SIDEBAR BRAND
+══════════════════════════════════════ */
+.sbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 0 16px;
+  height: 60px;
+  min-height: 60px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--panel2);
+  box-shadow: 0 1px 0 var(--border);
+  transition: background 0.2s ease;
+}
+.sbar-brand::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 16px;
+  right: 16px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--blue-a25) 0%, var(--blue-a08) 60%, transparent 100%);
+}
+.sbar-brand:hover .sbar-brand-name {
+  color: var(--blue);
+}
+
+/* Icon mit Pulse-Ring */
+.sbar-brand-icon {
+  position: relative;
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+}
+.sbar-brand-icon img {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: block;
+  box-shadow:
+    0 0 0 1px var(--blue-a20),
+    0 0 16px var(--blue-a12);
+}
+.sbar-brand-pulse {
+  position: absolute;
+  inset: -3px;
+  border-radius: 13px;
+  border: 1px solid var(--blue-a15);
+  animation: brand-pulse 4s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes brand-pulse {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50%       { opacity: 0.9; transform: scale(1.04); }
+}
+
+.sbar-brand-info {
+  overflow: hidden;
+  flex: 1;
+  min-width: 0;
+}
+.sbar-brand-name {
+  font-size: 0.83em;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  color: var(--text);
+  line-height: 1.2;
+  transition: color 200ms ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sbar-brand-sub {
+  font-size: 0.6em;
+  color: var(--blue);
+  opacity: 0.45;
+  font-family: var(--mono);
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  margin-top: 1px;
+  white-space: nowrap;
+}
+
+/* ══════════════════════════════════════
+   SIDEBAR QUICK ACTIONS
+══════════════════════════════════════ */
+.sbar-actions {
+  display: flex;
+  gap: 5px;
+  padding: 12px 12px 10px;
+  flex-shrink: 0;
+}
+.sbar-act {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 9px 4px 8px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--cs-overlay-xs);
+  cursor: pointer;
+  color: var(--text3);
+  font-size: 0.6em;
+  font-weight: 600;
+  font-family: var(--sans);
+  letter-spacing: 0.2px;
+  transition: all 180ms ease;
+  position: relative;
+  overflow: hidden;
+}
+.sbar-act::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.04) 0%, transparent 60%);
+  pointer-events: none;
+}
+.sbar-act:hover {
+  background: var(--blue-a08);
+  border-color: var(--blue-a25);
+  color: var(--blue);
+  box-shadow: 0 2px 10px var(--blue-a12), inset 0 1px 0 var(--blue-a15);
+}
+.sbar-act:hover svg {
+  transform: scale(1.15);
+}
+.sbar-act svg {
+  flex-shrink: 0;
+  transition: transform 180ms ease;
+  opacity: 0.7;
+}
+.sbar-act:hover svg {
+  opacity: 1;
+}
+
+/* ══════════════════════════════════════
+   NAV
+══════════════════════════════════════ */
+nav {
+  padding: 8px 10px 6px;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+nav::-webkit-scrollbar {
+  width: 2px;
+}
+nav::-webkit-scrollbar-track {
+  background: transparent;
+}
+nav::-webkit-scrollbar-thumb {
+  background: var(--border2);
+  border-radius: 2px;
+}
+
+/* ── NAV DIVIDER (interaktive HR) ── */
+.nav-divider {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 8px 6px;
+  cursor: default;
+}
+.nav-divider span {
+  font-size: 0.57em;
+  font-family: var(--mono);
+  color: var(--blue);
+  opacity: 0.35;
+  text-transform: uppercase;
+  letter-spacing: 1.8px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: opacity 200ms ease;
+}
+.nav-divider:hover span {
+  opacity: 0.65;
+}
+.ndhr {
+  flex: 1;
+  border: none;
+  height: 1px;
+  margin: 0;
+  background: linear-gradient(90deg, transparent, var(--blue-a15), transparent);
+  transition: all 200ms ease;
+  position: relative;
+}
+.nav-divider:hover .ndhr {
+  background: linear-gradient(90deg, transparent, var(--blue-a30), transparent);
+  box-shadow: 0 0 6px var(--blue-a15);
+}
+
+/* ── NAV ITEMS ── */
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  position: relative;
+  padding: 2px 10px 2px 2px;
+  cursor: pointer;
+  color: var(--text2);
+  font-size: 0.8em;
+  font-weight: 400;
+  border-radius: 12px;
+  transition:
+    color 200ms ease,
+    background 200ms ease,
+    box-shadow 200ms ease;
+  margin-bottom: 3px;
+  position: relative;
+  user-select: none;
+  letter-spacing: 0.3px;
+}
+.nav-item:hover {
+  color: var(--text);
+  background: var(--cs-overlay-sm);
+}
+.nav-item.active {
+  color: var(--blue);
+  font-weight: 500;
+  background: linear-gradient(90deg, var(--blue-a08) 0%, rgba(0,0,0,0) 100%);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+}
+.nav-item.active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 52%;
+  background: var(--blue);
+  border-radius: 0 3px 3px 0;
+  box-shadow:
+    0 0 10px var(--blue-a35),
+    0 0 20px var(--blue-a15);
+}
+
+/* ── NAV ICON ── */
+.nav-icon {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  flex-shrink: 0;
+  transition: background 200ms ease;
+}
+.nav-item:hover .nav-icon {
+  background: var(--cs-overlay-md);
+}
+.nav-item.active .nav-icon {
+  background: var(--blue-a08);
+}
+.nav-icon svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  opacity: 0.5;
+  transition:
+    opacity 200ms ease,
+    filter 200ms ease,
+    color 200ms ease;
+}
+.nav-item.active .nav-icon svg {
+  opacity: 1;
+  filter: drop-shadow(0 0 5px var(--blue-a35));
+}
+.nav-item:hover .nav-icon svg {
+  opacity: 1;
+  color: var(--blue);
+  filter: drop-shadow(0 0 6px var(--blue-a35));
+}
+
+.nav-badge {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--red);
+  border: 1.5px solid var(--panel);
+  pointer-events: none;
+  animation: pulse-badge 3s ease-in-out infinite;
+}
+@keyframes pulse-badge {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 77, 106, 0.5); }
+  50%       { box-shadow: 0 0 0 3px rgba(255, 77, 106, 0); }
+}
+
+/* Compact: actions as icon-only squares */
+.shell[data-sidebar="compact"] .sbar-actions {
+  flex-direction: column;
+  padding: 6px 6px;
+  gap: 4px;
+  align-items: center;
+}
+.shell[data-sidebar="compact"] .sbar-act {
+  width: 38px;
+  height: 38px;
+  flex: none;
+  padding: 0;
+  border-radius: 10px;
+  justify-content: center;
+  gap: 0;
+}
+.shell[data-sidebar="compact"] .sbar-act > span {
+  display: none;
+}
+.shell[data-sidebar="compact"] .sbar-act svg {
+  width: 15px;
+  height: 15px;
+  opacity: 0.85;
+}
+
+/* ══════════════════════════════════════
+   SIDEBAR FOOTER
+══════════════════════════════════════ */
+.sbar-foot {
+  padding: 10px 10px 16px;
+  flex-shrink: 0;
+  border-top: 1px solid transparent;
+  background:
+    linear-gradient(to bottom, transparent, rgba(0,0,0,0.12)) padding-box,
+    linear-gradient(90deg, var(--blue-a15), transparent) border-box;
+  border-image: linear-gradient(90deg, var(--blue-a20), transparent) 1;
+  border-top: 1px solid;
+  border-image-slice: 1;
+  border-image-source: linear-gradient(90deg, var(--blue-a20), transparent);
+}
+.sbar-help {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 12px;
+  border-radius: 11px;
+  cursor: pointer;
+  color: var(--text3);
+  font-size: 0.73em;
+  font-weight: 500;
+  transition: all 180ms ease;
+  border: 1px solid transparent;
+  background: transparent;
+  font-family: var(--sans);
+  width: 100%;
+  text-align: left;
+}
+.sbar-help:hover {
+  background: var(--blue-a08);
+  color: var(--blue);
+  border-color: var(--blue-a20);
+}
+.sbar-help svg {
+  flex-shrink: 0;
+}
+.save-status {
+  font-family: var(--mono);
+  font-size: 0.62em;
+  color: var(--text3);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 13px 0;
+  letter-spacing: 0.3px;
+}
+.save-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--text3);
+  flex-shrink: 0;
+  transition:
+    background 0.4s,
+    box-shadow 0.4s;
+}
+.save-dot.saved {
+  background: var(--green);
+  box-shadow: 0 0 8px var(--green);
+}
+/* ══════════════════════════════════════
+   COMPACT SIDEBAR — Icon Rail
+   Smooth: Elemente behalten ihre Position,
+   nur Breite und Opazität animieren
+══════════════════════════════════════ */
+
+/* ── Globale Transitions ──────────────
+   Shell-Grid und Sidebar-Breite animieren.
+   Kein Höhen-Jump: Items haben immer
+   dieselbe Höhe (40px), nur der Text-
+   Bereich fährt per max-width rein/raus.
+─────────────────────────────────────── */
+.shell {
+  transition: grid-template-columns 0.38s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.sidebar {
+  overflow: hidden;
+  transition: width 0.38s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Ausblend-Elemente beim Einklappen ── */
+.sbar-brand-name,
+.sbar-brand-sub,
+.sbar-brand-pulse,
+.nav-divider,
+.sbar-help > span,
+#saveLabel {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 220px;
+  opacity: 1;
+  transition:
+    max-width 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.22s,
+    opacity 0.18s ease 0.36s,
+    margin 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.22s;
+}
+
+.shell[data-sidebar="compact"] .sbar-brand-name,
+.shell[data-sidebar="compact"] .sbar-brand-sub,
+.shell[data-sidebar="compact"] .sbar-brand-pulse,
+.shell[data-sidebar="compact"] .nav-divider,
+.shell[data-sidebar="compact"] .sbar-help > span,
+.shell[data-sidebar="compact"] #saveLabel {
+  max-width: 0;
+  opacity: 0;
+  margin: 0;
+  transition:
+    opacity 0.1s ease 0s,
+    max-width 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.08s,
+    margin 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.08s;
+}
+
+/* Nav-Item Labels */
+.nav-item {
+  max-height: 46px;
+  min-height: 40px;
+}
+.nav-item > span:not(.nav-icon) {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 100%;
+  opacity: 1;
+  transition:
+    max-width 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.22s,
+    opacity 0.18s ease 0.36s;
+}
+.shell[data-sidebar="compact"] .nav-item > span:not(.nav-icon) {
+  max-width: 0;
+  opacity: 0;
+  transition:
+    opacity 0.1s ease 0s,
+    max-width 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.07s;
+}
+
+/* ══════════════════════════════════════
+   COMPACT STATE
+══════════════════════════════════════ */
+.shell[data-sidebar="compact"] {
+  grid-template-columns: 52px 1fr;
+}
+.shell[data-sidebar="compact"] .sidebar {
+  overflow: hidden;
+}
+
+/* Brand: Icon zentriert */
+.shell[data-sidebar="compact"] .sbar-brand {
+  padding: 14px 0;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+}
+.shell[data-sidebar="compact"] .sbar-brand-info {
+  flex: 0;
+  width: 0;
+  overflow: hidden;
+  min-width: 0;
+}
+.shell[data-sidebar="compact"] .sbar-brand-icon img {
+  width: 28px;
+  height: 28px;
+}
+.shell[data-sidebar="compact"] .sbar-brand-icon {
+  width: 28px;
+  height: 28px;
+}
+.shell[data-sidebar="compact"] .sbar-brand::after {
+  display: none;
+}
+
+/* Nav Divider: verschwinden */
+.shell[data-sidebar="compact"] .nav-divider {
+  padding: 4px 0;
+}
+
+/* Nav Items */
+.shell[data-sidebar="compact"] nav {
+  padding: 6px 6px;
+}
+.shell[data-sidebar="compact"] .nav-item {
+  padding: 0;
+  justify-content: center;
+  border-radius: 8px;
+  width: 36px;
+  margin: 0 auto 2px;
+  background: none;
+  box-shadow: none;
+}
+.shell[data-sidebar="compact"] .nav-icon {
+  width: 36px;
+  height: 32px;
+  border-radius: 8px;
+}
+.shell[data-sidebar="compact"] .nav-icon svg {
+  width: 16px;
+  height: 16px;
+}
+.shell[data-sidebar="compact"] .nav-item.active .nav-icon {
+  background: var(--blue-a08) !important;
+}
+.shell[data-sidebar="compact"] .nav-item:hover .nav-icon {
+  background: var(--cs-overlay-md) !important;
+}
+.shell[data-sidebar="compact"] .nav-item.active::after {
+  left: 0;
+  height: 20px;
+}
+
+/* Nav-Badge compact: leicht andere Position */
+.shell[data-sidebar="compact"] .nav-badge {
+  top: 5px;
+  right: 5px;
+}
+
+/* Footer */
+.shell[data-sidebar="compact"] .sbar-foot {
+  padding: 6px 6px 10px;
+  align-items: center;
+  border-image: none;
+  border-top: 1px solid var(--border);
+}
+.shell[data-sidebar="compact"] .sbar-help {
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  justify-content: center;
+}
+.shell[data-sidebar="compact"] .save-status {
+  justify-content: center;
+  padding: 4px 0;
+}
+/* Greeting fade-in: delay until sidebar is fully open */
+#sidebarGreeting {
+  max-height: 60px;
+  overflow: hidden;
+  transition:
+    opacity 0.15s ease 0.4s,
+    max-height 0s linear 0.4s,
+    padding-top 0s linear 0.4s;
+}
+.shell[data-sidebar="compact"] #sidebarGreeting {
+  max-height: 0 !important;
+  opacity: 0 !important;
+  padding-top: 0 !important;
+  pointer-events: none;
+  transition: opacity 0.05s ease 0s, max-height 0s linear 0.06s, padding-top 0s linear 0.06s;
+}
+
+/* ── Toggle-Button ── */
+.sidebar-toggle-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  background: transparent;
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text3);
+  flex-shrink: 0;
+  transition: all 0.15s;
+}
+.sidebar-toggle-btn:hover {
+  background: var(--cs-overlay-md);
+  color: var(--text2);
+  border-color: var(--border2);
+}
+.sidebar-toggle-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* ── JS Tooltip (compact) ── */
+.nav-compact-tooltip {
+  position: fixed;
+  left: 60px;
+  background: var(--panel2);
+  border: 1px solid var(--border2);
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 600;
+  font-family: var(--sans);
+  white-space: nowrap;
+  padding: 5px 10px;
+  border-radius: 8px;
+  pointer-events: none;
+  z-index: 9999;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  transform: translateY(-50%) translateX(-4px);
+  transition:
+    opacity 0.12s,
+    transform 0.12s;
+}
+.nav-compact-tooltip.show {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+

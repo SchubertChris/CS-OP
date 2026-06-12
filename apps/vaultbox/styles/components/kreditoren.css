@@ -1,0 +1,757 @@
+﻿/* ══════════════════════════════════════
+   KREDITOREN — Zahlungsempfänger
+   ══════════════════════════════════════ */
+
+/* ── PAGE LAYOUT ─────────────────────── */
+.kr-page {
+  padding: 0 0 40px;
+}
+
+.kr-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 24px 28px 20px;
+  border-bottom: 1px solid var(--border);
+  background: var(--glass-tint);
+  border-radius: var(--r2) var(--r2) 0 0;
+}
+
+.kr-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.kr-search-wrap {
+  position: relative;
+}
+
+.kr-search {
+  background: var(--panel2);
+  border: 1px solid var(--border);
+  border-radius: var(--r1);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: .85rem;
+  padding: 7px 12px;
+  width: 220px;
+  outline: none;
+  transition: border-color .15s;
+}
+
+.kr-search:focus {
+  border-color: var(--blue);
+}
+
+/* ── GRID ────────────────────────────── */
+.kr-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+  padding: 24px 28px;
+}
+
+/* ── CARD ────────────────────────────── */
+.kr-card {
+  background: var(--glass-tint);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  padding: 16px;
+  cursor: pointer;
+  transition: border-color .15s, box-shadow .15s;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.kr-card:hover {
+  border-color: var(--blue-a35);
+  box-shadow: 0 2px 12px var(--blue-a08);
+}
+
+.kr-card-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.kr-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--r1);
+  border: 1px solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .95rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.kr-card-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.kr-card-name {
+  font-weight: 600;
+  font-size: .9rem;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.kr-card-sub {
+  font-size: .75rem;
+  color: var(--text3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.kr-card-menu {
+  flex-shrink: 0;
+}
+
+/* ── CARD BODY ───────────────────────── */
+.kr-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.kr-field {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: .78rem;
+}
+
+.kr-field-lbl {
+  color: var(--text3);
+  min-width: 52px;
+  flex-shrink: 0;
+}
+
+.kr-field-val {
+  color: var(--text2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.kr-field-val.mono {
+  font-family: var(--mono);
+  font-size: .75rem;
+  letter-spacing: .03em;
+}
+
+/* ── LINKED BADGE ────────────────────── */
+.kr-card-linked {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px;
+  font-size: .75rem;
+  color: var(--text3);
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+}
+
+.kr-linked-chip {
+  background: var(--blue-a08);
+  border: 1px solid var(--blue-a15);
+  color: var(--text2);
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-size: .72rem;
+}
+
+.kr-linked-more {
+  color: var(--text3);
+  font-size: .72rem;
+}
+
+/* ── EMPTY STATE ─────────────────────── */
+.kr-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 24px;
+  text-align: center;
+  gap: 8px;
+}
+
+.kr-empty-icon {
+  font-size: 2.5rem;
+  margin-bottom: 4px;
+}
+
+.kr-empty-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.kr-empty-sub {
+  font-size: .85rem;
+  color: var(--text3);
+  max-width: 320px;
+  line-height: 1.5;
+}
+
+/* ── MODAL ───────────────────────────── */
+/* Backdrop + open state handled by .overlay / .overlay.open in modal.css */
+
+.kr-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 22px 16px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.kr-modal-header h3 {
+  font-size: .95rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--text);
+}
+
+.kr-modal-body {
+  padding: 20px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.kr-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.kr-form-row.full {
+  grid-template-columns: 1fr;
+}
+
+.kr-fg {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.kr-fg label {
+  font-size: .78rem;
+  font-weight: 500;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+.kr-inp {
+  background: var(--panel2);
+  border: 1px solid var(--border);
+  border-radius: var(--r1);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: .87rem;
+  padding: 8px 10px;
+  outline: none;
+  transition: border-color .15s;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.kr-inp:focus {
+  border-color: var(--blue);
+}
+
+.kr-icon-color-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  align-items: end;
+}
+
+.kr-color-inp {
+  width: 42px;
+  height: 36px;
+  border: 1px solid var(--border);
+  border-radius: var(--r1);
+  background: var(--panel2);
+  cursor: pointer;
+  padding: 2px;
+}
+
+/* Templates */
+.kr-templates {
+  padding: 0 22px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.kr-templates-label {
+  font-size: .75rem;
+  font-weight: 500;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+.kr-tpl-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.kr-tpl-chip {
+  background: var(--panel2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  color: var(--text2);
+  font-size: .78rem;
+  padding: 4px 10px;
+  cursor: pointer;
+  transition: border-color .15s, background .15s;
+  font-family: var(--sans);
+}
+
+.kr-tpl-chip:hover {
+  border-color: var(--blue-a35);
+  background: var(--blue-a08);
+  color: var(--blue);
+}
+
+/* Linked Posten in Modal */
+.kr-modal-linked {
+  background: var(--panel2);
+  border: 1px solid var(--border);
+  border-radius: var(--r1);
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.kr-modal-linked-title {
+  font-size: .75rem;
+  font-weight: 500;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  margin-bottom: 2px;
+}
+
+.kr-modal-linked-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: .82rem;
+  color: var(--text2);
+}
+
+.kr-modal-linked-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* Modal footer */
+.kr-modal-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 22px 20px;
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+/* ── DETAILS-MODAL ───────────────────── */
+.kr-details-modal {
+  background: var(--glass-tint);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  width: min(420px, calc(100vw - 32px));
+  max-height: calc(100vh - 64px);
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 40px rgba(0,0,0,.28);
+  animation: modalIn .2s cubic-bezier(.22,1,.36,1);
+  overflow: hidden;
+}
+
+.kr-details-hdr {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 20px 16px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.kr-details-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 11px;
+  border: 1px solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.kr-details-hdr-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.kr-details-name {
+  font-size: .97rem;
+  font-weight: 700;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.kr-details-website {
+  font-size: .75rem;
+  color: var(--text3);
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
+
+.kr-details-body {
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.kr-details-field {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 8px 12px;
+  background: var(--panel2);
+  border: 1px solid var(--border);
+  border-radius: var(--r1);
+}
+
+.kr-details-lbl {
+  font-size: .72rem;
+  font-weight: 600;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  min-width: 56px;
+  flex-shrink: 0;
+}
+
+.kr-details-val {
+  font-size: .87rem;
+  color: var(--text);
+  word-break: break-all;
+}
+
+.kr-details-val.mono {
+  font-family: var(--mono);
+  font-size: .82rem;
+  letter-spacing: .03em;
+}
+
+.kr-details-linked-sec {
+  background: var(--panel2);
+  border: 1px solid var(--border);
+  border-radius: var(--r1);
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.kr-details-linked-title {
+  font-size: .72rem;
+  font-weight: 600;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  margin-bottom: 2px;
+}
+
+.kr-details-linked-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: .82rem;
+  color: var(--text2);
+}
+
+.kr-details-linked-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.kr-details-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 12px 20px 16px;
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+/* ── POPOVER ─────────────────────────── */
+.kr-popover {
+  position: fixed;
+  width: 280px;
+  background: var(--glass-tint);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  box-shadow: 0 6px 32px rgba(0,0,0,.24);
+  z-index: 1200;
+  overflow: hidden;
+  animation: kr-pop-in .12s ease-out;
+}
+
+@keyframes kr-pop-in {
+  from { opacity: 0; transform: scale(.96) translateY(-4px); }
+  to   { opacity: 1; transform: scale(1)  translateY(0); }
+}
+
+.kr-pop-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 14px 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.kr-pop-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: 1px solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .85rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.kr-pop-name {
+  font-weight: 600;
+  font-size: .88rem;
+  color: var(--text);
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.kr-pop-website {
+  font-size: .72rem;
+  color: var(--text3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.kr-pop-close {
+  background: none;
+  border: none;
+  color: var(--text3);
+  cursor: pointer;
+  font-size: .85rem;
+  padding: 2px 4px;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.kr-pop-close:hover { color: var(--text); }
+
+.kr-pop-body {
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.kr-pop-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: .8rem;
+}
+
+.kr-pop-lbl {
+  color: var(--text3);
+  min-width: 46px;
+  flex-shrink: 0;
+}
+
+.kr-pop-val {
+  color: var(--text2);
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: var(--mono);
+  font-size: .78rem;
+}
+
+.kr-copy-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text3);
+  padding: 0 2px;
+  font-size: .8rem;
+  flex-shrink: 0;
+  transition: color .12s;
+}
+
+.kr-copy-btn:hover { color: var(--blue); }
+
+.kr-pop-linked {
+  padding: 8px 14px 10px;
+  border-top: 1px solid var(--border);
+}
+
+.kr-pop-linked-title {
+  font-size: .72rem;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  margin-bottom: 5px;
+}
+
+.kr-pop-linked-item {
+  font-size: .8rem;
+  color: var(--text2);
+  padding: 2px 0;
+}
+
+.kr-pop-footer {
+  display: flex;
+  gap: 8px;
+  padding: 10px 14px 14px;
+  border-top: 1px solid var(--border);
+}
+
+/* ── LOGO PICKER ─────────────────────── */
+.kr-logo-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.kr-logo-chip {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--r1);
+  border: 1px solid var(--border);
+  background: var(--panel2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: .75rem;
+  font-weight: 700;
+  color: var(--text2);
+  transition: border-color .12s, background .12s;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.kr-logo-chip:hover {
+  border-color: var(--blue-a35);
+  background: var(--blue-a08);
+}
+
+.kr-logo-chip.active {
+  border-color: var(--blue);
+  background: var(--blue-a08);
+  box-shadow: 0 0 0 2px var(--blue-a20);
+}
+
+.kr-logo-custom-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.kr-logo-custom-row .kr-inp {
+  flex: 1;
+}
+
+/* ── INLINE CREDITOR PICKER (Posten modal) ── */
+.kr-inline-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.kr-inline-select {
+  flex: 1;
+  background: var(--panel2);
+  border: 1px solid var(--border);
+  border-radius: var(--r1);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: .87rem;
+  padding: 8px 10px;
+  outline: none;
+  transition: border-color .15s;
+  cursor: pointer;
+}
+
+.kr-inline-select:focus {
+  border-color: var(--blue);
+}
+
+.kr-inline-new {
+  white-space: nowrap;
+}
+
+/* ── CONTRACT ROW CREDITOR BTN ───────── */
+.kr-ctr-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 5px;
+  border: 1px solid;
+  font-size: .78rem;
+  font-weight: 700;
+  cursor: pointer;
+  background: none;
+  flex-shrink: 0;
+  vertical-align: middle;
+  transition: opacity .12s;
+  margin-left: 4px;
+}
+
+.kr-ctr-btn:hover { opacity: .75; }

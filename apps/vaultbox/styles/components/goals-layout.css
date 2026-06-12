@@ -1,0 +1,169 @@
+﻿/* ══════════════════════════════════════
+   GOALS LAYOUT — Sidebar · Promo · FAQ · Tipps
+══════════════════════════════════════ */
+
+/* ── LAYOUT ── */
+.goals-layout {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 16px;
+  align-items: start;
+}
+.goals-main { min-width: 0; }
+@media (max-width: 900px) {
+  .goals-layout { grid-template-columns: 1fr; }
+  .goals-sidebar { order: -1; }
+}
+
+/* ── PROMO CARD ── */
+.goals-promo-card {
+  background: var(--glass-tint);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  padding: 18px 18px 16px;
+  position: relative;
+  overflow: hidden;
+}
+.goals-promo-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--blue), var(--blue2, var(--blue)));
+}
+.goals-promo-card--secondary::before {
+  background: linear-gradient(90deg, var(--green), var(--teal));
+}
+.goals-promo-badge {
+  display: inline-block;
+  font-size: 0.58em;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--blue);
+  background: var(--blue-a08);
+  border: 1px solid var(--blue-a25);
+  padding: 2px 8px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+.goals-promo-card--secondary .goals-promo-badge {
+  color: var(--green);
+  background: var(--green-a10);
+  border-color: var(--green-a25);
+}
+.goals-promo-title {
+  font-size: 0.9em;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+.goals-promo-body {
+  font-size: 0.75em;
+  color: var(--text2);
+  line-height: 1.65;
+  margin-bottom: 12px;
+}
+.goals-promo-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 14px;
+}
+.goals-promo-tags span {
+  font-size: 0.62em;
+  font-family: var(--mono);
+  background: var(--panel2);
+  border: 1px solid var(--border2);
+  color: var(--text3);
+  padding: 2px 7px;
+  border-radius: 6px;
+}
+.goals-promo-btn {
+  display: inline-block;
+  padding: 8px 16px;
+  background: var(--blue-a12);
+  border: 1px solid var(--blue-a25);
+  border-radius: 8px;
+  color: var(--blue);
+  font-size: 0.75em;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.12s ease;
+  cursor: pointer;
+}
+.goals-promo-btn:hover { background: var(--blue-a20); text-decoration: none; }
+
+/* ── FAQ CARD ── */
+.goals-faq-card,
+.goals-tips-card {
+  background: var(--glass-tint);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  padding: 14px 14px 10px;
+}
+.goals-faq-badge {
+  display: inline-block;
+  font-size: 0.58em;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--amber);
+  background: var(--amber-a10);
+  border: 1px solid var(--amber-a25);
+  padding: 2px 8px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+.goals-tips-badge {
+  color: var(--green) !important;
+  background: var(--green-a10) !important;
+  border-color: var(--green-a25) !important;
+}
+.goals-faq-item {
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  user-select: none;
+}
+.goals-faq-item:last-child { border-bottom: none; }
+.goals-faq-q {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 9px 0;
+  font-size: 0.76em;
+  font-weight: 600;
+  color: var(--text2);
+}
+.goals-faq-chev {
+  flex-shrink: 0;
+  color: var(--text3);
+  transition: transform 0.2s ease;
+}
+.goals-faq-item.open .goals-faq-chev { transform: rotate(180deg); }
+.goals-faq-a {
+  display: none;
+  font-size: 0.72em;
+  color: var(--text3);
+  line-height: 1.6;
+  padding-bottom: 10px;
+  padding-right: 4px;
+}
+.goals-faq-item.open .goals-faq-a { display: block; }
+
+/* ── TIPS ── */
+.goals-tips-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.goals-tip-item {
+  display: flex;
+  gap: 9px;
+  align-items: flex-start;
+}
+.goals-tip-icon { font-size: 1em; flex-shrink: 0; margin-top: 1px; }
+.goals-tip-text { font-size: 0.72em; color: var(--text2); line-height: 1.55; }
