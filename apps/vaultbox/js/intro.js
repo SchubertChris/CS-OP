@@ -1035,7 +1035,7 @@ async function _saveTutPassword(onSuccess) {
     }
     return;
   }
-  localStorage.setItem(LOCK_KEY, await sha256(pw));
+  localStorage.setItem(LOCK_KEY, await _pwHash(pw));
   sessionStorage.setItem(LOCK_DONE, "1");
   if (err) {
     err.style.color = "var(--green)";

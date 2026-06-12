@@ -694,7 +694,7 @@
 .io-pw-ov {
   position: fixed;
   inset: 0;
-  z-index: 1200;
+  z-index: 2000;
   background: rgba(0,0,0,.6);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);

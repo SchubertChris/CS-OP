@@ -438,7 +438,7 @@ function _ctrRenderList(posten, thSort) {
         if (diffDays > 60) return "";
         const dateStr = deadline.toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" });
         if (diffDays < 0)
-          return `<br><span class="ctr-badge ctr-cancel-missed" onmouseenter="_showTooltip('Kündigungsfrist abgelaufen am ${dateStr}',this)" onmouseleave="_hideTooltip()">⚠ Frist verpast</span>`;
+          return `<br><span class="ctr-badge ctr-cancel-missed" onmouseenter="_showTooltip('Kündigungsfrist abgelaufen am ${dateStr}',this)" onmouseleave="_hideTooltip()">⚠ Frist verpasst</span>`;
         return `<br><span class="ctr-badge ctr-cancel-warn" onmouseenter="_showTooltip('Kündigen bis ${dateStr} (${p.cancellationDays} Tage Frist)',this)" onmouseleave="_hideTooltip()">Kündigen bis ${dateStr}</span>`;
       })()}</td>
       <td style="padding:8px 10px;width:40px;text-align:right" onclick="event.stopPropagation()">

@@ -40,6 +40,8 @@ yarn.lock
 # CLAUDE.md bleibt — wird von Claude Code zur Laufzeit gelesen
 *.md
 !CLAUDE.md
+!AUDIT_REPORT.md
+!FIXLOG.md
 
 # ── Claude Code intern ───────────────────────────────────
 .agents/

@@ -30,7 +30,7 @@ function loadSettings() {
   } catch (e) {}
   if (CFG.zahltag) S.zahltag = CFG.zahltag;
   if (CFG.fontSize < 17) CFG.fontSize = 17;
-  const VALID_THEMES = ['candlescope', 'ivory', 'mono', 'light'];
+  const VALID_THEMES = ['candlescope', 'ivory', 'mono', 'light', 'dark', 'crimson'];
   if (!VALID_THEMES.includes(CFG.theme)) CFG.theme = 'candlescope';
   applySettings();
 }

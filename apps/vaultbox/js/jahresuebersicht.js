@@ -1018,7 +1018,7 @@ function _renderJahresChart(monthsA, monthsB) {
         type: "line",
         label: "∿ MA (3M)",
         data: maData,
-        borderColor: css("--purple") || "#7b5fff",
+        borderColor: _jcss("--purple") || "#7b5fff",
         backgroundColor: "transparent",
         borderWidth: 2,
         pointRadius: 0,
