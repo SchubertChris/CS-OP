@@ -113,12 +113,15 @@ function lockKeydown(e) {
 
 // ── INIT CHECK ────────────────────────
 function checkLock() {
-  const hasPassword = !!localStorage.getItem(LOCK_KEY);
-  const isUnlocked  = !!sessionStorage.getItem(LOCK_DONE);
-
-  if (!hasPassword) return; // Kein Passwort gesetzt → direkt rein
-  if (isUnlocked)   return; // Diese Session bereits entsperrt
-
+  let hasPassword = false;
+  try {
+    hasPassword = !!localStorage.getItem(LOCK_KEY);
+    if (!!sessionStorage.getItem(LOCK_DONE)) return;
+  } catch (_) {
+    showLockScreen('unlock');
+    return;
+  }
+  if (!hasPassword) return;
   showLockScreen('unlock');
 }
 

@@ -262,7 +262,11 @@ function _archShowCatDocs(catId) {
     window.csf.archive.getPath(doc.relPath).then((r) => {
       if (!r?.ok) return;
       const url = "file:///" + r.path.replace(/\\/g, "/");
-      wrap.innerHTML = `<img src="${url}" class="arch-tile-img" onerror="this.parentNode.innerHTML='🖼️'">`;
+      const imgEl = document.createElement("img");
+      imgEl.className = "arch-tile-img";
+      imgEl.src = url;
+      imgEl.onerror = () => { wrap.textContent = "🖼️"; };
+      wrap.replaceChildren(imgEl);
     });
   });
 }
@@ -520,8 +524,11 @@ async function _archiveOpenCatModal(catId) {
     window.csf.archive.getPath(doc.relPath).then((r) => {
       if (!r?.ok) return;
       const url = "file:///" + r.path.replace(/\\/g, "/");
-      wrap.innerHTML = `<img src="${url}" class="arch-tile-img"
-        onerror="this.parentNode.innerHTML='🖼️'">`;
+      const imgEl2 = document.createElement("img");
+      imgEl2.className = "arch-tile-img";
+      imgEl2.src = url;
+      imgEl2.onerror = () => { wrap.textContent = "🖼️"; };
+      wrap.replaceChildren(imgEl2);
     });
   });
 }
@@ -897,13 +904,8 @@ function _archivePrintPreview() {
     return;
   }
   const img = document.getElementById("archPreviewImg");
-  if (img) {
-    const w = window.open("");
-    w.document.write(`<html><head><style>body{margin:0;display:flex;
-      align-items:center;justify-content:center;min-height:100vh}
-      img{max-width:100%;max-height:100vh}</style></head>
-      <body><img src="${img.src}"
-        onload="window.print();window.close()"></body></html>`);
+  if (img && window.csf?.print?.html) {
+    window.csf.print.html(`<html><head><style>body{margin:0;display:flex;align-items:center;justify-content:center;min-height:100vh}img{max-width:100%;max-height:100vh}</style></head><body><img src="${img.src}" onload="window.print();window.close()"></body></html>`);
   }
 }
 function _archiveImgZoom(img) {

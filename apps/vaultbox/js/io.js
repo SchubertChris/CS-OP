@@ -468,7 +468,7 @@ function renderIoPanel() {
           <div class="io-sp-info">
             <span class="io-sp-type">${typeMap[sp.meta.type] || "\ud83d\udccc"}</span>
             <div>
-              <div class="io-sp-date">${sp.meta.label || sp.meta.date}</div>
+              <div class="io-sp-date">${esc(sp.meta.label || sp.meta.date)}</div>
               <div class="io-sp-meta">${sp.meta.accounts} Konten \xb7 ${sp.meta.posten} Posten \xb7 ${sp.meta.goals || 0} Ziele</div>
             </div>
           </div>

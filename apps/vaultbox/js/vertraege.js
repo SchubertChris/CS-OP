@@ -408,17 +408,18 @@ function _ctrRenderList(posten, thSort) {
       </td>
       <td class="ctr-td-cat">
         ${_ctrCat
-          ? `<span class="ctr-name-badge" onmouseenter="_showTooltip('Kategorie: ${esc(_ctrCat.name)}',this)" onmouseleave="_hideTooltip()" style="background:${_ctrCat.color}22;border-color:${_ctrCat.color}44">${_ctrCat.icon}</span>`
+          ? `<span class="ctr-name-badge" onmouseenter="_showTooltip('Kategorie: ${esc(_ctrCat.name)}',this)" onmouseleave="_hideTooltip()" style="background:${esc(_ctrCat.color)}22;border-color:${esc(_ctrCat.color)}44">${_ctrCat.icon}</span>`
           : `<span style="color:var(--text3)">—</span>`}
       </td>
       <td class="ctr-td-cred" onclick="event.stopPropagation()">
         ${_ctrCred ? (() => {
           const _cc = _ctrCred.color || "var(--blue)";
           const _cloUrl = _krLogoUrl(_ctrCred);
+          const _ccE = esc(_cc);
           const _cav = _cloUrl
-            ? `<img src="${_cloUrl}" style="width:18px;height:18px;object-fit:contain;border-radius:3px;vertical-align:middle;" onerror="this.style.display='none'" />`
+            ? `<img src="${esc(_cloUrl)}" style="width:18px;height:18px;object-fit:contain;border-radius:3px;vertical-align:middle;" onerror="this.style.display='none'" />`
             : `<span style="font-size:.65em;font-weight:700">${esc((_ctrCred.icon || (_ctrCred.name||"?")[0]).slice(0,2))}</span>`;
-          return `<button class="ctr-cred-pill" style="background:${_cc}15;border-color:${_cc}35;color:${_cc}" onmouseenter="_showTooltip('Kreditor: ${esc(_ctrCred.name)}',this)" onmouseleave="_hideTooltip()" onclick="event.stopPropagation();openCreditorPopover('${_ctrCred.id}',this)">${_cav} ${esc(_ctrCred.name)}</button>`;
+          return `<button class="ctr-cred-pill" style="background:${_ccE}15;border-color:${_ccE}35;color:${_ccE}" onmouseenter="_showTooltip('Kreditor: ${esc(_ctrCred.name)}',this)" onmouseleave="_hideTooltip()" onclick="event.stopPropagation();openCreditorPopover('${_ctrCred.id}',this)">${_cav} ${esc(_ctrCred.name)}</button>`;
         })() : `<span style="color:var(--text3)">—</span>`}
       </td>
       <td style="padding:12px 16px;font-family:var(--mono);font-size:.88em;color:var(--text2);white-space:nowrap">${startStr}</td>
