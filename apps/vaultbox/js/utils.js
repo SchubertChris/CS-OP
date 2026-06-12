@@ -248,7 +248,7 @@ const MONTHS_S = [
 
 /** Zahltag aus State */
 function getZahltag() {
-  return (S && S.zahltag) || 15;
+  return CFG?.zahltag || (S && S.zahltag) || 15;
 }
 
 /** Dynamische Donut-Farben — passen sich dem aktiven Theme an */

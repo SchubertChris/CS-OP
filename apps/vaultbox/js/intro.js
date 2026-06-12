@@ -327,6 +327,13 @@ function runSplash() {
 //  OPEN / CLOSE
 // ══════════════════════════════════════
 function openTutorial(startStep) {
+  // Offene Overlays schließen — sonst liegen sie unter dem #tutBlocker (z-index 800)
+  // und bleiben in inkonsistentem State zurück.
+  [
+    "closeModal", "closeAccountModal", "closeGoalModal",
+    "closeCreditorModal", "closeMonthModal", "closeNotesPanel", "closeSearch",
+  ].forEach((fn) => { if (typeof window[fn] === "function") window[fn](); });
+
   _tutStep = startStep || 0;
   _tutOpen = true;
   _ensurePanel();

@@ -42,6 +42,8 @@ let _groupSortMenuOpen = false;
 
 // ── REFERENZKONTO einer Gruppe ────────
 function _groupRefAcc(accs) {
+  const ref = accs.find((a) => a.isGroupRef);
+  if (ref) return ref;
   const main = accs.find((a) => a.isMain);
   if (main) return main;
   const giro = accs.find((a) => a.accountType === "girokonto");

@@ -342,7 +342,7 @@ function buildMainAccountData() {
     const cy = cm < mIdx ? yr + 1 : yr;
     S.data.forEach((p) => {
       if (p.type !== "ausgabe") return;
-      if (!activeInMonth(p, cm)) return;
+      if (!activeInMonth(p, cm, cy)) return;
       if (main && p.accountId !== main.id) return;
       const dd = parseInt(p.due) || 0;
       if (dd < 1) return;
@@ -444,7 +444,7 @@ function buildCreditCardData(acc) {
     const cy = cm < mIdx ? yr + 1 : yr;
     S.data.forEach((p) => {
       if (p.type !== "ausgabe") return;
-      if (!activeInMonth(p, cm)) return;
+      if (!activeInMonth(p, cm, cy)) return;
       if (p.accountId !== acc.id) return;
       const dd = parseInt(p.due) || 0;
       if (dd < 1) return;
@@ -508,7 +508,7 @@ function _buildAllAccountItems(nextZahltag, mIdx, yr, day) {
     const cy = cm < mIdx ? yr + 1 : yr;
     S.data.forEach((p) => {
       if (p.type !== "ausgabe") return;
-      if (!activeInMonth(p, cm)) return;
+      if (!activeInMonth(p, cm, cy)) return;
       const dd = parseInt(p.due) || 0;
       if (dd < 1) return;
       const amt = parseFloat(p.amount) || 0;
