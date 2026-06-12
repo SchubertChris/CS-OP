@@ -58,7 +58,7 @@ function exportBookingsCSV() {
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
-  a.download = `buchungen_${new Date().toISOString().slice(0, 10)}.csv`;
+  a.download = `buchungen_${todayIso()}.csv`;
   a.click();
   URL.revokeObjectURL(url);
   if (typeof showToast === "function") showToast(`${data.length} Buchungen exportiert`, "success");
@@ -71,7 +71,7 @@ function renderPosten() {
 
   // Standardmäßig aktuellen Monat fokussieren (einmalig beim ersten Render)
   if (_umFocusMonth === null) {
-    _umFocusMonth = today().toISOString().slice(0, 7);
+    _umFocusMonth = todayIso().slice(0, 7);
   }
 
   // initBookings() NICHT hier aufrufen — das passiert nur beim App-Start (index.html).
@@ -320,7 +320,7 @@ function _renderUmBody(pg) {
 function _umGoalBookings() {
   const result = [];
   const now = today();
-  const todayStr = now.toISOString().slice(0, 10);
+  const todayStr = todayIso();
   (S.goals || []).forEach(g => {
     if (!(g.monthlyRate > 0)) return;
     // Stichtag: Tag 1 jedes Monats bis Deadline
@@ -374,7 +374,7 @@ function _umGetFiltered() {
   // Nur bereits getätigte Umsätze:
   // - kein "vorgemerkt" (Zukunft)
   // - kein Datum in der Zukunft (außer "beglichen" — die können ein früheres Datum haben)
-  const _todayStr = today().toISOString().slice(0, 10);
+  const _todayStr = todayIso();
   const _showVorgemerkt = _umFilter.status === "vorgemerkt";
   let data = [
     ...(S.bookings || []).filter(b => {
@@ -1225,7 +1225,7 @@ function _umBegleichen(bookingId) {
 
   document.getElementById("umBegleichenOverlay")?.remove();
 
-  const todayStr = today().toISOString().slice(0, 10);
+  const todayStr = todayIso();
   const prefix = bk.type === "einnahme" ? "+" : bk.type === "umbuchung" ? "⇄" : "−";
   const acc = S.accounts.find((a) => a.id === bk.accountId);
   const accOpts = S.accounts
@@ -1235,7 +1235,7 @@ function _umBegleichen(bookingId) {
   const ov = document.createElement("div");
   ov.id = "umBegleichenOverlay";
   ov.className = "overlay open";
-  ov.style.cssText = "z-index:910";
+  ov.style.cssText = "z-index:900";
   ov.innerHTML = `
     <div class="modal" style="max-width:460px">
       <div class="modal-main">
@@ -1317,13 +1317,13 @@ function _umQuickDate(bookingId) {
 
   const prefix = bk.type === "einnahme" ? "+" : "−";
   // Vorschlag: heute, aber nicht in der Zukunft nach dem geplanten Datum
-  const todayStr = today().toISOString().slice(0, 10);
+  const todayStr = todayIso();
   const defaultDate = bk.date < todayStr ? bk.date : todayStr;
 
   const ov = document.createElement("div");
   ov.id = "umQuickDateOverlay";
   ov.className = "overlay open";
-  ov.style.cssText = "z-index:910";
+  ov.style.cssText = "z-index:900";
   ov.innerHTML = `
     <div class="modal" style="max-width:360px">
       <div class="modal-main">
@@ -1640,7 +1640,7 @@ function _umFQuick(mode) {
   if (mode === "month") {
     document.getElementById("umFFrom").value =
       `${n.getFullYear()}-${pad(n.getMonth() + 1)}-01`;
-    document.getElementById("umFTo").value = n.toISOString().slice(0, 10);
+    document.getElementById("umFTo").value = todayIso();
     return;
   }
   if (mode === "lastmonth") {
@@ -1656,12 +1656,12 @@ function _umFQuick(mode) {
     const q = Math.floor(n.getMonth() / 3);
     document.getElementById("umFFrom").value =
       `${n.getFullYear()}-${pad(q * 3 + 1)}-01`;
-    document.getElementById("umFTo").value = n.toISOString().slice(0, 10);
+    document.getElementById("umFTo").value = todayIso();
     return;
   }
   if (mode === "year") {
     document.getElementById("umFFrom").value = `${n.getFullYear()}-01-01`;
-    document.getElementById("umFTo").value = n.toISOString().slice(0, 10);
+    document.getElementById("umFTo").value = todayIso();
     return;
   }
 }
@@ -1705,7 +1705,7 @@ function openAuszugDialog() {
   document.getElementById("auszugDialog")?.remove();
   const n = today();
   const firstOfMonth = `${n.getFullYear()}-${String(n.getMonth() + 1).padStart(2, "0")}-01`;
-  const todayStr = n.toISOString().slice(0, 10);
+  const todayStr = todayIso();
 
   const dlg = document.createElement("div");
   dlg.id = "auszugDialog";
@@ -1826,6 +1826,6 @@ td{padding:6px 8px;border-bottom:1px solid #f0f0f0;}
   const blob = new Blob([html], { type: "text/html" });
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
-  a.download = `buchungen_${n.toISOString().slice(0, 10)}.html`;
+  a.download = `buchungen_${todayIso()}.html`;
   a.click();
 }

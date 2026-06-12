@@ -2041,7 +2041,7 @@ function openMonthModal(mIdx, yr, mData) {
   const overlay = document.createElement("div");
   overlay.id = "monthDetailModal";
   overlay.className = "overlay open";
-  overlay.style.cssText = "z-index:700;";
+  overlay.style.cssText = "z-index:600;";
   overlay.onclick = (e) => {
     if (e.target === overlay) closeMonthModal();
   };
