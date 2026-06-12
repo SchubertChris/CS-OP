@@ -69,8 +69,8 @@ async function _vbLoadAsync() {
       }
     }
   } catch(e) {}
-  // Fallback: localStorage
-  _vbLoad();
+  // Only fall back to localStorage if in-memory has no boards (sync path may have already created one)
+  if (!_vbBoards.length) _vbLoad();
 }
 
 function _vbSave() {
