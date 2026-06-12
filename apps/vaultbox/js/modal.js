@@ -127,7 +127,7 @@ function _savePostenAsTransfer() {
     fromId,
     toId,
     amount,
-    date:     document.getElementById("fBookingDate")?.value || document.getElementById("fStart")?.value || today().toISOString().slice(0, 10),
+    date:     document.getElementById("fBookingDate")?.value || document.getElementById("fStart")?.value || todayIso(),
     note:     document.getElementById("fNote")?.value.trim() || "",
     interval: isOnce ? "einmalig" : interval,
     execDay:  isOnce ? null : (parseInt(document.getElementById("fDue")?.value) || null),
@@ -349,7 +349,7 @@ function _fillPostenForm(p) {
       if (el) el.value = "";
     });
     const bd = document.getElementById("fBookingDate");
-    if (bd) bd.value = today().toISOString().slice(0, 10);
+    if (bd) bd.value = todayIso();
     document.getElementById("fType").value = "ausgabe";
     document.getElementById("fInterval").value = "monatl.";
   }
@@ -530,9 +530,7 @@ function _fillTransferForm(t) {
     _toggleTrfInterval();
   } else {
     document.getElementById("fTrfAmount").value = "";
-    document.getElementById("fTrfDate").value = today()
-      .toISOString()
-      .slice(0, 10);
+    document.getElementById("fTrfDate").value = todayIso();
     document.getElementById("fTrfNote").value = "";
     document.getElementById("fTrfInterval").value = "einmalig";
     document.getElementById("fTrfExecDay").value = "";
@@ -564,7 +562,7 @@ function saveTransfer() {
     amount,
     date:
       document.getElementById("fTrfDate").value ||
-      today().toISOString().slice(0, 10),
+      todayIso(),
     note: document.getElementById("fTrfNote").value.trim(),
     // interval: null wird als einmalig behandelt, "einmalig" explizit für Label
     interval: interval !== "einmalig" ? interval : "einmalig",

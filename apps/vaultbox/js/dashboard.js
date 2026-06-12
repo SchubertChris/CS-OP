@@ -818,8 +818,7 @@ function _dashMarkPaid(postenId, monthKey) {
       (b.originalMonthKey === monthKey || b.monthKey === monthKey) &&
       b.status !== "beglichen",
   );
-  const nowStr  = new Date().toISOString();
-  const todayDt = nowStr.slice(0, 10);
+  const todayDt = todayIso();
   if (bk) {
     bk.originalMonthKey = bk.originalMonthKey || bk.monthKey;
     // Frühzahlung (Fälligkeit in der Zukunft) → Datum auf heute setzen

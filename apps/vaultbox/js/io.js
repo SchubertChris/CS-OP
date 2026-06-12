@@ -237,7 +237,6 @@ function importAll() {
   inp.onchange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
-    saveSafepoint("Vor Import — " + new Date().toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" }));
     const r = new FileReader();
     r.onload = async (ev) => {
       try {
@@ -263,6 +262,8 @@ function importAll() {
         const p = raw.data || raw.state || raw;
         const validErr = _validateImportPayload(p, file.size);
         if (validErr) throw new Error(validErr);
+
+        saveSafepoint("Vor Import — " + new Date().toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" }));
 
         if (Array.isArray(p.accounts)) S.accounts = p.accounts;
         if (Array.isArray(p.data)) S.data = p.data;

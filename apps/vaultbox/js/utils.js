@@ -53,6 +53,12 @@ function today() {
   return new Date();
 }
 
+/** Heutiges Datum als "YYYY-MM-DD" — timezone-safe (kein UTC-Shift in CET/CEST) */
+function todayIso() {
+  const n = new Date();
+  return `${n.getFullYear()}-${String(n.getMonth() + 1).padStart(2, "0")}-${String(n.getDate()).padStart(2, "0")}`;
+}
+
 /** Datum als DE-String */
 function fmDate(d) {
   if (!d) return "—";

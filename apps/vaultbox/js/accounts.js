@@ -851,7 +851,7 @@ async function saveAccountModal() {
     // contractStart setzen und als "gebucht" markieren — sonst sieht der Nutzer
     // nichts in Umsätze, obwohl das Gehalt laut Eingabe bereits eingegangen ist.
     if (incomeContractStart) {
-      const todayStr = new Date().toISOString().slice(0, 10);
+      const todayStr = todayIso();
       const startMonth = incomeContractStart.slice(0, 7); // "YYYY-MM"
       if (incomeContractStart <= todayStr) {
         // Posten-ID des zuletzt gepushten Einnahmen-Postens finden

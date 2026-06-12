@@ -683,7 +683,7 @@ function seedData() {
     },
   ];
 
-  const iso = (d) => d.toISOString().slice(0, 10);
+  const iso = (d) => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
   const now = new Date();
 
   S.transfers = [];

@@ -258,7 +258,7 @@ function _makeBooking(p, date, monthKey, defaultStatus = "gebucht") {
     id: genId("bk"),
     postenId: p.id,
     transferId: null,
-    date: date.toISOString().slice(0, 10),
+    date: `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,"0")}-${String(date.getDate()).padStart(2,"0")}`,
     monthKey,
     originalMonthKey: monthKey, // bleibt auch nach Begleichen erhalten (Dedup-Anker)
     name: p.name,
@@ -279,7 +279,7 @@ function _makeTransferBooking(t, date, monthKey, status = "gebucht") {
     id: genId("bk"),
     postenId: null,
     transferId: t.id,
-    date: date.toISOString().slice(0, 10),
+    date: `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,"0")}-${String(date.getDate()).padStart(2,"0")}`,
     monthKey,
     originalMonthKey: monthKey,
     name: (from ? from.label : "?") + " → " + (to ? to.label : "?"),
@@ -341,6 +341,8 @@ function saveBooking(bookingId, changes) {
     return;
   }
 
+  const oldMonthKey = bk.monthKey;
+
   if (changes.amount !== undefined) {
     bk.amount = parseFloat(changes.amount) || 0;
     // Status automatisch ableiten wenn nicht explizit übergeben
@@ -369,6 +371,7 @@ function saveBooking(bookingId, changes) {
     const p = S.data.find((d) => d.id === bk.postenId);
     if (p) {
       if (!p.overrides) p.overrides = {};
+      if (oldMonthKey !== bk.monthKey) delete p.overrides[oldMonthKey];
       if (bk.status === "gebucht" && bk.amount === bk.baseAmount) {
         // Wieder auf Original → Override entfernen
         delete p.overrides[bk.monthKey];

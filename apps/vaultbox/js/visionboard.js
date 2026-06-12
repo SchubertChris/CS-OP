@@ -1614,6 +1614,8 @@ function _vbOnSpaceUp(e) {
 }
 
 function _vbOnKeyDown(e) {
+  const pg = document.getElementById("p-vision");
+  if (!pg?.classList.contains("active")) return;
   const tag = e.target?.tagName;
   const ce = e.target?.contentEditable;
   if (tag === "INPUT" || tag === "TEXTAREA" || ce === "true") return;
