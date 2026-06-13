@@ -746,7 +746,7 @@
 .io-pw-inp:focus { border-color: var(--blue); box-shadow: 0 0 0 2px var(--blue-a12); }
 .io-pw-err {
   font-size: .73em;
-  color: var(--red, #e74c3c);
+  color: var(--red);
   min-height: 14px;
 }
 .io-pw-btns {

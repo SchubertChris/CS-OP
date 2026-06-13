@@ -473,12 +473,12 @@
 
 /* Node kinds */
 .vb-node-sticky {
-  background: color-mix(in srgb, #BA7517 12%, var(--panel));
-  border-color: #BA7517;
+  background: color-mix(in srgb, var(--node-color, #BA7517) 12%, var(--panel));
+  border-color: var(--node-color, #BA7517);
 }
 .vb-node-goal {
-  background: color-mix(in srgb, #00c896 10%, var(--panel));
-  border-color: #00c896;
+  background: color-mix(in srgb, var(--node-color, #00c896) 10%, var(--panel));
+  border-color: var(--node-color, #00c896);
   border-style: dashed;
 }
 .vb-node-text {
@@ -807,8 +807,8 @@ body.has-visionboard main.main {
 
 /* ── GOAL NODE — distinctive ── */
 .vb-node-goal {
-  background: color-mix(in srgb, #00c896 12%, var(--panel));
-  border-color: #00c896;
+  background: color-mix(in srgb, var(--node-color, #00c896) 12%, var(--panel));
+  border-color: var(--node-color, #00c896);
   border-width: 2px;
   border-style: solid;
   border-radius: 16px;
@@ -968,7 +968,7 @@ body.has-visionboard main.main {
 .vb-shell.vb-props-hidden .vb-props {
   opacity: 0;
   pointer-events: none;
-  width: 220px;
+  width: 0;
   border-left-color: transparent;
   overflow: hidden;
 }
