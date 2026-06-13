@@ -36,3 +36,29 @@ function showToast(msg, type = 'info', duration = 3200) {
     setTimeout(() => toast._dismiss(), 1200);
   });
 }
+
+// ══════════════════════════════════════
+//  GLOBALE ERROR-BOUNDARY
+//  Zeigt einen Toast statt leerer/kaputter Seite bei Laufzeitfehlern.
+// ══════════════════════════════════════
+let _lastErrToastAt = 0;
+function _reportRuntimeError(detail) {
+  try { console.error('[VaultBox] Laufzeitfehler:', detail); } catch (_) {}
+  const now = Date.now();
+  if (now - _lastErrToastAt < 2500) return; // Toast-Flut vermeiden
+  _lastErrToastAt = now;
+  try {
+    if (typeof showToast === 'function') {
+      showToast('Ein unerwarteter Fehler ist aufgetreten — die Aktion wurde abgebrochen. Deine gespeicherten Daten sind sicher.', 'error', 5000);
+    }
+  } catch (_) {}
+}
+
+window.addEventListener('error', (e) => {
+  // Resource-Load-Fehler (img/script/link 404) ignorieren — nur echte JS-Fehler
+  if (e && e.target && e.target !== window && e.target.tagName) return;
+  _reportRuntimeError((e && (e.error || e.message)) || 'Fehler');
+});
+window.addEventListener('unhandledrejection', (e) => {
+  _reportRuntimeError((e && e.reason) || 'Promise rejected');
+});

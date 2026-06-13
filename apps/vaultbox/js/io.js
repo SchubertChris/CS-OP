@@ -306,7 +306,7 @@ function importAll() {
         if (typeof _upsertMonthCloseEntry === "function") {
           (S.closedMonths || []).forEach(mk => _upsertMonthCloseEntry(mk));
         }
-        persist();
+        persistNow();
 
         renderDashboard();
         if (typeof renderGoals === "function") renderGoals();
@@ -421,7 +421,7 @@ function restoreSafepoint(idx) {
     if (typeof _upsertMonthCloseEntry === "function") {
       (S.closedMonths || []).forEach(mk => _upsertMonthCloseEntry(mk));
     }
-    persist();
+    persistNow();
     renderDashboard();
     if (typeof renderPosten === "function") renderPosten();
     closeIoPanel();

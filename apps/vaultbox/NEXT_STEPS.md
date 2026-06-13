@@ -35,9 +35,9 @@
 ## 🚀 Feature-Ideen (aus den Verbesserungsvorschlägen)
 
 - [ ] **Undo/Redo (Ctrl+Z)** — versehentlich gelöschter Posten ist sonst weg.
-- [ ] **Error-Boundary** (`window.onerror` → Toast) — statt leerer Seite bei
-      Render-Fehler.
-- [ ] **Debounced `persist()`** — Performance bei vielen Buchungen.
+- [x] **Error-Boundary** (`window.onerror` → Toast) — erledigt (toast.js).
+- [x] **Debounced `persist()`** — erledigt (state.js, 200ms + sync Flush
+      auf beforeunload/pagehide; persistNow() für manuell/Import/Restore).
 - [ ] **Inline-Quick-Add** in Transaktionen (ohne volles Modal).
 
 ## 🔐 Launch-kritisch (für v1.0)

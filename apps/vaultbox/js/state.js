@@ -62,11 +62,35 @@ const S = {
   yearNotes: {},
 };
 
-// ── PERSIST ───────────────────────────
+// ── PERSIST (debounced) ───────────────
+// Schnelle, aufeinanderfolgende Mutationen werden zu einem Schreibvorgang
+// zusammengefasst (Performance bei vielen Buchungen). Datenintegrität bleibt
+// gewahrt: localStorage ist die maßgebliche Quelle für hydrate() und wird
+// synchron vor App-Schließen/Reload geflusht (beforeunload/pagehide).
+let _persistTimer = null;
+let _persistDirty = false;
+const PERSIST_DEBOUNCE_MS = 200;
+
 function persist() {
-  // Daten haben sich geändert → kurz anzeigen dann clear
+  _persistDirty = true;
+  if (_persistTimer) return; // Schreibvorgang bereits geplant — coalescen
+  _persistTimer = setTimeout(_persistFlush, PERSIST_DEBOUNCE_MS);
+}
+
+// Sofort schreiben — für kritische Momente (manuelles Speichern, Import,
+// Restore, App-Schließen). Umgeht das Debounce-Fenster.
+function persistNow() {
+  if (_persistTimer) { clearTimeout(_persistTimer); _persistTimer = null; }
+  _persistFlush();
+}
+
+function _persistFlush() {
+  _persistTimer = null;
+  if (!_persistDirty) return;
+  _persistDirty = false;
+
+  // Save-Indikator (gelber Flash am Speichern-Button)
   if (!_unsavedChanges) {
-    // Nur wenn autosave läuft — kurze gelbe Bestätigung
     const btn = document.getElementById("btnManualSave");
     if (btn && !btn.classList.contains("save-btn-unsaved")) {
       btn.classList.add("save-btn-autosave");
@@ -74,7 +98,7 @@ function persist() {
     }
   }
   _clearSaveVibrate();
-  // Wenn IPC verfügbar: auch in AppData speichern
+  // Wenn IPC verfügbar: auch in AppData speichern (Mirror; async ok)
   if (window.csf?.state?.save) {
     window.csf.state.save(S).catch(() => {});
   }
@@ -96,13 +120,20 @@ function persist() {
   }
 }
 
+// Sicherheits-Flush: nie ungespeicherte Daten beim Schließen/Reload verlieren.
+window.addEventListener("beforeunload", () => { if (_persistDirty) persistNow(); });
+window.addEventListener("pagehide", () => { if (_persistDirty) persistNow(); });
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "hidden" && _persistDirty) persistNow();
+});
+
 // ── MANUAL SAVE + UNSAVED INDICATOR ──
 let _unsavedChanges = false;
 let _saveVibrateTimer = null;
 let _saveShakeTimer = null;
 
 function manualSave() {
-  persist();
+  persistNow();
   if (typeof saveSafepoint === "function") saveSafepoint("manuell");
   _clearSaveVibrate();
   const btn = document.getElementById("btnManualSave");
