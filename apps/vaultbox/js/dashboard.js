@@ -898,7 +898,7 @@ function renderDonut() {
       const v = avgMonthly(p);
       if (v <= 0) return;
       const cat = allCats.find((c) => c.id === p.categoryId);
-      const label = cat ? (cat.icon + " " + cat.name) : "📦 Sonstiges";
+      const label = cat ? cat.name : "Sonstiges";
       rawCats[label] = (rawCats[label] || 0) + v;
       if (cat && !_donutCatIds[label]) _donutCatIds[label] = cat.id;
     });
@@ -1025,7 +1025,7 @@ function _donutNavToCategory(label) {
   const allCats = Array.isArray(S.categories) && S.categories.length
     ? S.categories
     : (typeof DEFAULT_CATEGORIES !== "undefined" ? DEFAULT_CATEGORIES : []);
-  const cat = allCats.find(c => (c.icon + " " + c.name) === label);
+  const cat = allCats.find(c => c.name === label);
   if (cat) _umFilter.categoryId = cat.id;
   _navTo("posten");
 }
@@ -1428,7 +1428,7 @@ function renderKatAuswertung() {
       catMap[catId] = {
         label: cat ? cat.name : "Sonstiges",
         color: cat ? cat.color : "var(--text3)",
-        icon: cat ? cat.icon : "📦",
+        icon: cat ? cat.icon : "package",
         total: 0,
         count: 0,
       };
@@ -1535,7 +1535,7 @@ function renderKatAuswertung() {
     const left = document.createElement("div"); left.className = "kat-row-left";
     const dot = document.createElement("span"); dot.className = "kat-dot";
     dot.style.background = e.color;
-    const icon = document.createElement("span"); icon.className = "kat-icon"; icon.textContent = e.icon;
+    const icon = document.createElement("span"); icon.className = "kat-icon"; icon.style.color = e.color; icon.innerHTML = uiIcon(e.icon, 15);
     const name = document.createElement("span"); name.className = "kat-name"; name.textContent = e.label;
     left.appendChild(dot); left.appendChild(icon); left.appendChild(name);
 

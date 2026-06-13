@@ -36,6 +36,12 @@ function migrateState() {
       ? [...DEFAULT_CATEGORIES]
       : [];
   }
+  // Legacy-Emoji-Icons → Icon-Namen migrieren (Standard-Kategorien)
+  if (typeof CAT_EMOJI_TO_ICON !== "undefined") {
+    (S.categories || []).forEach((c) => {
+      if (c && c.icon && CAT_EMOJI_TO_ICON[c.icon]) c.icon = CAT_EMOJI_TO_ICON[c.icon];
+    });
+  }
   // Transfers
   (S.transfers || []).forEach((t) => {
     if (t.interval === undefined) t.interval = null;

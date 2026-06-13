@@ -5,25 +5,25 @@
 // ══════════════════════════════════════
 
 const ARCHIVE_CATEGORIES = [
-  { id: "verträge", label: "Verträge", icon: "📄", color: "#4d9eff" },
+  { id: "verträge", label: "Verträge", icon: "file-text", color: "#4d9eff" },
   {
     id: "versicherungen",
     label: "Versicherungen",
-    icon: "🛡️",
+    icon: "shield",
     color: "#00c87a",
   },
   {
     id: "legitimationen",
     label: "Legitimationen",
-    icon: "🪪",
+    icon: "id-card",
     color: "#c9a84c",
   },
-  { id: "karten", label: "Karten & Konten", icon: "💳", color: "#7b5fff" },
-  { id: "rechnungen", label: "Rechnungen", icon: "🧾", color: "#ff9f43" },
-  { id: "lohn", label: "Lohn & Gehalt", icon: "💼", color: "#00d4cc" },
-  { id: "eingänge", label: "Eingänge & Post", icon: "📬", color: "#fd79a8" },
-  { id: "fotos", label: "Fotos & Scans", icon: "🖼️", color: "#a29bfe" },
-  { id: "sonstiges", label: "Sonstiges", icon: "📁", color: "#636e72" },
+  { id: "karten", label: "Karten & Konten", icon: "credit-card", color: "#7b5fff" },
+  { id: "rechnungen", label: "Rechnungen", icon: "receipt", color: "#ff9f43" },
+  { id: "lohn", label: "Lohn & Gehalt", icon: "briefcase", color: "#00d4cc" },
+  { id: "eingänge", label: "Eingänge & Post", icon: "mail", color: "#fd79a8" },
+  { id: "fotos", label: "Fotos & Scans", icon: "image", color: "#a29bfe" },
+  { id: "sonstiges", label: "Sonstiges", icon: "folder", color: "#636e72" },
 ];
 
 function archiveCat(id) {
@@ -166,7 +166,7 @@ async function renderArchivePage() {
     return `
       <div class="arch-exp-cat${isActive ? " active" : ""}" data-catid="${cat.id}"
         onclick="_archShowCatDocs('${cat.id}')" style="--cat-color:${cat.color}">
-        <span class="arch-exp-cat-icon">${cat.icon}</span>
+        <span class="arch-exp-cat-icon" style="color:${cat.color};display:inline-flex">${uiIcon(cat.icon, 18)}</span>
         <span class="arch-exp-cat-label">${cat.label}</span>
         ${cnt ? `<span class="arch-exp-cat-count">${cnt}</span>` : ""}
       </div>`;
@@ -234,7 +234,7 @@ function _archShowCatDocs(catId) {
   const docsHtml = sorted.length
     ? `<div class="arch-cat-list">${sorted.map(doc => _archiveCatTile(doc, catId)).join("")}</div>`
     : `<div class="arch-ov-empty">
-        <div style="font-size:2em;margin-bottom:10px">${cat.icon}</div>
+        <div style="margin-bottom:10px;color:${cat.color};display:flex;justify-content:center">${uiIcon(cat.icon, 30)}</div>
         Noch keine Dokumente.<br>
         <button class="btn" style="margin-top:12px" onclick="_archiveUploadNew('${catId}')">Jetzt hochladen</button>
        </div>`;
@@ -242,7 +242,7 @@ function _archShowCatDocs(catId) {
   main.innerHTML = `
     <div class="arch-exp-main-header">
       <div class="arch-exp-main-title">
-        <span style="font-size:1.1em">${cat.icon}</span>
+        <span style="color:${cat.color};display:inline-flex">${uiIcon(cat.icon, 18)}</span>
         <span>${cat.label}</span>
         ${rawDocs.length ? `<span class="arch-count">${rawDocs.length}</span>` : ""}
       </div>
@@ -334,7 +334,7 @@ async function _archivePickCategory() {
               document.getElementById('archCatPicker').remove();
               window._archiveCatResolve('${cat.id}')
             " style="--cat-color:${cat.color}">
-              <span style="font-size:1.6em">${cat.icon}</span>
+              <span style="color:${cat.color};display:inline-flex">${uiIcon(cat.icon, 22)}</span>
               <span style="font-size:.72em;font-weight:700;color:${cat.color}">${cat.label}</span>
             </div>`,
           ).join("")}
@@ -369,7 +369,7 @@ async function _archiveNameAndLink(docId, originalName, catId) {
       <div class="arch-upload-modal">
         <div class="arch-upload-modal-head" style="--cat-color:${cat.color}">
           <div class="arch-upload-modal-title">
-            <span>${cat.icon}</span>
+            <span style="color:${cat.color};display:inline-flex">${uiIcon(cat.icon, 18)}</span>
             <span>${cat.label}</span>
           </div>
           <button class="arch-modal-close" id="archUploadClose">✕</button>
@@ -479,7 +479,7 @@ async function _archiveOpenCatModal(catId) {
     <div class="arch-cat-modal" style="--cat-color:${cat.color}">
       <div class="arch-cat-modal-header">
         <div class="arch-cat-modal-title">
-          <span style="font-size:1.3em">${cat.icon}</span>
+          <span style="color:${cat.color};display:inline-flex">${uiIcon(cat.icon, 18)}</span>
           <span>${cat.label}</span>
           ${docs.length ? `<span class="arch-count">${docs.length}</span>` : ""}
         </div>
@@ -496,7 +496,7 @@ async function _archiveOpenCatModal(catId) {
         ${
           docs.length === 0
             ? `<div class="arch-ov-empty">
-               <div style="font-size:2em;margin-bottom:10px">${cat.icon}</div>
+               <div style="margin-bottom:10px;color:${cat.color};display:flex;justify-content:center">${uiIcon(cat.icon, 30)}</div>
                Noch keine Dokumente.<br>
                <button class="btn" style="margin-top:12px"
                  onclick="_archiveUploadNew('${catId}')">

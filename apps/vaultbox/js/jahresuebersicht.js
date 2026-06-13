@@ -1375,7 +1375,7 @@ function _exportJahresBericht() {
       || "__none__";
     if (!catMap[catId]) {
       const cat = allCats.find(c => c.id === catId);
-      catMap[catId] = { label: cat ? cat.name : "Sonstiges", color: cat ? cat.color : "#888", icon: cat ? cat.icon : "📦", total: 0 };
+      catMap[catId] = { label: cat ? cat.name : "Sonstiges", color: cat ? cat.color : "#888", icon: cat ? cat.icon : "package", total: 0 };
     }
     catMap[catId].total += Math.abs(b.amount || 0);
   });
@@ -1405,7 +1405,7 @@ function _exportJahresBericht() {
   const catRows = catEntries.slice(0, 10).map(e => {
     const pct = catGrandTotal > 0 ? ((e.total / catGrandTotal) * 100).toFixed(0) : 0;
     return `<tr>
-      <td style="padding:6px 8px;font-size:12px">${e.icon} ${e.label}</td>
+      <td style="padding:6px 8px;font-size:12px"><span style="color:${e.color};display:inline-flex;vertical-align:-1px">${uiIcon(e.icon, 11)}</span> ${esc(e.label)}</td>
       <td style="padding:6px 8px;font-size:12px;text-align:right;color:#dc2626">${fmPrint(e.total)}</td>
       <td style="padding:6px 8px;font-size:12px;text-align:right;color:#6b7280">${pct}%</td>
     </tr>`;
@@ -1859,7 +1859,7 @@ function openMonthModal(mIdx, yr, mData) {
       || "__none__";
     if (!_mmCatMap[catId]) {
       const cat = _mmAllCats.find(c => c.id === catId);
-      _mmCatMap[catId] = { label: cat ? cat.name : "Sonstiges", color: cat ? cat.color : "var(--text3)", icon: cat ? cat.icon : "📦", total: 0 };
+      _mmCatMap[catId] = { label: cat ? cat.name : "Sonstiges", color: cat ? cat.color : "var(--text3)", icon: cat ? cat.icon : "package", total: 0 };
     }
     _mmCatMap[catId].total += Math.abs(b.amount || 0);
   });
@@ -1875,7 +1875,7 @@ function openMonthModal(mIdx, yr, mData) {
         return `<div class="mm-cat-row">
           <div class="mm-cat-left">
             <span class="mm-cat-dot" style="background:${e.color}"></span>
-            <span class="mm-cat-icon">${e.icon}</span>
+            <span class="mm-cat-icon" style="color:${e.color}">${uiIcon(e.icon, 14)}</span>
             <span class="mm-cat-name">${esc(e.label)}</span>
           </div>
           <div class="mm-cat-track"><div class="mm-cat-fill" style="width:${barW}%;background:${e.color}"></div></div>

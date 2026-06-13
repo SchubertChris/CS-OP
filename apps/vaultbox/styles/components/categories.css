@@ -335,6 +335,15 @@
   border-color: var(--blue);
 }
 
+/* ── ICON-SYSTEM: SVG-Ausrichtung ───── */
+.cs-ico { vertical-align: middle; flex-shrink: 0; }
+.cat-chip-icon, .cat-settings-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.ui-emoji { vertical-align: middle; }
+
 /* ── FILTER CHIPS (Umsätze filter modal) */
 .umf-cat-chips {
   flex-wrap: wrap;

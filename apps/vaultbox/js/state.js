@@ -20,18 +20,25 @@
 
 // ── STANDARD-KATEGORIEN ───────────────
 const DEFAULT_CATEGORIES = [
-  { id: "cat_wohnen",     name: "Wohnen",        color: "#4d9eff", icon: "🏠" },
-  { id: "cat_mobil",      name: "Mobilität",      color: "#ffb547", icon: "🚗" },
-  { id: "cat_lebens",     name: "Lebensmittel",   color: "#00e5a0", icon: "🛒" },
-  { id: "cat_health",     name: "Gesundheit",     color: "#ff4d6a", icon: "💊" },
-  { id: "cat_versich",    name: "Versicherungen", color: "#7b5fff", icon: "🛡️" },
-  { id: "cat_abo",        name: "Abos & Medien",  color: "#00d4cc", icon: "📱" },
-  { id: "cat_invest",     name: "Investitionen",  color: "#22c55e", icon: "📈" },
-  { id: "cat_freizeit",   name: "Freizeit",       color: "#f59e0b", icon: "🎯" },
-  { id: "cat_bildung",    name: "Bildung",        color: "#c084fc", icon: "📚" },
-  { id: "cat_gehalt",     name: "Gehalt",         color: "#4ade80", icon: "💼" },
-  { id: "cat_sonstiges",  name: "Sonstiges",      color: "#9ca1ae", icon: "📦" },
+  { id: "cat_wohnen",     name: "Wohnen",        color: "#4d9eff", icon: "home" },
+  { id: "cat_mobil",      name: "Mobilität",      color: "#ffb547", icon: "car" },
+  { id: "cat_lebens",     name: "Lebensmittel",   color: "#00e5a0", icon: "shopping-cart" },
+  { id: "cat_health",     name: "Gesundheit",     color: "#ff4d6a", icon: "pill" },
+  { id: "cat_versich",    name: "Versicherungen", color: "#7b5fff", icon: "shield" },
+  { id: "cat_abo",        name: "Abos & Medien",  color: "#00d4cc", icon: "smartphone" },
+  { id: "cat_invest",     name: "Investitionen",  color: "#22c55e", icon: "trending-up" },
+  { id: "cat_freizeit",   name: "Freizeit",       color: "#f59e0b", icon: "target" },
+  { id: "cat_bildung",    name: "Bildung",        color: "#c084fc", icon: "book" },
+  { id: "cat_gehalt",     name: "Gehalt",         color: "#4ade80", icon: "briefcase" },
+  { id: "cat_sonstiges",  name: "Sonstiges",      color: "#9ca1ae", icon: "package" },
 ];
+
+// Migration Legacy-Emoji → Icon-Name (für bereits geseedete S.categories)
+const CAT_EMOJI_TO_ICON = {
+  "🏠":"home", "🚗":"car", "🛒":"shopping-cart", "💊":"pill", "🛡️":"shield",
+  "🛡":"shield", "📱":"smartphone", "📈":"trending-up", "🎯":"target",
+  "📚":"book", "💼":"briefcase", "📦":"package",
+};
 
 const S = {
   accounts: [],

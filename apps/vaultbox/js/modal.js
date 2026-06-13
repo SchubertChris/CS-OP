@@ -171,7 +171,8 @@ function _fillCategoryPicker(selectedId) {
 
     const iconSpan = document.createElement("span");
     iconSpan.className = "cat-chip-icon";
-    iconSpan.textContent = cat.icon || "📦";
+    iconSpan.style.color = cat.color || "";
+    iconSpan.innerHTML = uiIcon(cat.icon, 16);
     chip.appendChild(iconSpan);
 
     const nameSpan = document.createElement("span");

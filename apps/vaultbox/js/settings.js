@@ -1398,7 +1398,8 @@ function renderSettings() {
       row.appendChild(swatch);
 
       const icon = _e("span", "cat-settings-icon");
-      icon.textContent = cat.icon || "📦";
+      icon.style.color = cat.color || "";
+      icon.innerHTML = uiIcon(cat.icon, 18);
       row.appendChild(icon);
 
       const name = _e("span", "cat-settings-name");
@@ -1481,25 +1482,24 @@ function renderSettings() {
     const cat =
       idx !== null
         ? S.categories[idx]
-        : { id: genId("cat"), name: "", color: "#4d9eff", icon: "📦" };
+        : { id: genId("cat"), name: "", color: "#4d9eff", icon: "tag" };
     const isNew = idx === null;
 
     const form = _e("div", "cat-edit-form");
 
-    // Emoji-Picker
-    const _EMOJI_GROUPS = [
-      { label: "Finanzen", emojis: ["💰","💳","💸","🏦","📈","📉","💹","🪙","💎","🤑","💵","💴","💶","💷","🏧","🧾","📊"] },
-      { label: "Wohnen", emojis: ["🏠","🏡","🏢","🏗️","🛋️","🛏️","🚿","💡","🔌","🔧","🪴","🪟","🚪","🧹","🧺","🪣"] },
-      { label: "Transport", emojis: ["🚗","🚙","🚕","🚌","🚲","🛵","✈️","🚂","🛻","🏍️","⛽","🅿️","🚦","🗺️","🛫","🛬"] },
-      { label: "Essen", emojis: ["🛒","🥗","🥦","🍕","🍔","☕","🍺","🥩","🧃","🍰","🛍️","🍳","🥐","🍜","🥡","🧆"] },
-      { label: "Gesundheit", emojis: ["💊","🏥","🩺","🧘","🏃","🩹","👟","💪","🦷","👁️","🩻","🫀","🧬","🌡️","🧴","🪥"] },
-      { label: "Abos & Tech", emojis: ["📱","💻","🖥️","📺","🎵","🎬","🎮","📡","🔐","☁️","🖨️","⌨️","🖱️","📷","🎙️","📻"] },
-      { label: "Freizeit", emojis: ["🎯","🎨","🎭","⚽","🎸","🏖️","🎪","🎢","🧩","📚","🎓","🏋️","🎳","🎻","🏊","🧗"] },
-      { label: "Familie", emojis: ["👶","🧒","👧","👦","🧑","👩","👨","👴","👵","💑","👪","🐶","🐱","🐰","🐟","🌱"] },
-      { label: "Sonstiges", emojis: ["⭐","🌟","💫","🔖","📦","🗂️","📋","🔔","🎁","🏷️","✅","🔑","🛡️","⚙️","🌍","🎀"] },
+    // Icon-Picker
+    const _ICON_GROUPS = [
+      { label: "Finanzen", icons: ["wallet","coins","credit-card","landmark","trending-up","bar-chart-2","receipt","briefcase"] },
+      { label: "Wohnen", icons: ["home","lightbulb","droplet","flame","zap","key"] },
+      { label: "Transport", icons: ["car","bus","train","plane","fuel"] },
+      { label: "Essen", icons: ["shopping-cart","coffee","utensils"] },
+      { label: "Gesundheit", icons: ["pill","heart","dumbbell"] },
+      { label: "Tech & Abos", icons: ["smartphone","monitor","tv","music","gamepad","cloud","wifi"] },
+      { label: "Freizeit", icons: ["target","book","graduation-cap","star","gift","globe","leaf"] },
+      { label: "Sonstiges", icons: ["shield","umbrella","bell","settings","folder","package","tag","file-text","mail","id-card","image","scissors","baby"] },
     ];
 
-    let _pickerCurrentEmoji = cat.icon || "📦";
+    let _pickerCurrentIcon = cat.icon || "tag";
 
     const iconWrap = _e("div", "cat-edit-field");
     const iconLbl = _e("label");
@@ -1509,8 +1509,9 @@ function renderSettings() {
 
     const triggerBtn = _e("button", "emoji-trigger-btn");
     triggerBtn.type = "button";
-    triggerBtn.textContent = _pickerCurrentEmoji;
-    triggerBtn.addEventListener("mouseenter", () => _showTooltip("Emoji auswählen", triggerBtn));
+    triggerBtn.style.color = cat.color || "";
+    triggerBtn.innerHTML = uiIcon(_pickerCurrentIcon, 20);
+    triggerBtn.addEventListener("mouseenter", () => _showTooltip("Icon auswählen", triggerBtn));
     triggerBtn.addEventListener("mouseleave", _hideTooltip);
 
     const pickerDropdown = _e("div", "emoji-picker-dropdown");
@@ -1525,66 +1526,71 @@ function renderSettings() {
     // Emoji-Grid Container
     const gridWrap = _e("div", "emoji-grid-wrap");
 
-    // Keyword-Map für Suche (Deutsch)
-    const _EMOJI_KEYWORDS = {
-      "💰":"geld finanzen money","💳":"karte kreditkarte zahlen","💸":"ausgabe geld","🏦":"bank sparkasse","📈":"aktie depot gewinn","📉":"verlust","💹":"kurs","🪙":"münze coin","💎":"diamant luxus","🤑":"geld reich","💵":"dollar","🧾":"rechnung beleg",
-      "🏠":"haus wohnen miete","🏡":"haus garten","🏢":"büro gebäude","🛋️":"sofa wohnzimmer","💡":"strom licht","🔌":"strom energie","🔧":"reparatur","🪴":"pflanze","🚪":"tür","🧹":"putzen haushalt","🧺":"wäsche",
-      "🚗":"auto kfz fahren","🚙":"auto suv","✈️":"flug reise urlaub","🚲":"fahrrad","🛵":"roller","🏍️":"motorrad","⛽":"tanken sprit","🚌":"bus nahverkehr","🚂":"zug bahn","🅿️":"parken",
-      "🛒":"einkaufen lebensmittel supermarkt","☕":"kaffee","🍕":"pizza essen","🍔":"burger","🥗":"salat","🥩":"fleisch","🧃":"getränk","🍰":"kuchen","🛍️":"shopping",
-      "💊":"medizin apotheke","🏥":"arzt krankenhaus","🩺":"arzt","🧘":"yoga sport","🏃":"laufen sport","👟":"schuhe sport","💪":"fitness","🦷":"zahnarzt","🩹":"pflaster",
-      "📱":"handy smartphone abo","💻":"laptop computer","🖥️":"pc desktop","📺":"tv fernsehen","🎵":"musik spotify","🎬":"kino film","🎮":"gaming spiele","☁️":"cloud internet","🔐":"sicherheit",
-      "🎯":"ziel hobby","🎨":"kunst hobby","⚽":"sport fußball","🎸":"musik gitarre","🏖️":"urlaub strand","📚":"bücher bildung","🎓":"schule studium","🏋️":"fitness gym",
-      "👶":"kind baby","👪":"familie","🐶":"hund tier","🐱":"katze tier","🌱":"natur",
-      "⭐":"favorit","📦":"paket sonstiges","🗂️":"ordner ablage","📋":"liste","🔔":"benachrichtigung","🎁":"geschenk","🏷️":"tag","✅":"erledigt","🔑":"schlüssel","🛡️":"versicherung schutz","⚙️":"einstellung technik",
+    // Keyword-Map für Suche (Deutsch), je Icon-Name
+    const _ICON_KEYWORDS = {
+      wallet:"geld geldbörse wallet", coins:"münzen geld coins", "credit-card":"karte kreditkarte zahlen",
+      landmark:"bank sparkasse", "trending-up":"aktie depot gewinn invest", "bar-chart-2":"statistik chart",
+      receipt:"rechnung beleg kassenbon", briefcase:"gehalt arbeit job business",
+      home:"haus wohnen miete zuhause", lightbulb:"strom licht idee", droplet:"wasser",
+      flame:"heizung gas feuer wärme", zap:"strom energie blitz", key:"schlüssel miete zugang",
+      car:"auto kfz fahren", bus:"bus nahverkehr öpnv", train:"zug bahn", plane:"flug reise urlaub flugzeug", fuel:"tanken sprit benzin",
+      "shopping-cart":"einkaufen lebensmittel supermarkt", coffee:"kaffee café", utensils:"essen restaurant besteck",
+      pill:"medizin apotheke gesundheit", heart:"gesundheit herz", dumbbell:"fitness sport gym hantel",
+      smartphone:"handy smartphone abo telefon", monitor:"pc computer bildschirm", tv:"tv fernsehen",
+      music:"musik spotify streaming", gamepad:"gaming spiele konsole", cloud:"cloud internet speicher", wifi:"internet wlan netz",
+      target:"ziel hobby freizeit", book:"buch bildung lesen", "graduation-cap":"schule studium bildung abschluss",
+      star:"favorit stern wichtig", gift:"geschenk", globe:"welt reise internet", leaf:"natur pflanze öko",
+      shield:"versicherung schutz sicherheit", umbrella:"versicherung schutz regen", bell:"benachrichtigung erinnerung",
+      settings:"einstellung technik zahnrad", folder:"ordner ablage", package:"paket sonstiges box",
+      tag:"label etikett sonstiges", "file-text":"dokument vertrag datei", mail:"post brief email eingang",
+      "id-card":"ausweis legitimation karte", image:"foto bild scan", scissors:"friseur schere", baby:"kind familie baby",
     };
 
-    function _renderEmojiGrid(query) {
+    const _ALL_ICONS = _ICON_GROUPS.flatMap(g => g.icons);
+
+    function _iconPickBtn(name) {
+      const btn = _e("button", "emoji-btn" + (name === _pickerCurrentIcon ? " selected" : ""));
+      btn.type = "button";
+      btn.innerHTML = uiIcon(name, 20);
+      btn.addEventListener("click", () => {
+        _pickerCurrentIcon = name;
+        triggerBtn.innerHTML = uiIcon(name, 20);
+        gridWrap.querySelectorAll(".emoji-btn").forEach(b => b.classList.remove("selected"));
+        btn.classList.add("selected");
+        _closePicker();
+      });
+      return btn;
+    }
+
+    function _renderIconGrid(query) {
       while (gridWrap.firstChild) gridWrap.removeChild(gridWrap.firstChild);
       const q = (query || "").toLowerCase().trim();
 
       if (q) {
-        const allEmojis = _EMOJI_GROUPS.flatMap(g => g.emojis);
-        const filtered = allEmojis.filter(em => {
-          const keywords = _EMOJI_KEYWORDS[em] || "";
-          return keywords.includes(q) || em.includes(q);
+        const filtered = _ALL_ICONS.filter(name => {
+          const kw = _ICON_KEYWORDS[name] || "";
+          return kw.includes(q) || name.includes(q);
         });
-        const pool = filtered.length > 0 ? filtered : allEmojis;
+        const pool = filtered.length > 0 ? filtered : _ALL_ICONS;
         const section = _e("div", "emoji-group");
-        pool.forEach(em => {
-          const btn = _e("button", "emoji-btn" + (em === _pickerCurrentEmoji ? " selected" : ""));
-          btn.type = "button"; btn.textContent = em;
-          btn.addEventListener("click", () => { _pickerCurrentEmoji = em; triggerBtn.textContent = em; _closePicker(); });
-          section.appendChild(btn);
-        });
+        pool.forEach(name => section.appendChild(_iconPickBtn(name)));
         gridWrap.appendChild(section);
         return;
       }
 
-      _EMOJI_GROUPS.forEach(group => {
+      _ICON_GROUPS.forEach(group => {
         const groupLabel = _e("div", "emoji-group-label");
         groupLabel.textContent = group.label;
         gridWrap.appendChild(groupLabel);
-
         const section = _e("div", "emoji-group");
-        group.emojis.forEach(em => {
-          const btn = _e("button", "emoji-btn" + (em === _pickerCurrentEmoji ? " selected" : ""));
-          btn.type = "button"; btn.textContent = em;
-          btn.addEventListener("click", () => {
-            _pickerCurrentEmoji = em;
-            triggerBtn.textContent = em;
-            // Update selected highlight
-            gridWrap.querySelectorAll(".emoji-btn").forEach(b => b.classList.toggle("selected", b.textContent === em));
-            _closePicker();
-          });
-          section.appendChild(btn);
-        });
+        group.icons.forEach(name => section.appendChild(_iconPickBtn(name)));
         gridWrap.appendChild(section);
       });
     }
 
-    searchInp.addEventListener("input", () => _renderEmojiGrid(searchInp.value));
+    searchInp.addEventListener("input", () => _renderIconGrid(searchInp.value));
     pickerDropdown.appendChild(gridWrap);
-    _renderEmojiGrid("");
+    _renderIconGrid("");
 
     function _closePicker() {
       pickerDropdown.style.display = "none";
@@ -1600,13 +1606,13 @@ function renderSettings() {
       if (isOpen) { _closePicker(); return; }
       pickerDropdown.style.display = "flex";
       searchInp.value = "";
-      _renderEmojiGrid("");
+      _renderIconGrid("");
       setTimeout(() => searchInp.focus(), 50);
       setTimeout(() => document.addEventListener("click", _outsideClick, true), 10);
     });
 
-    // iconInp als verstecktes Feld für den save-Handler (Wert kommt aus _pickerCurrentEmoji)
-    const iconInp = { get value() { return _pickerCurrentEmoji; }, trim() { return _pickerCurrentEmoji; } };
+    // iconInp als verstecktes Feld für den save-Handler (Wert kommt aus _pickerCurrentIcon)
+    const iconInp = { get value() { return _pickerCurrentIcon; }, trim() { return _pickerCurrentIcon; } };
 
     pickerWrap.appendChild(triggerBtn);
     pickerWrap.appendChild(pickerDropdown);
@@ -1652,7 +1658,7 @@ function renderSettings() {
         id: cat.id,
         name: n,
         color: colorInp.value,
-        icon: iconInp.value.trim() || "📦",
+        icon: iconInp.value.trim() || "tag",
       };
       if (!Array.isArray(S.categories)) S.categories = [];
       if (isNew) S.categories.push(updated);

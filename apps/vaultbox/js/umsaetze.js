@@ -736,7 +736,7 @@ function _renderUmList(panel, data) {
           <div class="um-row-dot" style="${dotStyle}">${isGoal ? `<span class="um-goal-dot-icon">${b._goalIcon}</span>` : ""}</div>
           <div class="um-row-cat"${_rowCat ? ` onmouseenter="_showTooltip('${esc(_rowCat.name)}',this)" onmouseleave="_hideTooltip()"` : ""}>
             ${_rowCat
-              ? `<span class="um-cat-icon" style="background:${_rowCat.color}20;color:${_rowCat.color};border-color:${_rowCat.color}40">${_rowCat.icon}</span>`
+              ? `<span class="um-cat-icon" style="background:${_rowCat.color}20;color:${_rowCat.color};border-color:${_rowCat.color}40">${uiIcon(_rowCat.icon, 13)}</span>`
               : `<span class="um-cat-icon um-cat-icon--empty"></span>`}
           </div>
           <div class="um-row-cred">
@@ -962,7 +962,7 @@ function _umOpenEdit(bookingId) {
   const _catOpts = (() => {
     let opts = `<option value="">— keine —</option>`;
     (S.categories || []).forEach(c => {
-      opts += `<option value="${c.id}"${_umCatCur === c.id ? " selected" : ""}>${c.icon} ${esc(c.name)}</option>`;
+      opts += `<option value="${c.id}"${_umCatCur === c.id ? " selected" : ""}>${esc(c.name)}</option>`;
     });
     return opts;
   })();
@@ -1573,7 +1573,7 @@ function _umOpenFilter() {
               ${(Array.isArray(S.categories) ? S.categories : []).map(c =>
                 `<button class="umf-chip${_umFilter.categoryId === c.id ? " active" : ""}" id="umFCat_${c.id}"
                   style="${_umFilter.categoryId === c.id ? `background:${c.color}22;color:${c.color};border-color:${c.color}` : ""}"
-                  onclick="document.querySelectorAll('[id^=umFCat_]').forEach(b=>{b.classList.remove('active');b.style.background='';b.style.color='';b.style.borderColor='';});this.classList.add('active');this.style.background='${c.color}22';this.style.color='${c.color}';this.style.borderColor='${c.color}'">${c.icon} ${esc(c.name)}</button>`
+                  onclick="document.querySelectorAll('[id^=umFCat_]').forEach(b=>{b.classList.remove('active');b.style.background='';b.style.color='';b.style.borderColor='';});this.classList.add('active');this.style.background='${c.color}22';this.style.color='${c.color}';this.style.borderColor='${c.color}'"><span style="display:inline-flex;vertical-align:-2px">${uiIcon(c.icon, 13)}</span> ${esc(c.name)}</button>`
               ).join("")}
             </div>
           </div>

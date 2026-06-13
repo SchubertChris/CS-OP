@@ -408,7 +408,7 @@ function _ctrRenderList(posten, thSort) {
       </td>
       <td class="ctr-td-cat">
         ${_ctrCat
-          ? `<span class="ctr-name-badge" onmouseenter="_showTooltip('Kategorie: ${esc(_ctrCat.name)}',this)" onmouseleave="_hideTooltip()" style="background:${esc(_ctrCat.color)}22;border-color:${esc(_ctrCat.color)}44">${_ctrCat.icon}</span>`
+          ? `<span class="ctr-name-badge" onmouseenter="_showTooltip('Kategorie: ${esc(_ctrCat.name)}',this)" onmouseleave="_hideTooltip()" style="background:${esc(_ctrCat.color)}22;border-color:${esc(_ctrCat.color)}44;color:${esc(_ctrCat.color)};display:inline-flex;align-items:center;justify-content:center">${uiIcon(_ctrCat.icon, 14)}</span>`
           : `<span style="color:var(--text3)">—</span>`}
       </td>
       <td class="ctr-td-cred" onclick="event.stopPropagation()">

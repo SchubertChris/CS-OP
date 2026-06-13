@@ -470,7 +470,7 @@ function openPrintPreview() {
           const catId = b.categoryId || postenCatId;
           const cat = catId ? (S.categories||[]).find(c=>c.id===catId) : null;
           const catBadge = cat
-            ? `<span class="badge" style="background:${cat.color}22;color:${cat.color};border:1px solid ${cat.color}44">${esc2(cat.icon||'')} ${esc2(cat.name)}</span>`
+            ? `<span class="badge" style="background:${cat.color}22;color:${cat.color};border:1px solid ${cat.color}44"><span style="display:inline-flex;vertical-align:-1px">${uiIcon(cat.icon||'tag', 10)}</span> ${esc2(cat.name)}</span>`
             : '<span class="muted">—</span>';
           const statusCls = b.status==='beglichen'?'badge-green':b.status==='geändert'?'badge-amber':'badge-green';
           return `<tr>
