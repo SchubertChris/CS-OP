@@ -1646,14 +1646,14 @@ body.has-visionboard .main {
   z-index: 60;
   display: flex;
   align-items: center;
-  gap: 7px;
-  height: 36px;
-  padding: 0 14px;
+  gap: 9px;
+  height: 42px;
+  padding: 0 18px;
   border-radius: 9999px;
   background: var(--cs-overlay-sm);
   border: 1px solid var(--border);
   color: var(--text3);
-  font-size: 0.72em;
+  font-size: 0.82em;
   font-weight: 500;
   font-family: var(--sans);
   cursor: pointer;
@@ -1667,14 +1667,14 @@ body.has-visionboard .main {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 }
 #cmdTrigger svg {
-  width: 13px;
-  height: 13px;
+  width: 15px;
+  height: 15px;
   flex-shrink: 0;
 }
 #cmdTrigger img {
-  width: 18px;
-  height: 18px;
-  border-radius: 4px;
+  width: 21px;
+  height: 21px;
+  border-radius: 5px;
   object-fit: contain;
   flex-shrink: 0;
 }
