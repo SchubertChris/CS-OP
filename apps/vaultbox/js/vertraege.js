@@ -327,6 +327,7 @@ function _ctrInitColResize() {
 function _ctrRenderList(posten, thSort) {
   let rows = "";
   let shownExpiredSep = false;
+  const _acked = _ctrAckedSet();
 
   posten.forEach((p) => {
     const status = _ctrStatus(p);
@@ -334,6 +335,7 @@ function _ctrRenderList(posten, thSort) {
     const color = acc ? acc.color : "var(--border2)";
     const isExp = status === "expired";
     const days = _ctrDaysLeft(p);
+    const actionNeeded = status === "expiring" && !_acked.has(p.id);
 
     if (isExp && !shownExpiredSep) {
       shownExpiredSep = true;
@@ -391,7 +393,7 @@ function _ctrRenderList(posten, thSort) {
       return (Array.isArray(S.creditors) ? S.creditors : []).find(c => c.id === p.creditorId) || null;
     })();
 
-    rows += `<tr class="ctr-row${isExp ? " ctr-row-expired" : ""}${status === "expiring" ? " ctr-row-expiring" : ""}" onclick="openModal(${S.data.indexOf(p)})" style="cursor:pointer">
+    rows += `<tr class="ctr-row${isExp ? " ctr-row-expired" : ""}${status === "expiring" ? " ctr-row-expiring" : ""}${actionNeeded ? " ctr-row-action" : ""}" onclick="openModal(${S.data.indexOf(p)})" style="cursor:pointer">
       <td class="ctr-td-name">
         <div style="display:flex;align-items:flex-start;gap:8px">
           <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${color};flex-shrink:0;margin-top:5px"></span>
@@ -438,8 +440,9 @@ function _ctrRenderList(posten, thSort) {
           return `<br><span class="ctr-badge ctr-cancel-missed" onmouseenter="_showTooltip('Kündigungsfrist abgelaufen am ${dateStr}',this)" onmouseleave="_hideTooltip()">⚠ Frist verpasst</span>`;
         return `<br><span class="ctr-badge ctr-cancel-warn" onmouseenter="_showTooltip('Kündigen bis ${dateStr} (${p.cancellationDays} Tage Frist)',this)" onmouseleave="_hideTooltip()">Kündigen bis ${dateStr}</span>`;
       })()}</td>
-      <td style="padding:8px 10px;width:40px;text-align:right" onclick="event.stopPropagation()">
-        <div class="icon-btn" style="min-width:unset;width:28px;height:28px;padding:0" onclick="openModal(${S.data.indexOf(p)})" onmouseenter="_showTooltip('Bearbeiten',this)" onmouseleave="_hideTooltip()">
+      <td style="padding:8px 10px;width:auto;text-align:right;white-space:nowrap" onclick="event.stopPropagation()">
+        ${actionNeeded ? `<button class="ctr-ack-btn" onclick="event.stopPropagation();_ctrAck('${p.id}')" onmouseenter="_showTooltip('Handlungsbedarf erledigt — Markierung entfernen',this)" onmouseleave="_hideTooltip()">${iconHtml("check", 13)}</button>` : ""}
+        <div class="icon-btn" style="min-width:unset;width:28px;height:28px;padding:0;display:inline-flex" onclick="openModal(${S.data.indexOf(p)})" onmouseenter="_showTooltip('Bearbeiten',this)" onmouseleave="_hideTooltip()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13">
             <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/>
             <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
@@ -473,12 +476,14 @@ function _ctrRenderList(posten, thSort) {
 function _ctrRenderGrid(posten) {
   let cards = "";
   let shownExpiredSep = false;
+  const _acked = _ctrAckedSet();
 
   posten.forEach((p) => {
     const status = _ctrStatus(p);
     const acc = S.accounts.find((a) => a.id === p.accountId);
     const color = acc ? acc.color : "var(--border2)";
     const isExp = status === "expired";
+    const actionNeeded = status === "expiring" && !_acked.has(p.id);
     const days = _ctrDaysLeft(p);
 
     if (isExp && !shownExpiredSep) {
@@ -521,7 +526,7 @@ function _ctrRenderGrid(posten) {
     const amtColor = p.type === "einnahme" ? "var(--green)" : "var(--red)";
     const amtSign = p.type === "einnahme" ? "+" : "−";
 
-    cards += `<div class="ctr-card${isExp ? " ctr-card-expired" : ""}${status === "expiring" ? " ctr-card-expiring" : ""}"
+    cards += `<div class="ctr-card${isExp ? " ctr-card-expired" : ""}${status === "expiring" ? " ctr-card-expiring" : ""}${actionNeeded ? " ctr-card-action" : ""}"
       style="cursor:pointer;--ctr-color:${color}"
       onclick="openModal(${S.data.indexOf(p)})">
       <div class="ctr-card-head">
@@ -529,7 +534,10 @@ function _ctrRenderGrid(posten) {
           <span style="width:8px;height:8px;border-radius:50%;background:${color};flex-shrink:0;display:inline-block"></span>
           <span style="font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:.88em">${esc(p.name)}</span>
         </div>
-        ${_ctrStatusBadge(p)}
+        <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
+          ${actionNeeded ? `<button class="ctr-ack-btn" onclick="event.stopPropagation();_ctrAck('${p.id}')" onmouseenter="_showTooltip('Handlungsbedarf erledigt — Markierung entfernen',this)" onmouseleave="_hideTooltip()">${iconHtml("check", 13)}</button>` : ""}
+          ${_ctrStatusBadge(p)}
+        </div>
       </div>
       <div class="ctr-card-amount" style="color:${amtColor}">
         ${amtSign}${fm(parseFloat(p.amount) || 0)}
@@ -558,6 +566,50 @@ function _ctrDismissHint() {
 // Zeigt einen Zähler in der Navigation, WENN Verträge in ≤ 60 Tagen enden.
 // Abschaltbar über CFG.contractAlerts (Einstellungen → Verhalten).
 // Spiegelt immer den aktuellen Stand — kein verstecktes Session-Verhalten.
+// ── HANDLUNGSBEDARF (Kündigungsfrist) — Quittierung ──
+// Ein Vertrag braucht Aufmerksamkeit, wenn er in ≤ 60 Tagen ausläuft.
+// Der User kann den Handlungsbedarf pro Vertrag abhaken ("Erledigt") —
+// gespeichert in localStorage. Sobald ein Vertrag nicht mehr ausläuft
+// (verlängert/gekündigt), wird die Quittierung automatisch entfernt, damit
+// erneutes Auslaufen wieder alarmiert.
+function _ctrAckedSet() {
+  try { return new Set(JSON.parse(localStorage.getItem("csf_ctr_acked") || "[]")); }
+  catch (_) { return new Set(); }
+}
+function _ctrSaveAcked(set) {
+  try { localStorage.setItem("csf_ctr_acked", JSON.stringify([...set])); } catch (_) {}
+}
+function _ctrIsExpiring(p) {
+  return p.interval !== "einmalig" &&
+    (_hasDate(p.contractStart) || _hasDate(p.contractEnd)) &&
+    _ctrStatus(p) === "expiring";
+}
+function _ctrActionNeeded() {
+  const acked = _ctrAckedSet();
+  let changed = false;
+  const out = [];
+  (S.data || []).forEach((p) => {
+    if (_ctrIsExpiring(p)) { if (!acked.has(p.id)) out.push(p); }
+    else if (acked.has(p.id)) { acked.delete(p.id); changed = true; }
+  });
+  if (changed) _ctrSaveAcked(acked);
+  return out;
+}
+function _ctrAck(id) {
+  const s = _ctrAckedSet(); s.add(id); _ctrSaveAcked(s);
+  if (typeof _hideTooltip === "function") _hideTooltip();
+  if (typeof renderVertraege === "function") renderVertraege();
+  updateContractBadge();
+}
+function _ctrUnack(id) {
+  const s = _ctrAckedSet(); s.delete(id); _ctrSaveAcked(s);
+  if (typeof renderVertraege === "function") renderVertraege();
+  updateContractBadge();
+}
+
+// ── CONTRACT BADGE (Nav) ──────────────
+// Einzelnes "!" in der Navigation, WENN mindestens ein Vertrag in ≤ 60 Tagen
+// ausläuft und noch nicht abgehakt ist. Abschaltbar über CFG.contractAlerts.
 function updateContractBadge() {
   const badge = document.getElementById("contractBadge");
   if (!badge) return;
@@ -568,26 +620,19 @@ function updateContractBadge() {
     badge.onmouseleave = null;
   };
 
-  if (typeof CFG !== "undefined" && CFG.contractAlerts === false) {
-    _clear();
-    return;
-  }
+  if (typeof CFG !== "undefined" && CFG.contractAlerts === false) { _clear(); return; }
 
-  const expiring = (S.data || []).filter(
-    (p) => p.interval !== "einmalig" &&
-      (_hasDate(p.contractStart) || _hasDate(p.contractEnd)) &&
-      _ctrStatus(p) === "expiring",
-  );
-  const n = expiring.length;
-  if (n === 0) { _clear(); return; }
+  const list = _ctrActionNeeded();
+  if (!list.length) { _clear(); return; }
 
-  badge.classList.add("nav-badge--count");
-  badge.textContent = n > 9 ? "9+" : String(n);
+  badge.classList.remove("nav-badge--count");
+  badge.classList.add("nav-badge--alert");
+  badge.textContent = "!";
   badge.style.display = "";
 
-  const txt = n === 1
-    ? "1 Vertrag läuft in den nächsten 60 Tagen aus — verlängern oder kündigen."
-    : `${n} Verträge laufen in den nächsten 60 Tagen aus — verlängern oder kündigen.`;
+  const txt = list.length === 1
+    ? "1 Vertrag braucht Aufmerksamkeit — Kündigungsfrist läuft (≤ 60 Tage). Unter Verträge ansehen und abhaken."
+    : `${list.length} Verträge brauchen Aufmerksamkeit — Kündigungsfrist läuft (≤ 60 Tage). Unter Verträge ansehen und abhaken.`;
   badge.onmouseenter = () => { if (typeof _showTooltip === "function") _showTooltip(txt, badge); };
   badge.onmouseleave = () => { if (typeof _hideTooltip === "function") _hideTooltip(); };
 }

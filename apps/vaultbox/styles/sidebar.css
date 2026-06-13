@@ -334,23 +334,21 @@ nav::-webkit-scrollbar-thumb {
   50%       { box-shadow: 0 0 0 3px rgba(255, 77, 106, 0); }
 }
 
-/* Zähler-Badge (Verträge): sichtbarer als der 6px-Punkt, mit Anzahl + Tooltip */
-.nav-badge--count {
-  width: auto;
-  min-width: 16px;
+/* Alert-Badge (Verträge): rotes "!" wenn Handlungsbedarf besteht */
+.nav-badge--alert {
+  width: 16px;
   height: 16px;
-  padding: 0 4px;
-  border-radius: 8px;
+  padding: 0;
+  border-radius: 50%;
   font-family: var(--sans);
-  font-size: 9px;
-  font-weight: 800;
+  font-size: 11px;
+  font-weight: 900;
   line-height: 16px;
   text-align: center;
   color: #fff;
-  letter-spacing: 0;
   pointer-events: auto;
   cursor: help;
-  box-shadow: 0 0 0 1px rgba(255, 77, 106, 0.35), 0 2px 6px rgba(255, 77, 106, 0.45);
+  box-shadow: 0 0 0 1px rgba(255, 77, 106, 0.35), 0 2px 6px rgba(255, 77, 106, 0.5);
 }
 
 /* Compact: actions as icon-only squares */
