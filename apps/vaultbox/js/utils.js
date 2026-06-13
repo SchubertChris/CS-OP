@@ -119,6 +119,13 @@ const CS_ICON_PATHS = {
   unlock:         '<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 7.5-2"/>',
   save:           '<path d="M5 3h11l3 3v13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M7 3v5h8M8 13h8v8H8z"/>',
   "rotate-ccw":   '<path d="M3 12a9 9 0 1 0 2.6-6.3M3 4v4h4"/>',
+  // Chart-Typen (Jahresübersicht)
+  "chart-candle": '<path d="M7 3v3M7 16v5"/><rect x="5" y="6" width="4" height="10" rx="1"/><path d="M17 3v5M17 17v4"/><rect x="15" y="8" width="4" height="9" rx="1"/>',
+  "chart-bar":    '<path d="M4 21h16"/><rect x="5" y="11" width="3.5" height="8" rx="1"/><rect x="10.5" y="6" width="3.5" height="13" rx="1"/><rect x="16" y="14" width="3.5" height="5" rx="1"/>',
+  "chart-line":   '<path d="M4 21h16"/><path d="M4 16l5-5 3 2 7-8"/>',
+  "chart-area":   '<path d="M4 21h16"/><path d="M4 15l4-4 4 2 8-7v11H4z"/>',
+  grid:           '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>',
+  list:           '<path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>',
   // Fallback
   tag:            '<path d="M3 11V5a2 2 0 0 1 2-2h6l9 9-8 8z"/><circle cx="7.5" cy="7.5" r="1.2"/>',
 };

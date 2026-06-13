@@ -110,6 +110,15 @@
   border-left: 1px solid var(--border);
 }
 
+/* ── MONATSÜBERSICHT-Kopf (Toggle sitzt jetzt direkt über den Monaten) ── */
+.jh-months-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 6px 2px 12px;
+}
+
 /* ── YEAR GRID (Kacheln) ── */
 .year-grid {
   display: grid;

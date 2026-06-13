@@ -515,14 +515,6 @@ function renderJahr() {
             ${allYears.map((y) => `<option value="${y}" ${y === _jahrB ? "selected" : ""}>${y}</option>`).join("")}
           </select>
         ` : ""}
-        <div class="view-toggle">
-          <button class="vt-btn ${_jahrView === "cards" ? "active" : ""}" onclick="_jahrView='cards';renderJahr()" onmouseenter="_showTooltip('Kartenansicht', this)" onmouseleave="_hideTooltip()">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-          </button>
-          <button class="vt-btn ${_jahrView === "list" ? "active" : ""}" onclick="_jahrView='list';renderJahr()" onmouseenter="_showTooltip('Listenansicht', this)" onmouseleave="_hideTooltip()">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-          </button>
-        </div>
         <button class="jht-ctrl-btn" onclick="_exportJahresBericht()" onmouseenter="_showTooltip('Jahresbericht als PDF exportieren', this)" onmouseleave="_hideTooltip()">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           Export
@@ -557,10 +549,10 @@ function renderJahr() {
         </div>
         <div class="jh-ct-right">
           <div class="candle-type-toggle">
-            <button class="ct-btn active" data-type="candle" onclick="_candleType='candle';_refreshCandleChart()" onmouseenter="_showTooltip('Kerzendiagramm',this)" onmouseleave="_hideTooltip()">🕯</button>
-            <button class="ct-btn" data-type="bar" onclick="_candleType='bar';_refreshCandleChart()" onmouseenter="_showTooltip('Balkendiagramm',this)" onmouseleave="_hideTooltip()">▊</button>
-            <button class="ct-btn" data-type="line" onclick="_candleType='line';_refreshCandleChart()" onmouseenter="_showTooltip('Liniendiagramm',this)" onmouseleave="_hideTooltip()">〜</button>
-            <button class="ct-btn" data-type="area" onclick="_candleType='area';_refreshCandleChart()" onmouseenter="_showTooltip('Flächendiagramm',this)" onmouseleave="_hideTooltip()">▲</button>
+            <button class="ct-btn active" data-type="candle" onclick="_candleType='candle';_refreshCandleChart()" onmouseenter="_showTooltip('Kerzendiagramm',this)" onmouseleave="_hideTooltip()">${iconHtml("chart-candle", 14)}</button>
+            <button class="ct-btn" data-type="bar" onclick="_candleType='bar';_refreshCandleChart()" onmouseenter="_showTooltip('Balkendiagramm',this)" onmouseleave="_hideTooltip()">${iconHtml("chart-bar", 14)}</button>
+            <button class="ct-btn" data-type="line" onclick="_candleType='line';_refreshCandleChart()" onmouseenter="_showTooltip('Liniendiagramm',this)" onmouseleave="_hideTooltip()">${iconHtml("chart-line", 14)}</button>
+            <button class="ct-btn" data-type="area" onclick="_candleType='area';_refreshCandleChart()" onmouseenter="_showTooltip('Flächendiagramm',this)" onmouseleave="_hideTooltip()">${iconHtml("chart-area", 14)}</button>
           </div>
           <div class="jh-ct-divider"></div>
           <button class="ct-btn" id="candleCmpBtn" onclick="_candleCompare=!_candleCompare;_refreshCandleChart()" onmouseenter="_showTooltip('Einnahmen vs. Ausgaben vergleichen',this)" onmouseleave="_hideTooltip()" style="border:1px solid var(--border);border-radius:7px;padding:4px 9px;">⇄ Vgl</button>
@@ -677,7 +669,14 @@ function renderJahr() {
     </div>
     </div>
 
-    <!-- Monatskarten -->
+    <!-- ══ MONATSÜBERSICHT ══ -->
+    <div class="jh-months-head">
+      <div class="panel-title">Monatsübersicht ${yr}</div>
+      <div class="view-toggle">
+        <button class="vt-btn ${_jahrView === "cards" ? "active" : ""}" onclick="_jahrView='cards';renderJahr()" onmouseenter="_showTooltip('Kartenansicht', this)" onmouseleave="_hideTooltip()">${iconHtml("grid", 14)}</button>
+        <button class="vt-btn ${_jahrView === "list" ? "active" : ""}" onclick="_jahrView='list';renderJahr()" onmouseenter="_showTooltip('Listenansicht', this)" onmouseleave="_hideTooltip()">${iconHtml("list", 14)}</button>
+      </div>
+    </div>
     <div id="yearGrid"></div>`;
 
   const monthsA = _preMonths;
