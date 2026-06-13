@@ -2374,11 +2374,13 @@ body.has-visionboard .main {
   opacity: 0.6 !important;
 }
 
-/* ── PILL ENDKAPPEN: Außenkanten passen zum Container-Radius ── */
-#pill .nav-item:first-child {
+/* ── PILL ENDKAPPEN: Außenkanten passen zum Container-Radius ──
+   :first-of-type/:last-of-type statt :first-child — das erste Kind von
+   #pill ist der .pill-closed-btn <button>, nicht das Dashboard-.nav-item. */
+#pill .nav-item:first-of-type {
   border-radius: 9999px 10px 10px 9999px !important;
 }
-#pill .nav-item:last-child {
+#pill .nav-item:last-of-type {
   border-radius: 10px 9999px 9999px 10px !important;
 }
 
