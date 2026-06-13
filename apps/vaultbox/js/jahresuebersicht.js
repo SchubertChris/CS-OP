@@ -1315,7 +1315,7 @@ function _renderGoalsYear() {
         : null;
       return `<div class="goal-year-item">
       <div class="goal-year-top">
-        <span style="font-size:1.2em">${g.icon || "🎯"}</span>
+        <span style="color:${g.color || "var(--blue)"};display:inline-flex;align-items:center">${uiIcon(g.icon || "target", 17)}</span>
         <div>
           <div style="font-size:.82em;font-weight:700;color:var(--text1)">${esc(g.name)}</div>
           ${months !== null ? `<div style="font-size:.68em;color:var(--text3)">${months > 0 ? months + " Monate verbleibend" : "⚠ Zieldatum überschritten"}</div>` : ""}

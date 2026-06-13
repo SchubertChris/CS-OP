@@ -40,6 +40,13 @@ const CAT_EMOJI_TO_ICON = {
   "📚":"book", "💼":"briefcase", "📦":"package",
 };
 
+// Legacy-Emoji → Icon-Name für Sparziele
+const GOAL_EMOJI_TO_ICON = {
+  "🎯":"target", "🏖️":"umbrella", "🏖":"umbrella", "🚗":"car", "🏠":"home",
+  "💻":"monitor", "✈️":"plane", "✈":"plane", "💰":"wallet", "📈":"trending-up",
+  "🎓":"graduation-cap", "💍":"heart", "🛡️":"shield", "📦":"package",
+};
+
 const S = {
   accounts: [],
   data: [],

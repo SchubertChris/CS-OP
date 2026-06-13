@@ -187,7 +187,7 @@ function openPrintPreview() {
     const rem  = Math.max(0,(g.targetAmount||0)-(g.currentAmount||0));
     return `<div class="goal-card-p">
       <div class="gc-top">
-        <span class="gc-icon">${g.icon||'🎯'}</span>
+        <span class="gc-icon" style="color:${g.color||'#4d9eff'};display:inline-flex;vertical-align:-2px">${uiIcon(g.icon||'target', 14)}</span>
         <div>
           <div class="gc-name">${esc2(g.name)}</div>
           ${g.deadline?`<div class="gc-dead muted">${new Date(g.deadline).toLocaleDateString('de-DE')}</div>`:''}

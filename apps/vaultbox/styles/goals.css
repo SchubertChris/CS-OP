@@ -194,9 +194,12 @@
   border-radius: var(--r-sm);
   cursor: pointer;
   border: 1px solid var(--border);
-  font-size: 1.1em;
+  background: transparent;
+  color: var(--text2);
+  padding: 0;
   transition: all var(--t-fast);
 }
+.goal-icon-opt.active { color: var(--blue); }
 .goal-icon-opt:hover {
   background: var(--panel2);
   border-color: var(--border2);

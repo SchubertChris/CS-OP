@@ -28,7 +28,7 @@ function renderGoals() {
         goals.length === 0
           ? `
         <div class="empty-state">
-          <div class="empty-icon">🎯</div>
+          <div class="empty-icon" style="display:flex;justify-content:center;color:var(--blue)">${iconHtml("target", 34)}</div>
           <div class="empty-title">Noch keine Sparziele</div>
           <div class="empty-sub">Lege dein erstes Ziel an — Urlaub, Auto, Notgroschen oder Depot-Aufbau</div>
           <button class="btn primary" style="margin-top:16px;" onclick="openGoalModal()">+ Erstes Ziel anlegen</button>
@@ -274,7 +274,7 @@ function _renderGoalCard(g) {
   return `
   <div class="goal-card ${done ? "done" : ""}" onclick="openGoalModal(${idx})">
     <div class="goal-card-top">
-      <div class="goal-icon-badge" style="background:${g.color || "#4d9eff"}22;color:${g.color || "#4d9eff"}">${g.icon || "🎯"}</div>
+      <div class="goal-icon-badge" style="background:${g.color || "#4d9eff"}22;color:${g.color || "#4d9eff"};display:inline-flex;align-items:center;justify-content:center">${uiIcon(g.icon || "target", 18)}</div>
       <div class="goal-card-meta">
         <div class="goal-card-name">${esc(g.name)}</div>
         ${months !== null ? `<div class="goal-card-deadline">${months > 0 ? months + " Monate verbleibend" : "⚠ Zieldatum überschritten"}</div>` : ""}
@@ -361,7 +361,7 @@ function _goalAddAmount(idx) {
 
 // ── GOAL MODAL ────────────────────────
 let _editGoalIdx = null;
-let _selectedGoalIcon = "🎯";
+let _selectedGoalIcon = "target";
 let _selectedGoalColor = "#4d9eff";
 
 let _goalOverlayMousedownOnBg = false;
@@ -412,7 +412,7 @@ function openGoalModal(idx = null) {
         .join("") || `<option value="">— kein Konto —</option>`;
   }
 
-  _selectedGoalIcon = g ? g.icon || "🎯" : "🎯";
+  _selectedGoalIcon = g ? g.icon || "target" : "target";
   _selectedGoalColor = g ? g.color || "#4d9eff" : "#4d9eff";
 
   _renderGoalIconPicker();
@@ -436,6 +436,12 @@ function closeGoalModal() {
   _editGoalIdx = null;
 }
 
+const GOAL_ICONS = [
+  "target", "plane", "car", "home", "monitor", "wallet",
+  "trending-up", "graduation-cap", "heart", "gift", "coins", "star",
+  "shield", "dumbbell",
+];
+
 function selectGoalIcon(ic) {
   _selectedGoalIcon = ic;
   _renderGoalIconPicker();
@@ -444,9 +450,9 @@ function selectGoalIcon(ic) {
 function _renderGoalIconPicker() {
   const picker = document.getElementById("goalIconPicker");
   if (!picker) return;
-  picker.querySelectorAll(".goal-icon-opt").forEach((el) => {
-    el.classList.toggle("active", el.textContent === _selectedGoalIcon);
-  });
+  picker.innerHTML = GOAL_ICONS.map((name) =>
+    `<button type="button" class="goal-icon-opt${name === _selectedGoalIcon ? " active" : ""}" data-icon="${name}" onclick="selectGoalIcon('${name}')">${iconHtml(name, 18)}</button>`
+  ).join("");
 }
 
 function _renderGoalColorPicker(selected) {
@@ -504,7 +510,7 @@ function saveGoal() {
     const linked = S.data.find((p) => p.goalId === g.id);
     if (linked) {
       linked.amount = g.monthlyRate;
-      linked.name = "🎯 " + g.name;
+      linked.name = g.name;
       linked.accountId = chosenAccountId;
       linked.contractStart = startDateVal;
       linked.contractEnd = g.deadline || "";
@@ -517,7 +523,7 @@ function saveGoal() {
   if (isNew && g.monthlyRate > 0 && _goalCreatePosten) {
     S.data.push({
       id: genId("p"),
-      name: "🎯 " + g.name,
+      name: g.name,
       type: "ausgabe",
       amount: g.monthlyRate,
       interval: "monatl.",
@@ -570,7 +576,7 @@ function renderGoalsWidget() {
   const goals = (S.goals || []).filter((g) => _goalPct(g) < 100).slice(0, 3);
   if (goals.length === 0) {
     el.innerHTML = `<div style="text-align:center;padding:20px;color:var(--text3);font-size:.8em;">
-      <div style="font-size:1.8em;margin-bottom:8px;opacity:.3">🎯</div>Keine aktiven Ziele
+      <div style="margin-bottom:8px;opacity:.3;display:flex;justify-content:center">${iconHtml("target", 26)}</div>Keine aktiven Ziele
     </div>`;
     return;
   }
@@ -579,7 +585,7 @@ function renderGoalsWidget() {
       const pct = _goalPct(g);
       return `<div class="goal-mini">
       <div class="goal-mini-top">
-        <span>${g.icon || "🎯"} ${esc(g.name)}</span>
+        <span style="display:inline-flex;align-items:center;gap:5px"><span style="color:${g.color || "#4d9eff"};display:inline-flex">${uiIcon(g.icon || "target", 14)}</span>${esc(g.name)}</span>
         <span style="color:${g.color || "#4d9eff"};font-family:var(--mono);font-size:.78em;">${pct}%</span>
       </div>
       <div class="goal-mini-track">

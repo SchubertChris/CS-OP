@@ -148,8 +148,8 @@ function _buildPrivacyContent(overlay) {
   const hasPw = !!localStorage.getItem(LOCK_KEY);
 
   const icon = document.createElement('div');
-  icon.style.cssText = 'font-size:2.5em;filter:drop-shadow(0 0 20px var(--blue-a35))';
-  icon.textContent = '🔒';
+  icon.style.cssText = 'color:var(--blue);filter:drop-shadow(0 0 20px var(--blue-a35));display:flex';
+  icon.innerHTML = (typeof iconHtml === 'function') ? iconHtml('lock', 42) : '🔒';
   overlay.appendChild(icon);
 
   const ttl = document.createElement('div');

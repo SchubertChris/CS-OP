@@ -8,8 +8,29 @@
  * appPrompt(msg, { title, icon, placeholder, defaultVal }) → Promise<string|null>
  */
 
+// Legacy-Emoji → Icon-Name, damit bestehende Aufrufer (icon:"🗑️" etc.)
+// automatisch SVG-Icons bekommen — ohne jeden Call zu ändern.
+const DLG_EMOJI_TO_ICON = {
+  "ℹ️":"info", "ℹ":"info", "❓":"help-circle", "✏️":"pencil", "✏":"pencil",
+  "🗑️":"trash-2", "🗑":"trash-2", "⚠️":"alert-triangle", "⚠":"alert-triangle",
+  "✅":"check-circle", "✔️":"check-circle", "✓":"check", "❌":"x-circle", "✕":"x-circle",
+  "🔓":"unlock", "🔒":"lock", "🔐":"lock", "💾":"save", "🔄":"rotate-ccw",
+  "🎉":"star", "📦":"package", "🚀":"trending-up",
+};
+
+function _dlgSetIcon(iconVal) {
+  const el = document.getElementById("dlgIcon");
+  if (!el) return;
+  const name = DLG_EMOJI_TO_ICON[iconVal] || iconVal;
+  if (name && typeof CS_ICON_PATHS !== "undefined" && CS_ICON_PATHS[name] && typeof iconHtml === "function") {
+    el.innerHTML = iconHtml(name, 26);
+  } else {
+    el.textContent = iconVal || ""; // unbekanntes Emoji als Fallback
+  }
+}
+
 function _dlgOpen(icon, title, body, buttons) {
-  document.getElementById("dlgIcon").textContent = icon || "";
+  _dlgSetIcon(icon);
   document.getElementById("dlgTitle").textContent = title || "";
   document.getElementById("dlgBody").textContent = body || "";
 
@@ -46,7 +67,7 @@ function _dlgClose() {
 
 function appAlert(msg, opts = {}) {
   return new Promise((resolve) => {
-    _dlgOpen(opts.icon || "ℹ️", opts.title || "Hinweis", msg, [
+    _dlgOpen(opts.icon || "info", opts.title || "Hinweis", msg, [
       {
         label: opts.okLabel || "OK",
         cls: "primary",
@@ -61,7 +82,7 @@ function appAlert(msg, opts = {}) {
 
 function appConfirm(msg, opts = {}) {
   return new Promise((resolve) => {
-    _dlgOpen(opts.icon || "❓", opts.title || "Bestätigung", msg, [
+    _dlgOpen(opts.icon || "help-circle", opts.title || "Bestätigung", msg, [
       {
         label: "Abbrechen",
         cls: "",
@@ -85,7 +106,7 @@ function appConfirm(msg, opts = {}) {
 function appPrompt(msg, opts = {}) {
   return new Promise((resolve) => {
     // Build body with input field
-    document.getElementById("dlgIcon").textContent = opts.icon || "✏️";
+    _dlgSetIcon(opts.icon || "pencil");
     document.getElementById("dlgTitle").textContent = opts.title || "Eingabe";
     const body = document.getElementById("dlgBody");
     body.innerHTML = "";

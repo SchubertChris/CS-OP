@@ -49,7 +49,8 @@ function migrateState() {
   });
   // Ziele
   (S.goals || []).forEach((g) => {
-    if (g.icon === undefined) g.icon = "\u{1F3AF}";
+    if (g.icon === undefined) g.icon = "target";
+    else if (typeof GOAL_EMOJI_TO_ICON !== "undefined" && GOAL_EMOJI_TO_ICON[g.icon]) g.icon = GOAL_EMOJI_TO_ICON[g.icon];
     if (g.color === undefined) g.color = "#4d9eff";
     if (g.currentAmount === undefined) g.currentAmount = 0;
     if (g.monthlyRate === undefined) g.monthlyRate = 0;

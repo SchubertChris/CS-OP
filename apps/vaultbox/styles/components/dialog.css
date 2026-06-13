@@ -42,7 +42,7 @@
   background: linear-gradient(90deg, transparent, var(--blue-a35), transparent);
 }
 
-.dlg-icon { font-size: 2em; margin-bottom: 10px; line-height: 1; }
+.dlg-icon { font-size: 2em; margin-bottom: 10px; line-height: 1; display: flex; justify-content: center; color: var(--blue); }
 .dlg-title { font-size: 1em; font-weight: 700; color: var(--text); margin-bottom: 8px; }
 .dlg-body {
   font-size: 0.82em;

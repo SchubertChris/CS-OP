@@ -350,7 +350,7 @@ function _umGoalBookings() {
         note:      g.deadline ? `Ziel: ${g.deadline}` : "",
         interval:  "monatl.",
         _isGoal:   true,
-        _goalIcon: g.icon || "🎯",
+        _goalIcon: g.icon || "target",
         _goalColor: g.color || "var(--blue)",
         _goalDeadline: g.deadline || "",
       });
@@ -733,7 +733,7 @@ function _renderUmList(panel, data) {
 
       html += `
         <div class="um-row${isGoal ? " um-row-goal" : ""}${isAusstehend ? " um-row-pending" : ""}${isCloseEntry ? " um-row-close-entry" : ""}" data-type="${b.type}" data-status="${b.status || ""}" onclick="${isCloseEntry ? `_umOpenEdit('${b.id}')` : isGoal ? `_umOpenGoal('${b.goalId}')` : `_umOpenEdit('${b.id}')`}">
-          <div class="um-row-dot" style="${dotStyle}">${isGoal ? `<span class="um-goal-dot-icon">${b._goalIcon}</span>` : ""}</div>
+          <div class="um-row-dot" style="${dotStyle}">${isGoal ? `<span class="um-goal-dot-icon" style="color:#fff;display:inline-flex">${uiIcon(b._goalIcon, 11)}</span>` : ""}</div>
           <div class="um-row-cat"${_rowCat ? ` onmouseenter="_showTooltip('${esc(_rowCat.name)}',this)" onmouseleave="_hideTooltip()"` : ""}>
             ${_rowCat
               ? `<span class="um-cat-icon" style="background:${_rowCat.color}20;color:${_rowCat.color};border-color:${_rowCat.color}40">${uiIcon(_rowCat.icon, 13)}</span>`
