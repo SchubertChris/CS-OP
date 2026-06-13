@@ -14,6 +14,7 @@ const DEFAULT_SETTINGS = {
   bgImage: null,
   bgFit: "cover",
   bgStyle: "gradient",
+  bgStrength: 55,
   pwEnabled: false,
   zahltag: 15,
   tooltips: true,
@@ -186,39 +187,57 @@ function uploadBg(input) {
   r.readAsDataURL(file);
 }
 // ── CSS-HINTERGRUND GENERATOR ─────────
+// Muster-Farbe = Theme-Akzent (--blue); Intensität = CFG.bgStrength (0–100).
+function _bgHexToRgb(hex) {
+  hex = String(hex || "").trim().replace(/^#/, "");
+  if (hex.length === 3) hex = hex.split("").map((ch) => ch + ch).join("");
+  const n = parseInt(hex, 16);
+  if (hex.length !== 6 || isNaN(n)) return { r: 212, g: 168, b: 67 };
+  return { r: (n >> 16) & 255, g: (n >> 8) & 255, b: n & 255 };
+}
+function _bgAccentRgb() {
+  const v = getComputedStyle(document.documentElement).getPropertyValue("--blue").trim();
+  return _bgHexToRgb(v || "#d4a843");
+}
+function _bgBaseColor(theme) {
+  return ({ candlescope: "#070705", mono: "#080808", light: "#f0efe8", ivory: "#f9f5eb" })[theme] || "#070705";
+}
+function _bgStrengthFactor() {
+  const s = CFG.bgStrength == null ? 55 : CFG.bgStrength;
+  return Math.max(0, Math.min(1, s / 100));
+}
+
 function _buildBgCss(style) {
   const theme = document.documentElement.dataset.theme || "candlescope";
-  const T = {
-    candlescope: { bg:"#070705", a1:"rgba(212,168,67,0.28)", a2:"rgba(140,70,10,0.18)", a3:"rgba(212,168,67,0.12)", dot:"rgba(212,168,67,0.15)", line:"rgba(212,168,67,0.18)" },
-    mono:        { bg:"#080808", a1:"rgba(255,255,255,0.14)", a2:"rgba(180,180,180,0.08)", a3:"rgba(255,255,255,0.05)", dot:"rgba(255,255,255,0.12)", line:"rgba(255,255,255,0.14)" },
-    light:       { bg:"#f0efe8", a1:"rgba(14,124,117,0.22)", a2:"rgba(0,160,145,0.14)", a3:"rgba(14,124,117,0.09)", dot:"rgba(14,124,117,0.22)", line:"rgba(14,124,117,0.20)" },
-    ivory:       { bg:"#f9f5eb", a1:"rgba(148,105,20,0.24)", a2:"rgba(200,150,60,0.16)", a3:"rgba(148,105,20,0.10)", dot:"rgba(148,105,20,0.20)", line:"rgba(148,105,20,0.18)" },
-  };
-  const c = T[theme] || T.candlescope;
+  const bg = _bgBaseColor(theme);
+  const { r, g, b } = _bgAccentRgb();
+  const isLight = theme === "light" || theme === "ivory";
+  const s = _bgStrengthFactor();
+  const k = isLight ? 1.25 : 1; // helle Themes brauchen mehr Deckkraft
+  const rgba = (a) => `rgba(${r},${g},${b},${Math.max(0, Math.min(1, a * s * k)).toFixed(3)})`;
 
   if (style === "solid") {
-    return { backgroundColor: c.bg, backgroundImage: "none", backgroundRepeat: "no-repeat", backgroundSize: "auto", backgroundPosition: "center" };
+    const glow = `radial-gradient(ellipse 90% 75% at 50% -10%, ${rgba(0.14)} 0%, transparent 60%)`;
+    return { backgroundColor: bg, backgroundImage: glow, backgroundRepeat: "no-repeat", backgroundSize: "auto", backgroundPosition: "center top" };
   }
-
   if (style === "grid") {
-    const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32'><path d='M32 0L0 0 0 32' fill='none' stroke='${c.line}' stroke-width='0.5'/></svg>`;
-    return { backgroundColor: c.bg, backgroundImage: `url("data:image/svg+xml,${encodeURIComponent(svg)}")`, backgroundRepeat: "repeat", backgroundSize: "32px 32px", backgroundPosition: "0 0" };
+    const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32'><path d='M32 0L0 0 0 32' fill='none' stroke='${rgba(0.30)}' stroke-width='0.6'/></svg>`;
+    return { backgroundColor: bg, backgroundImage: `url("data:image/svg+xml,${encodeURIComponent(svg)}")`, backgroundRepeat: "repeat", backgroundSize: "32px 32px", backgroundPosition: "0 0" };
   }
-
   if (style === "noise") {
-    const op = (theme === "light" || theme === "ivory") ? "0.030" : "0.045";
-    const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='256' height='256'><filter id='f'><feTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(#f)' opacity='${op}'/></svg>`;
-    return { backgroundColor: c.bg, backgroundImage: `url("data:image/svg+xml,${encodeURIComponent(svg)}")`, backgroundRepeat: "repeat", backgroundSize: "256px 256px", backgroundPosition: "0 0" };
+    const R = (r / 255).toFixed(3), G = (g / 255).toFixed(3), B = (b / 255).toFixed(3);
+    const A = Math.max(0, Math.min(1, 0.6 * s * k)).toFixed(3);
+    const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='256' height='256'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 ${R} 0 0 0 0 ${G} 0 0 0 0 ${B} 0 0 0 ${A} 0'/></filter><rect width='100%' height='100%' filter='url(#n)'/></svg>`;
+    return { backgroundColor: bg, backgroundImage: `url("data:image/svg+xml,${encodeURIComponent(svg)}")`, backgroundRepeat: "repeat", backgroundSize: "256px 256px", backgroundPosition: "0 0" };
   }
-
   // gradient (default)
-  const g1 = `radial-gradient(ellipse 70% 65% at 10% 20%, ${c.a1} 0%, transparent 65%)`;
-  const g2 = `radial-gradient(ellipse 65% 70% at 90% 80%, ${c.a2} 0%, transparent 65%)`;
-  const g3 = `radial-gradient(ellipse 50% 45% at 52% 48%, ${c.a3} 0%, transparent 55%)`;
-  const dot = `<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28'><circle cx='14' cy='14' r='1' fill='${c.dot}'/></svg>`;
+  const g1 = `radial-gradient(ellipse 70% 65% at 10% 20%, ${rgba(0.34)} 0%, transparent 65%)`;
+  const g2 = `radial-gradient(ellipse 65% 70% at 90% 80%, ${rgba(0.20)} 0%, transparent 65%)`;
+  const g3 = `radial-gradient(ellipse 50% 45% at 52% 48%, ${rgba(0.13)} 0%, transparent 55%)`;
+  const dot = `<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28'><circle cx='14' cy='14' r='1' fill='${rgba(0.20)}'/></svg>`;
   const dotUrl = `url("data:image/svg+xml,${encodeURIComponent(dot)}")`;
   return {
-    backgroundColor: c.bg,
+    backgroundColor: bg,
     backgroundImage: `${g1}, ${g2}, ${g3}, ${dotUrl}`,
     backgroundRepeat: "no-repeat, no-repeat, no-repeat, repeat",
     backgroundSize: "auto, auto, auto, 28px 28px",
@@ -228,32 +247,34 @@ function _buildBgCss(style) {
 
 function _buildBgCssPreview(style) {
   const theme = document.documentElement.dataset.theme || "candlescope";
-  const T = {
-    candlescope: { bg:"#070705", a1:"rgba(212,168,67,0.50)", a2:"rgba(160,90,20,0.32)", dot:"rgba(212,168,67,0.30)", line:"rgba(212,168,67,0.32)" },
-    mono:        { bg:"#080808", a1:"rgba(255,255,255,0.24)", a2:"rgba(180,180,180,0.14)", dot:"rgba(255,255,255,0.28)", line:"rgba(255,255,255,0.28)" },
-    light:       { bg:"#f0efe8", a1:"rgba(14,124,117,0.38)", a2:"rgba(0,160,145,0.22)", dot:"rgba(14,124,117,0.40)", line:"rgba(14,124,117,0.34)" },
-    ivory:       { bg:"#f9f5eb", a1:"rgba(148,105,20,0.42)", a2:"rgba(200,150,60,0.26)", dot:"rgba(148,105,20,0.34)", line:"rgba(148,105,20,0.32)" },
-  };
-  const c = T[theme] || T.candlescope;
+  const bg = _bgBaseColor(theme);
+  const { r, g, b } = _bgAccentRgb();
+  const isLight = theme === "light" || theme === "ivory";
+  const s = _bgStrengthFactor();
+  const k = isLight ? 1.3 : 1;
+  // Vorschau etwas kräftiger (kleine Kachel) — Boost-Faktor
+  const rgba = (a) => `rgba(${r},${g},${b},${Math.max(0, Math.min(1, a * (0.35 + s * 0.9) * k)).toFixed(3)})`;
 
   if (style === "solid") {
-    return { backgroundColor: c.bg, backgroundImage: "none" };
+    const glow = `radial-gradient(ellipse 100% 90% at 50% -20%, ${rgba(0.32)} 0%, transparent 65%)`;
+    return { backgroundColor: bg, backgroundImage: glow, backgroundRepeat: "no-repeat", backgroundSize: "auto", backgroundPosition: "center top" };
   }
   if (style === "grid") {
-    const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14'><path d='M14 0L0 0 0 14' fill='none' stroke='${c.line}' stroke-width='0.8'/></svg>`;
-    return { backgroundColor: c.bg, backgroundImage: `url("data:image/svg+xml,${encodeURIComponent(svg)}")`, backgroundRepeat: "repeat", backgroundSize: "14px 14px", backgroundPosition: "0 0" };
+    const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14'><path d='M14 0L0 0 0 14' fill='none' stroke='${rgba(0.55)}' stroke-width='0.8'/></svg>`;
+    return { backgroundColor: bg, backgroundImage: `url("data:image/svg+xml,${encodeURIComponent(svg)}")`, backgroundRepeat: "repeat", backgroundSize: "14px 14px", backgroundPosition: "0 0" };
   }
   if (style === "noise") {
-    const op = (theme === "light" || theme === "ivory") ? "0.14" : "0.20";
-    const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='128' height='128'><filter id='f'><feTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(#f)' opacity='${op}'/></svg>`;
-    return { backgroundColor: c.bg, backgroundImage: `url("data:image/svg+xml,${encodeURIComponent(svg)}")`, backgroundRepeat: "repeat", backgroundSize: "128px 128px", backgroundPosition: "0 0" };
+    const R = (r / 255).toFixed(3), G = (g / 255).toFixed(3), B = (b / 255).toFixed(3);
+    const A = Math.max(0, Math.min(1, (0.35 + s * 0.9) * k * 0.85)).toFixed(3);
+    const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='128' height='128'><filter id='np'><feTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 ${R} 0 0 0 0 ${G} 0 0 0 0 ${B} 0 0 0 ${A} 0'/></filter><rect width='100%' height='100%' filter='url(#np)'/></svg>`;
+    return { backgroundColor: bg, backgroundImage: `url("data:image/svg+xml,${encodeURIComponent(svg)}")`, backgroundRepeat: "repeat", backgroundSize: "128px 128px", backgroundPosition: "0 0" };
   }
-  const g1 = `radial-gradient(ellipse 90% 90% at 15% 25%, ${c.a1} 0%, transparent 70%)`;
-  const g2 = `radial-gradient(ellipse 80% 80% at 88% 80%, ${c.a2} 0%, transparent 65%)`;
-  const dot = `<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14'><circle cx='7' cy='7' r='1' fill='${c.dot}'/></svg>`;
+  const g1 = `radial-gradient(ellipse 90% 90% at 15% 25%, ${rgba(0.6)} 0%, transparent 70%)`;
+  const g2 = `radial-gradient(ellipse 80% 80% at 88% 80%, ${rgba(0.4)} 0%, transparent 65%)`;
+  const dot = `<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14'><circle cx='7' cy='7' r='1' fill='${rgba(0.5)}'/></svg>`;
   const dotUrl = `url("data:image/svg+xml,${encodeURIComponent(dot)}")`;
   return {
-    backgroundColor: c.bg,
+    backgroundColor: bg,
     backgroundImage: `${g1}, ${g2}, ${dotUrl}`,
     backgroundRepeat: "no-repeat, no-repeat, repeat",
     backgroundSize: "auto, auto, 14px 14px",
@@ -1198,6 +1219,40 @@ function renderSettings() {
   });
   bgStyleSec.appendChild(bgStyleGrid);
   bgCard.appendChild(bgStyleSec);
+
+  // ── STÄRKE (Akzent-Intensität) ──
+  if (!CFG.bgImage) {
+    const strSec = _e("div", "bg-strength-section");
+    const strHead = _e("div", "bg-strength-head");
+    const strLbl = _e("span", "bg-style-section-lbl");
+    strLbl.textContent = "Stärke";
+    const strVal = _e("span", "bg-strength-val");
+    const _curStr = CFG.bgStrength == null ? 55 : CFG.bgStrength;
+    strVal.textContent = _curStr + "%";
+    strHead.appendChild(strLbl);
+    strHead.appendChild(strVal);
+
+    const strInp = _e("input", "bg-strength-slider");
+    strInp.type = "range";
+    strInp.min = "0";
+    strInp.max = "100";
+    strInp.step = "5";
+    strInp.value = String(_curStr);
+    strInp.addEventListener("input", () => {
+      CFG.bgStrength = parseInt(strInp.value, 10);
+      strVal.textContent = CFG.bgStrength + "%";
+      if (!CFG.bgImage) _applyDefaultBgPattern(document.querySelector(".bg"));
+      document.querySelectorAll(".bg-style-grid .bg-style-btn").forEach((btn, i) => {
+        const prev = btn.querySelector(".bg-style-prev");
+        if (prev && bgPresets[i]) Object.assign(prev.style, _buildBgCssPreview(bgPresets[i].id));
+      });
+    });
+    strInp.addEventListener("change", () => saveSettings());
+
+    strSec.appendChild(strHead);
+    strSec.appendChild(strInp);
+    bgCard.appendChild(strSec);
+  }
 
   // ── EIGENES BILD ──
   const bgDivider = _e("div", "settings-section-divider");
