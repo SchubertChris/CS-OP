@@ -263,6 +263,11 @@
   line-height: 1;
   margin-bottom: 4px;
 }
+.lic-logo img {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+}
 
 .lic-title {
   font-size: 1.2em;

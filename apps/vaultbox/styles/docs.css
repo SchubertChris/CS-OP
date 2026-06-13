@@ -1502,6 +1502,7 @@
   padding: 22px;
 }
 .dbp-cover-logo { font-size: 3em; margin-bottom: 4px; }
+.dbp-cover-logo img { width: 72px; height: 72px; object-fit: contain; }
 .dbp-cover-title {
   font-size: 22px;
   font-weight: 800;

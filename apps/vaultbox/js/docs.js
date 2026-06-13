@@ -156,7 +156,7 @@ function renderDocs() {
     {
       left: _dbPage('', 'VaultBox',
         '<div class="dbp-cover">'
-        + '<div class="dbp-cover-logo">🔐</div>'
+        + '<div class="dbp-cover-logo"><img src="images/CandleScope.webp" alt="CandleScope" /></div>'
         + '<div class="dbp-cover-title">VaultBox</div>'
         + '<div class="dbp-cover-sub">Benutzerhandbuch</div>'
         + '<div class="dbp-cover-version">Version 1.0 · 2026</div>'
