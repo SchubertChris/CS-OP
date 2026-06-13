@@ -253,6 +253,7 @@ function _refreshCandleChart() {
   const panel2   = _jcss("--panel2")  || "#1d2235";
   const purple   = _jcss("--purple")  || "#7b5fff";
   const gold     = _jcss("--yellow")  || "#ffb547";
+  const border   = _jcss("--border")  || "rgba(255,255,255,.06)";
 
   const MONTHS_DE = ["Jan","Feb","Mär","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez"];
   function _fmtTick(t, type) {
@@ -281,13 +282,13 @@ function _refreshCandleChart() {
       fontSize: 11,
     },
     grid: {
-      vertLines: { color: "rgba(255,255,255,.03)", style: 1 },
-      horzLines: { color: "rgba(255,255,255,.03)", style: 1 },
+      vertLines: { color: border, style: 1 },
+      horzLines: { color: border, style: 1 },
     },
     crosshair: {
       mode: 1,
-      vertLine: { color: "rgba(255,255,255,.2)", labelBackgroundColor: panel2 },
-      horzLine: { color: "rgba(255,255,255,.2)", labelBackgroundColor: panel2 },
+      vertLine: { color: textCol, labelBackgroundColor: panel2 },
+      horzLine: { color: textCol, labelBackgroundColor: panel2 },
     },
     rightPriceScale: {
       borderVisible: false,
@@ -775,7 +776,7 @@ function _renderJahresChart(monthsA, monthsB) {
 
   // Tick + Grid — immer von --text3 abgeleitet
   const TC = { color: text3, font: { size: 10 }, maxTicksLimit: 6 };
-  const gridA = { color: "rgba(255,255,255,.04)", drawBorder: false };
+  const gridA = { color: border2, drawBorder: false };
   const tooltipStyle = {
     backgroundColor: panel2,
     borderColor: border2,
@@ -1171,14 +1172,14 @@ function _renderSparChart(monthsA, monthsB) {
       scales: {
         x: {
           ticks: { color: text3, font: { size: 10 }, maxTicksLimit: 12 },
-          grid: { color: "rgba(255,255,255,.04)", drawBorder: false },
+          grid: { color: _jcss("--border2") || "rgba(255,255,255,.04)", drawBorder: false },
           border: { display: false },
         },
         y: {
           min: yMin,
           max: yMax,
           ticks: { color: text3, font: { size: 10 }, callback: (v) => v + "%", maxTicksLimit: 6 },
-          grid: { color: "rgba(255,255,255,.04)" },
+          grid: { color: _jcss("--border2") || "rgba(255,255,255,.04)" },
           border: { display: false },
         },
       },
@@ -1276,12 +1277,12 @@ function _renderVerglChart(monthsA, monthsB) {
       scales: {
         x: {
           ticks: { color: text3, font: { size: 10 }, maxTicksLimit: 12 },
-          grid: { color: "rgba(255,255,255,.04)", drawBorder: false },
+          grid: { color: _jcss("--border2") || "rgba(255,255,255,.04)", drawBorder: false },
           border: { display: false },
         },
         y: {
           ticks: { color: text3, font: { size: 10 }, callback: (v) => fm(v, true), maxTicksLimit: 6 },
-          grid: { color: "rgba(255,255,255,.04)" },
+          grid: { color: _jcss("--border2") || "rgba(255,255,255,.04)" },
           border: { display: false },
         },
       },

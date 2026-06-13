@@ -1009,7 +1009,7 @@ function _umOpenEdit(bookingId) {
             <div style="font-size:.67em;color:var(--text3);margin-top:3px;font-family:var(--mono)">${dateStr} · ${bk.interval || "—"}</div>
           </div>
           <div id="umEditPageTitle" class="mp-title" style="display:none">Details</div>
-          <button onclick="document.getElementById('umEditOverlay').remove()" class="modal-close">✕</button>
+          <button type="button" aria-label="Schließen" onclick="document.getElementById('umEditOverlay').remove()" class="modal-close">✕</button>
         </div>
 
         <!-- Seite 1: Betrag · Status · Konto -->
@@ -1244,7 +1244,7 @@ function _umBegleichen(bookingId) {
             <h3 style="margin:0;font-size:.95em;font-weight:700;color:var(--text);letter-spacing:-.2px">Zahlung begleichen</h3>
             <div style="font-size:.67em;color:var(--text3);margin-top:3px;font-family:var(--mono)">${esc(bk.name)} · ${prefix}${fm(bk.amount)}</div>
           </div>
-          <button onclick="document.getElementById('umBegleichenOverlay').remove()" class="modal-close">✕</button>
+          <button type="button" aria-label="Schließen" onclick="document.getElementById('umBegleichenOverlay').remove()" class="modal-close">✕</button>
         </div>
 
         <div style="background:var(--panel2);border:1px solid var(--border2);border-radius:10px;padding:12px 14px;margin-bottom:16px;font-size:.8em;color:var(--text3)">
@@ -1332,7 +1332,7 @@ function _umQuickDate(bookingId) {
             <h3 style="margin:0;font-size:.92em;font-weight:700;color:var(--text)">Zahlungsdatum anpassen</h3>
             <div style="font-size:.67em;color:var(--text3);margin-top:3px;font-family:var(--mono)">${esc(bk.name)} · ${prefix}${fm(bk.amount)}</div>
           </div>
-          <button onclick="document.getElementById('umQuickDateOverlay').remove()" class="modal-close">✕</button>
+          <button type="button" aria-label="Schließen" onclick="document.getElementById('umQuickDateOverlay').remove()" class="modal-close">✕</button>
         </div>
 
         <div style="background:var(--panel2);border:1px solid var(--border2);border-radius:10px;padding:10px 14px;margin-bottom:14px;font-size:.78em;color:var(--text3)">

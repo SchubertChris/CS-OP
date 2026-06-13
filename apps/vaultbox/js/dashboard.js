@@ -256,7 +256,7 @@ function renderKPIs() {
       <div class="dh-status">
         <div class="dh-sq-wrap" onmouseenter="_showTooltip('Sparquote: ≥ 20 % = gut · 10–20 % = ok · < 10 % = kritisch',this)" onmouseleave="_hideTooltip()">
           <svg width="52" height="52" viewBox="0 0 52 52">
-            <circle cx="26" cy="26" r="${rSq2}" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="3.5"/>
+            <circle cx="26" cy="26" r="${rSq2}" fill="none" stroke="${css('--border') || 'rgba(255,255,255,0.06)'}" stroke-width="3.5"/>
             <circle cx="26" cy="26" r="${rSq2}" fill="none" stroke="${sqRingColor}" stroke-width="3.5"
               stroke-dasharray="${sqDash2.toFixed(2)} ${sqGap2.toFixed(2)}"
               stroke-dashoffset="${(circSq2 * 0.25).toFixed(2)}"
@@ -1332,7 +1332,7 @@ function renderMonthInsights() {
           pointRadius: 0,
           pointHoverRadius: 5,
           pointHoverBackgroundColor: "rgba(34,197,94,1)",
-          pointHoverBorderColor: "#fff",
+          pointHoverBorderColor: css("--panel") || "#fff",
           pointHoverBorderWidth: 2,
         },
         {
@@ -1346,7 +1346,7 @@ function renderMonthInsights() {
           pointRadius: 0,
           pointHoverRadius: 5,
           pointHoverBackgroundColor: "rgba(239,68,68,1)",
-          pointHoverBorderColor: "#fff",
+          pointHoverBorderColor: css("--panel") || "#fff",
           pointHoverBorderWidth: 2,
         },
       ],
@@ -1368,12 +1368,12 @@ function renderMonthInsights() {
       },
       scales: {
         x: {
-          grid: { color: "rgba(255,255,255,0.03)" },
+          grid: { color: css("--border") || "rgba(255,255,255,0.03)" },
           ticks: { color: css("--text3") || "#555e72" },
           border: { color: "transparent" },
         },
         y: {
-          grid: { color: "rgba(255,255,255,0.04)" },
+          grid: { color: css("--border") || "rgba(255,255,255,0.04)" },
           ticks: {
             color: css("--text3") || "#555e72",
             callback: (v) => fmShort(v) + "€",

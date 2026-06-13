@@ -196,7 +196,7 @@
 }
 /* Type accent on left edge */
 .um-row[data-type="einnahme"] { border-left-color: var(--green-a30, rgba(0,200,120,0.30)); }
-.um-row[data-type="ausgabe"]  { border-left-color: rgba(255,77,106,0.28); }
+.um-row[data-type="ausgabe"]  { border-left-color: var(--red-a30, rgba(255,77,106,0.28)); }
 .um-row[data-type="umbuchung"]{ border-left-color: var(--blue-a20); }
 /* Vorgemerkte Buchungen */
 .um-row[data-status="vorgemerkt"] {

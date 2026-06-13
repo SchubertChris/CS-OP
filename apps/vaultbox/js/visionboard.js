@@ -1749,7 +1749,8 @@ function _vbExport() {
 
   if (typeof html2canvas === "function") {
     const wrap = document.getElementById("vbCanvasWrap");
-    html2canvas(wrap, { backgroundColor: "#0e0e0e", useCORS: true, logging: false })
+    const _vbExpBg = getComputedStyle(document.documentElement).getPropertyValue("--vb-canvas-bg").trim() || "#0e0e0e";
+    html2canvas(wrap, { backgroundColor: _vbExpBg, useCORS: true, logging: false })
       .then((canvas) => {
         const a = document.createElement("a");
         a.href = canvas.toDataURL("image/png");
@@ -1777,7 +1778,7 @@ function _vbExportSvg() {
   const bg = _vbEl_svg("rect");
   bg.setAttribute("width", maxX);
   bg.setAttribute("height", maxY);
-  bg.setAttribute("fill", "#0e0e0e");
+  bg.setAttribute("fill", getComputedStyle(document.documentElement).getPropertyValue("--vb-canvas-bg").trim() || "#0e0e0e");
   svg.appendChild(bg);
 
   board.connections.forEach((conn) => {
@@ -1912,7 +1913,7 @@ function _vbDashPreview(containerEl) {
 
   // Draw minimap
   const ctx = canvas.getContext("2d");
-  ctx.fillStyle = "#111";
+  ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue("--vb-canvas-bg").trim() || "#111";
   ctx.fillRect(0, 0, 260, 72);
   if (board.nodes.length) {
     const xs = board.nodes.map((n) => n.x);

@@ -276,10 +276,12 @@ function _showShortcutOverlay() {
 
 function _highlightText(container, text, query) {
   if (!query) { container.textContent = text; return; }
-  const re = new RegExp("(" + query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + ")", "gi");
+  const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const re     = new RegExp("(" + escaped + ")", "gi");   // 'g' nur fürs Splitten
+  const reTest = new RegExp("^(?:" + escaped + ")$", "i"); // zustandslos fürs Prüfen
   const parts = text.split(re);
   parts.forEach((part) => {
-    if (re.test(part)) {
+    if (reTest.test(part)) {
       const mark = document.createElement("mark");
       mark.className = "sr-mark";
       mark.textContent = part;
