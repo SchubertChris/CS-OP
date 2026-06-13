@@ -42,6 +42,7 @@ yarn.lock
 !CLAUDE.md
 !AUDIT_REPORT.md
 !FIXLOG.md
+!NEXT_STEPS.md
 
 # ── Claude Code intern ───────────────────────────────────
 .agents/
