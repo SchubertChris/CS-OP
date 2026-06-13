@@ -148,10 +148,6 @@ function _ctrRenderKPIs(allPosten) {
 function renderVertraege() {
   const container = document.getElementById("contractList");
   if (!container) return;
-  // Badge als gesehen markieren — verschwindet für den Rest der Session
-  sessionStorage.setItem("csf_ctr_badge_seen", "1");
-  const badge = document.getElementById("contractBadge");
-  if (badge) badge.style.display = "none";
 
   const _isVertrag = (p) =>
     p.interval !== "einmalig" &&
@@ -559,18 +555,39 @@ function _ctrDismissHint() {
 }
 
 // ── CONTRACT BADGE (Nav) ──────────────
+// Zeigt einen Zähler in der Navigation, WENN Verträge in ≤ 60 Tagen enden.
+// Abschaltbar über CFG.contractAlerts (Einstellungen → Verhalten).
+// Spiegelt immer den aktuellen Stand — kein verstecktes Session-Verhalten.
 function updateContractBadge() {
   const badge = document.getElementById("contractBadge");
   if (!badge) return;
-  // Badge bleibt versteckt wenn User die Seite in dieser Session bereits gesehen hat
-  if (sessionStorage.getItem("csf_ctr_badge_seen")) {
+
+  const _clear = () => {
     badge.style.display = "none";
+    badge.onmouseenter = null;
+    badge.onmouseleave = null;
+  };
+
+  if (typeof CFG !== "undefined" && CFG.contractAlerts === false) {
+    _clear();
     return;
   }
-  const hasExpiring = (S.data || []).some(
+
+  const expiring = (S.data || []).filter(
     (p) => p.interval !== "einmalig" &&
       (_hasDate(p.contractStart) || _hasDate(p.contractEnd)) &&
       _ctrStatus(p) === "expiring",
   );
-  badge.style.display = hasExpiring ? "" : "none";
+  const n = expiring.length;
+  if (n === 0) { _clear(); return; }
+
+  badge.classList.add("nav-badge--count");
+  badge.textContent = n > 9 ? "9+" : String(n);
+  badge.style.display = "";
+
+  const txt = n === 1
+    ? "1 Vertrag läuft in den nächsten 60 Tagen aus — verlängern oder kündigen."
+    : `${n} Verträge laufen in den nächsten 60 Tagen aus — verlängern oder kündigen.`;
+  badge.onmouseenter = () => { if (typeof _showTooltip === "function") _showTooltip(txt, badge); };
+  badge.onmouseleave = () => { if (typeof _hideTooltip === "function") _hideTooltip(); };
 }

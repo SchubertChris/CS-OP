@@ -18,6 +18,7 @@ const DEFAULT_SETTINGS = {
   pwEnabled: false,
   zahltag: 15,
   tooltips: true,
+  contractAlerts: true,
   userAvatar: null,
   panelBlur: 20,
 };
@@ -174,6 +175,12 @@ function togglePrivacyAutoLock() {
   renderSettings();
   if (CFG.privacyAutoLock) _resetInactivityTimer?.();
   else clearTimeout(window._inactivityTimer);
+}
+function toggleContractAlerts() {
+  CFG.contractAlerts = CFG.contractAlerts === false ? true : false;
+  saveSettings();
+  renderSettings();
+  if (typeof updateContractBadge === "function") updateContractBadge();
 }
 function uploadBg(input) {
   const file = input.files[0];
@@ -1027,6 +1034,13 @@ function renderSettings() {
       _toggle(CFG.tooltips !== false, toggleTooltips),
     ),
   );
+  behavCard.appendChild(
+    _row(
+      "Vertrags-Warnungen",
+      "Zähler in der Navigation für Verträge, die in ≤ 60 Tagen enden",
+      _toggle(CFG.contractAlerts !== false, toggleContractAlerts),
+    ),
+  );
   // Zahltag als Row direkt in Verhalten (thematisch passend, vermeidet kurze Einzelcard)
   const ztRight = _e("div");
   ztRight.style.cssText = "display:flex;align-items:center;gap:8px;";
@@ -1050,7 +1064,7 @@ function renderSettings() {
   promoCard.innerHTML = `
     <div class="settings-promo-inner">
       <div class="settings-promo-logo">
-        <span style="font-size:28px;line-height:1">🔐</span>
+        <img src="images/CandleScope.webp" alt="CandleScope" style="width:34px;height:34px;object-fit:contain" />
         <div>
           <div class="settings-promo-brand">Vault<span style="color:var(--blue)">Box</span></div>
           <div class="settings-promo-badge">v1.0 · 2026</div>
