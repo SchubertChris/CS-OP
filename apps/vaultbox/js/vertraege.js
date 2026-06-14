@@ -526,6 +526,20 @@ function _ctrRenderGrid(posten) {
     const amtColor = p.type === "einnahme" ? "var(--green)" : "var(--red)";
     const amtSign = p.type === "einnahme" ? "+" : "−";
 
+    const _ctrCat = p.categoryId ? (Array.isArray(S.categories) ? S.categories : []).find(c => c.id === p.categoryId) || null : null;
+    const _ctrCred = p.creditorId ? (Array.isArray(S.creditors) ? S.creditors : []).find(c => c.id === p.creditorId) || null : null;
+    const _catBadge = _ctrCat
+      ? `<span class="ctr-card-cat" style="background:color-mix(in srgb, ${esc(_ctrCat.color)} 16%, var(--cs-bg));border-color:${esc(_ctrCat.color)}55;color:${esc(_ctrCat.color)}">${uiIcon(_ctrCat.icon, 12)} ${esc(_ctrCat.name)}</span>`
+      : "";
+    const _credBadge = _ctrCred ? (() => {
+      const _ccE = esc(_ctrCred.color || "var(--blue)");
+      const _cloUrl = _krLogoUrl(_ctrCred);
+      const _cav = _cloUrl
+        ? `<img src="${esc(_cloUrl)}" style="width:16px;height:16px;object-fit:contain;border-radius:3px;vertical-align:middle" onerror="this.style.display='none'" />`
+        : `<span style="font-size:.7em;font-weight:700">${esc((_ctrCred.icon || (_ctrCred.name||"?")[0]).slice(0,2))}</span>`;
+      return `<button class="ctr-cred-pill" style="background:color-mix(in srgb, ${_ccE} 18%, var(--cs-bg));border-color:${_ccE}55;color:${_ccE}" onmouseenter="_showTooltip('Kreditor: ${esc(_ctrCred.name)}',this)" onmouseleave="_hideTooltip()" onclick="event.stopPropagation();openCreditorPopover('${_ctrCred.id}',this)">${_cav} ${esc(_ctrCred.name)}</button>`;
+    })() : "";
+
     cards += `<div class="ctr-card${isExp ? " ctr-card-expired" : ""}${status === "expiring" ? " ctr-card-expiring" : ""}${actionNeeded ? " ctr-card-action" : ""}"
       style="cursor:pointer;--ctr-color:${color}"
       onclick="openModal(${S.data.indexOf(p)})">
@@ -541,7 +555,7 @@ function _ctrRenderGrid(posten) {
       </div>
       <div class="ctr-card-amount" style="color:${amtColor}">
         ${amtSign}${fm(parseFloat(p.amount) || 0)}
-        <span style="font-size:.55em;font-weight:600;color:var(--text3);background:rgba(255,255,255,.04);border:1px solid var(--border);padding:2px 7px;border-radius:5px;margin-left:4px;letter-spacing:.2px">${p.interval || ""}</span>
+        <span style="font-size:.55em;font-weight:600;color:var(--text2);background:color-mix(in srgb, var(--text3) 14%, var(--cs-bg));border:1px solid var(--border2);padding:2px 7px;border-radius:5px;margin-left:4px;letter-spacing:.2px">${p.interval || ""}</span>
       </div>
       ${bar}
       <div class="ctr-card-dates">
@@ -549,6 +563,7 @@ function _ctrRenderGrid(posten) {
         ${endStr ? `<div class="ctr-card-date-item" style="color:${status === "expiring" ? "var(--amber)" : "var(--text3)"}"><span class="ctr-date-lbl">Ende</span><span>${endStr}${days !== null && !isExp && days <= 60 ? ` <span style="color:var(--amber);font-weight:700">${days}d</span>` : ""}</span></div>` : ""}
       </div>
       ${p.note ? `<div class="ctr-card-note">${esc(p.note)}</div>` : ""}
+      ${(_catBadge || _credBadge) ? `<div class="ctr-card-meta">${_catBadge}${_credBadge}</div>` : ""}
     </div>`;
   });
 

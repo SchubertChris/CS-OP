@@ -691,6 +691,33 @@
   -webkit-box-orient: vertical;
 }
 
+/* Kategorie- + Kreditor-Badges in der Kachel-Ansicht */
+.ctr-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+}
+.ctr-card-note + .ctr-card-meta {
+  border-top: none;
+  padding-top: 0;
+  margin-top: 6px;
+}
+.ctr-card-cat {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.68em;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 5px;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+
 /* ── Spalten-Resize-Handle ── */
 .col-resizer {
   position: absolute;
