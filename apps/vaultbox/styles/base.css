@@ -361,10 +361,10 @@
 
   --cs-glass-bg:       rgba(255, 255, 255, 0.70);
   --cs-glass-border:   rgba(14, 124, 117, 0.10);
-  /* deckender als Dark-Themes: heller Hintergrund blutet sonst durch und macht
-     (grauen) Text schwer lesbar — Frost bleibt dezent sichtbar. */
-  --glass-tint:        rgba(235, 234, 226, 0.86);
-  --glass-tint-strong: rgba(235, 234, 226, 0.93);
+  /* Default-Tapete sichtbar lassen (durchscheinend). Bei Custom-Foto deckender
+     via .vb-photo-bg (siehe unten), damit Text über busy Bildern lesbar bleibt. */
+  --glass-tint:        rgba(235, 234, 226, 0.68);
+  --glass-tint-strong: rgba(235, 234, 226, 0.82);
 
   --shadow-card:     0 2px 8px rgba(0, 0, 0, 0.08), 0 0 0 1px var(--cs-border);
   --shadow-elevated: 0 8px 24px rgba(0, 0, 0, 0.12), 0 0 0 1px var(--cs-border);
@@ -478,9 +478,9 @@
 
   --cs-glass-bg:       rgba(255, 255, 255, 0.65);
   --cs-glass-border:   rgba(148, 105, 20, 0.12);
-  /* deckender (siehe light) — heller Hintergrund soll Text nicht überlagern. */
-  --glass-tint:        rgba(242, 237, 222, 0.86);
-  --glass-tint-strong: rgba(242, 237, 222, 0.93);
+  /* siehe light: durchscheinend für die Default-Tapete, deckend bei Custom-Foto. */
+  --glass-tint:        rgba(242, 237, 222, 0.68);
+  --glass-tint-strong: rgba(242, 237, 222, 0.82);
 
   --shadow-card:     0 2px 8px rgba(0, 0, 0, 0.07), 0 0 0 1px var(--cs-border);
   --shadow-elevated: 0 8px 24px rgba(0, 0, 0, 0.10), 0 0 0 1px var(--cs-border);
@@ -658,6 +658,11 @@ select {
 ::-webkit-scrollbar {
   display: none;
 }
+
+/* Custom-Foto-Hintergrund: Panels deckender für Lesbarkeit über beliebigem Bild
+   (die saubere Default-Tapete bleibt mit den durchscheinenden Standardwerten sichtbar). */
+[data-theme="light"].vb-photo-bg { --glass-tint: rgba(235, 234, 226, 0.88); --glass-tint-strong: rgba(235, 234, 226, 0.95); }
+[data-theme="ivory"].vb-photo-bg { --glass-tint: rgba(242, 237, 222, 0.88); --glass-tint-strong: rgba(242, 237, 222, 0.95); }
 
 /* ── HINTERGRUND ──
    Echter Weichzeichner direkt auf dem Hintergrund (filter), gesteuert über den

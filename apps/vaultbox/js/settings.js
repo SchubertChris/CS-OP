@@ -49,6 +49,9 @@ function applySettings() {
   if (typeof _renderSidebarGreeting === "function") _renderSidebarGreeting();
   const root = document.documentElement;
   root.setAttribute("data-theme", CFG.theme);
+  // Bei eigenem Foto-Hintergrund Panels deckender (lesbar über beliebigem Bild);
+  // bei der sauberen Default-Tapete durchscheinender, damit Logo/Gradient sichtbar bleiben.
+  root.classList.toggle("vb-photo-bg", !!CFG.bgImage);
   requestAnimationFrame(() => {
     const blue = getComputedStyle(root).getPropertyValue("--blue").trim();
     if (blue) root.style.setProperty("--tut-accent", blue);
