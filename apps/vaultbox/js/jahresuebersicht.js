@@ -7,7 +7,7 @@ let _sparChart = null;
 let _verglChart = null;
 let _candleChart    = null;
 let _candleRange    = "1J";   // "3M" | "6M" | "1J" | "2J" | "5J" | "MAX"
-let _candleInterval = "1T";   // "1T" | "1W" | "1M"  — Kerzenintervall
+let _candleInterval = "1M";   // "1T" | "1W" | "1M"  — Kerzenintervall (Default: Monat)
 let _candleType     = "candle"; // "candle" | "line" | "area"
 let _candleCompare  = false;  // Income vs Expense Vergleich einblenden
 let _candleGrowth   = false;  // Netto-Wachstumslinie einblenden
@@ -399,12 +399,21 @@ function _refreshCandleChart() {
     if (fcExp.length)   _candleChart.addLineSeries({ color: red   + "55", lineWidth: 1.5, lineStyle: 2, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false, priceFormat }).setData(fcExp);
   }
 
-  // Depot/VL-Sparfluss: kumulierte Einzahlungen in Anlagekonten
+  // Depot/VL-Sparfluss: kumulierte Einzahlungen in Anlagekonten.
+  // Eigene (unsichtbare) Preisachse "invest" — sonst zieht die kleine Depot-Summe
+  // die Hauptskala auf 0 und die Kerzen kleben oben.
   if (investLine.length) {
     const { confLine: confInv, fcLine: fcInv } = _splitLine(investLine);
-    if (confInv.length) _candleChart.addLineSeries({ color: purple + "99", lineWidth: 1, lineStyle: 0, priceLineVisible: false, lastValueVisible: true, crosshairMarkerVisible: false, priceFormat, title: "∑ Depot/VL" }).setData(confInv);
-    if (fcInv.length)   _candleChart.addLineSeries({ color: purple + "44", lineWidth: 1, lineStyle: 2, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false, priceFormat }).setData(fcInv);
-    if (!confInv.length && !fcInv.length) _candleChart.addLineSeries({ color: purple + "99", lineWidth: 1, lineStyle: 3, priceLineVisible: false, lastValueVisible: true, crosshairMarkerVisible: false, priceFormat, title: "∑ Depot/VL" }).setData(investLine);
+    if (confInv.length) _candleChart.addLineSeries({ color: purple + "99", lineWidth: 1, lineStyle: 0, priceLineVisible: false, lastValueVisible: true, crosshairMarkerVisible: false, priceFormat, title: "∑ Depot/VL", priceScaleId: "invest" }).setData(confInv);
+    if (fcInv.length)   _candleChart.addLineSeries({ color: purple + "44", lineWidth: 1, lineStyle: 2, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false, priceFormat, priceScaleId: "invest" }).setData(fcInv);
+    if (!confInv.length && !fcInv.length) _candleChart.addLineSeries({ color: purple + "99", lineWidth: 1, lineStyle: 3, priceLineVisible: false, lastValueVisible: true, crosshairMarkerVisible: false, priceFormat, title: "∑ Depot/VL", priceScaleId: "invest" }).setData(investLine);
+    // Depot-Linie unten halten, ohne die Hauptachse zu beeinflussen
+    try {
+      _candleChart.priceScale("invest").applyOptions({
+        scaleMargins: { top: 0.82, bottom: 0.02 },
+        visible: false,
+      });
+    } catch (_) {}
   }
 
   // Wachstum: Kumuliertes Netto (∑ Einnahmen − ∑ Ausgaben) als Fläche
