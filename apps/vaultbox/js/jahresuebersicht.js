@@ -673,8 +673,8 @@ function renderJahr() {
     <div class="jh-months-head">
       <div class="panel-title">Monatsübersicht ${yr}</div>
       <div class="view-toggle">
-        <button class="vt-btn ${_jahrView === "cards" ? "active" : ""}" onclick="_jahrView='cards';renderJahr()" onmouseenter="_showTooltip('Kartenansicht', this)" onmouseleave="_hideTooltip()">${iconHtml("grid", 14)}</button>
-        <button class="vt-btn ${_jahrView === "list" ? "active" : ""}" onclick="_jahrView='list';renderJahr()" onmouseenter="_showTooltip('Listenansicht', this)" onmouseleave="_hideTooltip()">${iconHtml("list", 14)}</button>
+        <button class="vt-btn ${_jahrView === "cards" ? "active" : ""}" data-view="cards" onclick="_jahrSetView('cards')" onmouseenter="_showTooltip('Kartenansicht', this)" onmouseleave="_hideTooltip()">${iconHtml("grid", 14)}</button>
+        <button class="vt-btn ${_jahrView === "list" ? "active" : ""}" data-view="list" onclick="_jahrSetView('list')" onmouseenter="_showTooltip('Listenansicht', this)" onmouseleave="_hideTooltip()">${iconHtml("list", 14)}</button>
       </div>
     </div>
     <div id="yearGrid"></div>`;
@@ -694,6 +694,17 @@ function renderJahr() {
   _renderMonthCards(monthsA, n, yr);
   // Candlestick nach DOM-Paint
   requestAnimationFrame(() => _refreshCandleChart());
+}
+
+// Karten/Liste umschalten OHNE die ganze Seite + Charts neu zu bauen —
+// nur die Toggle-Buttons und die Monatskarten aktualisieren.
+function _jahrSetView(view) {
+  if (_jahrView === view) return;
+  _jahrView = view;
+  document.querySelectorAll(".jh-months-head .vt-btn").forEach((b) => {
+    b.classList.toggle("active", b.dataset.view === view);
+  });
+  _renderMonthCards(_calcMonths(_jahrA), today(), _jahrA);
 }
 
 function _calcMonths(year) {
