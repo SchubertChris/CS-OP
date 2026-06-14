@@ -547,8 +547,8 @@ function _archiveCatTile(doc, catId) {
   return `
     <div class="arch-cat-row" id="archrow_${doc.id}">
 
-      <!-- Icon -->
-      <div class="arch-cat-row-icon">${archiveFileIcon(doc.ext)}</div>
+      <!-- Icon / Mini-Vorschau (bei Bildern lädt _archShowCatDocs das Thumbnail hier rein) -->
+      <div class="arch-cat-row-icon" id="archimgwrap_${doc.id}">${archiveFileIcon(doc.ext)}</div>
 
       <!-- Info -->
       <div class="arch-cat-row-info"

@@ -699,11 +699,21 @@
   background: color-mix(in srgb, var(--panel2) 95%, white);
 }
 
-/* Icon */
+/* Icon / Mini-Vorschau */
 .arch-cat-row-icon {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 1.4em;
-  text-align: center;
   flex-shrink: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--panel2);
+}
+.arch-cat-row-icon img {
+  border-radius: 8px;
 }
 
 /* Dateiname + Meta */
