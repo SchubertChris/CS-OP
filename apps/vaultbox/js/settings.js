@@ -83,40 +83,7 @@ function applySettings() {
   }
   root.style.fontSize = CFG.fontSize + "px";
   document.body.style.fontSize = CFG.fontSize + "px";
-  const bgEl = document.querySelector(".bg");
-  if (bgEl) {
-    if (CFG.bgImage) {
-      bgEl.classList.add("has-custom-bg");
-      bgEl.style.backgroundImage = `url(${CFG.bgImage})`;
-      bgEl.style.filter = "none";
-      const fit = CFG.bgFit || "cover";
-      if (fit === "cover") {
-        bgEl.style.backgroundSize = "cover";
-        bgEl.style.backgroundRepeat = "no-repeat";
-        bgEl.style.backgroundPosition = "center";
-      } else if (fit === "contain") {
-        bgEl.style.backgroundSize = "contain";
-        bgEl.style.backgroundRepeat = "no-repeat";
-        bgEl.style.backgroundPosition = "center";
-      } else if (fit === "center") {
-        bgEl.style.backgroundSize = "auto";
-        bgEl.style.backgroundRepeat = "no-repeat";
-        bgEl.style.backgroundPosition = "center";
-      } else if (fit === "tile") {
-        bgEl.style.backgroundSize = "auto";
-        bgEl.style.backgroundRepeat = "repeat";
-        bgEl.style.backgroundPosition = "top left";
-      } else if (fit === "stretch") {
-        bgEl.style.backgroundSize = "100% 100%";
-        bgEl.style.backgroundRepeat = "no-repeat";
-        bgEl.style.backgroundPosition = "center";
-      }
-    } else {
-      // Default: theme-adaptives Hintergrundbild (dark/light), wechselt mit Theme
-      bgEl.classList.remove("has-custom-bg");
-      _applyDefaultBgPattern(bgEl);
-    }
-  }
+  _paintAllBg();
   const lbl = document.getElementById("saveLabel");
   if (lbl) lbl.textContent = CFG.autosave ? "autosave · on" : "autosave · off";
   _ucApplyBlur();
@@ -128,7 +95,7 @@ function setTheme(t) {
   const _applyTheme = () => {
     saveSettings();
     renderSettings();
-    if (!CFG.bgImage) _applyDefaultBgPattern(document.querySelector(".bg"));
+    if (!CFG.bgImage) _paintAllBg();
   };
   if (document.startViewTransition) {
     document.startViewTransition(_applyTheme);
@@ -289,12 +256,66 @@ function _buildBgCssPreview(style) {
   };
 }
 
+// Hintergrund auf EIN Layer anwenden (Custom-Bild oder Default-Muster).
+function _applyBgToEl(bgEl) {
+  if (!bgEl) return;
+  if (CFG.bgImage) {
+    bgEl.classList.add("has-custom-bg");
+    bgEl.style.backgroundImage = `url(${CFG.bgImage})`;
+    const fit = CFG.bgFit || "cover";
+    if (fit === "cover") {
+      bgEl.style.backgroundSize = "cover";
+      bgEl.style.backgroundRepeat = "no-repeat";
+      bgEl.style.backgroundPosition = "center";
+    } else if (fit === "contain") {
+      bgEl.style.backgroundSize = "contain";
+      bgEl.style.backgroundRepeat = "no-repeat";
+      bgEl.style.backgroundPosition = "center";
+    } else if (fit === "center") {
+      bgEl.style.backgroundSize = "auto";
+      bgEl.style.backgroundRepeat = "no-repeat";
+      bgEl.style.backgroundPosition = "center";
+    } else if (fit === "tile") {
+      bgEl.style.backgroundSize = "auto";
+      bgEl.style.backgroundRepeat = "repeat";
+      bgEl.style.backgroundPosition = "top left";
+    } else if (fit === "stretch") {
+      bgEl.style.backgroundSize = "100% 100%";
+      bgEl.style.backgroundRepeat = "no-repeat";
+      bgEl.style.backgroundPosition = "center";
+    }
+  } else {
+    bgEl.classList.remove("has-custom-bg");
+    _applyDefaultBgPattern(bgEl);
+  }
+}
+
+// Hintergrund auf alle .bg-Layer malen und danach in CSS-Variablen spiegeln,
+// damit die Panel-::after-Frost-Layer eine deckungsgleiche Kopie rendern können.
+function _paintAllBg() {
+  document.querySelectorAll(".bg").forEach(_applyBgToEl);
+  _syncBgVars();
+}
+
+// Spiegelt den aktuell gemalten Hintergrund (.bg) in CSS-Variablen, damit jedes
+// Panel über seinen ::after-Layer eine deckungsgleiche, weichgezeichnete Kopie
+// rendern kann (echtes Frosted-Glass im Scroll-Bereich, wo backdrop-filter scheitert).
+function _syncBgVars() {
+  const bg = document.querySelector(".bg");
+  if (!bg) return;
+  const cs = getComputedStyle(bg);
+  const r = document.documentElement.style;
+  r.setProperty("--app-bg-image", cs.backgroundImage);
+  r.setProperty("--app-bg-size", cs.backgroundSize);
+  r.setProperty("--app-bg-position", cs.backgroundPosition);
+  r.setProperty("--app-bg-repeat", cs.backgroundRepeat);
+}
+
 function _applyDefaultBgPattern(bgEl) {
   if (!bgEl) return;
   const css = _buildBgCss(CFG.bgStyle || "gradient");
   bgEl.classList.add("has-custom-bg");
   Object.assign(bgEl.style, css);
-  bgEl.style.filter = "none";
 }
 
 function clearBg() {
@@ -1239,7 +1260,7 @@ function renderSettings() {
     strInp.addEventListener("input", () => {
       CFG.bgStrength = parseInt(strInp.value, 10);
       strVal.textContent = CFG.bgStrength + "%";
-      if (!CFG.bgImage) _applyDefaultBgPattern(document.querySelector(".bg"));
+      if (!CFG.bgImage) _paintAllBg();
       document.querySelectorAll(".bg-style-grid .bg-style-btn").forEach((btn, i) => {
         const prev = btn.querySelector(".bg-style-prev");
         if (prev && bgPresets[i]) Object.assign(prev.style, _buildBgCssPreview(bgPresets[i].id));
@@ -1958,8 +1979,8 @@ function _ucBuildThemeGrid() {
 function _ucSyncSlider() {
   const slider = document.getElementById("ucBlurSlider");
   const label  = document.getElementById("ucBlurPx");
-  const px     = CFG.panelBlur ?? 20;
-  const fill   = Math.round((px / 200) * 100);
+  const px     = Math.min(25, CFG.panelBlur ?? 20);
+  const fill   = Math.round((px / 25) * 100);
   if (slider) {
     slider.value = px;
     slider.style.setProperty("--uc-fill", fill + "%");
@@ -1968,13 +1989,13 @@ function _ucSyncSlider() {
 }
 
 function _ucSetBlur(val) {
-  const px = parseInt(val);
+  const px = Math.min(25, Math.max(0, parseInt(val) || 0));
   CFG.panelBlur = px;
   _ucApplyBlur();
   const label = document.getElementById("ucBlurPx");
   if (label) label.textContent = px + "px";
   const slider = document.getElementById("ucBlurSlider");
-  if (slider) slider.style.setProperty("--uc-fill", Math.round((px / 200) * 100) + "%");
+  if (slider) slider.style.setProperty("--uc-fill", Math.round((px / 25) * 100) + "%");
 }
 
 function _ucSaveBlur() {
@@ -1982,26 +2003,9 @@ function _ucSaveBlur() {
 }
 
 function _ucApplyBlur() {
-  const px   = CFG.panelBlur ?? 20;
-  const root = document.documentElement;
-
-  root.style.setProperty("--user-blur-px", px + "px");
-
-  // Blur und Deckkraft gekoppelt: mehr Blur → transparenteres --glass-tint → Panels durchsichtiger
-  const t        = px / 200;
-  const isLight  = ["light", "ivory"].includes(CFG.theme);
-  const bg       = CFG.theme === "ivory" ? "242, 237, 222"
-                 : CFG.theme === "light"  ? "235, 234, 226"
-                 : CFG.theme === "mono"   ? "20, 20, 20"
-                 : CFG.theme === "dark"   ? "10, 14, 22"
-                 : CFG.theme === "crimson"? "20, 10, 10"
-                 : "18, 16, 12";
-  const maxA = isLight ? 0.88 : 0.82;
-  const minA = isLight ? 0.28 : 0.18;
-  const a    = (maxA - t * (maxA - minA)).toFixed(2);
-  const aStr = `rgba(${bg}, ${a})`;
-  const aStrong = `rgba(${bg}, ${Math.min(+a + 0.12, 0.97).toFixed(2)})`;
-
-  root.style.setProperty("--glass-tint",        aStr);
-  root.style.setProperty("--glass-tint-strong",  aStrong);
+  // Slider steuert NUR den Weichzeichner. Der Tint (--glass-tint) bleibt auf dem
+  // lesbaren Theme-Default — so ist die Typografie bei jeder Blur-Stärke gut lesbar
+  // (Frost = blurred Hintergrund UNTER konstantem, deckendem Tint).
+  const px = Math.min(25, Math.max(0, CFG.panelBlur ?? 20));
+  document.documentElement.style.setProperty("--user-blur-px", px + "px");
 }

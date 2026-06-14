@@ -158,7 +158,8 @@
      Electron 40 (Chromium ~130) supported.
   ════════════════════════════════════ */
 
-  /* Blur — einziger JS-Schreibpunkt: document.documentElement.style.setProperty('--user-blur-px', val + 'px') */
+  /* Frosted-Glass-Stärke (Slider 0–25px) — echtes backdrop-filter auf den Panels.
+     JS-Schreibpunkt: document.documentElement.style.setProperty('--user-blur-px', …) */
   --user-blur-px: 20px;
 
   /* Surfaces — glass-tint = semi-transparenter Hintergrund für den Blur-Effekt */
@@ -720,8 +721,7 @@ select {
   min-height: 1em;
 }
 
-/* Custom-BG: kein Overlay, kein Filter */
-.bg.has-custom-bg { filter: none !important; }
+/* Custom-BG: kein Abdunkel-Overlay. Der Blur (.bg filter) bleibt aktiv. */
 .bg.has-custom-bg::after { display: none !important; }
 
 /* ── BACKDROP-FILTER — Frosted Glass auf ALLEN Box-Elementen ── */
@@ -743,4 +743,53 @@ select {
 .year-list-row {
   backdrop-filter: blur(var(--user-blur-px));
   -webkit-backdrop-filter: blur(var(--user-blur-px));
+}
+
+/* ── ECHTES FROSTED-GLASS PRO PANEL ──
+   backdrop-filter greift im Scroll-Container .main nicht (Chromium kapselt ihn).
+   Lösung: jedes Panel bekommt einen ::after-Layer mit einer FIXEN, weichgezeichneten
+   Kopie des Hintergrunds (background-attachment:fixed → pixelgleich mit .bg, parallaxt
+   beim Scrollen), darüber der deckende Tint. Text liegt darüber → bleibt lesbar.
+   Funktioniert garantiert, unabhängig vom Scroll-Container (kein backdrop-filter).
+   ::after ist bei allen Ziel-Panels frei; bestehende ::before-Akzente bleiben oben. */
+.panel, .acc-card, .acc-grp,
+.kpi, .kpi2, .kpi3,
+.dash-hero, .mi-card, .cockpit-col,
+.month-card, .goal-card,
+.settings-card, .settings-header,
+.docs-tile, .docs-hero,
+.kr-card,
+.ctr-kpi, .ctr-kpi-strip,
+.arch-cat-item, .arch-doc-item,
+.vb-node,
+.jh-terminal-bar,
+.year-list-row {
+  position: relative;
+}
+.panel::after, .acc-card::after, .acc-grp::after,
+.kpi::after, .kpi2::after, .kpi3::after,
+.dash-hero::after, .mi-card::after, .cockpit-col::after,
+.month-card::after, .goal-card::after,
+.settings-card::after, .settings-header::after,
+.docs-tile::after, .docs-hero::after,
+.kr-card::after,
+.ctr-kpi::after, .ctr-kpi-strip::after,
+.arch-cat-item::after, .arch-doc-item::after,
+.vb-node::after,
+.jh-terminal-bar::after,
+.year-list-row::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background-image:
+    linear-gradient(var(--glass-tint), var(--glass-tint)),
+    var(--app-bg-image, none);
+  background-size: auto, var(--app-bg-size, cover);
+  background-position: center, var(--app-bg-position, center);
+  background-repeat: repeat, var(--app-bg-repeat, no-repeat);
+  background-attachment: fixed;
+  filter: blur(var(--user-blur-px));
+  pointer-events: none;
 }
