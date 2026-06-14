@@ -206,6 +206,7 @@ function openSearch() {
   box.appendChild(hint);
   ov.appendChild(box);
   document.body.appendChild(ov);
+  document.body.classList.add("search-open");
 
   requestAnimationFrame(() => inp.focus());
   _renderSearchResults("");
@@ -241,6 +242,7 @@ function openSearch() {
 
 function closeSearch() {
   document.getElementById("searchOverlay")?.remove();
+  document.body.classList.remove("search-open");
 }
 
 // ── TASTENKÜRZEL-OVERLAY ──────────────

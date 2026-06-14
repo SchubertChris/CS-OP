@@ -63,6 +63,18 @@
   backdrop-filter: blur(3px);
 }
 
+/* Schnellsuche offen: Topbar-Chrome (Suche/Nav/Account/Ring/Statusleiste)
+   über den Abdunkel-Scrim heben, damit es im Light-Mode nicht matschig-grau
+   überdeckt wird — die Palette wirkt so aus der noch hellen Topbar heraus. */
+body.search-open #cmdTrigger,
+body.search-open #pageTitle,
+body.search-open #topActions,
+body.search-open #pill,
+body.search-open #ringAnchor,
+body.search-open #statusBar {
+  z-index: 1850 !important;
+}
+
 .search-box {
   width: 580px;
   max-width: calc(100vw - 272px); /* 240px Sidebar + 16px × 2 */
