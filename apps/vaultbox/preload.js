@@ -98,9 +98,14 @@ contextBridge.exposeInMainWorld("csf", {
   },
 
   update: {
+    check:   () => ipcRenderer.send("update:check"),
     install: () => ipcRenderer.send("update:install"),
-    onAvailable:  (cb) => ipcRenderer.on("update:available",  (_e, d) => cb(d)),
-    onDownloaded: (cb) => ipcRenderer.on("update:downloaded", (_e, d) => cb(d)),
+    onChecking:     (cb) => ipcRenderer.on("update:checking",   ()     => cb()),
+    onAvailable:    (cb) => ipcRenderer.on("update:available",  (_e, d) => cb(d)),
+    onNotAvailable: (cb) => ipcRenderer.on("update:none",       (_e, d) => cb(d)),
+    onProgress:     (cb) => ipcRenderer.on("update:progress",   (_e, d) => cb(d)),
+    onDownloaded:   (cb) => ipcRenderer.on("update:downloaded", (_e, d) => cb(d)),
+    onError:        (cb) => ipcRenderer.on("update:error",      (_e, d) => cb(d)),
   },
 
   license: {

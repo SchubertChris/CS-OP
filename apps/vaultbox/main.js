@@ -1319,24 +1319,40 @@ const menuTemplate = [
 ];
 Menu.setApplicationMenu(Menu.buildFromTemplate(menuTemplate));
 
+function _sendUpdate(channel, payload) {
+  if (win && !win.isDestroyed()) win.webContents.send(channel, payload || {});
+}
+
 function setupAutoUpdater() {
   autoUpdater.autoDownload    = true;
   autoUpdater.autoInstallOnAppQuit = true;
 
-  autoUpdater.on("update-available", (info) => {
-    if (win) win.webContents.send("update:available", { version: info.version });
-  });
-
-  autoUpdater.on("update-downloaded", (info) => {
-    if (win) win.webContents.send("update:downloaded", { version: info.version });
-  });
-
-  autoUpdater.on("error", () => {});
+  autoUpdater.on("checking-for-update", () => _sendUpdate("update:checking"));
+  autoUpdater.on("update-available", (info) =>
+    _sendUpdate("update:available", { version: info.version }));
+  autoUpdater.on("update-not-available", (info) =>
+    _sendUpdate("update:none", { version: info && info.version }));
+  autoUpdater.on("download-progress", (p) =>
+    _sendUpdate("update:progress", { percent: Math.round(p.percent || 0) }));
+  autoUpdater.on("update-downloaded", (info) =>
+    _sendUpdate("update:downloaded", { version: info.version }));
+  autoUpdater.on("error", (err) =>
+    _sendUpdate("update:error", { message: (err && err.message) || String(err) }));
 
   setTimeout(() => {
     try { autoUpdater.checkForUpdates(); } catch (_) {}
   }, 3000);
 }
+
+// Manuelle Prüfung aus den Einstellungen
+ipcMain.on("update:check", () => {
+  if (!app.isPackaged) {
+    _sendUpdate("update:error", { message: "Updates nur in der installierten App verfügbar (nicht im Dev-Modus)." });
+    return;
+  }
+  try { autoUpdater.checkForUpdates(); }
+  catch (e) { _sendUpdate("update:error", { message: (e && e.message) || String(e) }); }
+});
 
 ipcMain.on("update:install", () => {
   autoUpdater.quitAndInstall(false, true);

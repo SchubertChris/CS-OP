@@ -160,6 +160,41 @@ function uploadBg(input) {
   };
   r.readAsDataURL(file);
 }
+
+// ── UPDATES ───────────────────────────
+function _updStatus(html, kind) {
+  const s = document.getElementById("updStatus");
+  if (!s) return;
+  s.style.display = "block";
+  const col = kind === "ok" ? "var(--green)" : kind === "warn" ? "var(--amber)" : "var(--text2)";
+  s.style.color = col;
+  s.style.borderColor = kind === "ok" ? "var(--green-a35, var(--border2))" : kind === "warn" ? "var(--amber-a20, var(--border2))" : "var(--border)";
+  s.innerHTML = html;
+}
+function _updResetBtn() {
+  const b = document.getElementById("updCheckBtn");
+  if (b) { b.disabled = false; b.textContent = "Nach Updates suchen"; }
+}
+function _updCheck() {
+  if (!window.csf?.update?.check) { _updStatus("Updates sind nur in der installierten App verfügbar.", "warn"); return; }
+  const b = document.getElementById("updCheckBtn");
+  if (b) { b.disabled = true; b.textContent = "Suche…"; }
+  _updStatus("Suche nach Updates…", "");
+  window.csf.update.check();
+}
+let _updWired = false;
+function _updWire() {
+  if (_updWired || !window.csf?.update?.onChecking) return;
+  _updWired = true;
+  const u = window.csf.update;
+  u.onChecking(() => _updStatus("Suche nach Updates…", ""));
+  u.onNotAvailable(() => { _updResetBtn(); _updStatus("✓ Du hast bereits die neueste Version.", "ok"); });
+  u.onAvailable((d) => _updStatus(`Update <b>v${esc(String(d && d.version || ""))}</b> gefunden – wird heruntergeladen…`, ""));
+  u.onProgress((d) => _updStatus(`Lade Update… ${d && d.percent != null ? d.percent : 0}%`, ""));
+  u.onDownloaded((d) => { _updResetBtn(); _updStatus(`Update <b>v${esc(String(d && d.version || ""))}</b> ist bereit. <button class="btn sm" style="margin-left:8px" onclick="window.csf.update.install()">Jetzt installieren &amp; neu starten</button>`, "ok"); });
+  u.onError((d) => { _updResetBtn(); _updStatus(esc(String(d && d.message || "Keine Update-Informationen verfügbar.")), "warn"); });
+}
+
 // ── CSS-HINTERGRUND GENERATOR ─────────
 // Muster-Farbe = Theme-Akzent (--blue); Intensität = CFG.bgStrength (0–100).
 function _bgHexToRgb(hex) {
@@ -1809,6 +1844,19 @@ function renderSettings() {
   wrap.appendChild(pwCard);
   wrap.appendChild(catCard);
   wrap.appendChild(dataCard);
+
+  // ── UPDATES ──
+  const updCard = _card("settings-card--full");
+  updCard.innerHTML =
+    `<div class="settings-card-title">${typeof iconHtml === "function" ? iconHtml("rotate-ccw", 16) : ""} Updates</div>` +
+    `<div class="settings-row">` +
+    `<div class="settings-row-left"><div class="settings-row-label">Programm-Version</div>` +
+    `<div class="settings-row-desc">VaultBox v1.0.0 · Updates über GitHub-Releases</div></div>` +
+    `<button class="btn" id="updCheckBtn" onclick="_updCheck()">Nach Updates suchen</button>` +
+    `</div>` +
+    `<div id="updStatus" style="display:none;margin-top:10px;font-size:.8em;padding:8px 12px;border-radius:8px;border:1px solid var(--border)"></div>`;
+  wrap.appendChild(updCard);
+  _updWire();
 
   // ── LIZENZ-INFO ──
   if (window.csf?.license) {
