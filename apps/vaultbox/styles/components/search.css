@@ -78,6 +78,12 @@ body.search-open #statusBar {
   z-index: 1850 !important;
 }
 
+/* Account-Panel ist ein Geschwister von #topActions (eigene z-index 1600) —
+   bei offener Suche über den Scrim heben, sonst klappt es dahinter auf. */
+body.search-open #ucPanel {
+  z-index: 1860 !important;
+}
+
 /* Pill-Nav + Aktionen-Ring ausblenden, solange die Suche offen ist — die
    Palette enthält bereits die Seiten-Navigation (sonst doppelt gemoppelt). */
 body.search-open #pill,
@@ -89,7 +95,9 @@ body.search-open #ringAnchor {
 .search-box {
   width: 580px;
   max-width: calc(100vw - 272px); /* 240px Sidebar + 16px × 2 */
-  background: var(--panel);
+  /* --panel ist glass-tint (durchscheinend); über solidem --cs-bg geschichtet
+     wird die Box blickdicht, behält aber den Panel-Ton — theme-unabhängig. */
+  background: linear-gradient(var(--panel), var(--panel)), var(--cs-bg);
   border: 1px solid var(--border);
   border-radius: var(--r2);
   box-shadow: 0 24px 64px rgba(0, 0, 0, 0.45), 0 0 0 1px var(--blue-a15);
