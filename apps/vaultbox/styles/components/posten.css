@@ -186,7 +186,9 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 10px 8px 10px 6px;
+  padding: 8px 8px 8px 6px;
+  min-height: 50px; /* einheitliche Zeilenhöhe — egal ob Sub-Zeile vorhanden */
+  box-sizing: border-box;
   border-radius: 10px;
   cursor: pointer;
   transition: background 0.12s, box-shadow 0.12s;
@@ -276,6 +278,10 @@
 .um-row-main {
   flex: 1;
   min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
 }
 .um-row-name {
   font-size: 0.82em;
@@ -300,11 +306,12 @@
   flex-wrap: wrap;
 }
 .um-itv {
-  background: var(--panel2);
-  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--text3) 16%, var(--cs-bg));
+  border: 1px solid var(--border2);
   border-radius: 4px;
   padding: 0 4px;
   font-size: 0.9em;
+  color: var(--text2);
 }
 .um-row-amt {
   width: 96px;
@@ -386,41 +393,41 @@
   letter-spacing: 0.4px;
 }
 .um-st-ok {
-  background: var(--green-a10);
+  background: color-mix(in srgb, var(--green) 16%, var(--cs-bg));
   color: var(--green);
-  border: 1px solid var(--green-a18);
+  border: 1px solid color-mix(in srgb, var(--green) 38%, var(--cs-bg));
 }
 .um-st-changed {
-  background: var(--amber-a10);
+  background: color-mix(in srgb, var(--amber) 18%, var(--cs-bg));
   color: var(--amber);
-  border: 1px solid var(--amber-a20);
+  border: 1px solid color-mix(in srgb, var(--amber) 40%, var(--cs-bg));
 }
 .um-st-paused {
-  background: var(--red-a10);
+  background: color-mix(in srgb, var(--red) 16%, var(--cs-bg));
   color: var(--red);
-  border: 1px solid var(--red-a20);
+  border: 1px solid color-mix(in srgb, var(--red) 40%, var(--cs-bg));
 }
 .um-st-planned {
-  background: var(--blue-a06);
+  background: color-mix(in srgb, var(--blue) 14%, var(--cs-bg));
   color: var(--blue);
-  border: 1px solid var(--blue-a12);
+  border: 1px solid var(--blue-a35);
 }
 .um-st-pending {
-  background: rgba(255, 165, 0, 0.08);
+  background: color-mix(in srgb, var(--amber) 18%, var(--cs-bg));
   color: var(--amber);
-  border: 1px solid rgba(255, 165, 0, 0.22);
+  border: 1px solid color-mix(in srgb, var(--amber) 40%, var(--cs-bg));
 }
 .um-st-settled {
-  background: rgba(0, 229, 160, 0.07);
+  background: color-mix(in srgb, var(--green) 14%, var(--cs-bg));
   color: var(--green);
-  border: 1px solid rgba(0, 229, 160, 0.18);
+  border: 1px solid color-mix(in srgb, var(--green) 36%, var(--cs-bg));
   font-style: italic;
 }
 
 /* ── VORGEMERKT-STATUS-BADGE ── */
 .um-st-future {
-  background: var(--blue-a06);
-  color: var(--text3);
+  background: color-mix(in srgb, var(--text3) 14%, var(--cs-bg));
+  color: var(--text2);
   border: 1px solid var(--border2);
 }
 
@@ -445,9 +452,9 @@
   display: inline-block;
   font-size: 0.68em;
   font-weight: 700;
-  background: rgba(255, 165, 0, 0.1);
+  background: color-mix(in srgb, var(--amber) 18%, var(--cs-bg));
   color: var(--amber);
-  border: 1px solid rgba(255, 165, 0, 0.25);
+  border: 1px solid color-mix(in srgb, var(--amber) 40%, var(--cs-bg));
   border-radius: 5px;
   padding: 1px 6px;
   margin-left: 6px;
@@ -504,6 +511,9 @@
   letter-spacing: 0.4px;
   vertical-align: middle;
   margin-left: 4px;
+  background: color-mix(in srgb, var(--blue) 16%, var(--cs-bg));
+  color: var(--blue);
+  border: 1px solid var(--blue-a35);
 }
 .um-goal-deadline {
   font-size: 0.75em;

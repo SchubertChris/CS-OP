@@ -743,9 +743,8 @@ function _renderUmList(panel, data) {
             ${credLogoOnly}
           </div>
           <div class="um-row-main">
-            <div class="um-row-name">${esc(b.name)}${isCloseEntry ? ` <span class="um-close-badge">🔒 Auto</span>` : b._isGoal ? ` <span class="um-goal-badge" style="background:${b._goalColor}22;color:${b._goalColor}">Sparziel</span>` : _linkedGoalPosten ? ` <span class="um-goal-badge">Sparplan</span>` : ""}${isAusstehend ? ` <span class="um-pending-badge">ausstehend</span>` : ""}</div>
-            ${b.note && !isGoal ? `<div class="um-row-comment">${esc(b.note)}</div>` : ""}
-            ${(b.interval && b.interval !== "einmalig") || deadlineInfo ? `<div class="um-row-meta">${b.interval && b.interval !== "einmalig" ? `<span class="um-itv">${b.interval}</span>` : ""}${deadlineInfo}</div>` : ""}
+            <div class="um-row-name">${esc(b.name)}${isCloseEntry ? ` <span class="um-close-badge">🔒 Auto</span>` : b._isGoal ? ` <span class="um-goal-badge" style="background:${b._goalColor};color:#fff">Sparziel</span>` : _linkedGoalPosten ? ` <span class="um-goal-badge">Sparplan</span>` : ""}${isAusstehend ? ` <span class="um-pending-badge">ausstehend</span>` : ""}</div>
+            ${(b.note && !isGoal) || (b.interval && b.interval !== "einmalig") || deadlineInfo ? `<div class="um-row-meta">${b.note && !isGoal ? `<span class="um-row-comment">${esc(b.note)}</span>` : ""}${b.interval && b.interval !== "einmalig" ? `<span class="um-itv">${b.interval}</span>` : ""}${deadlineInfo}</div>` : ""}
           </div>
           <div class="um-col-date">${b.date ? new Date(b.date).toLocaleDateString("de-DE") : "—"}</div>
           <div class="um-col-acc"${acc ? ` onmouseenter="_showTooltip('${esc(acc.label)}',this)" onmouseleave="_hideTooltip()"` : ""}>${acc ? esc(acc.label) : "—"}</div>

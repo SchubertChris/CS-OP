@@ -468,9 +468,10 @@
 .ctr-itv {
   font-size: 0.72em;
   font-weight: 700;
-  color: var(--text3);
-  background: var(--cs-overlay-sm);
-  border: 1px solid var(--border);
+  color: var(--text2);
+  /* deckend (nicht durchscheinend) — sonst blutet der Hintergrund durch */
+  background: color-mix(in srgb, var(--text3) 16%, var(--cs-bg));
+  border: 1px solid var(--border2);
   padding: 1px 6px;
   border-radius: 5px;
   white-space: nowrap;
@@ -496,29 +497,29 @@
   letter-spacing: 0.2px;
 }
 .ctr-active {
-  background: var(--blue-a10);
+  background: color-mix(in srgb, var(--blue) 16%, var(--cs-bg));
   color: var(--blue);
-  border: 1px solid var(--blue-a20);
+  border: 1px solid var(--blue-a35);
 }
 .ctr-expiring {
-  background: var(--amber-a10);
+  background: color-mix(in srgb, var(--amber) 18%, var(--cs-bg));
   color: var(--amber);
-  border: 1px solid var(--amber-a20);
+  border: 1px solid color-mix(in srgb, var(--amber) 40%, var(--cs-bg));
 }
 .ctr-expired {
-  background: var(--red-a10);
+  background: color-mix(in srgb, var(--red) 16%, var(--cs-bg));
   color: var(--red);
-  border: 1px solid var(--red-a20);
+  border: 1px solid color-mix(in srgb, var(--red) 40%, var(--cs-bg));
 }
 .ctr-future {
-  background: var(--green-a10);
+  background: color-mix(in srgb, var(--green) 16%, var(--cs-bg));
   color: var(--green);
-  border: 1px solid var(--green-a18);
+  border: 1px solid color-mix(in srgb, var(--green) 40%, var(--cs-bg));
 }
 .ctr-open {
-  background: var(--cs-overlay-sm);
-  color: var(--text3);
-  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--text3) 16%, var(--cs-bg));
+  color: var(--text2);
+  border: 1px solid var(--border2);
 }
 .ctr-cancel-warn {
   background: rgba(240, 140, 0, 0.1);
