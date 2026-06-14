@@ -620,26 +620,10 @@ function _doClearAllData() {
 
   // Nach kurzer Pause: zur Übersicht navigieren, dann ausblenden
   setTimeout(() => {
-    // Zur Übersicht navigieren
-    document
-      .querySelectorAll(".nav-item")
-      .forEach((n) => n.classList.remove("active"));
-    document
-      .querySelectorAll(".page")
-      .forEach((p) => p.classList.remove("active"));
-    const dash = document.getElementById("p-dashboard");
-    if (dash) dash.classList.add("active");
-    document.querySelectorAll(".nav-item").forEach((n) => {
-      if ((n.getAttribute("onclick") || "").includes("'dashboard'"))
-        n.classList.add("active");
-    });
-    const title = document.getElementById("pageTitle");
-    if (title) title.textContent = "Dashboard";
-
-    // Nach oben scrollen
-    const main = document.querySelector(".main");
-    if (main) main.scrollTo({ top: 0, behavior: "smooth" });
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    // Echte Navigation statt manuell — synct auch Pill-Nav (aktives Item +
+    // geschlossener Pill-Zustand) und den Seitentitel. Vorher blieb die Pill
+    // auf "Einstellungen" stehen.
+    if (typeof _navTo === "function") _navTo("dashboard");
 
     // Ausblenden
     setTimeout(() => {
