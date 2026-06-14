@@ -2295,7 +2295,7 @@ body.has-visionboard .main {
 /* ── RING: Unterhalb Topbar · Radius 120px · 22.5° Abstand ── */
 /* Ring-Btn visuell: top:64px right:12px — 14px Luft unter topActions (~50px) */
 #ringAnchor {
-  top: 80px !important;
+  top: 98px !important;
   right: 28px !important;
 }
 #topActions {
