@@ -187,6 +187,5 @@
   margin: 14px 20px 12px;
 }
 
-/* ── Custom-Background: kein Overlay, kein Blur, kein Darken ── */
-.bg.has-custom-bg { filter: none !important; }
+/* ── Custom-Background: kein Abdunkel-Overlay. Blur (.bg filter) bleibt aktiv. ── */
 .bg.has-custom-bg::after { display: none !important; }
