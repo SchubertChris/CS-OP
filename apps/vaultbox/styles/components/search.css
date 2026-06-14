@@ -63,16 +63,27 @@
   backdrop-filter: blur(3px);
 }
 
-/* Schnellsuche offen: Topbar-Chrome (Suche/Nav/Account/Ring/Statusleiste)
-   über den Abdunkel-Scrim heben, damit es im Light-Mode nicht matschig-grau
-   überdeckt wird — die Palette wirkt so aus der noch hellen Topbar heraus. */
+/* Light/Ivory: heller Scrim wie bei den übrigen Modals (.modal-overlay) —
+   der dunkle 0.55-Schwarz-Scrim ließ die Suche „abgedunkelt" wirken. */
+[data-theme="light"] .search-overlay { background: rgba(220, 218, 210, 0.75); }
+[data-theme="ivory"] .search-overlay { background: rgba(218, 208, 185, 0.78); }
+
+/* Schnellsuche offen: helles Topbar-Chrome (Suche/Titel/Account/Statusleiste)
+   über den Scrim heben, damit es nicht überdeckt wird — Palette wirkt aus der
+   noch hellen Topbar heraus (Spotlight-Look). */
 body.search-open #cmdTrigger,
 body.search-open #pageTitle,
 body.search-open #topActions,
-body.search-open #pill,
-body.search-open #ringAnchor,
 body.search-open #statusBar {
   z-index: 1850 !important;
+}
+
+/* Pill-Nav + Aktionen-Ring ausblenden, solange die Suche offen ist — die
+   Palette enthält bereits die Seiten-Navigation (sonst doppelt gemoppelt). */
+body.search-open #pill,
+body.search-open #ringAnchor {
+  opacity: 0 !important;
+  pointer-events: none !important;
 }
 
 .search-box {

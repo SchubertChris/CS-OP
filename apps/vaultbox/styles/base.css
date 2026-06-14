@@ -622,7 +622,7 @@ html {
 }
 
 body {
-  font-family: var(--font-body);
+  font-family: var(--sans);
   color: var(--cs-text);
   font-size: 15px;
   -webkit-text-size-adjust: 100%;
