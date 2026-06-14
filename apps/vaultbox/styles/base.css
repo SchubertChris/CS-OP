@@ -158,9 +158,10 @@
      Electron 40 (Chromium ~130) supported.
   ════════════════════════════════════ */
 
-  /* Frosted-Glass-Stärke (Slider 0–25px) — echtes backdrop-filter auf den Panels.
+  /* Frosted-Glass-Stärke (Slider 0–25px). Default niedrig, damit die gebrandete
+     Default-Tapete (Logo/Signatur) lesbar bleibt; mehr Frost per Regler.
      JS-Schreibpunkt: document.documentElement.style.setProperty('--user-blur-px', …) */
-  --user-blur-px: 20px;
+  --user-blur-px: 4px;
 
   /* Surfaces — glass-tint = semi-transparenter Hintergrund für den Blur-Effekt */
   --bg:     var(--cs-bg);

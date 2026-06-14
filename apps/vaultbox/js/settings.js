@@ -20,7 +20,7 @@ const DEFAULT_SETTINGS = {
   tooltips: true,
   contractAlerts: true,
   userAvatar: null,
-  panelBlur: 20,
+  panelBlur: 4,
 };
 
 let CFG = { ...DEFAULT_SETTINGS };
@@ -222,7 +222,7 @@ function _buildBgCss(style) {
   const { r, g, b } = _bgAccentRgb();
   const isLight = theme === "light" || theme === "ivory";
   const s = _bgStrengthFactor();
-  const k = isLight ? 1.25 : 1; // helle Themes brauchen mehr Deckkraft
+  const k = isLight ? 1.45 : 1; // helle Themes brauchen mehr Deckkraft
   const rgba = (a) => `rgba(${r},${g},${b},${Math.max(0, Math.min(1, a * s * k)).toFixed(3)})`;
 
   if (style === "solid") {
@@ -239,18 +239,20 @@ function _buildBgCss(style) {
     const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='256' height='256'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 ${R} 0 0 0 0 ${G} 0 0 0 0 ${B} 0 0 0 ${A} 0'/></filter><rect width='100%' height='100%' filter='url(#n)'/></svg>`;
     return { backgroundColor: bg, backgroundImage: `url("data:image/svg+xml,${encodeURIComponent(svg)}")`, backgroundRepeat: "repeat", backgroundSize: "256px 256px", backgroundPosition: "0 0" };
   }
-  // gradient (default)
-  const g1 = `radial-gradient(ellipse 70% 65% at 10% 20%, ${rgba(0.34)} 0%, transparent 65%)`;
-  const g2 = `radial-gradient(ellipse 65% 70% at 90% 80%, ${rgba(0.20)} 0%, transparent 65%)`;
-  const g3 = `radial-gradient(ellipse 50% 45% at 52% 48%, ${rgba(0.13)} 0%, transparent 55%)`;
-  const dot = `<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28'><circle cx='14' cy='14' r='1' fill='${rgba(0.20)}'/></svg>`;
-  const dotUrl = `url("data:image/svg+xml,${encodeURIComponent(dot)}")`;
+  // gradient (default): Glow oben links + Tiefe unten rechts + sanfter Top-Verlauf,
+  // darunter die gebrandete Default-Tapete (CS-Logo/Signatur), theme-abhängig.
+  // Reihenfolge: Glows oben, Bild unten. Nur dieser Stil nutzt das Bild — die
+  // anderen Stile + Custom-Upload bleiben unberührt.
+  const g1 = `radial-gradient(ellipse 85% 75% at 6% 4%, ${rgba(0.62)} 0%, ${rgba(0.18)} 38%, transparent 66%)`;
+  const g2 = `radial-gradient(ellipse 75% 80% at 96% 94%, ${rgba(0.34)} 0%, transparent 60%)`;
+  const g3 = `linear-gradient(155deg, ${rgba(0.18)} 0%, transparent 42%)`;
+  const defImg = isLight ? "images/defaultBGlight.png" : "images/defaultBGdark.png";
   return {
     backgroundColor: bg,
-    backgroundImage: `${g1}, ${g2}, ${g3}, ${dotUrl}`,
-    backgroundRepeat: "no-repeat, no-repeat, no-repeat, repeat",
-    backgroundSize: "auto, auto, auto, 28px 28px",
-    backgroundPosition: "0 0, 100% 100%, center, 0 0",
+    backgroundImage: `${g1}, ${g2}, ${g3}, url("${defImg}")`,
+    backgroundRepeat: "no-repeat, no-repeat, no-repeat, no-repeat",
+    backgroundSize: "auto, auto, auto, cover",
+    backgroundPosition: "0 0, 100% 100%, 0 0, center",
   };
 }
 
