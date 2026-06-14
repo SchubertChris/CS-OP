@@ -970,39 +970,10 @@ function _themeAccentColor() {
   const map = { candlescope: "#d4a843", mono: "#d4d4d4", light: "#0e7c75", ivory: "#946914" };
   return map[CFG?.theme] || "#d4a843";
 }
-function _navTo(page) {
-  const titles = {
-    dashboard: "Dashboard",
-    posten: "Umsätze",
-    jahr: "Jahresübersicht",
-    vertraege: "Verträge",
-    goals: "Sparziele",
-    settings: "Einstellungen",
-    docs: "Über diese App",
-  };
-  if (!titles[page]) return;
-  document
-    .querySelectorAll(".nav-item")
-    .forEach((n) => n.classList.remove("active"));
-  document
-    .querySelectorAll(".page")
-    .forEach((p) => p.classList.remove("active"));
-  const pg = document.getElementById("p-" + page);
-  if (pg) pg.classList.add("active");
-  document.querySelectorAll(".nav-item").forEach((n) => {
-    if ((n.getAttribute("onclick") || "").includes("'" + page + "'"))
-      n.classList.add("active");
-  });
-  const t = document.getElementById("pageTitle");
-  if (t) t.textContent = titles[page];
-  if (page === "dashboard") renderDashboard();
-  if (page === "posten") renderPosten();
-  if (page === "jahr") renderJahr();
-  if (page === "vertraege") renderVertraege();
-  if (page === "goals") renderGoals();
-  if (page === "settings") renderSettings();
-  if (page === "docs") renderDocs();
-}
+// _navTo() wird NICHT hier definiert — die vollständige Version lebt in nav.js
+// (kennt alle Seiten inkl. archiv/kreditoren/vision/krypto + Pill-Handling).
+// Eine alte Dublette hier hatte eine hartcodierte Seiten-Liste und brach die
+// Navigation aus dem Aktionen-Ring zu Archiv/Kreditoren/Vision/Krypto.
 function _saveTutUsername() {
   const val = document.getElementById("tutNameInput")?.value.trim();
   if (val) {
