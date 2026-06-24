@@ -363,9 +363,9 @@ export default function CommunityPage() {
               </span>
             </div>
             <span className="w-px h-3 bg-[#C9A84C]/12" />
-            <Link to="/finance"
+            <Link to="/dev"
               className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#C9A84C]/5 border border-[#C9A84C]/20 hover:border-[#C9A84C]/40 hover:bg-[#C9A84C]/8 transition-colors group">
-              <span className="font-mono text-[9px] tracking-[0.12em] uppercase text-[var(--cs-text-2)] group-hover:text-[#C9A84C] transition-colors">FinanceBoard · Gratis</span>
+              <span className="font-mono text-[9px] tracking-[0.12em] uppercase text-[var(--cs-text-2)] group-hover:text-[#C9A84C] transition-colors">VaultBox</span>
               <ArrowRight size={9} strokeWidth={1.5} className="text-[var(--cs-text-3)] group-hover:text-[#C9A84C] transition-colors" />
             </Link>
             <span className="font-mono text-[9px] text-[var(--cs-text-4)]">100% offline · kein Abo</span>
@@ -472,7 +472,7 @@ export default function CommunityPage() {
               emoji: '🌱',
               label: 'Einsteiger',
               desc: 'Du willst Finanzen verstehen — ohne Hype, ohne Schnellreich-werden-Versprechen. Einfach lernen, Fragen stellen, wachsen.',
-              tags: ['Grundlagen', 'ETF-Start', 'Budgetplanung', 'FinanceBoard'],
+              tags: ['Grundlagen', 'ETF-Start', 'Budgetplanung', 'VaultBox'],
               href: '#features',
             },
           ].map((card, i) => (

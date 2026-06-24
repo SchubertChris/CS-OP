@@ -6,13 +6,11 @@
 import { useState, useEffect } from 'react'
 import { NavLink, Link, useLocation } from 'react-router-dom'
 import {
-  TrendingUp, Code2, User, MessageSquare,
+  Code2, User, MessageSquare,
   ChevronRight, Mail, LogIn, Sun, Moon,
 } from 'lucide-react'
 import csLogo from '../../assets/images/CandleScopeLogo.png'
 import { useTheme } from '../../contexts/ThemeContext'
-import ComingSoonModal from '../ui/ComingSoonModal'
-import { isLaunched, DOWNLOAD_URL } from '../../hooks/useLaunchGate'
 
 interface NavItem {
   to: string
@@ -22,7 +20,6 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { to: '/finance',   label: 'Finance',   icon: <TrendingUp size={18} strokeWidth={1.5} />,   tooltip: 'Haushaltsbuch · Trading · Tools' },
   { to: '/dev',       label: 'Dev & Web', icon: <Code2 size={18} strokeWidth={1.5} />,         tooltip: 'Websites · Coding · Projekte' },
   { to: '/about',     label: 'About',     icon: <User size={18} strokeWidth={1.5} />,           tooltip: 'Über mich · Angebote · CV' },
   { to: '/community', label: 'Community', icon: <MessageSquare size={18} strokeWidth={1.5} />, tooltip: 'Discord · Community · Events' },
@@ -42,18 +39,6 @@ function DesktopTooltip({ text }: { text: string }) {
 export default function Header() {
   const [scrolled, setScrolled]         = useState(false)
   const [sidebarOpen, setSidebarOpen]   = useState(false)
-  const [dlOpen, setDlOpen]             = useState(false)
-  const [downloading, setDownloading]   = useState(false)
-
-  function handleDownload() {
-    if (isLaunched()) {
-      setDownloading(true)
-      window.location.href = DOWNLOAD_URL
-      setTimeout(() => setDownloading(false), 3000)
-    } else {
-      setDlOpen(true)
-    }
-  }
   const { pathname } = useLocation()
   const { theme, toggle } = useTheme()
 
@@ -108,25 +93,17 @@ export default function Header() {
 
         <div className="flex items-center gap-3 shrink-0">
           <button onClick={toggle} aria-label="Theme wechseln"
-            className="w-8 h-8 flex items-center justify-center rounded-full border border-[#C9A84C]/20 text-[#C9A84C]/60 hover:text-[#C9A84C] hover:border-[#C9A84C]/40 transition-colors duration-200 cursor-pointer">
+            className="w-8 h-8 flex items-center justify-center rounded-full border border-[#C9A84C]/45 text-[#C9A84C] hover:text-[#080808] hover:bg-[#C9A84C] transition-colors duration-200 cursor-pointer">
             {theme === 'dark' ? <Sun size={14} strokeWidth={1.5} /> : <Moon size={14} strokeWidth={1.5} />}
           </button>
           <a
             href={`https://app.candlescope.de/login?theme=${theme}`}
             aria-label="Zum CandleScope Login"
-            className="flex items-center gap-1.5 text-[11px] tracking-[0.12em] uppercase px-4 py-2 rounded-full border border-[#C9A84C]/40 text-[#C9A84C] hover:bg-[#C9A84C]/10 transition-colors duration-200"
+            className="flex items-center gap-1.5 text-[11px] tracking-[0.12em] uppercase px-4 py-2 rounded-full bg-[#C9A84C] text-[#080808] font-semibold hover:opacity-90 transition-opacity duration-200"
           >
             <LogIn size={12} strokeWidth={2} />
             Login
           </a>
-          <button
-            onClick={handleDownload}
-            disabled={downloading}
-            aria-label="FinanceBoard herunterladen"
-            className="relative overflow-hidden group text-[11px] tracking-[0.15em] uppercase bg-[#C9A84C] text-[#080808] font-bold px-5 py-2.5 rounded-full transition-opacity duration-200 hover:opacity-90 cursor-pointer disabled:opacity-80 disabled:cursor-default"
-          >
-            {downloading ? '✓ Startet…' : '↓ Gratis laden'}
-          </button>
         </div>
       </header>
 
@@ -217,7 +194,6 @@ export default function Header() {
         </div>
       </div>
 
-      {dlOpen && <ComingSoonModal onClose={() => setDlOpen(false)} />}
     </>
   )
 }

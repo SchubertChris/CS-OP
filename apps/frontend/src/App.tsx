@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import RootLayout from './components/layout/RootLayout'
 import AdminGuard from './admin/AdminGuard'
 import { ADMIN } from './admin/config'
@@ -15,7 +15,6 @@ const PageEditor = lazy(() => import('./admin/PageEditor'))
 const NewPage = lazy(() => import('./admin/NewPage'))
 
 const HomePage = lazy(() => import('./pages/HomePage'))
-const FinancePage = lazy(() => import('./pages/FinancePage'))
 const DevPage = lazy(() => import('./pages/DevPage'))
 const AboutPage = lazy(() => import('./pages/AboutPage'))
 const CommunityPage = lazy(() => import('./pages/CommunityPage'))
@@ -49,7 +48,7 @@ export default function App() {
       {/* ── Public Website ─────────────────────────────── */}
       <Route element={<RootLayout />}>
         <Route path="/" element={<S><HomePage /></S>} />
-        <Route path="/finance" element={<S><FinancePage /></S>} />
+        <Route path="/finance" element={<Navigate to="/dev" replace />} />
         <Route path="/dev" element={<S><DevPage /></S>} />
         <Route path="/about" element={<S><AboutPage /></S>} />
         <Route path="/community" element={<S><CommunityPage /></S>} />

@@ -21,7 +21,7 @@ export const INITIAL_PAGES: Page[] = [
         description: 'WebDev · Finance · Gaming · Merch · Kurse. Eine Marke von Chris Schubert.',
         ctas: [
           { label: 'Mehr erfahren', href: '/about', variant: 'primary' },
-          { label: 'Finance entdecken', href: '/finance', variant: 'ghost' },
+          { label: 'Projekte ansehen', href: '/dev', variant: 'ghost' },
         ],
       },
     }],
@@ -95,7 +95,7 @@ export const INITIAL_PAGES: Page[] = [
         eyebrow: 'Community', titleLine1: 'Discord &', titleLine2: 'Community',
         titleAccent: 'line2', theme: 'community', badge: 'Jetzt live',
         description: 'Trading · Tech · Gaming · Austausch.',
-        ctas: [{ label: 'Discord beitreten', href: 'https://discord.gg/', variant: 'primary' }],
+        ctas: [{ label: 'Discord beitreten', href: 'https://discord.gg/HRxbTW4ujT', variant: 'primary' }],
       },
     }],
     createdAt: ts('2025-01-01'), updatedAt: ts('2026-03-14'),

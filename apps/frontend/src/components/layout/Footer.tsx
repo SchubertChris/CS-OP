@@ -4,12 +4,11 @@
    ============================================================ */
 
 import { Link } from 'react-router-dom'
-import { Github, TrendingUp, Code2, User, Users, MessageSquare, Mail, ExternalLink } from 'lucide-react'
+import { Github, Code2, User, Users, MessageSquare, Mail, ExternalLink } from 'lucide-react'
 import csLogo from '../../assets/images/CandleScopeLogo.png'
 import { SOCIALS } from '../../data/socials'
 
 const footerNav = [
-  { to: '/finance', label: 'Finance', icon: <TrendingUp size={14} strokeWidth={1.5} /> },
   { to: '/dev', label: 'Dev & Web-Projekte', icon: <Code2 size={14} strokeWidth={1.5} /> },
   { to: '/about', label: 'About', icon: <User size={14} strokeWidth={1.5} /> },
   { to: '/contact', label: 'Kontakt', icon: <MessageSquare size={14} strokeWidth={1.5} /> },

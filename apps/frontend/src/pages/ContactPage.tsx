@@ -19,7 +19,7 @@ import {
 
 import { SOCIALS } from '../data/socials'
 
-const FORMSPREE_ID = import.meta.env.VITE_FORMSPREE_ID ?? ''
+const FORMSPREE_ID = import.meta.env.VITE_FORMSPREE_ID ?? 'mojzyrnq'
 const DISCORD      = SOCIALS.discord
 const INSTAGRAM    = SOCIALS.instagram
 
@@ -68,7 +68,13 @@ export default function ContactPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!validate()) return
-    if (!FORMSPREE_ID) { setStatus('error'); return }
+    if (!FORMSPREE_ID) {
+      const subject = `[CandleScope] ${form.topic} — ${form.name}`
+      const body = `Name: ${form.name}\nE-Mail: ${form.email}\nThema: ${form.topic}\n\n${form.message}`
+      window.location.href = `mailto:info@candlescope.de?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+      setStatus('success')
+      return
+    }
     setStatus('sending')
     try {
       const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
@@ -93,7 +99,7 @@ export default function ContactPage() {
         titleLine1="Schreib mir."
         titleLine2="Ich antworte."
         titleAccent="line1"
-        description="Webprojekt, Kooperation, FinanceBoard-Frage oder einfach Hallo — nichts ist zu klein. Montag bis Freitag erreichbar."
+        description="Webprojekt, Kooperation, VaultBox-Frage oder einfach Hallo — nichts ist zu klein. Montag bis Freitag erreichbar."
         badge="Verfügbar"
         theme="contact"
       >
@@ -280,7 +286,7 @@ export default function ContactPage() {
                 </div>
               </div>
               <p className="text-[13px] text-[var(--cs-text-2)] leading-relaxed mb-4">Lieber direkt sprechen? Buch dir einen kostenlosen Slot.</p>
-              <a href="https://calendly.com/" target="_blank" rel="noopener noreferrer"
+              <a href="https://calendly.com/schubertchris8/new-meeting" target="_blank" rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2 w-full py-2.5 border border-[var(--cs-text)]/15 rounded-xl font-mono text-[12px] tracking-[0.1em] uppercase text-[var(--cs-text-2)] hover:text-[#C9A84C] hover:border-[#C9A84C]/45 hover:bg-[#C9A84C]/5 transition-colors">
                 <Calendar size={13} strokeWidth={1.5} />
                 Kalender öffnen

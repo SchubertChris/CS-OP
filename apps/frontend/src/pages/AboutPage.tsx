@@ -110,7 +110,7 @@ const TIMELINE = [
   { year: '2022', title: 'CandleScope — Die Marke entsteht', desc: 'Gründung der Marke CandleScope. Finance-Dashboard, eigene Website, Community — alles aus einer Hand. Krypto und Finanzen nicht als Hobby sondern als echtes Interessensfeld mit eigenem Tool-Stack.' },
   { year: '2023', title: 'DCI Berlin — Webentwicklung', desc: 'Weiterbildung zum Webentwickler beim Digital Career Institute Berlin — kombiniert mit allem was vorher und nachher selbst beigebracht wurde. Seit dem zehnten Lebensjahr am PC, Technik war immer da.' },
   { year: '2025', title: 'Sparda Bank — Kundenbetreuung', desc: 'Seit Oktober 2025 im Kundenservice der Sparda Bank — parallel weiter an CandleScope und eigenen Projekten.' },
-  { year: '2026', title: 'CandleScope FinanceBoard — Live', desc: 'Launch des CandleScope FinanceBoards — ein vollständiges Finance-Dashboard für Haushaltsbuch, Portfolio und Marktdaten. Selbst entwickelt, selbst deployed. Nächstes Kapitel hat begonnen.', current: true },
+  { year: '2026', title: 'VaultBox — eigene Desktop-App', desc: 'Entwicklung von VaultBox — eine vollständige Offline-Finanz-App für Haushaltsbuch, Verträge und Krypto-Steuer. Selbst entwickelt, selbst deployed. Nächstes Kapitel hat begonnen.', current: true },
 ]
 
 const VALUES = [
@@ -171,13 +171,13 @@ export default function AboutPage() {
           <div className="flex flex-wrap items-center gap-3">
             <span className="font-mono text-[9px] tracking-[0.16em] uppercase text-[var(--cs-text-3)]">Flagship</span>
             <span className="w-px h-3 bg-[var(--cs-text)]/12" />
-            <Link to="/finance"
+            <Link to="/dev"
               className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#C9A84C]/6 border border-[#C9A84C]/30 hover:border-[#C9A84C]/50 hover:bg-[#C9A84C]/10 transition-colors group">
               <div className="w-1 h-1 rounded-full bg-[#22c55e]" />
-              <span className="font-mono text-[9px] tracking-[0.12em] uppercase text-[var(--cs-text-2)] group-hover:text-[#C9A84C] transition-colors">FinanceBoard v10.6</span>
+              <span className="font-mono text-[9px] tracking-[0.12em] uppercase text-[var(--cs-text-2)] group-hover:text-[#C9A84C] transition-colors">VaultBox</span>
               <ArrowRight size={9} strokeWidth={1.5} className="text-[var(--cs-text-3)] group-hover:text-[#C9A84C] transition-colors" />
             </Link>
-            <span className="font-mono text-[9px] text-[var(--cs-text-3)]">selbst entwickelt · selbst deployed · gratis</span>
+            <span className="font-mono text-[9px] text-[var(--cs-text-3)]">selbst entwickelt · selbst deployed · offline</span>
           </div>
         </div>
       </PageHero>

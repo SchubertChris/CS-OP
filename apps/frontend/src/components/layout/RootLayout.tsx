@@ -35,6 +35,8 @@ export default function RootLayout() {
   const handleIntroComplete = () => {
     sessionStorage.setItem(SESSION_KEY, '1')
     setIntroComplete(true)
+    // Calendly-Badge & Co. dürfen jetzt erscheinen
+    window.dispatchEvent(new Event('cs:intro-done'))
   }
 
   return (

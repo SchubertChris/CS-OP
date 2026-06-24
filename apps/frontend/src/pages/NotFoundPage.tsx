@@ -56,14 +56,15 @@ function GlitchText({ text, className }: { text: string; className?: string }) {
 }
 
 function FallingNumbers() {
-  const numbers = Array.from({ length: 18 }, (_, i) => ({
+  const [numbers] = useState(() => Array.from({ length: 18 }, (_, i) => ({
     id: i,
     value: (Math.random() > 0.5 ? '-' : '') + (Math.random() * 99 | 0) + '.' + (Math.random() * 99 | 0) + '%',
     x: 5 + Math.random() * 90,
     delay: Math.random() * 4,
     duration: 3 + Math.random() * 4,
     red: Math.random() > 0.3,
-  }))
+    repeatDelay: Math.random() * 3,
+  })))
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
       {numbers.map(n => (
@@ -72,7 +73,7 @@ function FallingNumbers() {
           style={{ left: `${n.x}%` }}
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: '110vh', opacity: [0, 0.8, 0.8, 0] }}
-          transition={{ duration: n.duration, delay: n.delay, repeat: Infinity, repeatDelay: Math.random() * 3, ease: 'linear' }}>
+          transition={{ duration: n.duration, delay: n.delay, repeat: Infinity, repeatDelay: n.repeatDelay, ease: 'linear' }}>
           {n.value}
         </motion.div>
       ))}

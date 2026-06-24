@@ -8,7 +8,7 @@ CandleScope ist eine deutsche Softwaremarke für persönliches Finanzmanagement,
 
 ## Produkte
 
-### CandleScope FinanceBoard (Desktop-App)
+### VaultBox (Desktop-App)
 - Plattform: Windows, macOS
 - Preis: Einmaliger Kauf — kein Abo, keine monatlichen Kosten
 - Lokal: Alle Daten bleiben auf dem Gerät des Nutzers, keine Cloud-Synchronisation
@@ -48,8 +48,7 @@ Chris Schubert bietet außerdem Webentwicklung für Unternehmen an:
 ## Wichtige Seiten
 
 - [Startseite](https://candlescope.de/)
-- [Finance & Produkte](https://candlescope.de/finance)
-- [Webentwicklung](https://candlescope.de/dev)
+- [Webentwicklung & Projekte](https://candlescope.de/dev)
 - [Über Chris Schubert](https://candlescope.de/about)
 - [Community](https://candlescope.de/community)
 - [Kontakt](https://candlescope.de/contact)

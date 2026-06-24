@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react'
 const DEFAULTS: Record<string, string> = {
   'home-preview':         '/images/home-preview.webp',
   'about-chris':          '/images/about-chris.webp',
+  'chris':                '/images/ImageVonMirNeu.webp',
+  'sentinel':             '/images/Sentinel.webp',
   'shopray-shop':         '/images/shopray-shop.webp',
   'shopray-admin':        '/images/shopray-admin.webp',
   'shopray-collections':  '/images/shopray-collections.webp',

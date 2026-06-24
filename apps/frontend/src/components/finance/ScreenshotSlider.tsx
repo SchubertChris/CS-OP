@@ -2,22 +2,17 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { motion } from 'framer-motion'
 
-import imgDashboard     from '../../assets/images/ÜbersichtUndTutorial.webp'
-import imgJahr          from '../../assets/images/Jahresübersicht.webp'
-import imgTransaktionen from '../../assets/images/Transaktionen.webp'
-import imgSparziele     from '../../assets/images/Sparziele.webp'
-import imgArchiv        from '../../assets/images/Archiv.webp'
-import imgVision        from '../../assets/images/VisionBoard.webp'
-import imgModals        from '../../assets/images/Modals.webp'
-
 const SCREENSHOTS = [
-  { label: 'Dashboard',      src: imgDashboard     },
-  { label: 'Jahresanalyse',  src: imgJahr          },
-  { label: 'Transaktionen',  src: imgTransaktionen },
-  { label: 'Sparziele',      src: imgSparziele     },
-  { label: 'Archiv',         src: imgArchiv        },
-  { label: 'Vision Board',   src: imgVision        },
-  { label: 'Modals',         src: imgModals        },
+  { label: 'Übersicht',      src: '/images/home-preview.webp'         },
+  { label: 'Jahresanalyse',  src: '/images/finance-yearly.webp'       },
+  { label: 'Transaktionen',  src: '/images/finance-transactions.webp' },
+  { label: 'Sparziele',      src: '/images/finance-goals.webp'        },
+  { label: 'Verträge',       src: '/images/finance-contract.webp'     },
+  { label: 'Krypto / FIFO',  src: '/images/finance-krypto.webp'       },
+  { label: 'Buchung',        src: '/images/finance-modals.webp'       },
+  { label: 'Vision Board',   src: '/images/finance-visionboard.webp'  },
+  { label: 'Druckvorschau',  src: '/images/finance-archive.webp'      },
+  { label: 'Über die App',   src: '/images/finance-about.webp'        },
 ]
 
 const AUTOPLAY_MS = 4500
@@ -51,8 +46,8 @@ export default function ScreenshotSlider() {
     >
       {/* Header */}
       <div className="text-center mb-10 px-8">
-        <p className="text-[#C9A84C] text-xs tracking-[0.2em] uppercase mb-3">App in Aktion</p>
-        <h2 className="text-3xl font-bold text-[var(--cs-text)]">Sieh selbst</h2>
+        <p className="font-mono text-[11px] tracking-[0.2em] uppercase text-[#C9A84C] mb-3">VaultBox · App in Aktion</p>
+        <h2 className="font-display text-3xl md:text-4xl font-bold text-[var(--cs-text)]">Sieh dir die App an</h2>
       </div>
 
       {/* Tab-Navigation */}
@@ -125,12 +120,12 @@ export default function ScreenshotSlider() {
                   <div className="w-2.5 h-2.5 rounded-full bg-[#eab308]/70" />
                   <div className="w-2.5 h-2.5 rounded-full bg-[#22c55e]/70" />
                   <span className="text-[var(--cs-text-3)] text-[9px] ml-2 font-mono">
-                    FinanceBoard v10.6 — {label}
+                    VaultBox — {label}
                   </span>
                 </div>
                 <img
                   src={src}
-                  alt={`FinanceBoard ${label}`}
+                  alt={`VaultBox ${label}`}
                   className="w-full object-cover block"
                   loading="lazy"
                   draggable={false}

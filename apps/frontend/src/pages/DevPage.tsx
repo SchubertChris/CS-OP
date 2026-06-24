@@ -331,11 +331,11 @@ export default function DevPage() {
           <div className="flex flex-wrap items-center gap-3">
             <span className="font-mono text-[9px] tracking-[0.16em] uppercase text-[var(--cs-text-3)]">Flagship</span>
             <span className="w-px h-3 bg-[var(--cs-text)]/12" />
-            <Link to="/finance" className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#C9A84C]/6 border border-[#C9A84C]/30 hover:border-[#C9A84C]/50 hover:bg-[#C9A84C]/10 transition-colors group">
+            <a href="#projects" className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#C9A84C]/6 border border-[#C9A84C]/30 hover:border-[#C9A84C]/50 hover:bg-[#C9A84C]/10 transition-colors group">
               <div className="w-1 h-1 rounded-full bg-[#22c55e]" />
-              <span className="font-mono text-[9px] tracking-[0.12em] uppercase text-[var(--cs-text-2)] group-hover:text-[#C9A84C] transition-colors">FinanceBoard v10.6</span>
+              <span className="font-mono text-[9px] tracking-[0.12em] uppercase text-[var(--cs-text-2)] group-hover:text-[#C9A84C] transition-colors">VaultBox</span>
               <ArrowRight size={9} strokeWidth={1.5} className="text-[var(--cs-text-3)] group-hover:text-[#C9A84C] transition-colors" />
-            </Link>
+            </a>
             <div className="flex items-center gap-2 ml-1">
               {['React', 'TypeScript', 'Electron', 'Node.js'].map(tag => (
                 <span key={tag} className="font-mono text-[9px] px-2 py-0.5 rounded border border-[var(--cs-text)]/12 text-[var(--cs-text-2)]">
@@ -438,8 +438,8 @@ export default function DevPage() {
           </StaggerItem>
           <StaggerItem>
             <ProjectCard
-              title="Candlescope FinanceBoard"
-              description="Professionelles Haushaltsbuch für Windows — vollständig offline, kein Abo, keine Cloud. Einmal herunterladen, dauerhaft behalten."
+              title="VaultBox"
+              description="Professionelles Haushaltsbuch für Windows — vollständig offline, kein Abo, keine Cloud. Einmal kaufen, dauerhaft behalten."
               tags={['Electron', 'Vanilla JS', 'Chart.js', 'CSS']}
               status="wip"
               locked
