@@ -19,7 +19,7 @@
    ============================================================ */
 
 import { useReducedMotion } from 'framer-motion'
-import { ShieldCheck, Coins, ShoppingCart, Package, FileText, Users, Cpu } from 'lucide-react'
+import { ShieldCheck, Coins, ShoppingCart, Package, FileText, Users, Cpu, Mail, Phone } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 
 interface Node { x: number; y: number; label: string; Icon: LucideIcon }
@@ -27,12 +27,14 @@ interface Node { x: number; y: number; label: string; Icon: LucideIcon }
 /* Security = Kern in der Mitte. Die Nodes = Domänen, die er absichert
    (eindeutig, keine Doppelungen). */
 const NODES: Node[] = [
-  { x: 24, y: 15, label: 'Finanzen',     Icon: Coins },
-  { x: 79, y: 18, label: 'Produkte',     Icon: Package },
-  { x: 91, y: 52, label: 'Verträge',     Icon: FileText },
-  { x: 74, y: 85, label: 'Bestellungen', Icon: ShoppingCart },
-  { x: 22, y: 83, label: 'Kundendaten',  Icon: Users },
-  { x: 9,  y: 50, label: 'Automation',   Icon: Cpu },
+  { x: 27, y: 13, label: 'Finanzen',     Icon: Coins },
+  { x: 60, y: 11, label: 'Produkte',     Icon: Package },
+  { x: 88, y: 28, label: 'Verträge',     Icon: FileText },
+  { x: 93, y: 60, label: 'Mail',         Icon: Mail },
+  { x: 68, y: 88, label: 'Bestellungen', Icon: ShoppingCart },
+  { x: 33, y: 90, label: 'Kundendaten',  Icon: Users },
+  { x: 8,  y: 62, label: 'Telefonie',    Icon: Phone },
+  { x: 9,  y: 30, label: 'Automation',   Icon: Cpu },
 ]
 
 /* dichte Filament-Fächer (deterministisch) — laufen zu jedem Node zusammen */
