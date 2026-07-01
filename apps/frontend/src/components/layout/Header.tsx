@@ -93,13 +93,13 @@ export default function Header() {
 
         <div className="flex items-center gap-3 shrink-0">
           <button onClick={toggle} aria-label="Theme wechseln"
-            className="w-8 h-8 flex items-center justify-center rounded-full border border-[#C9A84C]/45 text-[#C9A84C] hover:text-[#080808] hover:bg-[#C9A84C] transition-colors duration-200 cursor-pointer">
+            className="w-8 h-8 flex items-center justify-center rounded-full border border-[#C9A84C]/45 text-[var(--cs-text)] transition-colors duration-200 cursor-pointer bg-transparent">
             {theme === 'dark' ? <Sun size={14} strokeWidth={1.5} /> : <Moon size={14} strokeWidth={1.5} />}
           </button>
           <a
             href={`https://app.candlescope.de/login?theme=${theme}`}
             aria-label="Zum CandleScope Login"
-            className="flex items-center gap-1.5 text-[11px] tracking-[0.12em] uppercase px-4 py-2 rounded-full bg-[#C9A84C] text-[#080808] font-semibold hover:opacity-90 transition-opacity duration-200"
+            className="flex items-center gap-1.5 text-[11px] tracking-[0.12em] uppercase px-4 py-2 rounded-full border border-[#C9A84C]/45 text-[var(--cs-text)] font-semibold transition-colors duration-200 bg-transparent"
           >
             <LogIn size={12} strokeWidth={2} />
             Login

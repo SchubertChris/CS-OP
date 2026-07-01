@@ -118,15 +118,22 @@
 }
 [data-theme="light"] .cs-grain { mix-blend-mode: multiply; opacity: 0.05; }
 
-/* Checkpoint-Explosion — Funken fliegen nach außen (--dx/--dy je Funke) */
+/* Checkpoint-Explosion — Funken fliegen nach außen (--dx/--dy je Funke) mit Gravitation */
 @keyframes cs-spark {
   0%   { transform: translate(0, 0) scale(1); opacity: 1; }
-  100% { transform: translate(var(--dx), var(--dy)) scale(0.2); opacity: 0; }
+  35%  { opacity: 1; }
+  100% { transform: translate(var(--dx), calc(var(--dy) + var(--gravity, 60px))) scale(0.1); opacity: 0; }
 }
-/* Fragment/Splitter — fliegt raus und rotiert */
+/* Fragment/Splitter — fliegt raus, rotiert und fällt mit Gravitation */
 @keyframes cs-frag {
   0%   { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
-  100% { transform: translate(var(--dx), var(--dy)) rotate(var(--rot)) scale(0.5); opacity: 0; }
+  35%  { opacity: 1; }
+  100% { transform: translate(var(--dx), calc(var(--dy) + var(--gravity, 100px))) rotate(var(--rot)) scale(0.4); opacity: 0; }
+}
+/* Checkpoint-Ripple-Shockwave */
+@keyframes cs-shockwave {
+  0%   { transform: scale(0.3); opacity: 0.95; filter: blur(0px); }
+  100% { transform: scale(7.5); opacity: 0; filter: blur(5px); }
 }
 
 /* Hero-Orbit */
@@ -159,20 +166,18 @@
 }
 
 /* Scroll-Thread: Track (volle blasse Linie) + Glow-Fill (Halo + Core) */
-.cs-thread-track { stroke: rgba(201,168,76,0.22); }
-.cs-thread-glow  { stroke: rgba(232,197,109,0.22); }  /* weiche Aura */
-.cs-thread-core  { stroke: #F4D788; opacity: 0.85; }  /* heller Fortschritts-Fill */
-[data-theme="light"] .cs-thread-track { stroke: rgba(111,84,23,0.32); }
-[data-theme="light"] .cs-thread-glow  { stroke: rgba(138,104,28,0.30); }
-[data-theme="light"] .cs-thread-core  { stroke: #5E4A12; opacity: 0.95; }
+.cs-thread-track { stroke: var(--cs-thread-accent-dim, rgba(201,168,76,0.22)); transition: stroke 0.4s ease; }
+.cs-thread-glow  { stroke: var(--cs-thread-glow-color, rgba(232,197,109,0.22)); transition: stroke 0.4s ease; }  /* weiche Aura */
+.cs-thread-core  { stroke: var(--cs-thread-accent, #F4D788); opacity: 0.85; transition: stroke 0.4s ease; }  /* heller Fortschritts-Fill */
 
 /* Checkpoint-Node — exakt am Explosions-Ort */
 .cs-checkpoint-node {
   display: block; width: 11px; height: 11px; border-radius: 50%;
-  border: 1.5px solid var(--cs-fx-spark);
-  background: radial-gradient(circle, var(--cs-fx-spark) 0%, transparent 66%);
-  box-shadow: 0 0 9px var(--cs-fx-glow);
+  border: 1.5px solid var(--cs-thread-accent, var(--cs-fx-spark));
+  background: radial-gradient(circle, var(--cs-thread-accent, var(--cs-fx-spark)) 0%, transparent 66%);
+  box-shadow: 0 0 9px var(--cs-thread-accent, var(--cs-fx-glow));
   animation: cs-node-pulse 2.6s ease-in-out infinite;
+  transition: border-color 0.4s ease, background 0.4s ease, box-shadow 0.4s ease;
 }
 @keyframes cs-node-pulse { 0%, 100% { transform: scale(1); opacity: .6; } 50% { transform: scale(1.3); opacity: 1; } }
 
@@ -198,7 +203,8 @@
 .cs-cursor-on, .cs-cursor-on * { cursor: none !important; }
 .cs-cursor-dot {
   position: fixed; top: 0; left: 0; width: 6px; height: 6px; border-radius: 50%;
-  background: #C9A84C; z-index: 9999; pointer-events: none; will-change: transform;
+  background: #ffffff; z-index: 9999; pointer-events: none; will-change: transform;
+  mix-blend-mode: difference;
 }
 .cs-cursor-ring {
   position: fixed; top: 0; left: 0; width: 30px; height: 30px; border-radius: 50%;
@@ -207,17 +213,23 @@
   transition: width .25s cubic-bezier(.16,1,.3,1), height .25s cubic-bezier(.16,1,.3,1),
               background-color .25s ease, border-color .25s ease;
 }
-.cs-cursor-link { width: 52px; height: 52px; background: rgba(201,168,76,.08); border-color: rgba(201,168,76,.45); }
-.cs-cursor-case { width: 78px; height: 78px; background: rgba(201,168,76,.14); border-color: rgba(201,168,76,.65); }
-.cs-cursor-label {
-  font-family: 'JetBrains Mono', monospace; font-size: 8px; letter-spacing: .14em;
-  text-transform: uppercase; color: #C9A84C;
+.cs-cursor-link {
+  width: 56px; height: 56px;
+  background: #ffffff;
+  border-color: transparent;
+  mix-blend-mode: difference;
 }
-[data-theme="light"] .cs-cursor-dot { background: #6f5417; }
+.cs-cursor-case {
+  width: 82px; height: 82px;
+  background: #ffffff;
+  border-color: transparent;
+  mix-blend-mode: difference;
+}
+.cs-cursor-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 8.5px; letter-spacing: .14em;
+  text-transform: uppercase; color: #000000; font-weight: 700;
+}
 [data-theme="light"] .cs-cursor-ring { border-color: rgba(111,84,23,.5); }
-[data-theme="light"] .cs-cursor-link { background: rgba(111,84,23,.08); border-color: rgba(111,84,23,.4); }
-[data-theme="light"] .cs-cursor-case { background: rgba(111,84,23,.12); border-color: rgba(111,84,23,.55); }
-[data-theme="light"] .cs-cursor-label { color: #6f5417; }
 @media (prefers-reduced-motion: reduce) { .cs-cursor-ring { transition: none; } }
 
 /* ============================================================
@@ -256,12 +268,9 @@
 .cs-comet-head {
   width: 15px; height: 15px; border-radius: 3px;
   transform: rotate(45deg);
-  background: linear-gradient(135deg, #FFF7E0, #E8C56D 45%, #C9A84C);
-  box-shadow: 0 0 18px 4px rgba(201,168,76,.6), 0 0 6px rgba(245,240,232,.7);
-}
-[data-theme="light"] .cs-comet-head {
-  background: linear-gradient(135deg, #E8C56D, #B8902F 55%, #6f5417);
-  box-shadow: 0 0 14px 4px rgba(140,100,20,.5), 0 0 5px rgba(0,0,0,.35);
+  background: linear-gradient(135deg, #FFF7E0, var(--cs-thread-accent, #E8C56D) 45%, var(--cs-thread-accent, #C9A84C));
+  box-shadow: 0 0 18px 4px var(--cs-comet-shadow, rgba(201,168,76,.6)), 0 0 6px rgba(245,240,232,.7);
+  transition: background 0.4s ease, box-shadow 0.4s ease;
 }
 
 /* Hero-Orbit — 3D (Security) */

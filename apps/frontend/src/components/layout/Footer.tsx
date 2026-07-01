@@ -26,9 +26,17 @@ const DiscordIcon = () => (
   </svg>
 )
 
+import { motion } from 'framer-motion'
+
 export default function Footer() {
   return (
-    <footer className="mt-40 border-t border-[#C9A84C]/10">
+    <motion.footer 
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-60px' }}
+      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      className="mt-40 border-t border-[#C9A84C]/10 relative bg-gradient-to-b from-transparent via-[#C9A84C]/[0.015] to-[#C9A84C]/[0.035] shadow-[0_-15px_40px_rgba(201,168,76,0.02)]"
+    >
       <div className="px-8 md:px-14 lg:px-20 py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-14">
 
@@ -134,6 +142,6 @@ export default function Footer() {
           </div>
         </div>
       </div>
-    </footer>
+    </motion.footer>
   )
 }

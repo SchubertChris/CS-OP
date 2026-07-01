@@ -12,19 +12,21 @@
 import { useRef } from 'react'
 import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
-import { motion, useReducedMotion } from 'framer-motion'
-import { ArrowRight, ArrowUpRight } from 'lucide-react'
+import { motion, useReducedMotion, useScroll, useTransform, useSpring } from 'framer-motion'
+import { ArrowUpRight } from 'lucide-react'
 import { GradientText } from '../components/ui'
 import { useSiteImages } from '../hooks/useSiteImages'
 import {
-  Reveal, Stagger, StaggerItem, CountUp, DisciplineTicker,
+  Reveal, Stagger, StaggerItem, CountUp, DisciplineTicker, Magnetic,
 } from '../components/home/primitives'
-import ScrollThread from '../components/home/ScrollThread'
+import ThreeParticleTimeline from '../components/home/ThreeParticleTimeline'
 import FloatingFrame from '../components/home/FloatingFrame'
 import Starfield from '../components/home/Starfield'
 import HeroOrbit from '../components/home/HeroOrbit'
 import CursorRoot from '../components/home/CursorRoot'
-import { CASES, type CaseStudy } from '../data/cases'
+import CinematicScroll from '../components/home/CinematicScroll'
+import CinematicDissolve from '../components/home/CinematicDissolve'
+import { CASES } from '../data/cases'
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1]
 const SECTION = 'px-6 md:px-12 lg:px-20 max-w-[1320px] mx-auto'
@@ -41,87 +43,29 @@ function Eyebrow({ num, children }: { num: string; children: ReactNode }) {
 
 /* ─── GHOST WORD ──────────────────────────────────────────── */
 function Ghost({ children, className }: { children: ReactNode; className?: string }) {
+  const ref = useRef<HTMLSpanElement>(null)
+  const reduced = useReducedMotion()
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ['start end', 'end start'],
+  })
+  // Glide horizontally based on scroll depth
+  const xRaw = useTransform(scrollYProgress, [0, 1], [-80, 80])
+  const x = useSpring(xRaw, { stiffness: 60, damping: 25 })
+
   return (
-    <span
+    <motion.span
+      ref={ref}
       aria-hidden="true"
+      style={reduced ? undefined : { x }}
       className={`pointer-events-none select-none absolute font-display font-semibold leading-[0.8] tracking-[-0.04em] text-[var(--cs-text)] opacity-[0.035] ${className ?? ''}`}
     >
       {children}
-    </span>
+    </motion.span>
   )
 }
 
 /* ══════════════════════════════════════════════════════════════
-   CASE ROW
-══════════════════════════════════════════════════════════════ */
-function CaseRow({ c, src }: { c: CaseStudy; src: string | null }) {
-  const inDev = c.status === 'In Entwicklung'
-  return (
-    <div className="grid lg:grid-cols-[0.82fr_1.18fr] gap-8 lg:gap-16 border-t border-[var(--cs-border-w)] pt-10 lg:pt-16 pb-12 lg:pb-24">
-      {/* Linke Meta-Spalte (sticky auf Desktop) */}
-      <div className="lg:sticky lg:top-28 self-start">
-        <div className="flex items-center gap-3 mb-5">
-          <span className="font-mono text-[0.78rem] tracking-[0.2em] text-[#C9A84C]">{c.index}</span>
-          {c.status && (
-            <span className={`px-2.5 py-1 rounded-full font-mono text-[0.6rem] tracking-[0.14em] uppercase border ${
-              inDev ? 'border-[#C9A84C]/40 text-[#C9A84C]' : 'border-[#00C896]/35 text-[#00C896]'
-            }`}>
-              {c.status}
-            </span>
-          )}
-        </div>
-        <Reveal>
-          <h3 className="font-display font-semibold tracking-[-0.02em] text-[var(--cs-text)] mb-3"
-              style={{ fontSize: 'clamp(1.7rem,1.2rem+1.5vw,2.5rem)' }}>
-            {c.name}
-          </h3>
-        </Reveal>
-        <p className="text-[var(--cs-text-2)] leading-relaxed mb-6 max-w-[34ch]">{c.tagline}</p>
-        <div className="flex flex-wrap gap-2 mb-6">
-          {c.tech.map(t => (
-            <span key={t} className="px-3 py-1.5 rounded-full border border-[var(--cs-border-w)] font-mono text-[0.66rem] tracking-[0.1em] uppercase text-[var(--cs-text-2)]">
-              {t}
-            </span>
-          ))}
-        </div>
-        <Link to={c.href}
-          className="group inline-flex items-center gap-2 font-mono text-[0.74rem] tracking-[0.16em] uppercase text-[#C9A84C]">
-          Case ansehen
-          <ArrowRight size={15} strokeWidth={1.6} className="group-hover:translate-x-1 transition-transform" />
-        </Link>
-      </div>
-
-      {/* Rechte Spalte: schwebendes Frame + Problem/Lösung/Ergebnis */}
-      <div className="flex flex-col gap-8">
-        <FloatingFrame src={src} placeholder={!c.imageKey} label={c.name} chrome={c.frameLabel} from="right" />
-
-        <div className="flex flex-col gap-5">
-          {[
-            { k: 'Problem', v: c.problem, accent: false },
-            { k: 'Lösung', v: c.solution, accent: false },
-            { k: 'Ergebnis', v: c.result, accent: true },
-          ].map((row, i) => (
-            <Reveal key={row.k} delay={i * 0.06}>
-              <div className="flex flex-col gap-1.5">
-                <span className="font-mono text-[0.68rem] tracking-[0.18em] uppercase text-[#C9A84C]">{row.k}</span>
-                <p className={`leading-relaxed max-w-[62ch] ${row.accent ? 'text-[var(--cs-text)]' : 'text-[var(--cs-text-2)]'}`}>
-                  {row.v}
-                </p>
-              </div>
-            </Reveal>
-          ))}
-
-          {/* Count-up Metriken */}
-          <Reveal delay={0.2}>
-            <div className="flex flex-wrap gap-x-8 gap-y-3 pt-1">
-              {c.stats.map(s => (
-                <div key={s.label} className="flex items-baseline gap-2">
-                  <span className="font-display font-semibold text-[1.7rem] leading-none text-[var(--cs-text)]">
-                    <CountUp to={s.value} suffix={s.suffix} />
-                  </span>
-                  <span className="font-mono text-[0.64rem] tracking-[0.14em] uppercase text-[var(--cs-text-3)]">{s.label}</span>
-                </div>
-              ))}
             </div>
           </Reveal>
         </div>
@@ -135,8 +79,26 @@ function CaseRow({ c, src }: { c: CaseStudy; src: string | null }) {
 ══════════════════════════════════════════════════════════════ */
 export default function HomePage() {
   const pageRef = useRef<HTMLDivElement>(null)
+  const sectionRef = useRef<HTMLDivElement>(null)
   const reduced = useReducedMotion()
   const { img } = useSiteImages()
+
+  // Scroll-driven diamond masking transition for the introductory section
+  const { scrollYProgress: sectionScroll } = useScroll({
+    target: sectionRef,
+    offset: ['start end', 'end start'],
+  })
+  
+  const clipSize = useTransform(sectionScroll, [0.08, 0.45], [0, 240])
+  const smoothClipSize = useSpring(clipSize, { stiffness: 85, damping: 20 })
+  const clipPathValue = useTransform(smoothClipSize, (v) => {
+    const half = v / 2
+    const top = 50 - half
+    const bottom = 50 + half
+    const left = 50 - half
+    const right = 50 + half
+    return `polygon(50% ${top}%, ${right}% 50%, 50% ${bottom}%, ${left}% 50%)`
+  })
 
   const blurIn = (delay = 0) =>
     reduced
@@ -148,12 +110,12 @@ export default function HomePage() {
         }
 
   return (
-    <div ref={pageRef} className="relative" style={{ overflowX: 'hidden' }}>
+    <div ref={pageRef} className="relative" style={{ overflowX: 'clip' }}>
       <CursorRoot />
       <Starfield />
-      <ScrollThread targetRef={pageRef} />
+      <ThreeParticleTimeline targetRef={pageRef} />
 
-      <div className="relative z-[1]">
+      <div className="relative z-[5]">
 
         {/* ═══════════ HERO ═══════════ */}
         <section className="min-h-[100svh] grid lg:grid-cols-[1.08fr_0.92fr] lg:items-center gap-10 lg:gap-14 px-6 md:px-12 lg:px-20 max-w-[1320px] mx-auto pt-32 pb-16">
@@ -189,14 +151,18 @@ export default function HomePage() {
           </Reveal>
 
           <Reveal delay={0.5} className="flex flex-wrap items-center gap-4 mt-10">
-            <a href="#work"
-               className="bg-[#C9A84C] text-[#080808] px-7 py-3.5 rounded font-semibold hover:bg-[#E8C56D] transition-colors duration-300">
-              Arbeiten ansehen
-            </a>
-            <Link to="/contact"
-                  className="border border-[var(--cs-border-w2)] text-[var(--cs-text)] px-7 py-3.5 rounded font-medium hover:border-[#C9A84C] hover:text-[#C9A84C] transition-colors duration-300">
-              Projekt starten
-            </Link>
+            <Magnetic strength={0.22}>
+              <a href="#work"
+                 className="bg-[#C9A84C] text-[#080808] px-7 py-3.5 rounded font-semibold hover:bg-[#E8C56D] transition-colors duration-300">
+                Arbeiten ansehen
+              </a>
+            </Magnetic>
+            <Magnetic strength={0.22}>
+              <Link to="/contact"
+                    className="border border-[var(--cs-border-w2)] text-[var(--cs-text)] px-7 py-3.5 rounded font-medium hover:border-[#C9A84C] hover:text-[#C9A84C] transition-colors duration-300">
+                Projekt starten
+              </Link>
+            </Magnetic>
           </Reveal>
 
           {/* Status + Stack */}
@@ -239,49 +205,62 @@ export default function HomePage() {
          </div>
         </section>
 
+        {/* Cinematic image scale-down & dissolve transition */}
+        <CinematicDissolve imageSrc={img('candlescope')} />
+
         {/* ═══════════ WAS ICH MACHE ═══════════ */}
-        <section className={`${SECTION} py-24 md:py-36`}>
-          <Eyebrow num="(01)">Was ich mache</Eyebrow>
-          <Reveal delay={0.1}>
-            <p className="font-display font-medium tracking-[-0.02em] leading-[1.28] max-w-[24ch] text-[var(--cs-text)]"
-               style={{ fontSize: 'clamp(2rem,1.4rem+2.6vw,3.25rem)' }}>
-              Ich baue <span className="text-[#C9A84C]">Premium-Software</span> — vom{' '}
-              <span className="text-[#C9A84C]">Finanz-Tresor</span> bis zum{' '}
-              <span className="text-[#C9A84C]">Security-Tool</span>, end-to-end deployed.
-            </p>
-          </Reveal>
-        </section>
-
-        {/* ═══════════ SELECTED WORK ═══════════ */}
-        <section id="work" className={`${SECTION} py-16 md:py-24 relative`}>
-          <Ghost className="top-2 right-2 lg:right-8 leading-[0.8]" >
-            <span style={{ fontSize: 'clamp(3.5rem,11vw,13rem)' }}>SECURITY</span>
-          </Ghost>
-
-          <div className="flex flex-wrap items-end justify-between gap-6 mb-12 relative">
-            <div>
-              <Eyebrow num="(02)">Selected Work</Eyebrow>
+        <div ref={sectionRef} className="relative">
+          <motion.section 
+            style={reduced ? undefined : { clipPath: clipPathValue }}
+            className="px-8 md:px-16 lg:px-24 max-w-[1240px] mx-auto py-20 md:py-28 bg-[var(--cs-s1)] border border-[#C9A84C]/15 rounded-3xl my-16 relative overflow-hidden"
+          >
+            {/* Ambient golden core inside the portal */}
+            <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,rgba(201,168,76,0.06)_0%,transparent_70%)]" />
+            
+            <div className="relative z-10">
+              <Eyebrow num="(01)">Was ich mache</Eyebrow>
               <Reveal delay={0.1}>
-                <h2 className="font-display font-semibold tracking-[-0.02em] leading-none text-[var(--cs-text)]"
-                    style={{ fontSize: 'clamp(2rem,1.4rem+2.6vw,3.25rem)' }}>
-                  Vier Produkte. Vier Disziplinen.
-                </h2>
+                <p className="font-display font-medium tracking-[-0.02em] leading-[1.28] max-w-[24ch] text-[var(--cs-text)]"
+                   style={{ fontSize: 'clamp(2rem,1.4rem+2.6vw,3.25rem)' }}>
+                  Ich baue <span className="text-[#C9A84C]">Premium-Software</span> — vom{' '}
+                  <span className="text-[#C9A84C]">Finanz-Tresor</span> bis zum{' '}
+                  <span className="text-[#C9A84C]">Security-Tool</span>, end-to-end deployed.
+                </p>
               </Reveal>
             </div>
+          </motion.section>
+        </div>
+
+        {/* ═══════════ SELECTED WORK ═══════════ */}
+        <section id="work" className="py-16 md:py-24 relative">
+          <div className={`${SECTION} relative mb-8`}>
+            <Ghost className="top-2 right-2 lg:right-8 leading-[0.8]" >
+              <span style={{ fontSize: 'clamp(3.5rem,11vw,13rem)' }}>SECURITY</span>
+            </Ghost>
+
+            <div className="flex flex-wrap items-end justify-between gap-6">
+              <div>
+                <Eyebrow num="(02)">Selected Work</Eyebrow>
+                <Reveal delay={0.1}>
+                  <h2 className="font-display font-semibold tracking-[-0.02em] leading-none text-[var(--cs-text)]"
+                      style={{ fontSize: 'clamp(2rem,1.4rem+2.6vw,3.25rem)' }}>
+                    Vier Produkte. Vier Disziplinen.
+                  </h2>
+                </Reveal>
+              </div>
+            </div>
+
+            {/* Disziplin-Chips */}
+            <Stagger className="flex flex-wrap gap-2.5 mt-8 mb-4">
+              {['Finanz', 'CRM', 'Commerce', 'Security'].map(d => (
+                <StaggerItem key={d}>
+                  <span className="px-3.5 py-1.5 rounded-full border border-[#C9A84C]/30 font-mono text-[0.64rem] tracking-[0.18em] uppercase text-[#C9A84C]">{d}</span>
+                </StaggerItem>
+              ))}
+            </Stagger>
           </div>
 
-          {/* Disziplin-Chips */}
-          <Stagger className="flex flex-wrap gap-2.5 mb-14">
-            {['Finanz', 'CRM', 'Commerce', 'Security'].map(d => (
-              <StaggerItem key={d}>
-                <span className="px-3.5 py-1.5 rounded-full border border-[#C9A84C]/30 font-mono text-[0.64rem] tracking-[0.18em] uppercase text-[#C9A84C]">{d}</span>
-              </StaggerItem>
-            ))}
-          </Stagger>
-
-          {CASES.map(c => (
-            <CaseRow key={c.id} c={c} src={c.imageKey ? img(c.imageKey) : null} />
-          ))}
+          <CinematicScroll cases={CASES} />
         </section>
 
         {/* ═══════════ DER MACHER ═══════════ */}
@@ -384,10 +363,12 @@ export default function HomePage() {
           </Reveal>
           <Reveal delay={0.26}>
             <div className="mt-10">
-              <Link to="/contact"
-                    className="inline-block bg-[#C9A84C] text-[#080808] px-9 py-4 rounded font-semibold hover:bg-[#E8C56D] transition-colors duration-300">
-                Projekt starten
-              </Link>
+              <Magnetic strength={0.22}>
+                <Link to="/contact"
+                      className="inline-block bg-[#C9A84C] text-[#080808] px-9 py-4 rounded font-semibold hover:bg-[#E8C56D] transition-colors duration-300">
+                  Projekt starten
+                </Link>
+              </Magnetic>
             </div>
           </Reveal>
           <Reveal delay={0.32}>

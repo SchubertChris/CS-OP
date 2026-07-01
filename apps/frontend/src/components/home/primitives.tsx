@@ -10,7 +10,7 @@
 import { useEffect, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import {
-  motion, AnimatePresence, useInView, useReducedMotion,
+  motion, AnimatePresence, useInView, useReducedMotion, useSpring, useMotionValue,
 } from 'framer-motion'
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1]
@@ -140,4 +140,46 @@ export function DisciplineTicker({ className }: { className?: string }) {
 /* ─── FilmGrain — feine Film-Körnung (CSS in styles/index.css) */
 export function FilmGrain() {
   return <div className="cs-grain" aria-hidden="true" />
+}
+
+/* ─── Magnetic — zieht Kinder magnetisch zur Maus hin ─────── */
+export function Magnetic({ children, strength = 0.35 }: { children: ReactNode; strength?: number }) {
+  const ref = useRef<HTMLDivElement>(null)
+  const reduced = useReducedMotion()
+  const x = useMotionValue(0)
+  const y = useMotionValue(0)
+  
+  const springX = useSpring(x, { stiffness: 100, damping: 15 })
+  const springY = useSpring(y, { stiffness: 100, damping: 15 })
+
+  const onMouseMove = (e: React.MouseEvent) => {
+    if (reduced) return
+    const el = ref.current
+    if (!el) return
+    const rect = el.getBoundingClientRect()
+    const centerX = rect.left + rect.width / 2
+    const centerY = rect.top + rect.height / 2
+    const distX = e.clientX - centerX
+    const distY = e.clientY - centerY
+    
+    x.set(distX * strength)
+    y.set(distY * strength)
+  }
+
+  const onMouseLeave = () => {
+    x.set(0)
+    y.set(0)
+  }
+
+  return (
+    <motion.div
+      ref={ref}
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
+      style={{ x: springX, y: springY }}
+      className="inline-block"
+    >
+      {children}
+    </motion.div>
+  )
 }
