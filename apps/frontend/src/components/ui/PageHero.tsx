@@ -112,14 +112,14 @@ function AboutBg() {
 /* ── Community: Member Network (Static) ──────────────────── */
 function CommunityBg() {
   const members = [
-    { x: 68, y: 22, init: 'A' },
-    { x: 80, y: 38, init: 'M' },
-    { x: 85, y: 58, init: 'S' },
-    { x: 74, y: 72, init: 'J' },
-    { x: 60, y: 68, init: 'K' },
-    { x: 58, y: 48, init: 'T' },
-    { x: 65, y: 34, init: 'L' },
-    { x: 76, y: 50, init: 'P' },
+    { x: 68, y: 22, label: 'Code' },
+    { x: 80, y: 38, label: 'React' },
+    { x: 85, y: 58, label: 'Node.js' },
+    { x: 74, y: 72, label: 'DevOps' },
+    { x: 60, y: 68, label: 'Python' },
+    { x: 58, y: 48, label: 'Next.js' },
+    { x: 65, y: 34, label: 'SQL' },
+    { x: 76, y: 50, label: 'API' },
   ]
   const edges = [[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,0],[7,1],[7,5],[7,3]]
   return (
@@ -130,8 +130,12 @@ function CommunityBg() {
       ))}
       {members.map((m, i) => (
         <g key={i}>
-          <circle cx={`${m.x}%`} cy={`${m.y}%`} r="2.5%" fill="var(--cs-s2)" stroke="#C9A84C" strokeWidth="0.4" strokeOpacity={0.4} />
-          <text x={`${m.x}%`} y={`${m.y}%`} fill="#C9A84C" fillOpacity={0.65} fontSize="2" fontFamily="JetBrains Mono, monospace" textAnchor="middle" dominantBaseline="middle">{m.init}</text>
+          {/* Static dot */}
+          <circle cx={`${m.x}%`} cy={`${m.y}%`} r="0.6%" fill="#C9A84C" fillOpacity={0.7} />
+          {/* Static halo */}
+          <circle cx={`${m.x}%`} cy={`${m.y}%`} r="1.5%" fill="none" stroke="#C9A84C" strokeWidth="0.3" strokeOpacity={0.2} />
+          {/* Tech label */}
+          <text x={`${m.x + 1.8}%`} y={`${m.y + 0.6}%`} fill="#C9A84C" fillOpacity={0.65} fontSize="1.8" fontFamily="JetBrains Mono, monospace" textAnchor="start">{m.label}</text>
         </g>
       ))}
     </svg>
@@ -157,26 +161,157 @@ function ContactBg() {
 
 /* ── Home: Dev Stack Card (Static) ───────────────────────── */
 function HomeBg() {
+  const spark = [28, 22, 30, 18, 25, 14, 20, 10, 16, 6, 11, 3]
+  const sparkPath = spark.map((y, i) => `${i === 0 ? 'M' : 'L'} ${i * 20} ${y}`).join(' ')
+  const sparkFill = sparkPath + ` L 220 44 L 0 44 Z`
+
+  const cats = [
+    { label: 'Wohnen',  pct: 82 },
+    { label: 'Leben',   pct: 58 },
+    { label: 'Freizeit',pct: 34 },
+  ]
+
   return (
-    <div className="absolute inset-0 pointer-events-none hidden md:block opacity-45">
-      {/* Dev Tech Stack overlay */}
-      <div className="absolute top-[14%] right-[7%] xl:right-[9%] border border-[#C9A84C]/15 rounded-2xl bg-[var(--cs-s0)]/80 backdrop-blur-md px-5 py-4 shadow-2xl"
-        style={{ boxShadow: '0 20px 50px rgba(0,0,0,0.5)' }}>
-        <div className="text-[9px] font-mono text-[var(--cs-text-4)] tracking-widest uppercase mb-1">Code & Tech Stack</div>
-        <div className="flex items-baseline gap-2.5">
-          <span className="text-[28px] font-mono text-[var(--cs-text)] tracking-tight leading-none">TypeScript</span>
-        </div>
-        <div className="mt-3 h-px bg-gradient-to-r from-transparent via-[#C9A84C]/15 to-transparent" />
-        <div className="mt-2 flex gap-4">
-          {[{ l: 'Backend', v: 'Python' }, { l: 'Frontend', v: 'React' }, { l: 'Deploy', v: 'Vercel' }].map(({ l, v }) => (
-            <div key={l}>
-              <div className="text-[8px] font-mono text-[var(--cs-text-4)]">{l}</div>
-              <div className="text-[11px] font-mono text-[#C9A84C]/70">{v}</div>
+    <>
+      {/* Mobile — thin sparkline strip */}
+      <svg className="absolute top-12 left-0 pointer-events-none block md:hidden"
+        width="100vw" height="120" viewBox="0 0 220 44" preserveAspectRatio="xMidYMin meet">
+        <defs>
+          <linearGradient id="mSpFill" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#C9A84C" stopOpacity="0.22" />
+            <stop offset="100%" stopColor="#C9A84C" stopOpacity="0" />
+          </linearGradient>
+          <mask id="mSpMask">
+            <motion.rect x="0" y="0" width="220" height="44" fill="white"
+              initial={{ scaleX: 0 }} animate={{ scaleX: 1 }}
+              style={{ transformOrigin: 'left center', transformBox: 'fill-box' }}
+              transition={{ duration: 2, ease: [0.22, 1, 0.36, 1], delay: 0.3 }} />
+          </mask>
+        </defs>
+        <path d={sparkFill} fill="url(#mSpFill)" mask="url(#mSpMask)" />
+        <path d={sparkPath} fill="none" stroke="#C9A84C" strokeWidth="1.5" strokeOpacity="0.55" mask="url(#mSpMask)" />
+        <motion.circle cx={220} cy={3} r={3} fill="#C9A84C"
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.2 }} />
+      </svg>
+
+      {/* Desktop — 3 floating chips, no window chrome */}
+      <div className="absolute inset-0 pointer-events-none hidden md:block">
+        {/* Chip 1: Gesamtvermögen (large, top-right) */}
+        <motion.div
+          className="absolute top-[14%] right-[7%] xl:right-[9%]"
+          initial={{ opacity: 0, y: -18, scale: 0.95 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}>
+          <motion.div
+            animate={{ y: [0, -6, 0] }}
+            transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}>
+            <div className="border border-[#C9A84C]/20 rounded-2xl bg-[var(--cs-s0)]/80 backdrop-blur-md px-5 py-4 shadow-2xl shadow-black/70"
+              style={{ boxShadow: '0 0 40px rgba(201,168,76,0.06), 0 20px 60px rgba(0,0,0,0.7)' }}>
+              <div className="text-[9px] font-mono text-[#4a4540] tracking-widest uppercase mb-1">Gesamtvermögen</div>
+              <div className="flex items-baseline gap-2.5">
+                <span className="text-[28px] font-mono text-[var(--cs-text)] tracking-tight leading-none">€ 24,830</span>
+                <motion.span className="text-[11px] font-mono text-[#22c55e]"
+                  initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.0 }}>
+                  +3.2% YTD
+                </motion.span>
+              </div>
+              <div className="mt-3 h-px bg-gradient-to-r from-transparent via-[#C9A84C]/15 to-transparent" />
+              <div className="mt-2 flex gap-4">
+                {[{ l: 'Konten', v: '4' }, { l: 'Module', v: '10' }, { l: 'Offline', v: '100%' }].map(({ l, v }) => (
+                  <div key={l}>
+                    <div className="text-[8px] font-mono text-[var(--cs-text-4)]">{l}</div>
+                    <div className="text-[11px] font-mono text-[#C9A84C]/70">{v}</div>
+                  </div>
+                ))}
+              </div>
             </div>
-          ))}
-        </div>
+          </motion.div>
+        </motion.div>
+
+        {/* Connector line between chip 1 and chip 2 */}
+        <svg className="absolute inset-0 w-full h-full" style={{ zIndex: 1 }}>
+          <motion.line x1="75%" y1="30%" x2="80%" y2="52%"
+            stroke="#C9A84C" strokeWidth="0.8" strokeOpacity="0.12" strokeDasharray="3 5"
+            initial={{ pathLength: 0 }} animate={{ pathLength: 1 }}
+            transition={{ delay: 1.2, duration: 0.8 }} />
+          <motion.line x1="80%" y1="52%" x2="76%" y2="70%"
+            stroke="#C9A84C" strokeWidth="0.8" strokeOpacity="0.08" strokeDasharray="3 5"
+            initial={{ pathLength: 0 }} animate={{ pathLength: 1 }}
+            transition={{ delay: 1.8, duration: 0.8 }} />
+        </svg>
+
+        {/* Chip 2: Mini sparkline (mid-right, offset inward) */}
+        <motion.div
+          className="absolute top-[44%] right-[10%] xl:right-[12%]"
+          style={{ opacity: 0.75 }}
+          initial={{ opacity: 0, y: 14, scale: 0.94 }}
+          animate={{ opacity: 0.75, y: 0, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.65, ease: [0.22, 1, 0.36, 1] }}>
+          <motion.div
+            animate={{ y: [0, 5, 0] }}
+            transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', delay: 1.2 }}>
+            <div className="border border-[#C9A84C]/12 rounded-xl bg-[var(--cs-s0)]/70 backdrop-blur-md px-4 py-3 w-[200px]">
+              <div className="text-[8px] font-mono text-[var(--cs-text-4)] tracking-widest uppercase mb-2">Ausgaben · Jan–Dez</div>
+              <svg width="100%" viewBox="0 0 220 44">
+                <defs>
+                  <linearGradient id="spFill" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#C9A84C" stopOpacity="0.2" />
+                    <stop offset="100%" stopColor="#C9A84C" stopOpacity="0" />
+                  </linearGradient>
+                  <mask id="spMask">
+                    <motion.rect x="0" y="0" width="220" height="44" fill="white"
+                      initial={{ scaleX: 0 }} animate={{ scaleX: 1 }}
+                      style={{ transformOrigin: 'left center', transformBox: 'fill-box' }}
+                      transition={{ duration: 1.8, ease: [0.22, 1, 0.36, 1], delay: 1.0 }} />
+                  </mask>
+                </defs>
+                <path d={sparkFill} fill="url(#spFill)" mask="url(#spMask)" />
+                <path d={sparkPath} fill="none" stroke="#C9A84C" strokeWidth="1.8" strokeOpacity="0.55" mask="url(#spMask)" />
+                <motion.circle cx={220} cy={3} r={3} fill="#C9A84C"
+                  initial={{ opacity: 0 }} animate={{ opacity: 0.9 }} transition={{ delay: 2.6 }} />
+              </svg>
+              <div className="mt-1.5 flex justify-between">
+                <span className="text-[8px] font-mono text-[var(--cs-text-4)]">Jan</span>
+                <span className="text-[8px] font-mono text-[#C9A84C]/50">–12.4% ggü. Vorjahr</span>
+                <span className="text-[8px] font-mono text-[var(--cs-text-4)]">Dez</span>
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+
+        {/* Chip 3: Category bars (lower-right, most faded) */}
+        <motion.div
+          className="absolute top-[68%] right-[8%] xl:right-[10%]"
+          style={{ opacity: 0.5 }}
+          initial={{ opacity: 0, y: 16, scale: 0.92 }}
+          animate={{ opacity: 0.5, y: 0, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.95, ease: [0.22, 1, 0.36, 1] }}>
+          <motion.div
+            animate={{ y: [0, -4, 0] }}
+            transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut', delay: 2 }}>
+            <div className="border border-[#C9A84C]/10 rounded-xl bg-[var(--cs-s0)]/65 backdrop-blur-md px-4 py-3 w-[180px]">
+              <div className="text-[8px] font-mono text-[var(--cs-text-4)] tracking-widest uppercase mb-3">Kategorien</div>
+              <div className="flex flex-col gap-2">
+                {cats.map((cat, i) => (
+                  <div key={cat.label}>
+                    <div className="flex justify-between mb-0.5">
+                      <span className="text-[8px] font-mono text-[#4a4540]">{cat.label}</span>
+                      <span className="text-[8px] font-mono text-[#C9A84C]/50">{cat.pct}%</span>
+                    </div>
+                    <div className="h-0.5 w-full bg-[#C9A84C]/08 rounded-full overflow-hidden">
+                      <motion.div className="h-full bg-[#C9A84C]/50 rounded-full origin-left"
+                        style={{ width: `${cat.pct}%` }}
+                        initial={{ scaleX: 0 }} animate={{ scaleX: 1 }}
+                        transition={{ delay: 1.4 + i * 0.2, duration: 1, ease: [0.22, 1, 0.36, 1] }} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
       </div>
-    </div>
+    </>
   )
 }
 

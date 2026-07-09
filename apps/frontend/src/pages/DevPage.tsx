@@ -10,9 +10,8 @@
    ============================================================ */
 import { useRef, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { motion, useInView } from 'framer-motion'
+import { motion, useInView, useReducedMotion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import { Reveal, Magnetic } from '../components/home/primitives'
-import FloatingFrame from '../components/home/FloatingFrame'
 import {
   SectionWrapper, SectionHeader, GoldDivider,
   Card, CardIcon, GradientText, Badge, CtaButton, TagList,
@@ -293,7 +292,198 @@ function ProjectCard({ title, description, tags, href, githubHref, status, locke
   )
 }
 
-// DevGitFlow is removed to optimize performance and replace with static showcase.
+/* ════════════════════════════════════════════════════════════════
+   DEV PIPELINE — Signature-Grafik: aufsteigende CI/CD-Pipeline.
+   9 nummerierte Hex-Stufen auf diagonaler Gold-Rail von unten-links
+   (Idee) nach oben-rechts (Marketing); Tech-Tributaries speisen ein,
+   Labels oben-links, Komet + Zündung zeigen Richtung. Maus-Parallax.
+   ════════════════════════════════════════════════════════════════ */
+const PL_STAGES = ['Idee', 'Tech Stack', 'Architecture', 'Database', 'Sicherheit', 'Testing', 'Deployment', 'Launching', 'Marketing']
+const PL_N = PL_STAGES.length
+const PL_X0 = 66, PL_Y0 = 476
+const PL_X1 = 416, PL_Y1 = 70
+function plPos(i: number) {
+  const t = i / (PL_N - 1)
+  return { x: PL_X0 + t * (PL_X1 - PL_X0), y: PL_Y0 + t * (PL_Y1 - PL_Y0) }
+}
+const PL_TRIBS = [
+  { i: 1, tag: 'React · Vite',    c: '#7C9EFF' },
+  { i: 2, tag: 'Monorepo',        c: '#A78BFA' },
+  { i: 3, tag: 'Supabase · PG',   c: '#22D3EE' },
+  { i: 4, tag: 'Ed25519 · AES',   c: '#7C9EFF' },
+  { i: 5, tag: 'Vitest · Zod',    c: '#A78BFA' },
+  { i: 6, tag: 'Docker · Vercel', c: '#22D3EE' },
+]
+function plHex(cx: number, cy: number, r: number) {
+  let p = ''
+  for (let k = 0; k < 6; k++) {
+    const a = (Math.PI / 180) * (60 * k - 90)
+    p += `${(cx + r * Math.cos(a)).toFixed(1)},${(cy + r * Math.sin(a)).toFixed(1)} `
+  }
+  return p.trim()
+}
+
+function DevGitFlow() {
+  const reduced = useReducedMotion()
+  const ref = useRef<HTMLDivElement>(null)
+  const mx = useMotionValue(0)
+  const my = useMotionValue(0)
+  const rotX = useSpring(useTransform(my, [-0.5, 0.5], [8, -8]), { stiffness: 120, damping: 22 })
+  const rotY = useSpring(useTransform(mx, [-0.5, 0.5], [-8, 8]), { stiffness: 120, damping: 22 })
+  const glowX = useSpring(useTransform(mx, [-0.5, 0.5], [-22, 22]), { stiffness: 60, damping: 20 })
+  const glowY = useSpring(useTransform(my, [-0.5, 0.5], [-22, 22]), { stiffness: 60, damping: 20 })
+
+  const onMove = (e: React.MouseEvent) => {
+    if (reduced) return
+    const r = ref.current?.getBoundingClientRect()
+    if (!r) return
+    mx.set((e.clientX - r.left) / r.width - 0.5)
+    my.set((e.clientY - r.top) / r.height - 0.5)
+  }
+  const onLeave = () => { mx.set(0); my.set(0) }
+
+  const a = plPos(0)
+  const b = plPos(PL_N - 1)
+  const railD = `M${a.x},${a.y} L${b.x},${b.y}`
+
+  return (
+    <div
+      ref={ref}
+      onMouseMove={onMove}
+      onMouseLeave={onLeave}
+      className="relative w-full max-w-[470px] mx-auto select-none"
+      style={{ perspective: 1000 }}
+      aria-hidden="true"
+    >
+      <motion.div
+        className="absolute inset-0 -z-10 blur-3xl opacity-70"
+        style={{
+          x: reduced ? 0 : glowX, y: reduced ? 0 : glowY,
+          background: 'radial-gradient(46% 46% at 62% 38%, rgba(201,168,76,0.16), transparent 72%)',
+        }}
+      />
+      <motion.svg
+        viewBox="0 0 480 540"
+        className="w-full h-auto overflow-visible"
+        style={{ rotateX: reduced ? 0 : rotX, rotateY: reduced ? 0 : rotY, transformStyle: 'preserve-3d' }}
+      >
+        <defs>
+          <linearGradient id="pl-rail" x1={a.x} y1={a.y} x2={b.x} y2={b.y} gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="var(--cs-gold)" stopOpacity="0.35" />
+            <stop offset="55%" stopColor="var(--cs-gold)" stopOpacity="0.9" />
+            <stop offset="100%" stopColor="var(--cs-gold-hi)" stopOpacity="1" />
+          </linearGradient>
+          <filter id="pl-glow" x="-120%" y="-120%" width="340%" height="340%">
+            <feGaussianBlur stdDeviation="2.2" result="bl" />
+            <feMerge><feMergeNode in="bl" /><feMergeNode in="SourceGraphic" /></feMerge>
+          </filter>
+          <marker id="pl-arrow" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto">
+            <path d="M0,0 L9,5 L0,10 z" fill="var(--cs-gold-hi)" />
+          </marker>
+        </defs>
+
+        {/* Dezentes PCB-Dot-Grid */}
+        <g fill="var(--cs-gold)" fillOpacity="0.05">
+          {Array.from({ length: 72 }).map((_, k) => (
+            <circle key={k} cx={30 + (k % 8) * 60} cy={30 + Math.floor(k / 8) * 60} r="1" />
+          ))}
+        </g>
+
+        {/* HUD-Ecken */}
+        <g stroke="var(--cs-gold)" strokeOpacity="0.28" strokeWidth="1.1" fill="none" strokeLinecap="round">
+          <path d="M16,34 L16,16 L34,16" />
+          <path d="M446,16 L464,16 L464,34" />
+          <path d="M16,506 L16,524 L34,524" />
+          <path d="M446,524 L464,524 L464,506" />
+        </g>
+
+        {/* Tributaries — speisen aus unten-rechts einwärts in die Stufen */}
+        {PL_TRIBS.map((t) => {
+          const n = plPos(t.i)
+          const sx = n.x + 60
+          const sy = n.y + 36
+          const d = `M${sx},${sy} C${sx - 18},${sy} ${n.x + 26},${n.y + 4} ${n.x + 13},${n.y}`
+          return (
+            <g key={t.i}>
+              <path id={`pl-trib-${t.i}`} d={d} fill="none" stroke={t.c} strokeOpacity="0.4"
+                    strokeWidth="1.3" strokeLinecap="round" strokeDasharray="4 7">
+                {!reduced && <animate attributeName="stroke-dashoffset" from="0" to="-11" dur="0.9s" repeatCount="indefinite" />}
+              </path>
+              {!reduced && (
+                <circle r="2" fill={t.c}>
+                  <animateMotion dur="2.8s" begin={`${t.i * 0.3}s`} repeatCount="indefinite" calcMode="linear"><mpath href={`#pl-trib-${t.i}`} /></animateMotion>
+                  <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.15;0.85;1" dur="2.8s" begin={`${t.i * 0.3}s`} repeatCount="indefinite" />
+                </circle>
+              )}
+              <circle cx={sx} cy={sy} r="2.4" fill="var(--cs-s1)" stroke={t.c} strokeWidth="1.2" />
+              <text x={sx + 6} y={sy + 3} textAnchor="start" fontFamily="ui-monospace, monospace"
+                    fontSize="9" fill={t.c} fillOpacity="0.75" letterSpacing="0.2">{t.tag}</text>
+            </g>
+          )
+        })}
+
+        {/* Rail-Basis mit Luminanz-Gradient + Richtungspfeil ins Ziel */}
+        <path d={railD} fill="none" stroke="url(#pl-rail)" strokeWidth="2.6" strokeLinecap="round" markerEnd="url(#pl-arrow)" />
+        {/* Fließende Richtungs-Dashes */}
+        <path id="pl-rail-path" d={railD} fill="none" stroke="var(--cs-gold-hi)" strokeWidth="2.6"
+              strokeLinecap="round" strokeDasharray="5 13" strokeOpacity="0.8">
+          {!reduced && <animate attributeName="stroke-dashoffset" from="0" to="-18" dur="0.9s" repeatCount="indefinite" />}
+        </path>
+        {/* Energie-Komet: zeichnet die Reise Idee → Marketing physisch nach */}
+        {!reduced && (
+          <circle r="3.6" fill="#ffffff" filter="url(#pl-glow)">
+            <animateMotion dur="4.6s" repeatCount="indefinite" calcMode="linear"><mpath href="#pl-rail-path" /></animateMotion>
+            <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.08;0.92;1" dur="4.6s" repeatCount="indefinite" />
+          </circle>
+        )}
+
+        {/* Stufen-Knoten */}
+        {PL_STAGES.map((label, i) => {
+          const p = plPos(i)
+          const isStart = i === 0
+          const isEnd = i === PL_N - 1
+          const R = isEnd ? 17 : 14.5
+          return (
+            <motion.g key={i}
+              initial={reduced ? undefined : { opacity: 0, y: 8 }}
+              animate={reduced ? undefined : { opacity: 1, y: 0 }}
+              transition={{ delay: 0.15 + i * 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            >
+              {/* Sequenzielle Zündung — Stufen leuchten der Reihe nach auf */}
+              {!reduced && (
+                <circle cx={p.x} cy={p.y} r={R} fill="none"
+                        stroke={isEnd ? 'var(--cs-gold-hi)' : 'var(--cs-gold)'} strokeWidth="1">
+                  <animate attributeName="r" values={`${R};${R + 15};${R}`} dur="2.6s" begin={`${i * 0.26}s`} repeatCount="indefinite" />
+                  <animate attributeName="opacity" values="0.5;0;0.5" dur="2.6s" begin={`${i * 0.26}s`} repeatCount="indefinite" />
+                </circle>
+              )}
+              {/* Präzisions-Außenring */}
+              <polygon points={plHex(p.x, p.y, R + 4)} fill="none" stroke="var(--cs-gold)" strokeWidth="0.7" strokeOpacity="0.3" />
+              {/* Hex-Modul (transparent-golden, kein dunkler Fill) */}
+              <polygon points={plHex(p.x, p.y, R)} fill="var(--cs-gold)" fillOpacity={isEnd ? 0.16 : 0.07}
+                       stroke="var(--cs-gold)" strokeWidth="1.5" strokeOpacity="0.9" filter="url(#pl-glow)" />
+              {/* Stufen-Index 01–09 */}
+              <text x={p.x} y={p.y + 3} textAnchor="middle" fontFamily="ui-monospace, monospace"
+                    fontSize="9" fontWeight="600" fill="var(--cs-gold-hi)" letterSpacing="0.5">
+                {String(i + 1).padStart(2, '0')}
+              </text>
+              {/* Hairline-Connector zum Label */}
+              <line x1={p.x - R - 2} y1={p.y} x2={p.x - R - 11} y2={p.y} stroke="var(--cs-gold)" strokeOpacity="0.35" strokeWidth="0.75" />
+              {/* Stufen-Name (rechtsbündig, obere-linke Zone) */}
+              <text x={p.x - R - 13} y={p.y + 3.5} textAnchor="end" fontFamily="ui-monospace, monospace"
+                    fontSize="11.5" fill={isStart || isEnd ? 'var(--cs-gold-hi)' : 'var(--cs-gold)'}
+                    fillOpacity={isStart || isEnd ? 1 : 0.9} letterSpacing="0.2">
+                {label}
+              </text>
+            </motion.g>
+          )
+        })}
+      </motion.svg>
+    </div>
+  )
+}
+
+// DevGitFlow was restored.
 
 export default function DevPage() {
   const STACK = ['React', 'TypeScript', 'Vite', 'SCSS', 'Node.js', 'Express.js', 'Supabase', 'PostgreSQL', 'Zod', 'Docker', 'Git', 'Linux']
@@ -372,17 +562,9 @@ export default function DevPage() {
             </Reveal>
           </div>
 
-          {/* Showcase Screenshot rechts (Desktop) */}
-          <div className="hidden lg:block">
-            <div className="w-[440px]">
-              <FloatingFrame
-                src="/images/Sentinel.webp"
-                label="Sentinel Terminal"
-                chrome="VaultBox Dashboard"
-                ratio="16/10"
-                glow="45% 45%"
-              />
-            </div>
+          {/* Signature-Grafik rechts (Desktop) */}
+          <div className="hidden lg:flex items-center justify-center">
+            <DevGitFlow />
           </div>
         </section>
 

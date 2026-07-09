@@ -10,6 +10,7 @@ import {
   SectionWrapper, SectionHeader, GoldDivider,
   GradientText, HighlightLine,
 } from '../components/ui'
+import { Reveal } from '../components/home/primitives'
 import {
   Mail, Github, MessageSquare, Clock,
   Code2, TrendingUp, Gamepad2, GraduationCap,
@@ -133,36 +134,40 @@ export default function ContactPage() {
       {/* ── Themen + Verfügbarkeit ───────────────────────── */}
       <SectionWrapper id="topics">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-          <div>
-            <SectionHeader eyebrow="Wofür" title={<>Ich helfe dir <GradientText>dabei</GradientText></>} className="mb-8" />
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-              {TOPICS.map(t => (
-                <div key={t.value} className="flex items-center gap-2.5 px-4 py-3 border border-[#ffffff]/6 rounded-xl bg-[var(--cs-s1)]">
-                  <span className="text-[#C9A84C]/60 shrink-0">{t.icon}</span>
-                  <span className="text-[13px] text-[var(--cs-text-2)]">{t.label}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div>
-            <SectionHeader eyebrow="Verfügbarkeit" title={<><GradientText>Wann</GradientText> & Wie</>} className="mb-8" />
-            <div className="flex flex-col gap-4">
-              <div className="flex items-start gap-4 p-4 border border-[#ffffff]/6 rounded-xl bg-[var(--cs-s1)]">
-                <div className="w-10 h-10 rounded-lg bg-[#C9A84C]/8 border border-[#C9A84C]/20 flex items-center justify-center text-[#C9A84C] shrink-0">
-                  <Clock size={17} strokeWidth={1.5} />
-                </div>
-                <div>
-                  <p className="text-[14px] text-[var(--cs-text)] mb-1">Antwortzeit: 24 Stunden</p>
-                  <p className="text-[12px] text-[var(--cs-text-2)]">Werktags · Deutsch oder Englisch</p>
-                </div>
-              </div>
-              <HighlightLine>Kein automatisches System — ich antworte persönlich auf jede Anfrage.</HighlightLine>
-              <div className="flex items-center gap-2 mt-1">
-                <div className="w-2 h-2 rounded-full bg-[#00C896] animate-pulse" />
-                <span className="font-mono text-[12px] text-[var(--cs-text-2)]">Aktuell verfügbar für neue Projekte</span>
+          <Reveal>
+            <div>
+              <SectionHeader eyebrow="Wofür" title={<>Ich helfe dir <GradientText>dabei</GradientText></>} className="mb-8" />
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                {TOPICS.map(t => (
+                  <div key={t.value} className="flex items-center gap-2.5 px-4 py-3 border border-[#ffffff]/6 rounded-xl bg-[var(--cs-s1)]">
+                    <span className="text-[#C9A84C]/60 shrink-0">{t.icon}</span>
+                    <span className="text-[13px] text-[var(--cs-text-2)]">{t.label}</span>
+                  </div>
+                ))}
               </div>
             </div>
-          </div>
+          </Reveal>
+          <Reveal delay={0.15}>
+            <div>
+              <SectionHeader eyebrow="Verfügbarkeit" title={<><GradientText>Wann</GradientText> & Wie</>} className="mb-8" />
+              <div className="flex flex-col gap-4">
+                <div className="flex items-start gap-4 p-4 border border-[#ffffff]/6 rounded-xl bg-[var(--cs-s1)]">
+                  <div className="w-10 h-10 rounded-lg bg-[#C9A84C]/8 border border-[#C9A84C]/20 flex items-center justify-center text-[#C9A84C] shrink-0">
+                    <Clock size={17} strokeWidth={1.5} />
+                  </div>
+                  <div>
+                    <p className="text-[14px] text-[var(--cs-text)] mb-1">Antwortzeit: 24 Stunden</p>
+                    <p className="text-[12px] text-[var(--cs-text-2)]">Werktags · Deutsch oder Englisch</p>
+                  </div>
+                </div>
+                <HighlightLine>Kein automatisches System — ich antworte persönlich auf jede Anfrage.</HighlightLine>
+                <div className="flex items-center gap-2 mt-1">
+                  <div className="w-2 h-2 rounded-full bg-[#00C896] animate-pulse" />
+                  <span className="font-mono text-[12px] text-[var(--cs-text-2)]">Aktuell verfügbar für neue Projekte</span>
+                </div>
+              </div>
+            </div>
+          </Reveal>
         </div>
       </SectionWrapper>
 
@@ -171,120 +176,123 @@ export default function ContactPage() {
       {/* ── Formular + Kontaktwege ───────────────────────── */}
       <SectionWrapper id="form">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-12 items-start">
-          <div>
-            <SectionHeader eyebrow="Schreib mir" title={<>Deine <GradientText>Nachricht</GradientText></>} className="mb-8" />
-
-            {status === 'success' ? (
-              <div className="flex flex-col items-start gap-4 p-8 border border-[#00C896]/25 rounded-2xl bg-[#00C896]/5">
-                <CheckCircle2 size={32} strokeWidth={1.5} className="text-[#00C896]" />
-                <div>
-                  <p className="font-display text-xl text-[var(--cs-text)] mb-1">Nachricht gesendet!</p>
-                  <p className="text-[var(--cs-text-2)] text-sm">Ich melde mich innerhalb von 24 Stunden bei dir.</p>
-                </div>
-                <button onClick={() => setStatus('idle')} className="font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--cs-text-2)] hover:text-[var(--cs-text)] transition-colors">
-                  Neue Nachricht schreiben
-                </button>
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="flex flex-col gap-5" noValidate>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="font-mono text-[11px] tracking-[0.12em] text-[var(--cs-text-2)] uppercase block mb-2">Name *</label>
-                    <input type="text" value={form.name} onChange={e => update('name', e.target.value)} placeholder="Chris Mustermann"
-                      className={`w-full bg-[var(--cs-s1)] border rounded-xl px-4 py-3.5 text-[14px] text-[var(--cs-text)] placeholder:text-[var(--cs-text-4)] focus:outline-none transition-colors ${errors.name ? 'border-[#FF4444]/50' : 'border-[#ffffff]/8 focus:border-[#C9A84C]/40'}`} />
-                    {errors.name && <p className="font-mono text-[11px] text-[#FF4444] mt-1.5">{errors.name}</p>}
-                  </div>
-                  <div>
-                    <label className="font-mono text-[11px] tracking-[0.12em] text-[var(--cs-text-2)] uppercase block mb-2">E-Mail *</label>
-                    <input type="email" value={form.email} onChange={e => update('email', e.target.value)} placeholder="deine@email.de"
-                      className={`w-full bg-[var(--cs-s1)] border rounded-xl px-4 py-3.5 text-[14px] text-[var(--cs-text)] placeholder:text-[var(--cs-text-4)] focus:outline-none transition-colors ${errors.email ? 'border-[#FF4444]/50' : 'border-[#ffffff]/8 focus:border-[#C9A84C]/40'}`} />
-                    {errors.email && <p className="font-mono text-[11px] text-[#FF4444] mt-1.5">{errors.email}</p>}
-                  </div>
-                </div>
-
-                <div>
-                  <label className="font-mono text-[11px] tracking-[0.12em] text-[var(--cs-text-2)] uppercase block mb-2">Thema *</label>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                    {TOPICS.map(t => (
-                      <button key={t.value} type="button" onClick={() => update('topic', t.label)}
-                        className={`flex items-center gap-2 px-3.5 py-2.5 rounded-xl border text-[13px] transition-colors duration-150 ${form.topic === t.label ? 'border-[#C9A84C]/50 bg-[#C9A84C]/10 text-[#C9A84C]' : 'border-[#ffffff]/6 bg-[var(--cs-s1)] text-[var(--cs-text-2)] hover:border-[#C9A84C]/20 hover:text-[var(--cs-text)]'}`}>
-                        <span className={form.topic === t.label ? 'text-[#C9A84C]' : 'text-[var(--cs-text-3)]'}>{t.icon}</span>
-                        {t.label}
-                      </button>
-                    ))}
-                  </div>
-                  {errors.topic && <p className="font-mono text-[11px] text-[#FF4444] mt-1.5">{errors.topic}</p>}
-                </div>
-
-                <div>
-                  <label className="font-mono text-[11px] tracking-[0.12em] text-[var(--cs-text-2)] uppercase block mb-2">Nachricht *</label>
-                  <textarea value={form.message} onChange={e => update('message', e.target.value)}
-                    placeholder="Beschreib dein Projekt, deine Frage oder was du im Kopf hast..." rows={5}
-                    className={`w-full bg-[var(--cs-s1)] border rounded-xl px-4 py-3.5 text-[14px] text-[var(--cs-text)] placeholder:text-[var(--cs-text-4)] focus:outline-none transition-colors resize-none ${errors.message ? 'border-[#FF4444]/50' : 'border-[#ffffff]/8 focus:border-[#C9A84C]/40'}`} />
-                  <div className="flex items-center justify-between mt-1">
-                    {errors.message ? <p className="font-mono text-[11px] text-[#FF4444]">{errors.message}</p> : <span />}
-                    <span className="font-mono text-[11px] text-[var(--cs-text-4)]">{form.message.length} Zeichen</span>
-                  </div>
-                </div>
-
-                {status === 'error' && (
-                  <div className="flex items-center gap-3 p-4 border border-[#FF4444]/25 rounded-xl bg-[#FF4444]/5">
-                    <AlertCircle size={16} strokeWidth={1.5} className="text-[#FF4444] shrink-0" />
-                    <p className="text-[13px] text-[#FF4444]">Etwas ist schiefgelaufen. Schreib mir direkt an info@candlescope.de</p>
-                  </div>
-                )}
-
-                <button type="submit" disabled={status === 'sending'}
-                  className="relative overflow-hidden group flex items-center justify-center gap-2 text-[12px] tracking-[0.14em] uppercase border border-[#C9A84C]/40 text-[#C9A84C] px-8 py-4 rounded-full w-full sm:w-auto sm:self-start disabled:opacity-50 disabled:cursor-not-allowed">
-                  <span className="relative z-10 group-hover:text-[#080808] transition-colors duration-300 flex items-center gap-2">
-                    <Send size={14} strokeWidth={1.5} />
-                    {status === 'sending' ? 'Wird gesendet...' : 'Nachricht senden'}
-                  </span>
-                  <span className="absolute inset-0 bg-[#C9A84C] rounded-full translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
-                </button>
-              </form>
-            )}
-          </div>
-
-          {/* Rechte Spalte */}
-          <div className="flex flex-col gap-6">
+          <Reveal>
             <div>
-              <p className="font-mono text-[11px] tracking-[0.18em] text-[var(--cs-text-2)] uppercase mb-4">── Direkt erreichen</p>
-              <div className="flex flex-col gap-3">
-                {CONTACTS.map((c, i) => (
-                  <a key={i} href={c.href} {...('external' in c && c.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                    className="group flex items-center gap-4 p-4 border border-[#ffffff]/6 rounded-xl bg-[var(--cs-s1)] hover:border-[#C9A84C]/25 hover:bg-[#C9A84C]/3 transition-colors duration-200">
-                    <div className="w-10 h-10 rounded-lg bg-[var(--cs-s5)] border border-[#ffffff]/6 flex items-center justify-center text-[var(--cs-text-2)] group-hover:text-[#C9A84C] group-hover:border-[#C9A84C]/20 transition-colors shrink-0">
-                      {c.icon}
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="text-[13px] font-medium text-[var(--cs-text)] group-hover:text-[#C9A84C] transition-colors">{c.title}</p>
-                      <p className="font-mono text-[11px] text-[var(--cs-text-2)] truncate">{c.desc}</p>
-                    </div>
-                    {'external' in c && c.external && <ExternalLink size={13} strokeWidth={1.5} className="text-[var(--cs-text-4)] group-hover:text-[#C9A84C]/50 transition-colors shrink-0 ml-auto" />}
-                  </a>
-                ))}
-              </div>
-            </div>
+              <SectionHeader eyebrow="Schreib mir" title={<>Deine <GradientText>Nachricht</GradientText></>} className="mb-8" />
 
-            <div className="p-5 border border-[#C9A84C]/15 rounded-2xl bg-[var(--cs-s1)]">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-9 h-9 rounded-lg bg-[#C9A84C]/8 border border-[#C9A84C]/20 flex items-center justify-center text-[#C9A84C]">
-                  <Calendar size={16} strokeWidth={1.5} />
+              {status === 'success' ? (
+                <div className="flex flex-col items-start gap-4 p-8 border border-[#00C896]/25 rounded-2xl bg-[#00C896]/5">
+                  <CheckCircle2 size={32} strokeWidth={1.5} className="text-[#00C896]" />
+                  <div>
+                    <p className="font-display text-xl text-[var(--cs-text)] mb-1">Nachricht gesendet!</p>
+                    <p className="text-[var(--cs-text-2)] text-sm">Ich melde mich innerhalb von 24 Stunden bei dir.</p>
+                  </div>
+                  <button onClick={() => setStatus('idle')} className="font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--cs-text-2)] hover:text-[var(--cs-text)] transition-colors">
+                    Neue Nachricht schreiben
+                  </button>
                 </div>
-                <div>
-                  <p className="text-[14px] font-medium text-[var(--cs-text)]">Termin buchen</p>
-                  <p className="font-mono text-[11px] text-[var(--cs-text-2)]">15 oder 30 Minuten</p>
+              ) : (
+                <form onSubmit={handleSubmit} className="flex flex-col gap-5" noValidate>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="font-mono text-[11px] tracking-[0.12em] text-[var(--cs-text-2)] uppercase block mb-2">Name *</label>
+                      <input type="text" value={form.name} onChange={e => update('name', e.target.value)} placeholder="Chris Mustermann"
+                        className={`w-full bg-[var(--cs-s1)] border rounded-xl px-4 py-3.5 text-[14px] text-[var(--cs-text)] placeholder:text-[var(--cs-text-4)] focus:outline-none transition-colors ${errors.name ? 'border-[#FF4444]/50' : 'border-[#ffffff]/8 focus:border-[#C9A84C]/40'}`} />
+                      {errors.name && <p className="font-mono text-[11px] text-[#FF4444] mt-1.5">{errors.name}</p>}
+                    </div>
+                    <div>
+                      <label className="font-mono text-[11px] tracking-[0.12em] text-[var(--cs-text-2)] uppercase block mb-2">E-Mail *</label>
+                      <input type="email" value={form.email} onChange={e => update('email', e.target.value)} placeholder="deine@email.de"
+                        className={`w-full bg-[var(--cs-s1)] border rounded-xl px-4 py-3.5 text-[14px] text-[var(--cs-text)] placeholder:text-[var(--cs-text-4)] focus:outline-none transition-colors ${errors.email ? 'border-[#FF4444]/50' : 'border-[#ffffff]/8 focus:border-[#C9A84C]/40'}`} />
+                      {errors.email && <p className="font-mono text-[11px] text-[#FF4444] mt-1.5">{errors.email}</p>}
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="font-mono text-[11px] tracking-[0.12em] text-[var(--cs-text-2)] uppercase block mb-2">Thema *</label>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                      {TOPICS.map(t => (
+                        <button key={t.value} type="button" onClick={() => update('topic', t.label)}
+                          className={`flex items-center gap-2 px-3.5 py-2.5 rounded-xl border text-[13px] transition-colors duration-150 ${form.topic === t.label ? 'border-[#C9A84C]/50 bg-[#C9A84C]/10 text-[#C9A84C]' : 'border-[#ffffff]/6 bg-[var(--cs-s1)] text-[var(--cs-text-2)] hover:border-[#C9A84C]/20 hover:text-[var(--cs-text)]'}`}>
+                          <span className={form.topic === t.label ? 'text-[#C9A84C]' : 'text-[var(--cs-text-3)]'}>{t.icon}</span>
+                          {t.label}
+                        </button>
+                      ))}
+                    </div>
+                    {errors.topic && <p className="font-mono text-[11px] text-[#FF4444] mt-1.5">{errors.topic}</p>}
+                  </div>
+
+                  <div>
+                    <label className="font-mono text-[11px] tracking-[0.12em] text-[var(--cs-text-2)] uppercase block mb-2">Nachricht *</label>
+                    <textarea value={form.message} onChange={e => update('message', e.target.value)}
+                      placeholder="Beschreib dein Projekt, deine Frage oder was du im Kopf hast..." rows={5}
+                      className={`w-full bg-[var(--cs-s1)] border rounded-xl px-4 py-3.5 text-[14px] text-[var(--cs-text)] placeholder:text-[var(--cs-text-4)] focus:outline-none transition-colors resize-none ${errors.message ? 'border-[#FF4444]/50' : 'border-[#ffffff]/8 focus:border-[#C9A84C]/40'}`} />
+                    <div className="flex items-center justify-between mt-1">
+                      {errors.message ? <p className="font-mono text-[11px] text-[#FF4444]">{errors.message}</p> : <span />}
+                      <span className="font-mono text-[11px] text-[var(--cs-text-4)]">{form.message.length} Zeichen</span>
+                    </div>
+                  </div>
+
+                  {status === 'error' && (
+                    <div className="flex items-center gap-3 p-4 border border-[#FF4444]/25 rounded-xl bg-[#FF4444]/5">
+                      <AlertCircle size={16} strokeWidth={1.5} className="text-[#FF4444] shrink-0" />
+                      <p className="text-[13px] text-[#FF4444]">Etwas ist schiefgelaufen. Schreib mir direkt an info@candlescope.de</p>
+                    </div>
+                  )}
+
+                  <button type="submit" disabled={status === 'sending'}
+                    className="relative overflow-hidden group flex items-center justify-center gap-2 text-[12px] tracking-[0.14em] uppercase border border-[#C9A84C]/40 text-[#C9A84C] px-8 py-4 rounded-full w-full sm:w-auto sm:self-start disabled:opacity-50 disabled:cursor-not-allowed">
+                    <span className="relative z-10 group-hover:text-[#080808] transition-colors duration-300 flex items-center gap-2">
+                      <Send size={14} strokeWidth={1.5} />
+                      {status === 'sending' ? 'Wird gesendet...' : 'Nachricht senden'}
+                    </span>
+                    <span className="absolute inset-0 bg-[#C9A84C] rounded-full translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
+                  </button>
+                </form>
+              )}
+            </div>
+          </Reveal>
+
+          <Reveal delay={0.15}>
+            <div className="flex flex-col gap-6">
+              <div>
+                <p className="font-mono text-[11px] tracking-[0.18em] text-[var(--cs-text-2)] uppercase mb-4">── Direkt erreichen</p>
+                <div className="flex flex-col gap-3">
+                  {CONTACTS.map((c, i) => (
+                    <a key={i} href={c.href} {...('external' in c && c.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                      className="group flex items-center gap-4 p-4 border border-[#ffffff]/6 rounded-xl bg-[var(--cs-s1)] hover:border-[#C9A84C]/25 hover:bg-[#C9A84C]/3 transition-colors duration-200">
+                      <div className="w-10 h-10 rounded-lg bg-[var(--cs-s5)] border border-[#ffffff]/6 flex items-center justify-center text-[var(--cs-text-2)] group-hover:text-[#C9A84C] group-hover:border-[#C9A84C]/20 transition-colors shrink-0">
+                        {c.icon}
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-[13px] font-medium text-[var(--cs-text)] group-hover:text-[#C9A84C] transition-colors">{c.title}</p>
+                        <p className="font-mono text-[11px] text-[var(--cs-text-2)] truncate">{c.desc}</p>
+                      </div>
+                      {'external' in c && c.external && <ExternalLink size={13} strokeWidth={1.5} className="text-[var(--cs-text-4)] group-hover:text-[#C9A84C]/50 transition-colors shrink-0 ml-auto" />}
+                    </a>
+                  ))}
                 </div>
               </div>
-              <p className="text-[13px] text-[var(--cs-text-2)] leading-relaxed mb-4">Lieber direkt sprechen? Buch dir einen kostenlosen Slot.</p>
-              <a href="https://cal.com/chris-schubert-9newp6" target="_blank" rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 w-full py-2.5 border border-[var(--cs-text)]/15 rounded-xl font-mono text-[12px] tracking-[0.1em] uppercase text-[var(--cs-text-2)] hover:text-[#C9A84C] hover:border-[#C9A84C]/45 hover:bg-[#C9A84C]/5 transition-colors">
-                <Calendar size={13} strokeWidth={1.5} />
-                Kalender öffnen
-              </a>
+
+              <div className="p-5 border border-[#C9A84C]/15 rounded-2xl bg-[var(--cs-s1)]">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-9 h-9 rounded-lg bg-[#C9A84C]/8 border border-[#C9A84C]/20 flex items-center justify-center text-[#C9A84C]">
+                    <Calendar size={16} strokeWidth={1.5} />
+                  </div>
+                  <div>
+                    <p className="text-[14px] font-medium text-[var(--cs-text)]">Termin buchen</p>
+                    <p className="font-mono text-[11px] text-[var(--cs-text-2)]">15 oder 30 Minuten</p>
+                  </div>
+                </div>
+                <p className="text-[13px] text-[var(--cs-text-2)] leading-relaxed mb-4">Lieber direkt sprechen? Buch dir einen kostenlosen Slot.</p>
+                <a href="https://cal.com/chris-schubert-9newp6" target="_blank" rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 w-full py-2.5 border border-[var(--cs-text)]/15 rounded-xl font-mono text-[12px] tracking-[0.1em] uppercase text-[var(--cs-text-2)] hover:text-[#C9A84C] hover:border-[#C9A84C]/45 hover:bg-[#C9A84C]/5 transition-colors">
+                  <Calendar size={13} strokeWidth={1.5} />
+                  Kalender öffnen
+                </a>
+              </div>
             </div>
-          </div>
+          </Reveal>
         </div>
       </SectionWrapper>
     </>
