@@ -48,32 +48,12 @@ export default function CinematicDissolve({ imageSrc }: { imageSrc: string }) {
             loading="lazy"
           />
 
-          {/* Geschwungener Schriftzug unter dem Logo (SVG-Bogen, theme-aware Gold) */}
-          <svg
-            viewBox="0 0 600 130"
-            className="w-[min(78vw,600px)] h-auto overflow-visible"
-            role="img"
-            aria-label="Think big — then double it."
-          >
-            <defs>
-              <path id="cs-dissolve-arc" d="M25,110 Q300,18 575,110" fill="none" />
-            </defs>
-            <text
-              textAnchor="middle"
-              style={{
-                fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
-                fontStyle: 'italic',
-                fontWeight: 500,
-                fontSize: '34px',
-                letterSpacing: '0.02em',
-                fill: 'var(--cs-fx-spark, #C9A84C)',
-              }}
-            >
-              <textPath href="#cs-dissolve-arc" startOffset="50%">
-                Think big — then double it.
-              </textPath>
-            </text>
-          </svg>
+          {/* Futuristic straight text claim under the logo */}
+          <div className="font-mono text-[0.68rem] tracking-[0.4em] uppercase text-[var(--cs-text-3)] flex items-center gap-4 mt-6">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#C9A84C] animate-pulse" />
+            <span>Think big — then double it.</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-[#C9A84C] animate-pulse" />
+          </div>
         </motion.div>
       </div>
     </div>

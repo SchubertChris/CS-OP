@@ -251,6 +251,16 @@ function importAll() {
       try {
         let raw = JSON.parse(ev.target.result);
 
+        // Vault-Backup (DEK-verschlüsselt) → über den entsperrten Vault entschlüsseln.
+        if (raw && raw.enc === true && raw.vaultbox === true) {
+          const dec = await window.csf?.vault?.decryptExport(raw);
+          if (!dec || !dec.ok) {
+            appAlert("Dieses Backup gehört zu einem verschlüsselten Vault. Bitte zuerst die App entsperren und erneut importieren.", { icon: "⚠️", title: "Vault gesperrt" });
+            return;
+          }
+          raw = JSON.parse(dec.plaintext);
+        }
+
         if (raw.encrypted === true) {
           let pw = await _ioAskPassword({
             title: "Backup entschlüsseln",

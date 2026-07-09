@@ -12,7 +12,7 @@ import {
 import {
   ShoppingBag, LayoutDashboard, CreditCard, Database,
   Shield, Smartphone, Code2, Zap, FileCheck,
-  ArrowRight, Check, Users, Globe, Lock, Server,
+  ArrowRight, Check, X, Users, Globe, Lock, Server,
 } from 'lucide-react'
 
 import { useSiteImages } from '../hooks/useSiteImages'
@@ -608,7 +608,7 @@ export default function ShopRayPage() {
                     'Design-Anpassungen',
                   ].map((f) => (
                     <div key={f} className="flex items-start gap-2.5">
-                      <span className="text-[var(--cs-text-4)] shrink-0 mt-0.5 text-[11px] leading-none">✕</span>
+                      <X size={13} strokeWidth={1.6} className="text-[var(--cs-text-4)] shrink-0 mt-0.5" />
                       <span className="text-[var(--cs-text-3)] text-[12px]">{f}</span>
                     </div>
                   ))}

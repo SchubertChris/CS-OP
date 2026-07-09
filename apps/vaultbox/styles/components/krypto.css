@@ -338,22 +338,28 @@
   position: fixed;
   inset: 0;
   z-index: 600;
-  background: rgba(0,0,0,.55);
-  backdrop-filter: blur(4px);
+  background: var(--modal-backdrop, rgba(0, 0, 0, 0.40));
+  backdrop-filter: blur(var(--user-blur-px, 4px));
+  -webkit-backdrop-filter: blur(var(--user-blur-px, 4px));
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .kr-modal-box {
-  background: var(--panel);
-  border: 1px solid var(--border2);
-  border-radius: var(--r2);
+  background: var(--glass-tint-strong, var(--panel3));
+  border: 1px solid var(--modal-border, var(--border2));
+  border-radius: var(--modal-radius-lg, var(--r2));
   width: 100%;
   max-width: 440px;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: 0 24px 64px rgba(0,0,0,.5);
+  box-shadow: var(--modal-shadow, 0 24px 64px rgba(0,0,0,.5));
+  backdrop-filter: blur(var(--user-blur-px));
+  -webkit-backdrop-filter: blur(var(--user-blur-px));
+  position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 .kr-modal-hdr {
@@ -368,17 +374,26 @@
 }
 
 .kr-modal-close {
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 7px;
+  cursor: pointer;
+  color: var(--text3);
+  font-size: 0.85em;
+  transition: all 0.12s;
+  flex-shrink: 0;
+  line-height: 1;
   background: none;
   border: none;
-  color: var(--text3);
-  cursor: pointer;
-  font-size: 1.1em;
-  padding: 2px 6px;
-  border-radius: 4px;
-  transition: color .15s;
 }
 
-.kr-modal-close:hover { color: var(--text); }
+.kr-modal-close:hover {
+  background: var(--panel2);
+  color: var(--text);
+}
 
 /* Form */
 .kr-form {
@@ -412,13 +427,29 @@
   font-size: .92em;
   width: 100%;
   box-sizing: border-box;
-  transition: border-color .15s;
+  transition: border-color .15s, box-shadow .15s;
 }
 
 .kr-input:focus {
   outline: none;
   border-color: var(--blue);
   box-shadow: 0 0 0 2px var(--blue-a15);
+}
+
+/* Custom dropdown arrow for selects in form */
+select.kr-input {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7a99' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 32px;
+  cursor: pointer;
+}
+
+.kr-input option {
+  background: var(--panel2);
+  color: var(--text);
 }
 
 .kr-form-err {
@@ -481,9 +512,11 @@
   font-family: var(--mono);
   font-size: .8em;
   resize: vertical;
+  transition: border-color .15s, box-shadow .15s;
 }
 
 .kr-csv-input:focus {
   outline: none;
   border-color: var(--blue);
+  box-shadow: 0 0 0 2px var(--blue-a15);
 }

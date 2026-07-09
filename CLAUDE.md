@@ -3,7 +3,7 @@
 ## Projekte
 - `apps/frontend` — Website (candlescope.de)
 - `apps/financehub` — Online-App (app.candlescope.de) ← aktiver Fokus
-- `apps/vaultbox` — Offline Desktop-App VaultBox (archiviert, wird später mit neuem Design-System modernisiert)
+- `apps/vaultbox` — Offline Desktop-App VaultBox (**aktiv**: 06/2026 Zero-Knowledge-Verschlüsselung + Ed25519-Lizenz umgesetzt; Design-Pass der neuen UI folgt)
 - `api/financehub/` — Vercel Functions für die App
 - `packages/shared` (`@candlescope/shared`) — plattformunabhängige Business-Logik: Types, API-Client, Utils (Web + Desktop + Mobile teilen dieses Package)
 
@@ -13,6 +13,12 @@
 
 ## Sprache
 Immer Deutsch mit dem User kommunizieren.
+
+## Erklär-Modus — IMMER (Chris lernt mit)
+Chris will Coden besser verstehen, Fachbegriffe lernen und Fehler früher selbst sehen.
+- Nach **jeder abgeschlossenen Aufgabe** einen kurzen, einfachen Eintrag an `claude_explain.md` (Repo-Root) anhängen: WAS gemacht, WARUM, welche Begriffe.
+- In **normalem Deutsch** erklären — kein Fachbegriff ohne kurze Erklärung.
+- Neue Begriffe ins „Begriffe-Lexikon" in `claude_explain.md` aufnehmen.
 
 ## Memory-Update-Pflicht — IMMER nach jeder Tätigkeit
 

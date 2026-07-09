@@ -1,7 +1,7 @@
 // src/components/finance/TestimonialsSection.tsx
 import { useState, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, CheckCircle2, AlertCircle } from 'lucide-react'
+import { X, CheckCircle2, AlertCircle, Mail } from 'lucide-react'
 import { useReviewStore } from '../../store/useReviewStore'
 
 /* ── Shared star polygon ── */
@@ -252,7 +252,7 @@ export default function TestimonialsSection() {
                        text-sm px-5 py-2.5 rounded-lg hover:border-[#C9A84C]/35 hover:text-[var(--cs-text)]
                        transition-colors duration-200 cursor-pointer"
           >
-            ✉ Bewertung einreichen
+            <Mail size={15} strokeWidth={1.5} /> Bewertung einreichen
           </button>
         </div>
       </div>

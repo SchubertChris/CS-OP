@@ -29,7 +29,7 @@ contextBridge.exposeInMainWorld("csf", {
       }),
     getPath: (relPath) => ipcRenderer.invoke("archive:getPath", relPath),
     open: (relPath) => ipcRenderer.invoke("archive:open", relPath),
-    openPath: (filePath) => ipcRenderer.invoke("archive:openPath", filePath),
+    openDoc: (docId) => ipcRenderer.invoke("archive:openDoc", docId),
     openFolder: (refType, refName) =>
       ipcRenderer.invoke("archive:openFolder", { refType, refName }),
     updateNote: (docId, note) =>
@@ -109,9 +109,23 @@ contextBridge.exposeInMainWorld("csf", {
   },
 
   license: {
-    check:    ()    => ipcRenderer.invoke("license:check"),
-    activate: (key) => ipcRenderer.invoke("license:activate", key),
-    info:     ()    => ipcRenderer.invoke("license:info"),
+    check:     ()        => ipcRenderer.invoke("license:check"),
+    activate:  (license) => ipcRenderer.invoke("license:activate", license),
+    info:      ()        => ipcRenderer.invoke("license:info"),
+    machineId: ()        => ipcRenderer.invoke("license:machineId"),
+    renew:     ()        => ipcRenderer.invoke("license:renew"),
+  },
+
+  vault: {
+    status:          ()        => ipcRenderer.invoke("vault:status"),
+    create:          (pw, st)  => ipcRenderer.invoke("vault:create", pw, st),
+    verifyIntegrity: (pw, st)  => ipcRenderer.invoke("vault:verifyIntegrity", pw, st),
+    unlock:          (pw)      => ipcRenderer.invoke("vault:unlock", pw),
+    recover:         (code, pw)=> ipcRenderer.invoke("vault:recover", code, pw),
+    migrateCryptoDb: ()        => ipcRenderer.invoke("vault:migrateCryptoDb"),
+    decryptExport:   (c)       => ipcRenderer.invoke("vault:decryptExport", c),
+    lock:            ()        => ipcRenderer.invoke("vault:lock"),
+    changePw:        (o, n)    => ipcRenderer.invoke("vault:changePw", o, n),
   },
 
   pw: {

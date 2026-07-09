@@ -26,9 +26,12 @@ interface Props {
   placeholder?: boolean
   ratio?: string
   from?: 'left' | 'right' | 'none'
+  /** 'case' = invertierender Blend-Cursor (Standard). 'case-solid' = stabile
+   *  Variante ohne mix-blend (für Bereiche mit Transform-Compositing wie das Karussell). */
+  cursorMode?: 'case' | 'case-solid'
 }
 
-export default function FloatingFrame({ src, label, chrome = 'App', glow = '30% 30%', placeholder = false, ratio = '16/10', from = 'none' }: Props) {
+export default function FloatingFrame({ src, label, chrome = 'App', glow = '30% 30%', placeholder = false, ratio = '16/10', from = 'none', cursorMode = 'case' }: Props) {
   const ref = useRef<HTMLDivElement>(null)
   const reduced = useReducedMotion()
   const [open, setOpen] = useState(false)
@@ -108,7 +111,7 @@ export default function FloatingFrame({ src, label, chrome = 'App', glow = '30% 
       className="relative"
     >
       <motion.div
-        data-cursor={showImage ? 'case' : undefined}
+        data-cursor={showImage ? cursorMode : undefined}
         onMouseMove={onMove}
         onMouseLeave={onLeave}
         onClick={() => showImage && setOpen(true)}
@@ -124,6 +127,18 @@ export default function FloatingFrame({ src, label, chrome = 'App', glow = '30% 
           className="absolute inset-0 pointer-events-none"
           style={{ background: `radial-gradient(circle at ${glow}, rgba(201,168,76,0.14), transparent 58%)` }}
         />
+
+        {/* Hit-Ebene: legt den "Ansehen"-Cursor + Klick über das GANZE Bild.
+            FLACH (kein translateZ) — deckt exakt die Bildfläche und projiziert
+            beim 3D-Tilt nicht über den Rand in den Hintergrund (sonst greift der
+            Cursor mal aufs Bild, mal daneben = das inkonsistente „Spacken"). */}
+        {showImage && (
+          <div
+            className="absolute inset-0 z-30"
+            data-cursor={cursorMode}
+            aria-hidden="true"
+          />
+        )}
 
         {/* Glass Glint Shine Overlay */}
         {!reduced && (

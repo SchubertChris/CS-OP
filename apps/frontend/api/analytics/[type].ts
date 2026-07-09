@@ -1,27 +1,11 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { jwtVerify } from 'jose'
 import { neon } from '@neondatabase/serverless'
-
-function getToken(req: VercelRequest) {
-  const c = req.headers.cookie ?? ''
-  const m = c.match(/cs_admin=([^;]+)/)
-  return m ? m[1] : null
-}
-
-async function requireAdmin(req: VercelRequest, res: VercelResponse) {
-  const token = getToken(req)
-  if (!token) { res.status(401).json({ error: 'Nicht eingeloggt' }); return false }
-  try {
-    const secret = new TextEncoder().encode(process.env.jwt_secret ?? '')
-    const { payload } = await jwtVerify(token, secret)
-    if (payload['role'] !== 'admin') { res.status(401).json({ error: 'Nicht eingeloggt' }); return false }
-    return true
-  } catch { res.status(401).json({ error: 'Nicht eingeloggt' }); return false }
-}
+import { requireAdmin } from '../_lib/auth.js'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method === 'OPTIONS') return res.status(200).end()
   if (!await requireAdmin(req, res)) return
+  try {
   const sql = neon(process.env.DATABASE_URL ?? '')
   const type = req.query.type as string
 
@@ -66,4 +50,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   return res.status(404).json({ error: 'Not found' })
+  } catch {
+    return res.status(500).json({ error: 'Interner Fehler' })
+  }
 }

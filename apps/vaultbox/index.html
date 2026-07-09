@@ -1276,12 +1276,12 @@
       <div id="licenseBox">
         <div class="lic-logo"><img src="images/CandleScope.webp" alt="CandleScope" /></div>
         <div class="lic-title">VaultBox aktivieren</div>
-        <div class="lic-sub">Gib deinen Lizenzschlüssel ein um fortzufahren.<br>Einmalig online — danach vollständig offline.</div>
+        <div class="lic-sub">Gib deinen Lizenzschlüssel ein um fortzufahren.<br>Online verifiziert — danach vollständig offline.</div>
         <input class="lic-inp" id="licenseKeyInput" type="text" placeholder="XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
           onkeydown="if(event.key==='Enter')activateLicense()" autocomplete="off" spellcheck="false" />
         <div class="lic-error" id="licenseError"></div>
         <button class="lic-btn" id="licenseActivateBtn" onclick="activateLicense()">Jetzt aktivieren</button>
-        <div class="lic-hint">Lizenzschlüssel erhalten bei <strong>vaultbox.de</strong> · 149€ einmalig · kein Abo</div>
+        <div class="lic-hint">Abonnement abschließen auf <strong>vaultbox.de</strong> · 5,99 € / Monat · monatlich kündbar</div>
       </div>
     </div>
 
@@ -1368,10 +1368,19 @@
       // ── INIT ──
       document.addEventListener("DOMContentLoaded", () => {
         loadSettings();
-        checkLicense().then(() => {
-          checkLock();
-          const had = hydrate();
-          if (!had) { seedData(); if (typeof seedCryptoData === "function") seedCryptoData(); }
+        checkLicense().then(async () => {
+          // Vault-Status zuerst: bei vorhandenem Vault App lahmlegen bis Unlock ok.
+          let vs = { exists: false };
+          try { if (window.csf?.vault) vs = await window.csf.vault.status(); } catch (_) {}
+          if (vs.exists) {
+            setVaultMode(true);
+            await showVaultUnlockBlocking();   // hydrate(state) passiert in unlockVaultFlow
+          } else {
+            checkLock();
+            const had = hydrate();
+            if (!had) { seedData(); if (typeof seedCryptoData === "function") seedCryptoData(); }
+          }
+          if (typeof reconcileZahltag === "function") reconcileZahltag();
           migrateState();
           if (typeof initBookings === "function") initBookings();
           if (typeof _upsertMonthCloseEntry === "function" && (S.closedMonths || []).length > 0) {

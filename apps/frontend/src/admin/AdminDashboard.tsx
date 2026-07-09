@@ -18,12 +18,9 @@ interface SecurityData {
   recentEvents: { name: string; meta: { ip?: string; action?: string }; created_at: string }[]
 }
 
-/* ── Country flag emoji ── */
+/* ── Ländercode als Text (emoji-frei statt Flaggen-Emoji) ── */
 function flag(code: string) {
-  if (!code || code === 'XX') return '🌐'
-  return code.toUpperCase().replace(/./g, c =>
-    String.fromCodePoint(c.charCodeAt(0) + 127397)
-  )
+  return !code || code === 'XX' ? 'XX' : code.toUpperCase()
 }
 
 /* ── Sparkline SVG ── */

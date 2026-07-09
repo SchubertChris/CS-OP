@@ -1,6 +1,6 @@
 // src/components/finance/DownloadCard.tsx
 import { useState } from 'react'
-import { Check } from 'lucide-react'
+import { Check, Download, Coffee } from 'lucide-react'
 import { SOCIALS } from '../../data/socials'
 import { useDownloadCount } from '../../hooks/useDownloadCount'
 import { isLaunched, DOWNLOAD_URL, trackDownload } from '../../hooks/useLaunchGate'
@@ -74,7 +74,10 @@ export default function DownloadCard({ onDownload }: DownloadCardProps) {
                          hover:opacity-90 transition-opacity duration-200 text-center cursor-pointer
                          disabled:opacity-80 disabled:cursor-default"
             >
-              {downloading ? '✓ Download startet…' : launched ? '↓ Windows herunterladen' : '↓ Am 8. Juni verfügbar'}
+              <span className="inline-flex items-center justify-center gap-2">
+                {downloading ? <Check size={15} strokeWidth={2} /> : <Download size={15} strokeWidth={2} />}
+                {downloading ? 'Download startet…' : launched ? 'Windows herunterladen' : 'Am 8. Juni verfügbar'}
+              </span>
             </button>
             {SOCIALS.kofi && (
               <a
@@ -85,7 +88,7 @@ export default function DownloadCard({ onDownload }: DownloadCardProps) {
                            hover:border-[#C9A84C]/35 hover:text-[var(--cs-text)] transition-colors duration-200
                            flex items-center justify-center gap-2"
               >
-                <span>☕</span>
+                <Coffee size={15} strokeWidth={1.5} />
                 Projekt unterstützen
               </a>
             )}

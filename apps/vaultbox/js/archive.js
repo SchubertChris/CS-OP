@@ -554,7 +554,7 @@ function _archiveCatTile(doc, catId) {
       <div class="arch-cat-row-info"
         onclick="${
           canPreview
-            ? `_archivePreview('${doc.relPath}','${esc(doc.name)}','${doc.ext}')`
+            ? `_archivePreview('${doc.relPath}','${esc(doc.name)}','${doc.ext}','${doc.id}')`
             : `_archiveOpenByRelPath('${doc.relPath}')`
         }" style="cursor:pointer;flex:1;min-width:0">
         <div class="arch-cat-row-name" title="${esc(doc.name)}">${esc(doc.name)}${(() => {
@@ -599,7 +599,7 @@ function _archiveCatTile(doc, catId) {
         ${
           canPreview
             ? `<button class="arch-btn arch-btn-preview" onmouseenter="_showTooltip('Vorschau', this)" onmouseleave="_hideTooltip()"
-               onclick="_archivePreview('${doc.relPath}','${esc(doc.name)}','${doc.ext}')">👁</button>`
+               onclick="_archivePreview('${doc.relPath}','${esc(doc.name)}','${doc.ext}','${doc.id}')">👁</button>`
             : `<button class="arch-btn" onmouseenter="_showTooltip('Extern öffnen', this)" onmouseleave="_hideTooltip()"
                onclick="_archiveOpenByRelPath('${doc.relPath}')">↗</button>`
         }
@@ -723,7 +723,7 @@ async function renderArchivePanel(containerId, refId, refType, refName) {
                    ${
                      archiveIsPreviewable(doc.ext)
                        ? `<button class="arch-btn arch-btn-preview"
-                          onclick="_archivePreview('${doc.relPath}','${esc(doc.name)}','${doc.ext}')">👁</button>`
+                          onclick="_archivePreview('${doc.relPath}','${esc(doc.name)}','${doc.ext}','${doc.id}')">👁</button>`
                        : `<button class="arch-btn"
                           onclick="_archiveOpenByRelPath('${doc.relPath}')">↗</button>`
                    }
@@ -812,16 +812,16 @@ async function _archiveUnlink(docId, containerId, refId, refType, refName) {
 // ══════════════════════════════════════
 //  INLINE VORSCHAU
 // ══════════════════════════════════════
-async function _archivePreview(relPath, docName, ext) {
+async function _archivePreview(relPath, docName, ext, docId) {
   const result = await window.csf.archive.getPath(relPath);
   if (!result?.ok) {
     appAlert("Datei nicht gefunden.", { icon: "⚠️" });
     return;
   }
-  _archiveCreatePreviewOverlay(docName, result.path, ext);
+  _archiveCreatePreviewOverlay(docName, result.path, ext, docId);
 }
 
-function _archiveCreatePreviewOverlay(name, filePath, ext) {
+function _archiveCreatePreviewOverlay(name, filePath, ext, docId) {
   document.getElementById("archPreviewOverlay")?.remove();
   const isImage = ["png", "jpg", "jpeg", "webp", "gif"].includes(
     (ext || "").toLowerCase(),
@@ -832,7 +832,7 @@ function _archiveCreatePreviewOverlay(name, filePath, ext) {
   const overlay = document.createElement("div");
   overlay.id = "archPreviewOverlay";
   overlay.className = "arch-preview-overlay";
-  overlay.dataset.filepath = filePath;
+  overlay.dataset.docId = docId;
   overlay.onclick = (e) => {
     if (e.target === overlay) _archiveClosePreview();
   };
@@ -912,10 +912,11 @@ function _archiveImgZoom(img) {
   img.classList.toggle("arch-preview-img-zoomed");
 }
 async function _archiveOpenExternalFromPreview() {
-  const fp = document.getElementById("archPreviewOverlay")?.dataset?.filepath;
-  if (!fp) return;
+  const docId = document.getElementById("archPreviewOverlay")?.dataset?.docId;
+  if (!docId) return;
   _archiveClosePreview();
-  await window.csf.archive.openPath(fp);
+  const r = await window.csf.archive.openDoc(docId);
+  if (!r?.ok) appAlert(r?.error || "Datei kann nicht geöffnet werden.", { icon: "⚠️" });
 }
 async function _archiveOpenByRelPath(relPath) {
   const r = await window.csf.archive.open(relPath);

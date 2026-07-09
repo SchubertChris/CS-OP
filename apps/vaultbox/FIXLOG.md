@@ -123,4 +123,33 @@
 
 ---
 
-*Letzte Aktualisierung: 2026-06-13 — Stand: Track A (Korrektheit) vollständig abgeschlossen, Build/Syntax grün.*
+## Security-Hardening — 2026-06-21 (Backend / Main-Prozess)
+
+> Eigene Track-Runde: Main-Prozess-, IPC- und Verschlüsselungs-Ebene (nicht Frontend).
+> Verifikation: in echtem Electron gegen **Kopien der echten Daten** getestet —
+> argon2 nativ, SQLCipher, voller Roundtrip, Recovery-Key (8 Checks),
+> crypto.db-Migration (6 tx / 5 lots / 1 match identisch) — alles grün.
+> Build-Toolchain eingerichtet: MSVC Build Tools 2022 + Python + electron-rebuild.
+> Backup der echten Daten vor Eingriff: `%APPDATA%/vaultbox/_backup_vor_vault_20260621/`.
+
+| ID | Datei | Status | Notiz |
+|----|-------|--------|-------|
+| SEC-1 | preload.js · main.js (Archiv-IPC) | GEFIXT | **RCE geschlossen:** `archive:openPath` (roher Renderer-Pfad → `shell.openPath`) entfernt → `archive:openDoc` (nur `docId`). `resolveOpenableArchiveFile()` = realpath-Recheck + Endungs-Allowlist. `addBuffer` gehärtet (Endung kanonisiert, 20 MB Cap). Traversal-Fixes in `openFolder` + Safepoints |
+| SEC-2 | Lizenz-Modul · main.js | GEFIXT | Lizenz auf **Ed25519 (asymmetrisch)** umgestellt; hardcodierter `MASTER_KEY` + `LICENSE_HMAC_SECRET` **ENTFERNT** (waren im öffentlichen Repo geleakt/fälschbar). Nur noch öffentlicher Verify-Key im Binary. Hybrid: Perpetual + optionales Abo (validUntil + Geräte-Bindung + Grace + Online-Erneuerung) |
+| SEC-3 | crypto-vault.js (neu) | GEFIXT | **Zero-Knowledge-Verschlüsselung at rest:** Argon2id → KEK → zufälliger DEK → AES-256-GCM, frischer IV pro Write, AAD-authentifizierter Header (Anti-Rollback). Krypto NUR im Main-Prozess (DEK nie im Renderer). Opt-in über Einstellungen. Transaktionale Migration (verifyIntegrity + Rollback). Schließt Alt-Schwächen „SHA-256 ohne Salt" + „keine Verschlüsselung at rest" |
+| SEC-4 | crypto-vault.js | GEFIXT | **Recovery-Key** (Notfall-Schlüssel) gegen Total-Datenverlust bei vergessenem Master-Passwort. Verifiziert über 8 Checks |
+| SEC-5a | state.js / Persistenz | GEFIXT | Seitentür 1: localStorage-Spiegel im Vault-Modus deaktiviert (kein Klartext-State mehr) |
+| SEC-5b | io.js / Safepoints | GEFIXT | Seitentür 2: Safepoints werden verschlüsselt abgelegt |
+| SEC-5d | crypto.db (Krypto-Modul) | GEFIXT | Seitentür 4: crypto.db → **SQLCipher** + `temp_store=MEMORY` + selbstheilende Migration |
+| SEC-5c | export:fullAuto · io.js · main.js | GEFIXT (2026-06-21) | Seitentür 3 **GESCHLOSSEN:** `export:fullAuto` (Auto-Backup nach Downloads vor dem Löschen) schreibt im Vault-Modus jetzt ein **DEK-verschlüsseltes** JSON statt Klartext. `io.js importAll` erkennt den DEK-Container (Felder `enc`+`vaultbox`) und entschlüsselt ihn über den entsperrten Vault (neuer IPC `vault:decryptExport`). Die main.js-Handler `export:full`/`import:full` waren ungenutzter Code. In echtem Electron getestet: Backup-Datei ohne Klartext-IBAN/-Saldo, Import stellt identisch wieder her, fremder Vault/DEK kann nicht entschlüsseln. **Damit alle 4 Seitentüren geschlossen** |
+
+**Ehrliche Grenze:** Client-seitige Verschlüsselung = hohe Hürde, **nicht unknackbar**
+(`asar` patchbar). Schutzziel ist Vertraulichkeit at rest, nicht Manipulationssicherheit
+gegen vollen lokalen Schreibzugriff.
+
+---
+
+*Letzte Aktualisierung: 2026-06-21 — Stand: Frontend-Audit (Track A) abgeschlossen +
+Backend-Security-Hardening (SEC-1…SEC-5) umgesetzt und in echtem Electron verifiziert.
+SEC-5c (export:fullAuto) am 2026-06-21 geschlossen — **alle 4 Seitentüren zu**.
+Offen: Renderer-Lizenz-UI, Nutzer-Live-Test.*

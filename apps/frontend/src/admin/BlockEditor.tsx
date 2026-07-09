@@ -326,7 +326,7 @@ function TimelineEditor({ block, pageId }: { block: AnyBlock; pageId: string }) 
             <Field label="Datum"><TextInput value={item.date} onChange={v => updateItem(i, 'date', v)} placeholder="2026" /></Field>
             <Field label="Status">
               <SelectInput value={item.status ?? 'upcoming'} onChange={v => updateItem(i, 'status', v)}
-                options={[{ value: 'done', label: '✓ Erledigt' }, { value: 'active', label: '● Aktiv' }, { value: 'upcoming', label: '○ Geplant' }]} />
+                options={[{ value: 'done', label: 'Erledigt' }, { value: 'active', label: 'Aktiv' }, { value: 'upcoming', label: 'Geplant' }]} />
             </Field>
           </div>
           <Field label="Titel"><TextInput value={item.title} onChange={v => updateItem(i, 'title', v)} placeholder="Titel..." /></Field>

@@ -1,74 +1,30 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import bcrypt from 'bcryptjs'
 import QRCode from 'qrcode'
-import { SignJWT, jwtVerify } from 'jose'
 import { authenticator } from 'otplib'
-import { neon } from '@neondatabase/serverless'
-
-const jwtSecret = () => new TextEncoder().encode(
-  process.env.jwt_secret ?? 'fallback-dev-secret'
-)
-
-async function issueTempToken() {
-  return new SignJWT({ step: 'totp' })
-    .setProtectedHeader({ alg: 'HS256' }).setIssuedAt().setExpirationTime('5m')
-    .sign(jwtSecret())
-}
-
-async function issueAdminToken() {
-  return new SignJWT({ role: 'admin' })
-    .setProtectedHeader({ alg: 'HS256' }).setIssuedAt().setExpirationTime('8h')
-    .sign(jwtSecret())
-}
-
-async function verifyJwt(token: string) {
-  try { const { payload } = await jwtVerify(token, jwtSecret()); return payload }
-  catch { return null }
-}
-
-function getToken(req: VercelRequest) {
-  const c = req.headers.cookie ?? ''
-  const m = c.match(/cs_admin=([^;]+)/)
-  return m ? m[1] : null
-}
-
-function setAdminCookie(res: VercelResponse, token: string) {
-  res.setHeader('Set-Cookie', `cs_admin=${token}; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=${8 * 3600}`)
-}
-
-function clearAdminCookie(res: VercelResponse) {
-  res.setHeader('Set-Cookie', 'cs_admin=; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=0')
-}
-
-async function requireAdmin(req: VercelRequest, res: VercelResponse) {
-  const token = getToken(req)
-  if (!token) { res.status(401).json({ error: 'Nicht eingeloggt' }); return null }
-  const payload = await verifyJwt(token)
-  if (!payload || payload['role'] !== 'admin') {
-    res.status(401).json({ error: 'Nicht eingeloggt' }); return null
-  }
-  return payload
-}
+import {
+  issueTempToken, issueAdminToken, verifyToken,
+  setAdminCookie, clearAdminCookie, requireAdmin,
+} from '../_lib/auth.js'
+import { isRateLimited } from '../_lib/rate-limit.js'
+import { getClientIp } from '../_lib/ip.js'
+import { getDb } from '../_lib/db.js'
 
 async function logEvent(name: string, meta: Record<string, string>) {
   try {
-    const sql = neon(process.env.DATABASE_URL ?? '')
+    const sql = getDb()
     await sql`INSERT INTO events (name, meta) VALUES (${name}, ${JSON.stringify(meta)})`
-  } catch { /* nie von Logging werfen lassen */ }
+  } catch { /* Logging darf nie werfen */ }
 }
 
-async function isRateLimited(key: string, max: number, windowMs: number) {
+// Fail-closed Rate-Limit für Auth: bei DB-Fehler als "limitiert" behandeln.
+// Sonst würde ein DB-Ausfall unbegrenzte Passwort-Versuche erlauben.
+async function authRateLimited(key: string, max: number, windowMs: number): Promise<boolean> {
   try {
-    const sql = neon(process.env.DATABASE_URL ?? '')
-    const resetAt = new Date(Date.now() + windowMs).toISOString()
-    const rows = await sql`
-      INSERT INTO rate_limits (key, count, reset_at) VALUES (${key}, 1, ${resetAt})
-      ON CONFLICT (key) DO UPDATE
-        SET count    = CASE WHEN rate_limits.reset_at < NOW() THEN 1 ELSE rate_limits.count + 1 END,
-            reset_at = CASE WHEN rate_limits.reset_at < NOW() THEN ${resetAt}::timestamptz ELSE rate_limits.reset_at END
-      RETURNING count`
-    return (rows[0] as { count: number }).count > max
-  } catch { return false }
+    return await isRateLimited(key, max, windowMs)
+  } catch {
+    return true
+  }
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -78,21 +34,22 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (action === 'login') {
     if (req.method !== 'POST') return res.status(405).end()
     try {
-      const ip = (req.headers['x-forwarded-for'] as string)?.split(',')[0] ?? 'unknown'
-      if (await isRateLimited(`login:${ip}`, 5, 15 * 60 * 1000)) {
+      const ip = getClientIp(req)
+      if (await authRateLimited(`login:${ip}`, 5, 15 * 60 * 1000)) {
         await logEvent('rate_limited', { ip, action: 'login' })
         return res.status(429).json({ error: 'Zu viele Versuche.' })
       }
       const { password } = req.body ?? {}
       if (!password || typeof password !== 'string')
         return res.status(400).json({ error: 'Passwort fehlt' })
-      if (!await bcrypt.compare(password, process.env.admin_password_hash ?? '')) {
+      const hash = process.env.admin_password_hash
+      if (!hash || !(await bcrypt.compare(password, hash))) {
         await logEvent('login_fail', { ip })
         return res.status(401).json({ error: 'Ungültige Anmeldedaten' })
       }
       await logEvent('login_success', { ip })
       return res.status(200).json({ tempToken: await issueTempToken() })
-    } catch (e) { return res.status(500).json({ error: String(e) }) }
+    } catch { return res.status(500).json({ error: 'Interner Fehler' }) }
   }
 
   if (action === 'logout') {
@@ -107,7 +64,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       const payload = await requireAdmin(req, res)
       if (!payload) return
       return res.status(200).json({ ok: true, role: 'admin' })
-    } catch (e) { return res.status(500).json({ error: String(e) }) }
+    } catch { return res.status(500).json({ error: 'Interner Fehler' }) }
   }
 
   if (action === 'totp-setup') {
@@ -130,30 +87,33 @@ p{color:#9A9590;text-align:center;max-width:420px;line-height:1.6}.warn{color:#F
 <code>${secret}</code>
 <p>Trage <b>totp_secret</b> in Vercel ein mit diesem Wert.</p>
 <p class="warn">Danach setup_token aus Vercel loeschen!</p></body></html>`)
-    } catch (e) { return res.status(500).json({ error: String(e) }) }
+    } catch { return res.status(500).json({ error: 'Interner Fehler' }) }
   }
 
   if (action === 'totp-verify') {
     if (req.method !== 'POST') return res.status(405).end()
     try {
-      const ip = (req.headers['x-forwarded-for'] as string)?.split(',')[0] ?? 'unknown'
-      if (await isRateLimited(`totp:${ip}`, 10, 5 * 60 * 1000)) {
+      const ip = getClientIp(req)
+      if (await authRateLimited(`totp:${ip}`, 10, 5 * 60 * 1000)) {
         await logEvent('rate_limited', { ip, action: 'totp' })
         return res.status(429).json({ error: 'Zu viele Versuche.' })
       }
       const { code, tempToken } = req.body ?? {}
       if (!code || !tempToken) return res.status(400).json({ error: 'Code und Token erforderlich' })
-      const payload = await verifyJwt(tempToken)
+      const payload = await verifyToken(tempToken)
       if (!payload || payload['step'] !== 'totp') return res.status(401).json({ error: 'Ungültige Sitzung' })
+      // Fail-closed: 2FA darf ohne konfiguriertes Secret niemals durchlassen.
+      const totpSecret = process.env.totp_secret
+      if (!totpSecret) return res.status(500).json({ error: 'Interner Fehler' })
       authenticator.options = { window: 1 }
-      if (!authenticator.verify({ token: String(code), secret: process.env.totp_secret ?? '' })) {
+      if (!authenticator.verify({ token: String(code), secret: totpSecret })) {
         await logEvent('totp_fail', { ip })
         return res.status(401).json({ error: 'Ungültige Anmeldedaten' })
       }
       await logEvent('totp_success', { ip })
       setAdminCookie(res, await issueAdminToken())
       return res.status(200).json({ ok: true })
-    } catch (e) { return res.status(500).json({ error: String(e) }) }
+    } catch { return res.status(500).json({ error: 'Interner Fehler' }) }
   }
 
   return res.status(404).json({ error: 'Not found' })

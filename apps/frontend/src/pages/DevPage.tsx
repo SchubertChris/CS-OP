@@ -10,14 +10,14 @@
    ============================================================ */
 import { useRef, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { motion, useInView } from 'framer-motion'
-import PageHero from '../components/ui/PageHero'
+import { motion, useInView, useReducedMotion, useMotionValue, useSpring, useTransform } from 'framer-motion'
+import { Reveal, Magnetic } from '../components/home/primitives'
 import {
   SectionWrapper, SectionHeader, GoldDivider,
   Card, CardIcon, GradientText, Badge, CtaButton, TagList,
 } from '../components/ui'
 import {
-  Globe, Smartphone, Terminal, GitBranch,
+  Globe, Terminal, GitBranch,
   ExternalLink, Code2, Package, Zap, Users, ArrowRight,
   BookOpen, Layers, Coffee, Loader2, AlertCircle, Lock,
 } from 'lucide-react'
@@ -295,72 +295,293 @@ function ProjectCard({ title, description, tags, href, githubHref, status, locke
 }
 
 /* ════════════════════════════════════════════════════════════════
-   PAGE
+   DEV PIPELINE — Signature-Grafik: aufsteigende CI/CD-Pipeline.
+   9 nummerierte Hex-Stufen auf diagonaler Gold-Rail von unten-links
+   (Idee) nach oben-rechts (Marketing); Tech-Tributaries speisen ein,
+   Labels oben-links, Komet + Zündung zeigen Richtung. Maus-Parallax.
    ════════════════════════════════════════════════════════════════ */
+const PL_STAGES = ['Idee', 'Tech Stack', 'Architecture', 'Database', 'Sicherheit', 'Testing', 'Deployment', 'Launching', 'Marketing']
+const PL_N = PL_STAGES.length
+const PL_X0 = 66, PL_Y0 = 476
+const PL_X1 = 416, PL_Y1 = 70
+function plPos(i: number) {
+  const t = i / (PL_N - 1)
+  return { x: PL_X0 + t * (PL_X1 - PL_X0), y: PL_Y0 + t * (PL_Y1 - PL_Y0) }
+}
+const PL_TRIBS = [
+  { i: 1, tag: 'React · Vite',    c: '#7C9EFF' },
+  { i: 2, tag: 'Monorepo',        c: '#A78BFA' },
+  { i: 3, tag: 'Supabase · PG',   c: '#22D3EE' },
+  { i: 4, tag: 'Ed25519 · AES',   c: '#7C9EFF' },
+  { i: 5, tag: 'Vitest · Zod',    c: '#A78BFA' },
+  { i: 6, tag: 'Docker · Vercel', c: '#22D3EE' },
+]
+function plHex(cx: number, cy: number, r: number) {
+  let p = ''
+  for (let k = 0; k < 6; k++) {
+    const a = (Math.PI / 180) * (60 * k - 90)
+    p += `${(cx + r * Math.cos(a)).toFixed(1)},${(cy + r * Math.sin(a)).toFixed(1)} `
+  }
+  return p.trim()
+}
+
+function DevGitFlow() {
+  const reduced = useReducedMotion()
+  const ref = useRef<HTMLDivElement>(null)
+  const mx = useMotionValue(0)
+  const my = useMotionValue(0)
+  const rotX = useSpring(useTransform(my, [-0.5, 0.5], [8, -8]), { stiffness: 120, damping: 22 })
+  const rotY = useSpring(useTransform(mx, [-0.5, 0.5], [-8, 8]), { stiffness: 120, damping: 22 })
+  const glowX = useSpring(useTransform(mx, [-0.5, 0.5], [-22, 22]), { stiffness: 60, damping: 20 })
+  const glowY = useSpring(useTransform(my, [-0.5, 0.5], [-22, 22]), { stiffness: 60, damping: 20 })
+
+  const onMove = (e: React.MouseEvent) => {
+    if (reduced) return
+    const r = ref.current?.getBoundingClientRect()
+    if (!r) return
+    mx.set((e.clientX - r.left) / r.width - 0.5)
+    my.set((e.clientY - r.top) / r.height - 0.5)
+  }
+  const onLeave = () => { mx.set(0); my.set(0) }
+
+  const a = plPos(0)
+  const b = plPos(PL_N - 1)
+  const railD = `M${a.x},${a.y} L${b.x},${b.y}`
+
+  return (
+    <div
+      ref={ref}
+      onMouseMove={onMove}
+      onMouseLeave={onLeave}
+      className="relative w-full max-w-[470px] mx-auto select-none"
+      style={{ perspective: 1000 }}
+      aria-hidden="true"
+    >
+      <motion.div
+        className="absolute inset-0 -z-10 blur-3xl opacity-70"
+        style={{
+          x: reduced ? 0 : glowX, y: reduced ? 0 : glowY,
+          background: 'radial-gradient(46% 46% at 62% 38%, rgba(201,168,76,0.16), transparent 72%)',
+        }}
+      />
+      <motion.svg
+        viewBox="0 0 480 540"
+        className="w-full h-auto overflow-visible"
+        style={{ rotateX: reduced ? 0 : rotX, rotateY: reduced ? 0 : rotY, transformStyle: 'preserve-3d' }}
+      >
+        <defs>
+          <linearGradient id="pl-rail" x1={a.x} y1={a.y} x2={b.x} y2={b.y} gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="var(--cs-gold)" stopOpacity="0.35" />
+            <stop offset="55%" stopColor="var(--cs-gold)" stopOpacity="0.9" />
+            <stop offset="100%" stopColor="var(--cs-gold-hi)" stopOpacity="1" />
+          </linearGradient>
+          <filter id="pl-glow" x="-120%" y="-120%" width="340%" height="340%">
+            <feGaussianBlur stdDeviation="2.2" result="bl" />
+            <feMerge><feMergeNode in="bl" /><feMergeNode in="SourceGraphic" /></feMerge>
+          </filter>
+          <marker id="pl-arrow" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto">
+            <path d="M0,0 L9,5 L0,10 z" fill="var(--cs-gold-hi)" />
+          </marker>
+        </defs>
+
+        {/* Dezentes PCB-Dot-Grid */}
+        <g fill="var(--cs-gold)" fillOpacity="0.05">
+          {Array.from({ length: 72 }).map((_, k) => (
+            <circle key={k} cx={30 + (k % 8) * 60} cy={30 + Math.floor(k / 8) * 60} r="1" />
+          ))}
+        </g>
+
+        {/* HUD-Ecken */}
+        <g stroke="var(--cs-gold)" strokeOpacity="0.28" strokeWidth="1.1" fill="none" strokeLinecap="round">
+          <path d="M16,34 L16,16 L34,16" />
+          <path d="M446,16 L464,16 L464,34" />
+          <path d="M16,506 L16,524 L34,524" />
+          <path d="M446,524 L464,524 L464,506" />
+        </g>
+
+        {/* Tributaries — speisen aus unten-rechts einwärts in die Stufen */}
+        {PL_TRIBS.map((t) => {
+          const n = plPos(t.i)
+          const sx = n.x + 60
+          const sy = n.y + 36
+          const d = `M${sx},${sy} C${sx - 18},${sy} ${n.x + 26},${n.y + 4} ${n.x + 13},${n.y}`
+          return (
+            <g key={t.i}>
+              <path id={`pl-trib-${t.i}`} d={d} fill="none" stroke={t.c} strokeOpacity="0.4"
+                    strokeWidth="1.3" strokeLinecap="round" strokeDasharray="4 7">
+                {!reduced && <animate attributeName="stroke-dashoffset" from="0" to="-11" dur="0.9s" repeatCount="indefinite" />}
+              </path>
+              {!reduced && (
+                <circle r="2" fill={t.c}>
+                  <animateMotion dur="2.8s" begin={`${t.i * 0.3}s`} repeatCount="indefinite" calcMode="linear"><mpath href={`#pl-trib-${t.i}`} /></animateMotion>
+                  <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.15;0.85;1" dur="2.8s" begin={`${t.i * 0.3}s`} repeatCount="indefinite" />
+                </circle>
+              )}
+              <circle cx={sx} cy={sy} r="2.4" fill="var(--cs-s1)" stroke={t.c} strokeWidth="1.2" />
+              <text x={sx + 6} y={sy + 3} textAnchor="start" fontFamily="ui-monospace, monospace"
+                    fontSize="9" fill={t.c} fillOpacity="0.75" letterSpacing="0.2">{t.tag}</text>
+            </g>
+          )
+        })}
+
+        {/* Rail-Basis mit Luminanz-Gradient + Richtungspfeil ins Ziel */}
+        <path d={railD} fill="none" stroke="url(#pl-rail)" strokeWidth="2.6" strokeLinecap="round" markerEnd="url(#pl-arrow)" />
+        {/* Fließende Richtungs-Dashes */}
+        <path id="pl-rail-path" d={railD} fill="none" stroke="var(--cs-gold-hi)" strokeWidth="2.6"
+              strokeLinecap="round" strokeDasharray="5 13" strokeOpacity="0.8">
+          {!reduced && <animate attributeName="stroke-dashoffset" from="0" to="-18" dur="0.9s" repeatCount="indefinite" />}
+        </path>
+        {/* Energie-Komet: zeichnet die Reise Idee → Marketing physisch nach */}
+        {!reduced && (
+          <circle r="3.6" fill="#ffffff" filter="url(#pl-glow)">
+            <animateMotion dur="4.6s" repeatCount="indefinite" calcMode="linear"><mpath href="#pl-rail-path" /></animateMotion>
+            <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.08;0.92;1" dur="4.6s" repeatCount="indefinite" />
+          </circle>
+        )}
+
+        {/* Stufen-Knoten */}
+        {PL_STAGES.map((label, i) => {
+          const p = plPos(i)
+          const isStart = i === 0
+          const isEnd = i === PL_N - 1
+          const R = isEnd ? 17 : 14.5
+          return (
+            <motion.g key={i}
+              initial={reduced ? undefined : { opacity: 0, y: 8 }}
+              animate={reduced ? undefined : { opacity: 1, y: 0 }}
+              transition={{ delay: 0.15 + i * 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            >
+              {/* Sequenzielle Zündung — Stufen leuchten der Reihe nach auf */}
+              {!reduced && (
+                <circle cx={p.x} cy={p.y} r={R} fill="none"
+                        stroke={isEnd ? 'var(--cs-gold-hi)' : 'var(--cs-gold)'} strokeWidth="1">
+                  <animate attributeName="r" values={`${R};${R + 15};${R}`} dur="2.6s" begin={`${i * 0.26}s`} repeatCount="indefinite" />
+                  <animate attributeName="opacity" values="0.5;0;0.5" dur="2.6s" begin={`${i * 0.26}s`} repeatCount="indefinite" />
+                </circle>
+              )}
+              {/* Präzisions-Außenring */}
+              <polygon points={plHex(p.x, p.y, R + 4)} fill="none" stroke="var(--cs-gold)" strokeWidth="0.7" strokeOpacity="0.3" />
+              {/* Hex-Modul (transparent-golden, kein dunkler Fill) */}
+              <polygon points={plHex(p.x, p.y, R)} fill="var(--cs-gold)" fillOpacity={isEnd ? 0.16 : 0.07}
+                       stroke="var(--cs-gold)" strokeWidth="1.5" strokeOpacity="0.9" filter="url(#pl-glow)" />
+              {/* Stufen-Index 01–09 */}
+              <text x={p.x} y={p.y + 3} textAnchor="middle" fontFamily="ui-monospace, monospace"
+                    fontSize="9" fontWeight="600" fill="var(--cs-gold-hi)" letterSpacing="0.5">
+                {String(i + 1).padStart(2, '0')}
+              </text>
+              {/* Hairline-Connector zum Label */}
+              <line x1={p.x - R - 2} y1={p.y} x2={p.x - R - 11} y2={p.y} stroke="var(--cs-gold)" strokeOpacity="0.35" strokeWidth="0.75" />
+              {/* Stufen-Name (rechtsbündig, obere-linke Zone) */}
+              <text x={p.x - R - 13} y={p.y + 3.5} textAnchor="end" fontFamily="ui-monospace, monospace"
+                    fontSize="11.5" fill={isStart || isEnd ? 'var(--cs-gold-hi)' : 'var(--cs-gold)'}
+                    fillOpacity={isStart || isEnd ? 1 : 0.9} letterSpacing="0.2">
+                {label}
+              </text>
+            </motion.g>
+          )
+        })}
+      </motion.svg>
+    </div>
+  )
+}
+
 export default function DevPage() {
   const STACK = ['React', 'TypeScript', 'Vite', 'SCSS', 'Node.js', 'Express.js', 'Supabase', 'PostgreSQL', 'Zod', 'Docker', 'Git', 'Linux']
   const userData = useGitHubUser('SchubertChris')
+  const pageRef = useRef<HTMLDivElement>(null)
 
   return (
-    <>
-      <PageHero
-        eyebrow="Fullstack Developer · Potsdam, DE"
-        titleLine1="Von der Idee"
-        titleLine2="zum Produkt."
-        titleAccent="line2"
-        description="Ich entwickle React-Apps, Desktop-Software und Backends die wirklich in Produktion gehen — sauber, schnell, wartbar. Aktuell verfügbar."
-        badge="Verfügbar für Projekte"
-        theme="dev"
-      >
-        {/* Primär-CTA: Anfragen zuerst — das ist die Conversion */}
-        <Link to="/contact"
-          className="relative overflow-hidden group text-[11px] tracking-[0.18em] uppercase bg-[#C9A84C] text-[#080808] px-8 py-3.5 rounded-full font-semibold shadow-lg shadow-[#C9A84C]/25 hover:shadow-[#C9A84C]/40 transition-shadow duration-300">
-          <span className="relative z-10">Projekt anfragen</span>
-          <span className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-full" />
-        </Link>
-
-        {/* Sekundär-CTA */}
-        <a href="https://github.com/SchubertChris" target="_blank" rel="noopener noreferrer"
-          className="relative overflow-hidden group text-[11px] tracking-[0.16em] uppercase border border-[var(--cs-text)]/20 text-[var(--cs-text)] px-7 py-3.5 rounded-full">
-          <span className="relative z-10 group-hover:text-[#080808] transition-colors duration-300">GitHub ansehen</span>
-          <span className="absolute inset-0 bg-[#C9A84C] rounded-full translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
-        </a>
-
-        {/* Flagship-Strip: Glaubwürdigkeit durch echtes Shipped Product */}
-        <div className="w-full pt-5 border-t border-[var(--cs-text)]/8">
-          <div className="flex flex-wrap items-center gap-3">
-            <span className="font-mono text-[9px] tracking-[0.16em] uppercase text-[var(--cs-text-3)]">Flagship</span>
-            <span className="w-px h-3 bg-[var(--cs-text)]/12" />
-            <a href="#projects" className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#C9A84C]/6 border border-[#C9A84C]/30 hover:border-[#C9A84C]/50 hover:bg-[#C9A84C]/10 transition-colors group">
-              <div className="w-1 h-1 rounded-full bg-[#22c55e]" />
-              <span className="font-mono text-[9px] tracking-[0.12em] uppercase text-[var(--cs-text-2)] group-hover:text-[#C9A84C] transition-colors">VaultBox</span>
-              <ArrowRight size={9} strokeWidth={1.5} className="text-[var(--cs-text-3)] group-hover:text-[#C9A84C] transition-colors" />
-            </a>
-            <div className="flex items-center gap-2 ml-1">
-              {['React', 'TypeScript', 'Electron', 'Node.js'].map(tag => (
-                <span key={tag} className="font-mono text-[9px] px-2 py-0.5 rounded border border-[var(--cs-text)]/12 text-[var(--cs-text-2)]">
-                  {tag}
+    <div ref={pageRef} className="relative" style={{ overflowX: 'clip' }}>
+      <div className="relative z-[5]">
+        {/* ═══════════ HERO ═══════════ */}
+        <section className="min-h-[100svh] grid lg:grid-cols-[1.05fr_0.95fr] lg:items-center gap-12 lg:gap-16 px-6 md:px-12 lg:px-20 max-w-[1320px] mx-auto pt-32 pb-20">
+          <div className="flex flex-col justify-center">
+            <Reveal>
+              <p className="font-mono uppercase tracking-[0.2em] text-[0.72rem] text-[var(--cs-text-2)] mb-7 flex items-center gap-3">
+                <span className="w-6 h-px bg-[var(--cs-gold)]/50" />
+                Fullstack Developer · Potsdam, DE
+              </p>
+            </Reveal>
+            <Reveal delay={0.05}>
+              <h1 className="font-display font-semibold leading-[0.98] tracking-[-0.04em] text-display-xl text-[var(--cs-text)]">
+                <span className="block">Von der Idee</span>
+                <span className="block"><GradientText>zum Produkt.</GradientText></span>
+              </h1>
+            </Reveal>
+            <Reveal delay={0.18}>
+              <p className="mt-8 max-w-[54ch] leading-relaxed text-[var(--cs-text-2)] text-lg">
+                Ich entwickle React-Apps, Desktop-Software und Backends, die wirklich in Produktion gehen — sauber, schnell, wartbar.
+              </p>
+            </Reveal>
+            <Reveal delay={0.26}>
+              <div className="flex flex-wrap items-center gap-4 mt-9">
+                <Magnetic strength={0.2}>
+                  <Link to="/contact"
+                    className="inline-flex items-center gap-2 font-mono text-[11px] tracking-[0.16em] uppercase bg-[var(--cs-gold)] text-[var(--cs-on-gold)] px-7 py-3.5 rounded-full font-semibold hover:bg-[var(--cs-gold-hi)] transition-colors duration-300">
+                    Projekt anfragen
+                  </Link>
+                </Magnetic>
+                <Magnetic strength={0.2}>
+                  <a href="https://github.com/SchubertChris" target="_blank" rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 font-mono text-[11px] tracking-[0.16em] uppercase border border-[var(--cs-border-w3)] text-[var(--cs-text)] px-7 py-3.5 rounded-full hover:border-[var(--cs-gold)] hover:text-[var(--cs-gold)] transition-colors duration-300">
+                    <GitBranch size={14} strokeWidth={1.6} /> GitHub ansehen
+                  </a>
+                </Magnetic>
+              </div>
+            </Reveal>
+            <Reveal delay={0.34}>
+              <div className="flex flex-wrap items-center gap-x-5 gap-y-3 mt-10 font-mono">
+                <span className="inline-flex items-center gap-2.5 text-[0.72rem] uppercase tracking-[0.18em] text-[var(--cs-text)]">
+                  <span className="relative flex w-2 h-2">
+                    <span className="absolute inset-0 rounded-full bg-[var(--cs-success)] animate-ping opacity-60" />
+                    <span className="relative inline-flex rounded-full w-2 h-2 bg-[var(--cs-success)]" />
+                  </span>
+                  Verfügbar für Projekte
                 </span>
-              ))}
-            </div>
+                <span className="w-px h-3.5 bg-[var(--cs-border-w3)]" />
+                <div className="flex flex-wrap gap-2">
+                  {['React', 'TypeScript', 'Node', 'Electron'].map(t => (
+                    <span key={t} className="px-3 py-1 rounded-full border border-[var(--cs-border-w)] text-[0.64rem] tracking-[0.12em] uppercase text-[var(--cs-text-2)]">{t}</span>
+                  ))}
+                </div>
+              </div>
+            </Reveal>
+            <Reveal delay={0.42}>
+              <div className="flex flex-wrap items-baseline gap-x-8 gap-y-3 mt-9 font-mono">
+                {[
+                  { v: userData ? String(userData.public_repos) : '—', l: 'Repositories' },
+                  { v: userData ? String(userData.followers) : '—', l: 'Follower' },
+                  { v: '13+', l: 'Jahre Praxis' },
+                ].map(s => (
+                  <span key={s.l} className="flex items-baseline gap-2">
+                    <span className="font-display font-semibold text-[1.7rem] leading-none text-[var(--cs-text)]">{s.v}</span>
+                    <span className="text-[0.64rem] tracking-[0.16em] uppercase text-[var(--cs-text-3)]">{s.l}</span>
+                  </span>
+                ))}
+              </div>
+            </Reveal>
           </div>
-        </div>
-      </PageHero>
+
+          {/* Signature-Grafik rechts (Desktop) */}
+          <div className="hidden lg:flex items-center justify-center">
+            <DevGitFlow />
+          </div>
+        </section>
 
       {/* ── Services ─────────────────────────────────────── */}
       <SectionWrapper id="services">
         <SectionHeader
           eyebrow="Was ich baue"
           title={<>Code der <GradientText>funktioniert</GradientText></>}
-          description="Von der Landing Page bis zur komplexen Web-App — immer mit Fokus auf Performance, Design und Wartbarkeit."
+          description="Von der Web-App über eigene Tools bis zur Automatisierung — immer mit Fokus auf Performance, Design und Wartbarkeit."
           className="mb-14"
         />
         {/* StaggerContainer direkt — kein extra Wrapper */}
         <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {[
-            { icon: <Globe size={20} strokeWidth={1.5} />, title: 'Websites', desc: 'Schnelle, SEO-optimierte Websites mit modernem Design und echtem Mehrwert.' },
-            { icon: <Smartphone size={20} strokeWidth={1.5} />, title: 'Web-Apps', desc: 'React-basierte Anwendungen — skalierbar, typsicher und production-ready.' },
-            { icon: <Terminal size={20} strokeWidth={1.5} />, title: 'Backends', desc: 'Express.js APIs, Supabase, PostgreSQL — solide Architektur für echte Anforderungen.' },
+            { icon: <Globe size={20} strokeWidth={1.5} />, title: 'Web-Apps & Websites', desc: 'React & TypeScript — von der schnellen Landing Page bis zur skalierbaren Web-App: typsicher und production-ready.' },
+            { icon: <Terminal size={20} strokeWidth={1.5} />, title: 'Tools & Backends', desc: 'APIs, Datenbanken und eigene Tools — von Trading-Dashboards bis zu Desktop-Software wie VaultBox.' },
+            { icon: <Zap size={20} strokeWidth={1.5} />, title: 'Automatisierung & KI', desc: 'Wiederkehrende Abläufe automatisieren und Workflows mit KI beschleunigen — mehr Output, weniger Handarbeit.' },
           ].map((s, i) => (
             <StaggerItem key={i}>
               <Card variant="elevated" className="h-full">
@@ -406,16 +627,6 @@ export default function DevPage() {
           />
         </div>
         <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <StaggerItem>
-            <ProjectCard
-              title="Candlescope Dark (v1)"
-              description="Erste Version der Portfolio-Website — Vorgänger des aktuellen Designs. React + Vite + TypeScript mit modernem Dark-Purple-Layout."
-              tags={['React', 'TypeScript', 'Vite', 'SCSS']}
-              href="https://candlescope-frontend.vercel.app/"
-              githubHref="https://github.com/SchubertChris/Candlescope-Frontend"
-              status="live"
-            />
-          </StaggerItem>
           <StaggerItem>
             <ProjectCard
               title="ShopRay"
@@ -484,13 +695,6 @@ export default function DevPage() {
             </div>
             <div className="divide-y divide-[var(--cs-border-w)]">
               {[
-                {
-                  name: 'Candlescope Dark (v1)',
-                  desc: 'Erste Portfolio-Version — Dark Purple Design, vollständig selbst entwickelt.',
-                  tags: ['React', 'TypeScript', 'SCSS'],
-                  href: 'https://github.com/SchubertChris/Candlescope-Frontend',
-                  locked: false,
-                },
                 {
                   name: 'Learn To Grow',
                   desc: 'Abschlussprojekt — Lernplattform Frontend mit React und modernem UI-Design.',
@@ -616,6 +820,7 @@ export default function DevPage() {
           ))}
         </StaggerContainer>
       </SectionWrapper>
-    </>
+      </div>
+    </div>
   )
 }

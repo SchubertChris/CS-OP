@@ -3,28 +3,29 @@
    src/components/ui/index.tsx
 
    Alle wiederverwendbaren UI-Bausteine an einem Ort.
+   Theme-aware über --cs-* Tokens (Gold/Status/on-gold), Glass-
+   Panels + premium Hover — angehoben aufs Home-Niveau.
    Import:
      import { SectionHeader, Card, GradientText, GoldDivider, Badge } from '../components/ui'
    ============================================================ */
 
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { useScrollReveal, useReveal } from '../../hooks/useScrollReveal'
 
 /* ══════════════════════════════════════════════════════════════
-   GRADIENT TEXT
-   Gold-Verlauf auf beliebigem Text
+   GRADIENT TEXT — Gold-Verlauf (theme-aware)
    ============================================================ */
 interface GradientTextProps {
   children: React.ReactNode
   className?: string
-  /** 'gold' = #C9A84C → #E8C56D, 'subtle' = gedämpfter */
   variant?: 'gold' | 'subtle'
 }
 
 export function GradientText({ children, className = '', variant = 'gold' }: GradientTextProps) {
   const gradient = variant === 'gold'
-    ? 'from-[#C9A84C] via-[#E8C56D] to-[#C9A84C]'
-    : 'from-[var(--cs-text-2)] via-[#C9A84C] to-[var(--cs-text-2)]'
+    ? 'from-[var(--cs-gold)] via-[var(--cs-gold-hi)] to-[var(--cs-gold)]'
+    : 'from-[var(--cs-text-2)] via-[var(--cs-gold)] to-[var(--cs-text-2)]'
 
   return (
     <span className={`bg-gradient-to-r ${gradient} bg-clip-text text-transparent ${className}`}>
@@ -34,8 +35,7 @@ export function GradientText({ children, className = '', variant = 'gold' }: Gra
 }
 
 /* ══════════════════════════════════════════════════════════════
-   BADGE
-   Kleines Label-Pill — für Status, Tags, Kategorien
+   BADGE — Label-Pill (theme-aware, leichtes Glas)
    ============================================================ */
 interface BadgeProps {
   children: React.ReactNode
@@ -45,17 +45,17 @@ interface BadgeProps {
 
 export function Badge({ children, variant = 'gold', className = '' }: BadgeProps) {
   const styles = {
-    gold:  'border-[#C9A84C]/30 bg-[#C9A84C]/8  text-[#C9A84C]',
-    green: 'border-[#00C896]/30 bg-[#00C896]/8  text-[#00C896]',
-    red:   'border-[#FF4444]/30 bg-[#FF4444]/8  text-[#FF4444]',
-    muted: 'border-[var(--cs-border-w2)]  bg-[#ffffff]/4  text-[var(--cs-text-2)]',
+    gold:  'border-[var(--cs-gold)]/30 bg-[var(--cs-gold)]/10 text-[var(--cs-gold)]',
+    green: 'border-[var(--cs-success)]/30 bg-[var(--cs-success)]/10 text-[var(--cs-success)]',
+    red:   'border-[var(--cs-danger)]/30 bg-[var(--cs-danger)]/10 text-[var(--cs-danger)]',
+    muted: 'border-[var(--cs-border-w2)] bg-[var(--cs-s3)]/60 text-[var(--cs-text-2)]',
   }
 
   return (
     <span className={`
       inline-flex items-center
       font-mono text-[10px] tracking-[0.14em] uppercase
-      border rounded-full px-3 py-1
+      border rounded-full px-3 py-1 backdrop-blur-sm
       ${styles[variant]}
       ${className}
     `}>
@@ -66,10 +66,8 @@ export function Badge({ children, variant = 'gold', className = '' }: BadgeProps
 
 /* ══════════════════════════════════════════════════════════════
    GOLD DIVIDER
-   Elegante Trennlinie mit Gold-Akzent
    ============================================================ */
 interface GoldDividerProps {
-  /** 'full' = rand-zu-rand, 'short' = zentriert 80px */
   variant?: 'full' | 'short' | 'fade'
   className?: string
 }
@@ -78,29 +76,25 @@ export function GoldDivider({ variant = 'fade', className = '' }: GoldDividerPro
   if (variant === 'short') {
     return (
       <div className={`flex items-center justify-center py-2 ${className}`}>
-        <div className="w-20 h-px bg-[#C9A84C]/40" />
-        <div className="w-1.5 h-1.5 rounded-full bg-[#C9A84C]/60 mx-3" />
-        <div className="w-20 h-px bg-[#C9A84C]/40" />
+        <div className="w-20 h-px bg-[var(--cs-gold)]/40" />
+        <div className="w-1.5 h-1.5 rounded-full bg-[var(--cs-gold)]/60 mx-3" />
+        <div className="w-20 h-px bg-[var(--cs-gold)]/40" />
       </div>
     )
   }
 
   if (variant === 'full') {
-    return (
-      <div className={`h-px bg-[#C9A84C]/15 ${className}`} />
-    )
+    return <div className={`h-px bg-[var(--cs-gold)]/15 ${className}`} />
   }
 
   // fade (default)
   return (
-    <div className={`h-px bg-gradient-to-r from-transparent via-[#C9A84C]/30 to-transparent ${className}`} />
+    <div className={`h-px bg-gradient-to-r from-transparent via-[var(--cs-gold)]/30 to-transparent ${className}`} />
   )
 }
 
 /* ══════════════════════════════════════════════════════════════
-   SECTION HEADER
-   Eyebrow + Titel + optionale Beschreibung
-   Mit Scroll-Reveal
+   SECTION HEADER — Eyebrow + Titel (fluide Type-Scale) + Beschreibung
    ============================================================ */
 interface SectionHeaderProps {
   eyebrow?: string
@@ -108,7 +102,6 @@ interface SectionHeaderProps {
   description?: string
   align?: 'left' | 'center'
   className?: string
-  /** Verzögerung in ms bevor Header reinkommt */
   delay?: number
 }
 
@@ -131,20 +124,16 @@ export function SectionHeader({
       {eyebrow && (
         <p className={`
           font-mono text-[11px] tracking-[0.22em] uppercase
-          text-[#C9A84C]/70 mb-3
+          text-[var(--cs-gold)] mb-4
           flex items-center gap-3
           ${centered ? 'justify-center' : ''}
         `}>
-          <span className="w-6 h-px bg-[#C9A84C]/40" />
+          <span className="w-6 h-px bg-[var(--cs-gold)]/45" />
           {eyebrow}
-          <span className="w-6 h-px bg-[#C9A84C]/40" />
+          <span className="w-6 h-px bg-[var(--cs-gold)]/45" />
         </p>
       )}
-      <h2 className={`
-        font-display text-3xl md:text-4xl lg:text-5xl
-        text-[var(--cs-text)] tracking-tight leading-[1.1]
-        mb-4
-      `}>
+      <h2 className="font-display font-medium text-display text-[var(--cs-text)] tracking-[-0.02em] leading-[1.08] mb-4">
         {title}
       </h2>
       {description && (
@@ -157,14 +146,12 @@ export function SectionHeader({
 }
 
 /* ══════════════════════════════════════════════════════════════
-   SECTION WRAPPER
-   Konsistentes Padding + max-width für alle Sections
+   SECTION WRAPPER — konsistentes Padding + max-width
    ============================================================ */
 interface SectionWrapperProps {
   children: React.ReactNode
   id?: string
   className?: string
-  /** Staggered reveal für direkte Kinder */
   reveal?: boolean
   stagger?: number
   maxWidth?: 'sm' | 'md' | 'lg' | 'xl' | 'full'
@@ -203,15 +190,12 @@ export function SectionWrapper({
 }
 
 /* ══════════════════════════════════════════════════════════════
-   CARD
-   Universelle Karte — für Features, Produkte, Projekte
+   CARD — Glass-Panel mit Gold-Glow-Hover (theme-aware)
    ============================================================ */
 interface CardProps {
   children: React.ReactNode
   className?: string
-  /** 'default' = subtiler Border, 'elevated' = mehr Tiefe, 'gold' = Gold-Border */
   variant?: 'default' | 'elevated' | 'gold'
-  /** Klickbar mit Hover-Effekt */
   href?: string
   onClick?: () => void
   padding?: 'sm' | 'md' | 'lg'
@@ -227,42 +211,32 @@ export function Card({
 }: CardProps) {
   const padClasses = { sm: 'p-4', md: 'p-6', lg: 'p-8' }
   const variantClasses = {
-    default:  'bg-[var(--cs-s1)] border border-[var(--cs-border-w)] hover:border-[#C9A84C]/20',
-    elevated: 'bg-[var(--cs-s1)] border border-[#C9A84C]/10 hover:border-[#C9A84C]/30 shadow-xl shadow-black/40',
-    gold:     'bg-[var(--cs-s1)] border border-[#C9A84C]/25 hover:border-[#C9A84C]/50 shadow-lg shadow-[#C9A84C]/5',
+    default:  'bg-[var(--cs-s1)]/70 border border-[var(--cs-border-w2)] hover:border-[var(--cs-gold)]/25 hover:shadow-[0_0_44px_-10px_rgba(201,168,76,0.18)]',
+    elevated: 'bg-[var(--cs-s1)]/80 border border-[var(--cs-gold)]/12 shadow-xl shadow-black/25 hover:border-[var(--cs-gold)]/35 hover:shadow-[0_0_54px_-10px_rgba(201,168,76,0.22)]',
+    gold:     'bg-[var(--cs-s1)]/80 border border-[var(--cs-gold)]/28 shadow-lg shadow-black/20 hover:border-[var(--cs-gold)]/55 hover:shadow-[0_0_54px_-8px_rgba(201,168,76,0.28)]',
   }
+  const clickable = href || onClick
 
   const classes = `
-    rounded-2xl
+    rounded-2xl backdrop-blur-md
     ${variantClasses[variant]}
     ${padClasses[padding]}
-    transition-colors duration-300
-    ${href || onClick ? 'cursor-pointer group' : ''}
+    transition-[color,border-color,box-shadow,transform] duration-300
+    ${clickable ? 'cursor-pointer group hover:-translate-y-0.5' : ''}
     ${className}
   `
 
   if (href) {
-    return (
-      <a href={href} className={classes}>
-        {children}
-      </a>
-    )
+    return <a href={href} className={classes}>{children}</a>
   }
-
   if (onClick) {
-    return (
-      <div onClick={onClick} className={classes} role="button">
-        {children}
-      </div>
-    )
+    return <div onClick={onClick} className={classes} role="button">{children}</div>
   }
-
   return <div className={classes}>{children}</div>
 }
 
 /* ══════════════════════════════════════════════════════════════
-   CARD ICON
-   Icon-Box für Feature-Cards
+   CARD ICON — Icon-Box für Feature-Cards
    ============================================================ */
 interface CardIconProps {
   children: React.ReactNode
@@ -273,9 +247,10 @@ export function CardIcon({ children, className = '' }: CardIconProps) {
   return (
     <div className={`
       w-11 h-11 rounded-xl
-      bg-[#C9A84C]/8 border border-[#C9A84C]/20
+      bg-[var(--cs-gold)]/10 border border-[var(--cs-gold)]/22
       flex items-center justify-center
-      text-[#C9A84C]
+      text-[var(--cs-gold)]
+      transition-transform duration-300 group-hover:scale-105
       mb-4
       ${className}
     `}>
@@ -285,8 +260,7 @@ export function CardIcon({ children, className = '' }: CardIconProps) {
 }
 
 /* ══════════════════════════════════════════════════════════════
-   STAT ITEM
-   Für Zahlen/Stats Darstellung
+   STAT ITEM — Zahl + Label
    ============================================================ */
 interface StatItemProps {
   value: string
@@ -299,11 +273,11 @@ export function StatItem({ value, label, suffix, className = '' }: StatItemProps
   return (
     <div className={`flex flex-col gap-1 ${className}`}>
       <div className="flex items-end gap-1">
-        <span className="font-display text-4xl md:text-5xl text-[#C9A84C] leading-none">
+        <span className="font-display font-semibold text-display text-[var(--cs-gold)] leading-none">
           {value}
         </span>
         {suffix && (
-          <span className="font-display text-xl text-[#C9A84C]/60 mb-1">{suffix}</span>
+          <span className="font-display text-xl text-[var(--cs-gold)]/60 mb-1">{suffix}</span>
         )}
       </div>
       <span className="font-mono text-[11px] tracking-[0.14em] uppercase text-[var(--cs-text-3)]">
@@ -314,8 +288,7 @@ export function StatItem({ value, label, suffix, className = '' }: StatItemProps
 }
 
 /* ══════════════════════════════════════════════════════════════
-   CTA BUTTON
-   Haupt-Button mit Gold Fill-Animation
+   CTA BUTTON — Gold-Fill-Animation (theme-aware, korrekter Kontrast)
    ============================================================ */
 interface CtaButtonProps {
   children: React.ReactNode
@@ -337,10 +310,10 @@ export function CtaButton({
   const baseClasses = `
     relative overflow-hidden group
     inline-flex items-center gap-2
-    text-[11px] tracking-[0.16em] uppercase
+    font-mono text-[11px] tracking-[0.16em] uppercase
     rounded-full transition-colors duration-300
     ${variant === 'primary'
-      ? 'border border-[#C9A84C]/40 text-[#C9A84C] px-7 py-3.5'
+      ? 'border border-[var(--cs-gold)]/45 text-[var(--cs-gold)] px-7 py-3.5'
       : 'text-[var(--cs-text-2)] hover:text-[var(--cs-text)] px-2 py-1'
     }
     ${className}
@@ -348,10 +321,10 @@ export function CtaButton({
 
   const inner = variant === 'primary' ? (
     <>
-      <span className="relative z-10 group-hover:text-[#080808] transition-colors duration-300">
+      <span className="relative z-10 group-hover:text-[var(--cs-on-gold)] transition-colors duration-300">
         {children}
       </span>
-      <span className="absolute inset-0 bg-[#C9A84C] rounded-full translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
+      <span className="absolute inset-0 bg-[var(--cs-gold)] rounded-full translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
     </>
   ) : (
     <>
@@ -361,14 +334,28 @@ export function CtaButton({
   )
 
   if (href) {
+    const isExternal = external || href.startsWith('http') || href.startsWith('mailto:') || href.startsWith('tel:')
+    
+    if (isExternal) {
+      return (
+        <a
+          href={href}
+          className={baseClasses}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {inner}
+        </a>
+      )
+    }
+
     return (
-      <a
-        href={href}
+      <Link
+        to={href}
         className={baseClasses}
-        {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
       >
         {inner}
-      </a>
+      </Link>
     )
   }
 
@@ -380,8 +367,7 @@ export function CtaButton({
 }
 
 /* ══════════════════════════════════════════════════════════════
-   TAG LIST
-   Reihe von kleinen Tags / Skills
+   TAG LIST — Skills / kleine Tags
    ============================================================ */
 interface TagListProps {
   tags: string[]
@@ -394,7 +380,7 @@ export function TagList({ tags, className = '' }: TagListProps) {
       {tags.map(tag => (
         <span
           key={tag}
-          className="font-mono text-[11px] tracking-[0.08em] text-[var(--cs-text-2)] bg-[#ffffff]/4 border border-[var(--cs-border-w2)] px-3 py-1.5 rounded-lg"
+          className="font-mono text-[11px] tracking-[0.08em] text-[var(--cs-text-2)] bg-[var(--cs-s3)]/50 border border-[var(--cs-border-w2)] px-3 py-1.5 rounded-lg transition-colors duration-200 hover:border-[var(--cs-gold)]/30 hover:text-[var(--cs-gold)]"
         >
           {tag}
         </span>
@@ -404,8 +390,7 @@ export function TagList({ tags, className = '' }: TagListProps) {
 }
 
 /* ══════════════════════════════════════════════════════════════
-   HIGHLIGHT LINE
-   Goldene Akzent-Linie links — für Quotes, Highlights
+   HIGHLIGHT LINE — goldene Akzent-Linie links (Quotes)
    ============================================================ */
 interface HighlightLineProps {
   children: React.ReactNode
@@ -414,7 +399,7 @@ interface HighlightLineProps {
 
 export function HighlightLine({ children, className = '' }: HighlightLineProps) {
   return (
-    <div className={`border-l-2 border-[#C9A84C]/50 pl-5 ${className}`}>
+    <div className={`border-l-2 border-[var(--cs-gold)]/50 pl-5 ${className}`}>
       <p className="text-[var(--cs-text-2)] text-base leading-relaxed italic">
         {children}
       </p>

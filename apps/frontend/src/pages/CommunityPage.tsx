@@ -14,6 +14,7 @@ import {
   MessageSquare, TrendingUp,
   Shield, BarChart2, Code2, Video,
   CheckCircle2, ArrowRight, Volume2, Terminal, Zap, GitBranch,
+  Crown, X, Sprout, Wallet, AlertTriangle, Mic, Flame, Handshake, ThumbsUp, HelpCircle,
 } from 'lucide-react'
 
 /* ── Discord Invite Hook ─────────────────────────────────── */
@@ -94,55 +95,50 @@ function StatCard({ value, label, sub, loading }: {
 const DISCORD_STRUCTURE = [
   {
     name: '| START',
-    emoji: '📌',
     channels: [
-      { name: 'willkommen', emoji: '👋', type: 'text' },
-      { name: 'regeln', emoji: '📋', type: 'text' },
-      { name: 'forum', emoji: '💬', type: 'forum' },
-      { name: 'neues', emoji: '🆕', type: 'text' },
+      { name: 'willkommen', type: 'text' },
+      { name: 'regeln', type: 'text' },
+      { name: 'forum', type: 'forum' },
+      { name: 'neues', type: 'text' },
     ],
   },
   {
     name: '| Community',
-    emoji: '💡',
     channels: [
-      { name: 'global', emoji: '🌍', type: 'text' },
-      { name: 'long', emoji: '📈', type: 'text' },
-      { name: 'short', emoji: '📉', type: 'text' },
-      { name: 'setups', emoji: '🎯', type: 'text' },
-      { name: 'scam-alarm', emoji: '🚨', type: 'text' },
+      { name: 'global', type: 'text' },
+      { name: 'long', type: 'text' },
+      { name: 'short', type: 'text' },
+      { name: 'setups', type: 'text' },
+      { name: 'scam-alarm', type: 'text' },
     ],
   },
   {
     name: '| Anlage & Vorsorge',
-    emoji: '💰',
     channels: [
-      { name: 'aktien', emoji: '📊', type: 'text' },
-      { name: 'anleihen', emoji: '🏦', type: 'text' },
-      { name: 'depotvorstellung', emoji: '💼', type: 'text' },
-      { name: 'devisen', emoji: '💱', type: 'text' },
-      { name: 'exchange-traded-funds', emoji: '📦', type: 'text' },
-      { name: 'rohstoffe', emoji: '🪙', type: 'text' },
+      { name: 'aktien', type: 'text' },
+      { name: 'anleihen', type: 'text' },
+      { name: 'depotvorstellung', type: 'text' },
+      { name: 'devisen', type: 'text' },
+      { name: 'exchange-traded-funds', type: 'text' },
+      { name: 'rohstoffe', type: 'text' },
     ],
   },
   {
     name: '| Coding & Tech',
-    emoji: '💻',
     channels: [
-      { name: 'webdev', emoji: '🌐', type: 'text' },
-      { name: 'trading-bots', emoji: '🤖', type: 'text' },
-      { name: 'automatisierung', emoji: '⚡', type: 'text' },
-      { name: 'code-review', emoji: '🔍', type: 'forum' },
-      { name: 'tools', emoji: '🛠️', type: 'text' },
+      { name: 'webdev', type: 'text' },
+      { name: 'trading-bots', type: 'text' },
+      { name: 'automatisierung', type: 'text' },
+      { name: 'code-review', type: 'forum' },
+      { name: 'tools', type: 'text' },
     ],
   },
   {
     name: '| Speak',
-    emoji: '🎙️',
     channels: [
-      { name: 'CandleScope |', emoji: '', type: 'voice' },
-      { name: 'CandleScope ||', emoji: '', type: 'voice' },
-      { name: 'CandleScope |||', emoji: '', type: 'voice' },
+      { name: 'CandleScope |', type: 'voice' },
+      { name: 'CandleScope ||', type: 'voice' },
+      { name: 'CandleScope |||', type: 'voice' },
     ],
   },
 ]
@@ -194,7 +190,6 @@ function ServerPreview() {
               transition={{ delay: globalDelay - 0.1 }}
               className="flex items-center gap-1.5 px-2 mb-1"
             >
-              <span className="text-[10px]">{cat.emoji}</span>
               <span className="font-mono text-[9px] tracking-[0.14em] text-[var(--cs-text-3)] uppercase">{cat.name}</span>
             </motion.div>
 
@@ -221,7 +216,6 @@ function ServerPreview() {
                     ) : (
                       <span className="font-mono text-[12px] text-[var(--cs-text-3)] group-hover:text-[var(--cs-text-2)]">#</span>
                     )}
-                    {ch.emoji && <span className="text-[11px]">{ch.emoji}</span>}
                     <span className={`font-mono text-[11px] truncate transition-colors ${activeChannel === ch.name
                         ? 'text-[#C9A84C]'
                         : 'text-[#6a6460] group-hover:text-[var(--cs-text)]'
@@ -248,7 +242,7 @@ function ServerPreview() {
           </div>
           <div>
             <p className="font-mono text-[9px] text-[var(--cs-text)]">Chris Schubert</p>
-            <p className="font-mono text-[8px] text-[var(--cs-text-3)]">👑 Admin</p>
+            <p className="font-mono text-[8px] text-[var(--cs-text-3)] flex items-center gap-1"><Crown size={9} strokeWidth={1.6} className="text-[#C9A84C]" /> Admin</p>
           </div>
         </div>
         <div className="flex items-center gap-1">
@@ -314,13 +308,13 @@ function WaitlistForm() {
 const INVITE_CODE = 'HRxbTW4ujT'
 
 const FEATURES = [
-  { icon: <TrendingUp size={20} strokeWidth={1.5} />, title: 'Trading Setups & Signale', desc: 'Täglich frische Setups, Entry-Punkte und Marktanalysen von der Community.' },
-  { icon: <Video size={20} strokeWidth={1.5} />, title: 'Live Q&A Sessions', desc: 'Regelmäßige Live-Sessions mit Chart-Analysen, Fragen und direktem Austausch.' },
-  { icon: <Shield size={20} strokeWidth={1.5} />, title: 'Scam-Alarm & Warnungen', desc: 'Community-geprüfte Warnungen vor Betrug, Pump & Dump und unseriösen Angeboten.' },
-  { icon: <BarChart2 size={20} strokeWidth={1.5} />, title: 'Depot-Vorstellungen', desc: 'Zeig dein Portfolio, hol dir Feedback und lern von den Strategien anderer.' },
+  { icon: <TrendingUp size={20} strokeWidth={1.5} />, title: 'Trading & Setups', desc: 'Setups, Entry-Punkte und Marktanalysen — teilen, hinterfragen und gemeinsam besser werden.' },
+  { icon: <BarChart2 size={20} strokeWidth={1.5} />, title: 'Krypto & Märkte', desc: 'Krypto, Aktien, ETFs, Rohstoffe — Chartanalysen und Ideen aus der Community, ohne Hype.' },
   { icon: <Code2 size={20} strokeWidth={1.5} />, title: 'Webdev & Open Source', desc: 'React, TypeScript, APIs — Code-Austausch, Reviews und gemeinsame Projekte mit anderen Entwicklern.' },
-  { icon: <Terminal size={20} strokeWidth={1.5} />, title: 'Trading Bots & Automatisierung', desc: 'Eigene Bots bauen, Strategien automatisieren, Broker-APIs nutzen — von der Idee bis zur Umsetzung.' },
-  { icon: <MessageSquare size={20} strokeWidth={1.5} />, title: 'Gemeinsame Chartanalysen', desc: 'Technische Analyse im Team — mehrere Augen sehen mehr als eines.' },
+  { icon: <Terminal size={20} strokeWidth={1.5} />, title: 'Trading-Bots & Automatisierung', desc: 'Eigene Bots bauen, Strategien automatisieren, Broker-APIs nutzen — von der Idee bis zur Umsetzung.' },
+  { icon: <Video size={20} strokeWidth={1.5} />, title: 'Live Q&A & Voice', desc: 'Regelmäßige Live-Sessions: Chart-Analysen, Code-Reviews, Fragen und direkter Austausch.' },
+  { icon: <Handshake size={20} strokeWidth={1.5} />, title: 'Netzwerk & Kontakte', desc: 'Gleichgesinnte finden, an Projekten zusammenarbeiten und sich gegenseitig weiterbringen.' },
+  { icon: <Shield size={20} strokeWidth={1.5} />, title: 'Scam-Alarm & Schutz', desc: 'Community-geprüfte Warnungen vor Betrug, Pump & Dump und unseriösen Angeboten.' },
 ]
 
 export default function CommunityPage() {
@@ -332,10 +326,10 @@ export default function CommunityPage() {
     <>
       <PageHero
         eyebrow="Candlescope Community · Discord"
-        titleLine1="Finanzen lernen."
-        titleLine2="Gemeinsam."
-        titleAccent="line1"
-        description="Trading · Chartanalysen · Dev & Automatisierung — eine aktive Community ohne Bullshit. Kein Schnellreich-werden-Versprechen, nur ehrlicher Austausch."
+        titleLine1="Lass uns"
+        titleLine2="Netzwerken."
+        titleAccent="line2"
+        description="Ein Netzwerk aus Tradern, Entwicklern und Machern — Trading, Krypto, Dev & Automatisierung an einem Ort. Ohne Bullshit, kein Schnellreich-Versprechen, nur ehrlicher Austausch."
         badge="Jetzt live"
         theme="community"
       >
@@ -403,11 +397,12 @@ export default function CommunityPage() {
               </h2>
               <div className="flex flex-wrap items-center justify-center gap-3">
                 {[
-                  '✗ Keine bezahlten Signale',
-                  '✗ Kein Pump & Dump',
-                  '✗ Kein Coaching-Bullshit',
+                  'Keine bezahlten Signale',
+                  'Kein Pump & Dump',
+                  'Kein Coaching-Bullshit',
                 ].map((item, i) => (
-                  <span key={i} className="px-5 py-2 rounded-full border border-[var(--cs-border-w)] bg-[var(--cs-s1)] font-mono text-[11px] tracking-[0.08em] text-[var(--cs-text-2)]">
+                  <span key={i} className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-[var(--cs-border-w)] bg-[var(--cs-s1)] font-mono text-[11px] tracking-[0.08em] text-[var(--cs-text-2)]">
+                    <X size={12} strokeWidth={2} className="text-[var(--cs-danger)] shrink-0" />
                     {item}
                   </span>
                 ))}
@@ -424,7 +419,7 @@ export default function CommunityPage() {
         <SectionHeader
           eyebrow="Was dich erwartet"
           title={<>Mehr als nur <GradientText>ein Server</GradientText></>}
-          description="Eine aktive Community rund um Trading, Finanzen und Tech — mit echtem Mehrwert."
+          description="Eine aktive Community rund um Trading, Krypto, Dev & Automatisierung — mit echtem Mehrwert."
           className="mb-14"
         />
         <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -455,31 +450,31 @@ export default function CommunityPage() {
         <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {[
             {
-              emoji: '📈',
+              icon: <TrendingUp size={26} strokeWidth={1.4} />,
               label: 'Trader & Investor',
               desc: 'Du willst nicht allein traden. Chart-Austausch, Setups, Marktanalysen — und jemand der dich auf Bullshit hinweist.',
               tags: ['Setups', 'Chartanalyse', 'Depot', 'ETFs'],
               href: '#features',
             },
             {
-              emoji: '💻',
+              icon: <Code2 size={26} strokeWidth={1.4} />,
               label: 'Developer',
               desc: 'Du baust Trading-Bots, automatisierst Strategien oder entwickelst Web-Apps. Hier findest du Gleichgesinnte und echte Code-Reviews.',
               tags: ['Bots', 'APIs', 'TypeScript', 'Open Source'],
               href: '#dev',
             },
             {
-              emoji: '🌱',
-              label: 'Einsteiger',
-              desc: 'Du willst Finanzen verstehen — ohne Hype, ohne Schnellreich-werden-Versprechen. Einfach lernen, Fragen stellen, wachsen.',
-              tags: ['Grundlagen', 'ETF-Start', 'Budgetplanung', 'VaultBox'],
+              icon: <Sprout size={26} strokeWidth={1.4} />,
+              label: 'Einsteiger & Neugierige',
+              desc: 'Du willst rein — egal ob Trading, Coding oder Automatisierung. Ohne Hype, ohne Schnellreich-Versprechen. Fragen stellen, lernen, wachsen.',
+              tags: ['Grundlagen', 'Erste Schritte', 'Fragen stellen', 'Community'],
               href: '#features',
             },
           ].map((card, i) => (
             <StaggerItem key={i}>
               <motion.div whileHover={{ y: -4 }} transition={{ duration: 0.2 }} className="h-full">
                 <div className="h-full flex flex-col gap-4 p-6 rounded-2xl border border-[var(--cs-border-w)] bg-[var(--cs-s1)] hover:border-[#C9A84C]/25 hover:bg-[#C9A84C]/3 transition-colors duration-300">
-                  <span className="text-3xl">{card.emoji}</span>
+                  <span className="text-[var(--cs-gold)]">{card.icon}</span>
                   <div className="flex-1">
                     <h3 className="font-display text-lg text-[var(--cs-text)] mb-2">{card.label}</h3>
                     <p className="text-[var(--cs-text-2)] text-sm leading-relaxed">{card.desc}</p>
@@ -509,22 +504,22 @@ export default function CommunityPage() {
           <div>
             <SectionHeader
               eyebrow="Discord Server"
-              title={<>Dein neues <GradientText>Trading Zuhause</GradientText></>}
+              title={<>Dein neues <GradientText>Zuhause</GradientText></>}
               description="Strukturiert, klar und auf das Wesentliche fokussiert — Channels für jeden Bereich."
               className="mb-8"
             />
             <StaggerContainer className="flex flex-col gap-3 mb-8">
               {[
-                { icon: '📈', text: 'Trading Setups · Long & Short Channels' },
-                { icon: '💰', text: 'Anlage & Vorsorge — Aktien · ETFs · Devisen · Rohstoffe' },
-                { icon: '🚨', text: 'Scam-Alarm für die Community' },
-                { icon: '🎙️', text: '3 Voice Channels für Live-Sessions' },
-                { icon: '💻', text: 'Coding & Tech — Bots · Webdev · Automatisierung' },
-                { icon: '🛡️', text: 'Organisierte Moderationsstruktur' },
+                { icon: <TrendingUp size={16} strokeWidth={1.5} />, text: 'Trading Setups · Long & Short Channels' },
+                { icon: <Wallet size={16} strokeWidth={1.5} />, text: 'Anlage & Vorsorge — Aktien · ETFs · Devisen · Rohstoffe' },
+                { icon: <AlertTriangle size={16} strokeWidth={1.5} />, text: 'Scam-Alarm für die Community' },
+                { icon: <Mic size={16} strokeWidth={1.5} />, text: '3 Voice Channels für Live-Sessions' },
+                { icon: <Code2 size={16} strokeWidth={1.5} />, text: 'Coding & Tech — Bots · Webdev · Automatisierung' },
+                { icon: <Shield size={16} strokeWidth={1.5} />, text: 'Organisierte Moderationsstruktur' },
               ].map((item, i) => (
                 <StaggerItem key={i}>
                   <div className="flex items-start gap-3">
-                    <span className="text-base shrink-0 mt-0.5">{item.icon}</span>
+                    <span className="text-[var(--cs-gold)] shrink-0 mt-0.5">{item.icon}</span>
                     <span className="text-[var(--cs-text-2)] text-sm">{item.text}</span>
                   </div>
                 </StaggerItem>
@@ -609,7 +604,7 @@ export default function CommunityPage() {
               <span className="font-mono text-[10px] text-[var(--cs-text-3)] ml-2">trading-bot.ts</span>
             </div>
             <div className="p-5 font-mono text-[12px] leading-relaxed">
-              <div className="text-[#C9A84C]/60"><span className="text-[var(--cs-text-3)]">// 📌 #trading-bots Channel</span></div>
+              <div className="text-[#C9A84C]/60"><span className="text-[var(--cs-text-3)]">// #trading-bots Channel</span></div>
               <div className="mt-2">
                 <span className="text-[#7dd3fc]">const</span>
                 <span className="text-[var(--cs-text)]"> bot </span>
@@ -654,14 +649,14 @@ export default function CommunityPage() {
             />
             <StaggerContainer className="flex flex-col gap-3 mb-8">
               {[
-                { emoji: '💬', text: 'Täglich aktiver Austausch in mehreren Channels' },
-                { emoji: '🔥', text: 'Setup-Sharing mit echtem Community-Feedback' },
-                { emoji: '🤝', text: 'Direkte Antworten statt Copy-Paste-Boilerplate' },
-                { emoji: '⚡', text: 'Trading-Bots die live in der Community gebaut werden' },
+                { icon: <MessageSquare size={16} strokeWidth={1.5} />, text: 'Täglich aktiver Austausch in mehreren Channels' },
+                { icon: <Flame size={16} strokeWidth={1.5} />, text: 'Setup-Sharing mit echtem Community-Feedback' },
+                { icon: <Handshake size={16} strokeWidth={1.5} />, text: 'Direkte Antworten statt Copy-Paste-Boilerplate' },
+                { icon: <Zap size={16} strokeWidth={1.5} />, text: 'Trading-Bots die live in der Community gebaut werden' },
               ].map((item, i) => (
                 <StaggerItem key={i}>
                   <div className="flex items-center gap-3">
-                    <span className="text-sm">{item.emoji}</span>
+                    <span className="text-[var(--cs-gold)]">{item.icon}</span>
                     <span className="text-[var(--cs-text-2)] text-sm">{item.text}</span>
                   </div>
                 </StaggerItem>
@@ -692,9 +687,9 @@ export default function CommunityPage() {
                   {
                     avatar: 'AT', color: '#5865F2',
                     name: 'Alex_T.', time: 'Heute 09:42',
-                    text: 'BTC Setup läuft — Einstieg 65k, TP 68k, SL 63.5k 🎯',
+                    text: 'BTC Setup läuft — Einstieg 65k, TP 68k, SL 63.5k',
                     code: null,
-                    reactions: [{ emoji: '🔥', count: 4 }, { emoji: '✅', count: 2 }],
+                    reactions: [{ icon: <Flame size={12} strokeWidth={1.6} />, count: 4 }, { icon: <CheckCircle2 size={12} strokeWidth={1.6} />, count: 2 }],
                   },
                   {
                     avatar: 'MD', color: '#57F287',
@@ -705,17 +700,17 @@ export default function CommunityPage() {
                   },
                   {
                     avatar: 'CS', color: '#C9A84C',
-                    name: 'Chris_S 👑', time: 'Heute 10:17',
+                    name: 'Chris_S', time: 'Heute 10:17',
                     text: '@MaxDev setTimeout 3000ms vor dem reconnect() — WS braucht kurz bis die Connection wirklich closed ist.',
                     code: null,
-                    reactions: [{ emoji: '👍', count: 3 }],
+                    reactions: [{ icon: <ThumbsUp size={12} strokeWidth={1.6} />, count: 3 }],
                   },
                   {
                     avatar: 'SR', color: '#FEE75C',
                     name: 'Stefan_R', time: 'Heute 11:02',
                     text: 'ETH/USD Daily — das Wedge Pattern spannt sich zu. Breakout oder Breakdown?',
                     code: null,
-                    reactions: [{ emoji: '📊', count: 5 }, { emoji: '🤔', count: 3 }],
+                    reactions: [{ icon: <BarChart2 size={12} strokeWidth={1.6} />, count: 5 }, { icon: <HelpCircle size={12} strokeWidth={1.6} />, count: 3 }],
                   },
                 ].map((msg, i) => (
                   <motion.div key={i}
@@ -730,7 +725,10 @@ export default function CommunityPage() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-baseline gap-2 mb-1">
-                        <span className="font-semibold text-[12px] text-[var(--cs-text)]">{msg.name}</span>
+                        <span className="font-semibold text-[12px] text-[var(--cs-text)] inline-flex items-center gap-1">
+                          {msg.name}
+                          {msg.name === 'Chris_S' && <Crown size={10} strokeWidth={1.6} className="text-[#C9A84C]" />}
+                        </span>
                         <span className="font-mono text-[9px] text-[var(--cs-text-4)]">{msg.time}</span>
                       </div>
                       <p className="text-[12px] text-[var(--cs-text-2)] leading-relaxed">{msg.text}</p>
@@ -741,9 +739,9 @@ export default function CommunityPage() {
                       )}
                       {msg.reactions.length > 0 && (
                         <div className="flex gap-1.5 mt-1.5">
-                          {msg.reactions.map(r => (
-                            <span key={r.emoji} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#ffffff]/6 border border-[#ffffff]/10 text-[11px]">
-                              {r.emoji}
+                          {msg.reactions.map((r, ri) => (
+                            <span key={ri} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#ffffff]/6 border border-[#ffffff]/10 text-[var(--cs-text-2)]">
+                              {r.icon}
                               <span className="font-mono text-[10px] text-[var(--cs-text-3)]">{r.count}</span>
                             </span>
                           ))}

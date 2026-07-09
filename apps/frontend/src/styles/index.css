@@ -1,18 +1,70 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /* ============================================================
    Self-hosted Fonts (CSP- & DSGVO-konform — kein Google-CDN)
    ============================================================ */
-@font-face { font-family: "Space Grotesk"; font-style: normal; font-weight: 400; font-display: swap; src: url("/fonts/space-grotesk-400.woff2") format("woff2"); }
-@font-face { font-family: "Space Grotesk"; font-style: normal; font-weight: 500; font-display: swap; src: url("/fonts/space-grotesk-500.woff2") format("woff2"); }
-@font-face { font-family: "Space Grotesk"; font-style: normal; font-weight: 600; font-display: swap; src: url("/fonts/space-grotesk-600.woff2") format("woff2"); }
-@font-face { font-family: "Space Grotesk"; font-style: normal; font-weight: 700; font-display: swap; src: url("/fonts/space-grotesk-700.woff2") format("woff2"); }
-@font-face { font-family: "JetBrains Mono"; font-style: normal; font-weight: 400; font-display: swap; src: url("/fonts/jetbrains-mono-400.woff2") format("woff2"); }
-@font-face { font-family: "JetBrains Mono"; font-style: normal; font-weight: 500; font-display: swap; src: url("/fonts/jetbrains-mono-500.woff2") format("woff2"); }
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/space-grotesk-400.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/space-grotesk-500.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/fonts/space-grotesk-600.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/space-grotesk-700.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/jetbrains-mono-400.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/jetbrains-mono-500.woff2') format('woff2');
+}
 
 @theme {
-  --font-display: "Space Grotesk", system-ui, -apple-system, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", monospace;
+  --font-display: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace;
+
+  /* Marken-Farben als Tokens — theme-aware über --cs-* → erzeugt Utilities
+     wie bg-gold / text-gold / border-gold / text-success / bg-danger.
+     Werte werden pro [data-theme] weiter unten gesetzt. */
+  --color-gold: var(--cs-gold);
+  --color-gold-hi: var(--cs-gold-hi);
+  --color-success: var(--cs-success);
+  --color-danger: var(--cs-danger);
+
+  /* Fluide Display-Type-Scale (clamp) → text-display-sm / text-display /
+     text-display-lg / text-display-xl. Zentrale, konsistente Überschriften-
+     Größen über alle Seiten (statt verstreuter Breakpoint-Sprünge). */
+  --text-display-sm: clamp(1.5rem, 1.2rem + 1.5vw, 2.2rem);
+  --text-display: clamp(2rem, 1.4rem + 2.6vw, 3.25rem);
+  --text-display-lg: clamp(2.6rem, 1.6rem + 4vw, 4.5rem);
+  --text-display-xl: clamp(3rem, 1.2rem + 5.8vw, 6.2rem);
 }
 
 /* ============================================================
@@ -22,58 +74,72 @@
    ============================================================ */
 
 :root,
-[data-theme="dark"] {
+[data-theme='dark'] {
   color-scheme: dark;
-  --cs-bg:      #080808;
-  --cs-s0:      #090909;
-  --cs-s1:      #0d0d0d;
-  --cs-s2:      #0e0e0e;
-  --cs-s3:      #111111;
-  --cs-s4:      #161616;
-  --cs-s5:      #1a1a1a;
-  --cs-input:   #0a0a0a;
+  --cs-bg: #080808;
+  --cs-s0: #090909;
+  --cs-s1: #0d0d0d;
+  --cs-s2: #0e0e0e;
+  --cs-s3: #111111;
+  --cs-s4: #161616;
+  --cs-s5: #1a1a1a;
+  --cs-input: #0a0a0a;
 
-  --cs-text:    #F5F0E8;
-  --cs-text-2:  #9A9590;
-  --cs-text-3:  #5a5550;
-  --cs-text-4:  #3a3530;
+  --cs-text: #f5f0e8;
+  --cs-text-2: #9a9590;
+  --cs-text-3: #5a5550;
+  --cs-text-4: #3a3530;
 
-  --cs-backdrop:    rgba(8,8,8,0.75);
-  --cs-backdrop-2:  rgba(8,8,8,0.60);
-  --cs-header-bg:   rgba(8,8,8,0.95);
-  --cs-sidebar-mob: rgba(13,13,13,0.90);
-  --cs-border-w:    rgba(255,255,255,0.06);
-  --cs-border-w2:   rgba(255,255,255,0.08);
-  --cs-border-w3:   rgba(255,255,255,0.10);
+  --cs-backdrop: rgba(8, 8, 8, 0.75);
+  --cs-backdrop-2: rgba(8, 8, 8, 0.6);
+  --cs-header-bg: rgba(8, 8, 8, 0.95);
+  --cs-sidebar-mob: rgba(13, 13, 13, 0.9);
+  --cs-border-w: rgba(255, 255, 255, 0.06);
+  --cs-border-w2: rgba(255, 255, 255, 0.08);
+  --cs-border-w3: rgba(255, 255, 255, 0.1);
+
+  --cs-gold: #c9a84c;
+  --cs-gold-hi: #e8c56d;
+  --cs-success: #00c896;
+  --cs-danger: #ff4444;
+  --cs-on-gold: #080808; /* Text auf Gold-Fill: dunkel auf hellem Gold */
 }
 
-[data-theme="light"] {
+[data-theme='light'] {
   color-scheme: light;
-  --cs-bg:      #F2EDE2;
-  --cs-s0:      #EEE9DE;
-  --cs-s1:      #EAE5DA;
-  --cs-s2:      #E7E2D7;
-  --cs-s3:      #E2DDD2;
-  --cs-s4:      #DEDAD0;
-  --cs-s5:      #D8D3C8;
-  --cs-input:   #E5E0D5;
+  --cs-bg: #f2ede2;
+  --cs-s0: #eee9de;
+  --cs-s1: #eae5da;
+  --cs-s2: #e7e2d7;
+  --cs-s3: #e2ddd2;
+  --cs-s4: #dedad0;
+  --cs-s5: #d8d3c8;
+  --cs-input: #e5e0d5;
 
-  --cs-text:    #0A0806;
-  --cs-text-2:  #423D38;
-  --cs-text-3:  #564F49;
-  --cs-text-4:  #6E6862;
+  --cs-text: #0a0806;
+  --cs-text-2: #423d38;
+  --cs-text-3: #564f49;
+  --cs-text-4: #6e6862;
 
-  --cs-backdrop:    rgba(242,237,226,0.85);
-  --cs-backdrop-2:  rgba(242,237,226,0.70);
-  --cs-header-bg:   rgba(242,237,226,0.95);
-  --cs-sidebar-mob: rgba(234,229,218,0.92);
-  --cs-border-w:    rgba(0,0,0,0.12);
-  --cs-border-w2:   rgba(0,0,0,0.15);
-  --cs-border-w3:   rgba(0,0,0,0.18);
+  --cs-backdrop: rgba(242, 237, 226, 0.85);
+  --cs-backdrop-2: rgba(242, 237, 226, 0.7);
+  --cs-header-bg: rgba(242, 237, 226, 0.95);
+  --cs-sidebar-mob: rgba(234, 229, 218, 0.92);
+  --cs-border-w: rgba(0, 0, 0, 0.12);
+  --cs-border-w2: rgba(0, 0, 0, 0.15);
+  --cs-border-w3: rgba(0, 0, 0, 0.18);
+
+  /* Light-Mode: kräftigeres/dunkleres Gold + Status für Kontrast auf Beige */
+  --cs-gold: #8a6a1e;
+  --cs-gold-hi: #a9832a;
+  --cs-success: #00875a;
+  --cs-danger: #c62828;
+  --cs-on-gold: #f5f0e8; /* Text auf Gold-Fill: hell auf dunklem Gold */
 }
 
 @layer base {
-  html, body {
+  html,
+  body {
     /* Auffangnetz gegen horizontalen Overflow (clip = kein Scroll-Container) */
     overflow-x: clip;
   }
@@ -81,28 +147,71 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    /* Global keine Text-Selektion (premium/app-artig) */
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  /* Ausnahmen: Formularfelder, editierbare Inhalte und Rechtstexte bleiben
+     selektier-/kopierbar (sonst wären Formulare und Impressum/Datenschutz kaputt). */
+  input,
+  textarea,
+  select,
+  [contenteditable='true'],
+  .cs-selectable {
+    -webkit-user-select: text;
+    user-select: text;
   }
 }
 
-/* Calendly-Badge etwas höher, damit es nicht den Footer überlappt */
-.calendly-badge-widget { bottom: 40px !important; }
-
+/* Calendly-Badge etwas höher, damit es nicht den Footer überlappt.
+   Ausblenden auf Mobilgeräten (< 768px), da dort die Navigation Sidebar genutzt wird. */
+.calendly-badge-widget {
+  bottom: 48px !important;
+  right: 48px !important;
+}
+@media (max-width: 768px) {
+  .calendly-badge-widget {
+    display: none !important;
+  }
+}
 /* ============================================================
    Landingpage — Film-Grain + Scroll-Thread-Checkpoints
    (scoped: nur gemountet auf der HomePage)
    ============================================================ */
 @keyframes cs-grain {
-  0%   { transform: translate(0, 0); }
-  10%  { transform: translate(-3%, -2%); }
-  20%  { transform: translate(2%, 3%); }
-  30%  { transform: translate(-1%, 2%); }
-  40%  { transform: translate(3%, -1%); }
-  50%  { transform: translate(-2%, 2%); }
-  60%  { transform: translate(2%, -3%); }
-  70%  { transform: translate(-3%, 1%); }
-  80%  { transform: translate(1%, -2%); }
-  90%  { transform: translate(-1%, 3%); }
-  100% { transform: translate(0, 0); }
+  0% {
+    transform: translate(0, 0);
+  }
+  10% {
+    transform: translate(-3%, -2%);
+  }
+  20% {
+    transform: translate(2%, 3%);
+  }
+  30% {
+    transform: translate(-1%, 2%);
+  }
+  40% {
+    transform: translate(3%, -1%);
+  }
+  50% {
+    transform: translate(-2%, 2%);
+  }
+  60% {
+    transform: translate(2%, -3%);
+  }
+  70% {
+    transform: translate(-3%, 1%);
+  }
+  80% {
+    transform: translate(1%, -2%);
+  }
+  90% {
+    transform: translate(-1%, 3%);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
 }
 .cs-grain {
   position: fixed;
@@ -116,210 +225,564 @@
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   animation: cs-grain 1.2s steps(2) infinite;
 }
-[data-theme="light"] .cs-grain { mix-blend-mode: multiply; opacity: 0.05; }
+[data-theme='light'] .cs-grain {
+  mix-blend-mode: multiply;
+  opacity: 0.05;
+}
 
 /* Checkpoint-Explosion — Funken fliegen nach außen (--dx/--dy je Funke) mit Gravitation */
 @keyframes cs-spark {
-  0%   { transform: translate(0, 0) scale(1); opacity: 1; }
-  35%  { opacity: 1; }
-  100% { transform: translate(var(--dx), calc(var(--dy) + var(--gravity, 60px))) scale(0.1); opacity: 0; }
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  35% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--dx), calc(var(--dy) + var(--gravity, 60px))) scale(0.1);
+    opacity: 0;
+  }
 }
 /* Fragment/Splitter — fliegt raus, rotiert und fällt mit Gravitation */
 @keyframes cs-frag {
-  0%   { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
-  35%  { opacity: 1; }
-  100% { transform: translate(var(--dx), calc(var(--dy) + var(--gravity, 100px))) rotate(var(--rot)) scale(0.4); opacity: 0; }
+  0% {
+    transform: translate(0, 0) rotate(0deg) scale(1);
+    opacity: 1;
+  }
+  35% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--dx), calc(var(--dy) + var(--gravity, 100px))) rotate(var(--rot))
+      scale(0.4);
+    opacity: 0;
+  }
 }
 /* Checkpoint-Ripple-Shockwave */
 @keyframes cs-shockwave {
-  0%   { transform: scale(0.3); opacity: 0.95; filter: blur(0px); }
-  100% { transform: scale(7.5); opacity: 0; filter: blur(5px); }
+  0% {
+    transform: scale(0.3);
+    opacity: 0.95;
+    filter: blur(0px);
+  }
+  100% {
+    transform: scale(7.5);
+    opacity: 0;
+    filter: blur(5px);
+  }
 }
 
 /* Hero-Orbit */
 @keyframes cs-spin {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 @keyframes cs-core-pulse {
-  0%, 100% { transform: rotate(45deg) scale(1);    box-shadow: 0 0 40px 8px rgba(201,168,76,.40), 0 0 12px rgba(201,168,76,.9); }
-  50%      { transform: rotate(45deg) scale(1.14); box-shadow: 0 0 60px 14px rgba(201,168,76,.55), 0 0 18px rgba(201,168,76,1); }
+  0%,
+  100% {
+    transform: rotate(45deg) scale(1);
+    box-shadow:
+      0 0 40px 8px rgba(201, 168, 76, 0.4),
+      0 0 12px rgba(201, 168, 76, 0.9);
+  }
+  50% {
+    transform: rotate(45deg) scale(1.14);
+    box-shadow:
+      0 0 60px 14px rgba(201, 168, 76, 0.55),
+      0 0 18px rgba(201, 168, 76, 1);
+  }
 }
 @keyframes cs-star-tw {
-  0%, 100% { opacity: 0.25; }
-  50%      { opacity: 0.7; }
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 0.7;
+  }
 }
 
 /* ============================================================
    Effekt-Gold — im Light-Mode kräftiger/dunkler
    (reines #C9A84C ist auf Beige zu schwach)
    ============================================================ */
-:root, [data-theme="dark"] {
-  --cs-fx-spark:   #E8C56D;
-  --cs-fx-spark-2: #F5F0E8;
-  --cs-fx-glow:    rgba(201,168,76,.9);
+:root,
+[data-theme='dark'] {
+  --cs-fx-spark: #e8c56d;
+  --cs-fx-spark-2: #f5f0e8;
+  --cs-fx-glow: rgba(201, 168, 76, 0.9);
 }
-[data-theme="light"] {
-  --cs-fx-spark:   #8A6A1E;
-  --cs-fx-spark-2: #5E4A12;
-  --cs-fx-glow:    rgba(110,80,10,.85);
+[data-theme='light'] {
+  --cs-fx-spark: #8a6a1e;
+  --cs-fx-spark-2: #5e4a12;
+  --cs-fx-glow: rgba(110, 80, 10, 0.85);
 }
 
 /* Scroll-Thread: Track (volle blasse Linie) + Glow-Fill (Halo + Core) */
-.cs-thread-track { stroke: var(--cs-thread-accent-dim, rgba(201,168,76,0.22)); transition: stroke 0.4s ease; }
-.cs-thread-glow  { stroke: var(--cs-thread-glow-color, rgba(232,197,109,0.22)); transition: stroke 0.4s ease; }  /* weiche Aura */
-.cs-thread-core  { stroke: var(--cs-thread-accent, #F4D788); opacity: 0.85; transition: stroke 0.4s ease; }  /* heller Fortschritts-Fill */
+.cs-thread-track {
+  stroke: var(--cs-thread-accent-dim, rgba(201, 168, 76, 0.22));
+  transition: stroke 0.4s ease;
+}
+.cs-thread-glow {
+  stroke: var(--cs-thread-glow-color, rgba(232, 197, 109, 0.22));
+  transition: stroke 0.4s ease;
+} /* weiche Aura */
+.cs-thread-core {
+  stroke: var(--cs-thread-accent, #f4d788);
+  opacity: 0.85;
+  transition: stroke 0.4s ease;
+} /* heller Fortschritts-Fill */
 
 /* Checkpoint-Node — exakt am Explosions-Ort */
 .cs-checkpoint-node {
-  display: block; width: 11px; height: 11px; border-radius: 50%;
+  display: block;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
   border: 1.5px solid var(--cs-thread-accent, var(--cs-fx-spark));
-  background: radial-gradient(circle, var(--cs-thread-accent, var(--cs-fx-spark)) 0%, transparent 66%);
+  background: radial-gradient(
+    circle,
+    var(--cs-thread-accent, var(--cs-fx-spark)) 0%,
+    transparent 66%
+  );
   box-shadow: 0 0 9px var(--cs-thread-accent, var(--cs-fx-glow));
   animation: cs-node-pulse 2.6s ease-in-out infinite;
-  transition: border-color 0.4s ease, background 0.4s ease, box-shadow 0.4s ease;
+  transition:
+    border-color 0.4s ease,
+    background 0.4s ease,
+    box-shadow 0.4s ease;
 }
-@keyframes cs-node-pulse { 0%, 100% { transform: scale(1); opacity: .6; } 50% { transform: scale(1.3); opacity: 1; } }
+@keyframes cs-node-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 1;
+  }
+}
 
 /* Explosions-Pop (Knall) — kurz & hell, kein expandierender Radius-Ring */
 @keyframes cs-pop {
-  0%   { transform: scale(0); opacity: 1; }
-  40%  { transform: scale(1.25); opacity: 1; }
-  100% { transform: scale(1.8); opacity: 0; }
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  40% {
+    transform: scale(1.25);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.8);
+    opacity: 0;
+  }
 }
 
 /* Nav-Durchbruch (weißer Glas-Riss beim Scroll-Start) */
-@keyframes cs-impact-flash { 0% { transform: scale(.2); opacity: 1; } 100% { transform: scale(1.7); opacity: 0; } }
-@keyframes cs-impact-streak { 0% { transform: scaleX(0); opacity: 1; } 100% { transform: scaleX(1); opacity: 0; } }
+@keyframes cs-impact-flash {
+  0% {
+    transform: scale(0.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.7);
+    opacity: 0;
+  }
+}
+@keyframes cs-impact-streak {
+  0% {
+    transform: scaleX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scaleX(1);
+    opacity: 0;
+  }
+}
 @keyframes cs-impact-line {
-  0%   { transform: rotate(var(--ang)) scaleY(0); opacity: 1; }
-  65%  { opacity: 1; }
-  100% { transform: rotate(var(--ang)) scaleY(1); opacity: 0; }
+  0% {
+    transform: rotate(var(--ang)) scaleY(0);
+    opacity: 1;
+  }
+  65% {
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(var(--ang)) scaleY(1);
+    opacity: 0;
+  }
 }
 
 /* ============================================================
    Custom-Cursor (nur Desktop, scoped via .cs-cursor-on am body)
    ============================================================ */
-.cs-cursor-on, .cs-cursor-on * { cursor: none !important; }
+.cs-cursor-on,
+.cs-cursor-on * {
+  cursor: none !important;
+}
 .cs-cursor-dot {
-  position: fixed; top: 0; left: 0; width: 6px; height: 6px; border-radius: 50%;
-  background: #ffffff; z-index: 9999; pointer-events: none; will-change: transform;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ffffff;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
   mix-blend-mode: difference;
+  transition: opacity 0.25s ease;
 }
 .cs-cursor-ring {
-  position: fixed; top: 0; left: 0; width: 30px; height: 30px; border-radius: 50%;
-  border: 1.5px solid rgba(201,168,76,.55); z-index: 9998; pointer-events: none;
-  display: flex; align-items: center; justify-content: center; will-change: transform;
-  transition: width .25s cubic-bezier(.16,1,.3,1), height .25s cubic-bezier(.16,1,.3,1),
-              background-color .25s ease, border-color .25s ease;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(201, 168, 76, 0.55);
+  z-index: 9998;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition:
+    width 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    height 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    opacity 0.25s ease;
 }
 .cs-cursor-link {
-  width: 56px; height: 56px;
+  width: 56px;
+  height: 56px;
   background: #ffffff;
   border-color: transparent;
   mix-blend-mode: difference;
 }
 .cs-cursor-case {
-  width: 82px; height: 82px;
+  width: 82px;
+  height: 82px;
   background: #ffffff;
   border-color: transparent;
   mix-blend-mode: difference;
 }
 .cs-cursor-label {
-  font-family: 'JetBrains Mono', monospace; font-size: 8.5px; letter-spacing: .14em;
-  text-transform: uppercase; color: #000000; font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #080808;
+  font-weight: 700;
 }
-[data-theme="light"] .cs-cursor-ring { border-color: rgba(111,84,23,.5); }
-@media (prefers-reduced-motion: reduce) { .cs-cursor-ring { transition: none; } }
+[data-theme='light'] .cs-cursor-ring {
+  border-color: rgba(111, 84, 23, 0.5);
+}
+@media (prefers-reduced-motion: reduce) {
+  .cs-cursor-ring {
+    transition: none;
+  }
+}
 
 /* ============================================================
    Lightbox (Klick auf ein Frame → Bild mittig im Bildschirm)
    ============================================================ */
 .cs-lightbox {
-  position: fixed; inset: 0; z-index: 200;
-  display: flex; align-items: center; justify-content: center;
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 5vh 5vw;
-  background: rgba(8,8,8,.85);
-  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  background: rgba(8, 8, 8, 0.85);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
 }
 .cs-lightbox-frame {
-  position: relative; margin: 0;
-  max-width: min(1100px, 92vw); max-height: 88vh;
-  border-radius: 12px; overflow: hidden;
-  border: 1px solid rgba(201,168,76,.3);
-  box-shadow: 0 30px 90px rgba(0,0,0,.6);
+  position: relative;
+  margin: 0;
+  max-width: min(1100px, 92vw);
+  max-height: 88vh;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(201, 168, 76, 0.3);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.6);
   background: var(--cs-s1);
 }
 .cs-lightbox-frame img {
-  display: block; width: auto; height: auto;
-  max-width: 100%; max-height: 82vh; user-select: none;
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 82vh;
+  user-select: none;
 }
 .cs-lightbox-cap {
-  display: flex; justify-content: space-between; align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 12px 18px;
-  font-family: 'JetBrains Mono', monospace; font-size: 11px;
-  letter-spacing: .14em; text-transform: uppercase;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
 }
-.cs-lightbox-cap span:first-child { color: #E8C56D; }
-.cs-lightbox-cap span:last-child  { color: var(--cs-text-3); }
-[data-theme="light"] .cs-lightbox { background: rgba(242,237,226,.88); }
+.cs-lightbox-cap span:first-child {
+  color: #e8c56d;
+}
+.cs-lightbox-cap span:last-child {
+  color: var(--cs-text-3);
+}
+[data-theme='light'] .cs-lightbox {
+  background: rgba(242, 237, 226, 0.88);
+}
 
 /* Diamant-Kopf */
 .cs-comet-head {
-  width: 15px; height: 15px; border-radius: 3px;
+  width: 15px;
+  height: 15px;
+  border-radius: 3px;
   transform: rotate(45deg);
-  background: linear-gradient(135deg, #FFF7E0, var(--cs-thread-accent, #E8C56D) 45%, var(--cs-thread-accent, #C9A84C));
-  box-shadow: 0 0 18px 4px var(--cs-comet-shadow, rgba(201,168,76,.6)), 0 0 6px rgba(245,240,232,.7);
-  transition: background 0.4s ease, box-shadow 0.4s ease;
+  background: linear-gradient(
+    135deg,
+    #fff7e0,
+    var(--cs-thread-accent, #e8c56d) 45%,
+    var(--cs-thread-accent, #c9a84c)
+  );
+  box-shadow:
+    0 0 18px 4px var(--cs-comet-shadow, rgba(201, 168, 76, 0.6)),
+    0 0 6px rgba(245, 240, 232, 0.7);
+  transition:
+    background 0.4s ease,
+    box-shadow 0.4s ease;
 }
 
 /* Hero-Orbit — 3D (Security) */
-@keyframes cs-orbit-a { from { transform: translate(-50%,-50%) rotateX(64deg) rotateZ(0deg); }   to { transform: translate(-50%,-50%) rotateX(64deg) rotateZ(360deg); } }
-@keyframes cs-orbit-b { from { transform: translate(-50%,-50%) rotateX(72deg) rotateZ(0deg); }   to { transform: translate(-50%,-50%) rotateX(72deg) rotateZ(-360deg); } }
-@keyframes cs-orbit-c { from { transform: translate(-50%,-50%) rotateX(56deg) rotateZ(0deg); }   to { transform: translate(-50%,-50%) rotateX(56deg) rotateZ(360deg); } }
-@keyframes cs-shield-pulse {
-  0%, 100% { transform: scale(1);    filter: drop-shadow(0 0 8px rgba(229,192,92,.5)); }
-  50%      { transform: scale(1.06); filter: drop-shadow(0 0 18px rgba(229,192,92,.85)); }
+@keyframes cs-orbit-a {
+  from {
+    transform: translate(-50%, -50%) rotateX(64deg) rotateZ(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotateX(64deg) rotateZ(360deg);
+  }
 }
-@keyframes cs-scan { from { transform: translate(-50%,-50%) rotateX(68deg) rotateZ(0deg); } to { transform: translate(-50%,-50%) rotateX(68deg) rotateZ(360deg); } }
+@keyframes cs-orbit-b {
+  from {
+    transform: translate(-50%, -50%) rotateX(72deg) rotateZ(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotateX(72deg) rotateZ(-360deg);
+  }
+}
+@keyframes cs-orbit-c {
+  from {
+    transform: translate(-50%, -50%) rotateX(56deg) rotateZ(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotateX(56deg) rotateZ(360deg);
+  }
+}
+@keyframes cs-shield-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 8px rgba(229, 192, 92, 0.5));
+  }
+  50% {
+    transform: scale(1.06);
+    filter: drop-shadow(0 0 18px rgba(229, 192, 92, 0.85));
+  }
+}
+@keyframes cs-scan {
+  from {
+    transform: translate(-50%, -50%) rotateX(68deg) rotateZ(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotateX(68deg) rotateZ(360deg);
+  }
+}
 /* konzentrische, gleich gekippte Ellipsen-Ringe (Knoten orbitiert) */
 @keyframes cs-ellipse {
-  from { transform: translate(-50%,-50%) rotateX(68deg) rotateZ(0deg); }
-  to   { transform: translate(-50%,-50%) rotateX(68deg) rotateZ(360deg); }
+  from {
+    transform: translate(-50%, -50%) rotateX(68deg) rotateZ(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotateX(68deg) rotateZ(360deg);
+  }
 }
 /* Daten-Paket wandert die Linie entlang (pathLength=1) */
-@keyframes cs-stream { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@keyframes cs-stream {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
 /* Agenten-Node atmet */
 @keyframes cs-agent-glow {
-  0%, 100% { box-shadow: 0 0 8px 1px rgba(229,192,92,.35); }
-  50%      { box-shadow: 0 0 14px 3px rgba(229,192,92,.7); }
+  0%,
+  100% {
+    box-shadow: 0 0 8px 1px rgba(229, 192, 92, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 14px 3px rgba(229, 192, 92, 0.7);
+  }
 }
-.cs-orbit { --cs-orbit-rgb: 201,168,76; }
-[data-theme="light"] .cs-orbit { --cs-orbit-rgb: 138,104,28; }
+.cs-orbit {
+  --cs-orbit-rgb: 201, 168, 76;
+}
+[data-theme='light'] .cs-orbit {
+  --cs-orbit-rgb: 138, 104, 28;
+}
 /* Security-Kern */
-.cs-orbit-core { color: #E5C05C; filter: drop-shadow(0 0 10px rgba(229,192,92,.55)); }
-[data-theme="light"] .cs-orbit-core { color: #8A6A1E; }
+.cs-orbit-core {
+  color: #e5c05c;
+  filter: drop-shadow(0 0 10px rgba(229, 192, 92, 0.55));
+}
+[data-theme='light'] .cs-orbit-core {
+  color: #8a6a1e;
+}
 /* Agenten-Node + Label */
 .cs-agent-node {
-  display: flex; align-items: center; justify-content: center;
-  width: 30px; height: 30px; border-radius: 50%;
-  border: 1px solid rgba(229,192,92,.5);
-  background: rgba(229,192,92,.08);
-  color: #E5C05C;
-  box-shadow: 0 0 8px 1px rgba(229,192,92,.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid rgba(229, 192, 92, 0.5);
+  background: rgba(229, 192, 92, 0.08);
+  color: #e5c05c;
+  box-shadow: 0 0 8px 1px rgba(229, 192, 92, 0.35);
   animation: cs-agent-glow 2.8s ease-in-out infinite;
 }
 .cs-agent-label {
-  font-family: 'JetBrains Mono', monospace; font-size: 8px; letter-spacing: .14em;
-  text-transform: uppercase; color: rgba(var(--cs-orbit-rgb), 0.85); white-space: nowrap;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(var(--cs-orbit-rgb), 0.85);
+  white-space: nowrap;
 }
-[data-theme="light"] .cs-agent-node {
-  border-color: rgba(138,104,28,.55); background: rgba(138,104,28,.08);
-  color: #6f5417; box-shadow: 0 0 8px 1px rgba(138,104,28,.3);
+[data-theme='light'] .cs-agent-node {
+  border-color: rgba(138, 104, 28, 0.55);
+  background: rgba(138, 104, 28, 0.08);
+  color: #6f5417;
+  box-shadow: 0 0 8px 1px rgba(138, 104, 28, 0.3);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .cs-grain { animation: none; }
-  .cs-checkpoint-node { animation: none; }
-  .cs-agent-node { animation: none; }
+  .cs-grain {
+    animation: none;
+  }
+  .cs-checkpoint-node {
+    animation: none;
+  }
+  .cs-agent-node {
+    animation: none;
+  }
+}
+
+/* ============================================================
+   Premium Design Enhancements
+   ============================================================ */
+.cs-glass-panel {
+  background: rgba(13, 13, 13, 0.7);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  transition:
+    border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+[data-theme='light'] .cs-glass-panel {
+  background: rgba(234, 229, 218, 0.75);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.06);
+}
+
+.cs-glass-panel-glow:hover {
+  border-color: rgba(201, 168, 76, 0.35);
+  box-shadow:
+    0 25px 60px rgba(201, 168, 76, 0.05),
+    0 0 30px rgba(201, 168, 76, 0.02);
+}
+[data-theme='light'] .cs-glass-panel-glow:hover {
+  border-color: rgba(138, 104, 28, 0.35);
+  box-shadow: 0 25px 60px rgba(138, 104, 28, 0.05);
+}
+
+/* Premium pill button transitions and gradient border */
+.cs-btn-pill {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+  z-index: 1;
+}
+
+.cs-btn-pill-primary {
+  background: #c9a84c;
+  color: #080808;
+  box-shadow:
+    0 8px 24px rgba(201, 168, 76, 0.2),
+    0 0 0 1px rgba(201, 168, 76, 0.3);
+}
+.cs-btn-pill-primary:hover {
+  background: #e8c56d;
+  transform: translateY(-2px);
+  box-shadow:
+    0 12px 30px rgba(201, 168, 76, 0.35),
+    0 0 0 1px rgba(201, 168, 76, 0.5);
+}
+[data-theme='light'] .cs-btn-pill-primary {
+  background: #8a6a1e;
+  color: #f2ede2;
+  box-shadow: 0 8px 24px rgba(138, 106, 30, 0.15);
+}
+[data-theme='light'] .cs-btn-pill-primary:hover {
+  background: #a4812b;
+  box-shadow: 0 12px 30px rgba(138, 106, 30, 0.25);
+}
+
+.cs-btn-pill-secondary {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--cs-text);
+  backdrop-filter: blur(8px);
+}
+.cs-btn-pill-secondary:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(201, 168, 76, 0.45);
+  color: #c9a84c;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(201, 168, 76, 0.08);
+}
+[data-theme='light'] .cs-btn-pill-secondary {
+  background: rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+[data-theme='light'] .cs-btn-pill-secondary:hover {
+  background: rgba(0, 0, 0, 0.04);
+  border-color: rgba(138, 104, 28, 0.45);
+  color: #8a6a1e;
 }

@@ -21,9 +21,7 @@ import {
 } from '../components/home/primitives'
 import ThreeParticleTimeline from '../components/home/ThreeParticleTimeline'
 import FloatingFrame from '../components/home/FloatingFrame'
-import Starfield from '../components/home/Starfield'
 import HeroOrbit from '../components/home/HeroOrbit'
-import CursorRoot from '../components/home/CursorRoot'
 import CinematicScroll from '../components/home/CinematicScroll'
 import CinematicDissolve from '../components/home/CinematicDissolve'
 import { CASES } from '../data/cases'
@@ -111,8 +109,6 @@ export default function HomePage() {
 
   return (
     <div ref={pageRef} className="relative" style={{ overflowX: 'clip' }}>
-      <CursorRoot />
-      <Starfield />
       <ThreeParticleTimeline targetRef={pageRef} />
 
       <div className="relative z-[5]">
@@ -121,14 +117,18 @@ export default function HomePage() {
         <section className="min-h-[100svh] grid lg:grid-cols-[1.08fr_0.92fr] lg:items-center gap-10 lg:gap-14 px-6 md:px-12 lg:px-20 max-w-[1320px] mx-auto pt-32 pb-16">
          <div className="flex flex-col justify-center">
           <motion.div {...blurIn(0)}
-            className="font-mono uppercase tracking-[0.2em] text-[0.72rem] text-[var(--cs-text-2)] mb-7">
-            Chris Schubert · Fullstack Developer · Potsdam, DE
+            className="inline-flex flex-wrap items-center justify-center lg:justify-start gap-y-2 gap-x-2.5 font-mono uppercase tracking-[0.15em] sm:tracking-[0.2em] text-[0.62rem] sm:text-[0.72rem] text-[var(--cs-text-2)] mb-7 bg-white/4 border border-white/5 rounded-2xl sm:rounded-full px-4 py-2 sm:px-4.5 sm:py-1.5 max-w-full backdrop-blur-sm">
+            <span>Chris Schubert</span>
+            <span className="text-[var(--cs-text-4)]">·</span>
+            <span>Fullstack Developer</span>
+            <span className="text-[var(--cs-text-4)]">·</span>
+            <span>Potsdam, DE</span>
           </motion.div>
 
-          <h1 className="font-display font-semibold leading-[0.95] tracking-[-0.04em]"
-              style={{ fontSize: 'clamp(3rem,1.2rem+5.8vw,6.2rem)' }}>
+          <h1 className="font-display font-semibold leading-[0.95] tracking-[-0.04em] pr-2"
+              style={{ fontSize: 'clamp(3rem, 1.2rem + 5.8vw, 6.2rem)' }}>
             <motion.span className="block" {...blurIn(0.05)}>Premium ist keine Sparte.</motion.span>
-            <motion.span className="block" {...blurIn(0.18)}>
+            <motion.span className="block mt-2" {...blurIn(0.18)}>
               <GradientText>Es ist meine Bauweise.</GradientText>
             </motion.span>
           </h1>
@@ -136,7 +136,7 @@ export default function HomePage() {
           {/* Disziplin-Ticker */}
           <motion.div {...blurIn(0.3)}
             className="flex items-baseline gap-3 mt-8 font-mono"
-            style={{ fontSize: 'clamp(1rem,0.9rem+0.5vw,1.35rem)' }}>
+            style={{ fontSize: 'clamp(1rem, 0.9rem + 0.5vw, 1.35rem)' }}>
             <span className="uppercase tracking-[0.18em] text-[0.7em] text-[var(--cs-text-3)]">Ich baue</span>
             <span className="text-[var(--cs-text-4)]">→</span>
             <DisciplineTicker className="text-[#C9A84C] font-medium" />
@@ -144,22 +144,22 @@ export default function HomePage() {
 
           <Reveal delay={0.4} className="mt-8 max-w-[62ch]">
             <p className="leading-relaxed text-[var(--cs-text-2)]"
-               style={{ fontSize: 'clamp(1.1rem,1rem+0.55vw,1.45rem)' }}>
+               style={{ fontSize: 'clamp(1.1rem, 1rem + 0.55vw, 1.45rem)' }}>
               Ein Entwickler, viele Disziplinen — Finanz, Security, Commerce.
               Selbst gebaut, selbst deployed, kompromisslos zu Ende gedacht.
             </p>
           </Reveal>
 
-          <Reveal delay={0.5} className="flex flex-wrap items-center gap-4 mt-10">
-            <Magnetic strength={0.22}>
+          <Reveal delay={0.5} className="flex flex-wrap items-center gap-5 mt-10">
+            <Magnetic strength={0.15}>
               <a href="#work"
-                 className="bg-[#C9A84C] text-[#080808] px-7 py-3.5 rounded font-semibold hover:bg-[#E8C56D] transition-colors duration-300">
+                 className="cs-btn-pill cs-btn-pill-primary px-8 py-4 text-[11px]">
                 Arbeiten ansehen
               </a>
             </Magnetic>
-            <Magnetic strength={0.22}>
+            <Magnetic strength={0.15}>
               <Link to="/contact"
-                    className="border border-[var(--cs-border-w2)] text-[var(--cs-text)] px-7 py-3.5 rounded font-medium hover:border-[#C9A84C] hover:text-[#C9A84C] transition-colors duration-300">
+                    className="cs-btn-pill cs-btn-pill-secondary px-8 py-4 text-[11px]">
                 Projekt starten
               </Link>
             </Magnetic>
@@ -212,7 +212,7 @@ export default function HomePage() {
         <div ref={sectionRef} className="relative">
           <motion.section 
             style={reduced ? undefined : { clipPath: clipPathValue }}
-            className="px-8 md:px-16 lg:px-24 max-w-[1240px] mx-auto py-20 md:py-28 bg-[var(--cs-s1)] border border-[#C9A84C]/15 rounded-3xl my-16 relative overflow-hidden"
+            className="px-8 md:px-16 lg:px-24 max-w-[1240px] mx-auto py-20 md:py-28 cs-glass-panel border border-[#C9A84C]/15 rounded-3xl my-16 relative overflow-hidden"
           >
             {/* Ambient golden core inside the portal */}
             <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,rgba(201,168,76,0.06)_0%,transparent_70%)]" />
@@ -221,7 +221,7 @@ export default function HomePage() {
               <Eyebrow num="(01)">Was ich mache</Eyebrow>
               <Reveal delay={0.1}>
                 <p className="font-display font-medium tracking-[-0.02em] leading-[1.28] max-w-[24ch] text-[var(--cs-text)]"
-                   style={{ fontSize: 'clamp(2rem,1.4rem+2.6vw,3.25rem)' }}>
+                   style={{ fontSize: 'clamp(2rem, 1.4rem + 2.6vw, 3.25rem)' }}>
                   Ich baue <span className="text-[#C9A84C]">Premium-Software</span> — vom{' '}
                   <span className="text-[#C9A84C]">Finanz-Tresor</span> bis zum{' '}
                   <span className="text-[#C9A84C]">Security-Tool</span>, end-to-end deployed.
@@ -243,7 +243,7 @@ export default function HomePage() {
                 <Eyebrow num="(02)">Selected Work</Eyebrow>
                 <Reveal delay={0.1}>
                   <h2 className="font-display font-semibold tracking-[-0.02em] leading-none text-[var(--cs-text)]"
-                      style={{ fontSize: 'clamp(2rem,1.4rem+2.6vw,3.25rem)' }}>
+                      style={{ fontSize: 'clamp(2rem, 1.4rem + 2.6vw, 3.25rem)' }}>
                     Vier Produkte. Vier Disziplinen.
                   </h2>
                 </Reveal>
@@ -275,7 +275,7 @@ export default function HomePage() {
               <Eyebrow num="(03)">Der Macher</Eyebrow>
               <Reveal delay={0.1}>
                 <h2 className="font-display font-semibold tracking-[-0.02em] text-[var(--cs-text)] mb-7"
-                    style={{ fontSize: 'clamp(2rem,1.4rem+2.6vw,3.25rem)' }}>
+                    style={{ fontSize: 'clamp(2rem, 1.4rem + 2.6vw, 3.25rem)' }}>
                   Ich bin Chris Schubert.
                 </h2>
               </Reveal>
@@ -292,7 +292,7 @@ export default function HomePage() {
               </Reveal>
               <Reveal delay={0.28}>
                 <p className="border-l-2 border-[#C9A84C] pl-6 font-medium tracking-[-0.01em] leading-[1.4] text-[var(--cs-text)] mb-8 max-w-[42ch]"
-                   style={{ fontSize: 'clamp(1.25rem,1rem+1vw,1.7rem)' }}>
+                   style={{ fontSize: 'clamp(1.25rem, 1rem + 1vw, 1.7rem)' }}>
                   Kein Influencer. Kein Coach. Jemand der baut — und deployed.
                 </p>
               </Reveal>
@@ -312,73 +312,75 @@ export default function HomePage() {
         </section>
 
         {/* ═══════════ PROZESS ═══════════ */}
-        <section className={`${SECTION} py-24 md:py-36`}>
+        <section className={`${SECTION} py-24 md:py-36 relative`}>
           <Eyebrow num="(04)">Prozess</Eyebrow>
-          <div className="relative pl-8 lg:pl-12">
-            <div className="absolute top-0 left-0 w-px h-full bg-[var(--cs-border-w2)]" />
-            <motion.div
-              className="absolute top-0 left-0 w-px h-full bg-gradient-to-b from-[#E8C56D] to-[#C9A84C] origin-top"
-              initial={reduced ? false : { scaleY: 0 }}
-              whileInView={{ scaleY: 1 }}
-              viewport={{ once: true, margin: '-100px' }}
-              transition={{ duration: 1.4, ease: EASE }}
-            />
-            <Stagger className="flex flex-col gap-12 lg:gap-20" gap={0.12}>
-              {[
-                { n: '01', t: 'Verstehen', d: 'Erst das Problem, dann der Code. Ich höre zu und denke das Ziel zu Ende.' },
-                { n: '02', t: 'Konzept', d: 'Klarer Plan mit ehrlicher Aufwandsschätzung — bevor eine Zeile geschrieben wird.' },
-                { n: '03', t: 'Bauen', d: 'Frühes echtes Deployment statt Mockups — du siehst Fortschritt, kein Versprechen.' },
-                { n: '04', t: 'Liefern & Übergeben', d: 'Deployed, dokumentiert und sauber übergeben — bereit für den Betrieb.' },
-              ].map(step => (
-                <StaggerItem key={step.n}>
-                  <div className="font-mono text-[0.78rem] tracking-[0.2em] text-[#C9A84C] mb-3">{step.n}</div>
-                  <h3 className="font-display font-semibold tracking-[-0.02em] text-[var(--cs-text)] mb-2"
-                      style={{ fontSize: 'clamp(1.5rem,1.1rem+1.4vw,2.2rem)' }}>{step.t}</h3>
-                  <p className="text-[var(--cs-text-2)] leading-relaxed max-w-[54ch]">{step.d}</p>
-                </StaggerItem>
-              ))}
-            </Stagger>
-          </div>
+          
+          <Stagger className="grid md:grid-cols-2 gap-6 lg:gap-8 mt-12" gap={0.12}>
+            {[
+              { n: '01', t: 'Verstehen', d: 'Erst das Problem, dann der Code. Ich höre zu und denke das Ziel zu Ende.' },
+              { n: '02', t: 'Konzept', d: 'Klarer Plan mit ehrlicher Aufwandsschätzung — bevor eine Zeile geschrieben wird.' },
+              { n: '03', t: 'Bauen', d: 'Frühes echtes Deployment statt Mockups — du siehst Fortschritt, kein Versprechen.' },
+              { n: '04', t: 'Liefern & Übergeben', d: 'Deployed, dokumentiert und sauber übergeben — bereit für den Betrieb.' },
+            ].map(step => (
+              <StaggerItem key={step.n} className="cs-glass-panel cs-glass-panel-glow p-8 rounded-2xl relative overflow-hidden group">
+                {/* Accent glow corner */}
+                <div className="absolute top-0 right-0 w-24 h-24 pointer-events-none bg-[radial-gradient(circle_at_top_right,rgba(201,168,76,0.04)_0%,transparent_70%)] group-hover:bg-[radial-gradient(circle_at_top_right,rgba(201,168,76,0.08)_0%,transparent_70%)] transition-colors duration-500" />
+                
+                <div className="font-mono text-[1.4rem] font-bold tracking-[0.1em] text-[#C9A84C]/30 group-hover:text-[#C9A84C]/80 transition-colors duration-400 mb-6">{step.n}</div>
+                <h3 className="font-display font-semibold tracking-[-0.02em] text-[var(--cs-text)] mb-3"
+                    style={{ fontSize: 'clamp(1.5rem, 1.1rem + 1.4vw, 2.2rem)' }}>{step.t}</h3>
+                <p className="text-[var(--cs-text-2)] leading-relaxed">{step.d}</p>
+              </StaggerItem>
+            ))}
+          </Stagger>
+
           <Reveal delay={0.2}>
-            <p className="mt-14 pl-8 lg:pl-12 font-mono text-[0.74rem] tracking-[0.14em] uppercase text-[var(--cs-text-3)]">
+            <p className="mt-14 text-center font-mono text-[0.74rem] tracking-[0.14em] uppercase text-[var(--cs-text-3)]">
               Antwort in 24h · transparente Kosten · sauber dokumentiert
             </p>
           </Reveal>
         </section>
 
         {/* ═══════════ KONTAKT ═══════════ */}
-        <section id="kontakt" className="px-6 md:px-12 lg:px-20 max-w-[900px] mx-auto py-24 md:py-36 text-center">
-          <Eyebrow num="(05)">Lass uns reden</Eyebrow>
-          <Reveal delay={0.1}>
-            <h2 className="font-display font-semibold tracking-[-0.03em] leading-none text-[var(--cs-text)]"
-                style={{ fontSize: 'clamp(2.4rem,1.4rem+4vw,4.5rem)' }}>
-              Hast du ein Projekt?<br />
-              <GradientText>Lass es uns bauen.</GradientText>
-            </h2>
-          </Reveal>
-          <Reveal delay={0.18}>
-            <p className="mt-7 text-[var(--cs-text-2)]" style={{ fontSize: 'clamp(1.1rem,1rem+0.55vw,1.5rem)' }}>
-              Antwort in 24h.
-            </p>
-          </Reveal>
-          <Reveal delay={0.26}>
-            <div className="mt-10">
-              <Magnetic strength={0.22}>
-                <Link to="/contact"
-                      className="inline-block bg-[#C9A84C] text-[#080808] px-9 py-4 rounded font-semibold hover:bg-[#E8C56D] transition-colors duration-300">
-                  Projekt starten
-                </Link>
-              </Magnetic>
+        <section id="kontakt" className="px-6 md:px-12 lg:px-20 max-w-[1000px] mx-auto py-24 md:py-36">
+          <div className="cs-glass-panel border border-[#C9A84C]/20 rounded-3xl p-12 md:p-20 text-center relative overflow-hidden">
+            {/* Ambient gold glow */}
+            <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,rgba(201,168,76,0.06)_0%,transparent_70%)]" />
+            
+            <div className="relative z-10">
+              <Eyebrow num="(05)">Lass uns reden</Eyebrow>
+              <Reveal delay={0.1}>
+                <h2 className="font-display font-semibold tracking-[-0.03em] leading-none text-[var(--cs-text)]"
+                    style={{ fontSize: 'clamp(2.4rem, 1.4rem + 4vw, 4.5rem)' }}>
+                  Hast du ein Projekt?<br />
+                  <span className="block mt-3"><GradientText>Lass es uns bauen.</GradientText></span>
+                </h2>
+              </Reveal>
+              <Reveal delay={0.18}>
+                <p className="mt-7 text-[var(--cs-text-2)]" style={{ fontSize: 'clamp(1.1rem, 1rem + 0.55vw, 1.5rem)' }}>
+                  Antwort in 24h.
+                </p>
+              </Reveal>
+              <Reveal delay={0.26}>
+                <div className="mt-10">
+                  <Magnetic strength={0.15}>
+                    <Link to="/contact"
+                          className="cs-btn-pill cs-btn-pill-primary px-10 py-4.5 text-[12px]">
+                      Projekt starten
+                    </Link>
+                  </Magnetic>
+                </div>
+              </Reveal>
+              <Reveal delay={0.32}>
+                <div className="mt-12 flex flex-wrap justify-center gap-x-8 gap-y-3 font-mono text-[0.78rem] tracking-[0.1em]">
+                  <a href="mailto:info@candlescope.de" className="text-[var(--cs-text)] hover:text-[#C9A84C] transition-colors duration-300">info@candlescope.de</a>
+                  <span className="text-[var(--cs-text-4)]">·</span>
+                  <a href="https://github.com/SchubertChris" target="_blank" rel="noopener noreferrer"
+                     className="text-[var(--cs-text-2)] hover:text-[#C9A84C] transition-colors duration-300">GitHub</a>
+                </div>
+              </Reveal>
             </div>
-          </Reveal>
-          <Reveal delay={0.32}>
-            <div className="mt-10 flex flex-wrap justify-center gap-x-6 gap-y-3 font-mono text-[0.78rem] tracking-[0.1em]">
-              <a href="mailto:info@candlescope.de" className="text-[var(--cs-text)] hover:text-[#C9A84C] transition-colors">info@candlescope.de</a>
-              <span className="text-[var(--cs-text-4)]">·</span>
-              <a href="https://github.com/SchubertChris" target="_blank" rel="noopener noreferrer"
-                 className="text-[var(--cs-text-2)] hover:text-[#C9A84C] transition-colors">GitHub</a>
-            </div>
-          </Reveal>
+          </div>
         </section>
 
       </div>

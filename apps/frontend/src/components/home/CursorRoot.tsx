@@ -15,12 +15,11 @@
 import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 
-type Mode = 'default' | 'link' | 'case'
+type Mode = 'default' | 'link' | 'case' | 'case-solid'
 
 export default function CursorRoot() {
   const ringRef = useRef<HTMLDivElement>(null)
   const dotRef = useRef<HTMLDivElement>(null)
-  const [mode, setMode] = useState<Mode>('default')
   const [on, setOn] = useState(false)
 
   useEffect(() => {
@@ -32,16 +31,49 @@ export default function CursorRoot() {
     const tgt = { x: window.innerWidth / 2, y: window.innerHeight / 2 }
     const ring = { x: tgt.x, y: tgt.y }
     let curMode: Mode = 'default'
+    let shown = false
 
     const onMove = (e: MouseEvent) => {
       tgt.x = e.clientX
       tgt.y = e.clientY
       const dot = dotRef.current
+      const r = ringRef.current
       if (dot) dot.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%, -50%)`
+      // Erster echter Move: Ring exakt an die Cursor-Position schnappen und
+      // beide Elemente einblenden → kein Ecken-Flash, kein Lerp-aus-der-Mitte.
+      if (!shown) {
+        shown = true
+        ring.x = e.clientX
+        ring.y = e.clientY
+        if (r) {
+          r.style.transform = `translate(${ring.x}px, ${ring.y}px) translate(-50%, -50%)`
+          r.style.opacity = '1'
+        }
+        if (dot) dot.style.opacity = '1'
+      }
       const el = e.target as HTMLElement | null
       const hit = el?.closest?.('[data-cursor], a, button, [role="button"]') as HTMLElement | null
-      const m: Mode = hit ? (hit.dataset?.cursor === 'case' ? 'case' : 'link') : 'default'
-      if (m !== curMode) { curMode = m; setMode(m) }
+      const cd = hit?.dataset?.cursor
+      const m: Mode = hit ? (cd === 'case' ? 'case' : cd === 'case-solid' ? 'case-solid' : 'link') : 'default'
+      if (m !== curMode) {
+        curMode = m
+        if (r) {
+          r.classList.remove('cs-cursor-default', 'cs-cursor-link', 'cs-cursor-case', 'cs-cursor-case-solid')
+          r.classList.add(`cs-cursor-${m}`)
+
+          const label = r.querySelector('.cs-cursor-label') as HTMLElement | null
+          if (m === 'case' || m === 'case-solid') {
+            if (!label) {
+              const span = document.createElement('span')
+              span.className = 'cs-cursor-label'
+              span.innerText = 'Ansehen'
+              r.appendChild(span)
+            }
+          } else {
+            if (label) label.remove()
+          }
+        }
+      }
     }
     const loop = () => {
       ring.x += (tgt.x - ring.x) * 0.18
@@ -66,9 +98,7 @@ export default function CursorRoot() {
   return createPortal(
     <>
       <div ref={dotRef} className="cs-cursor-dot" aria-hidden="true" />
-      <div ref={ringRef} className={`cs-cursor-ring cs-cursor-${mode}`} aria-hidden="true">
-        {mode === 'case' && <span className="cs-cursor-label">Ansehen</span>}
-      </div>
+      <div ref={ringRef} className="cs-cursor-ring cs-cursor-default" aria-hidden="true" />
     </>,
     document.body,
   )

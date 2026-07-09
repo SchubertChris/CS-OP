@@ -1,7 +1,9 @@
-import { useEffect, useState } from 'react'
-
-// ── Fallback-URLs (public/images/ — immer verfügbar) ──────────────────────
-const DEFAULTS: Record<string, string> = {
+// ── Bild-Quellen (public/images/ — self-hosted, immer verfügbar) ──────────
+// Hinweis: Ein dynamischer /api/images-Endpoint existiert (noch) nicht.
+// Früher wurde er bei jedem Load gefetcht → 404 + unnötiger Netzwerk-Traffic.
+// Solange es kein Backend für verwaltbare Bilder gibt, nutzen wir direkt die
+// lokalen Defaults. Wenn der Endpoint kommt, hier wieder ein Fetch ergänzen.
+const IMAGES: Record<string, string> = {
   'home-preview':         '/images/home-preview.webp',
   'about-chris':          '/images/about-chris.webp',
   'chris':                '/images/ImageVonMirNeu.webp',
@@ -23,27 +25,9 @@ const DEFAULTS: Record<string, string> = {
   'candlescope':          '/images/candlescope.webp',
 }
 
-// ── Singleton-Cache — API nur einmal pro Page-Load fetchen ─────────────────
-let _cache: Record<string, string> | null = null
-let _pending: Promise<Record<string, string>> | null = null
-
-async function fetchImages(): Promise<Record<string, string>> {
-  if (_cache) return _cache
-  if (_pending) return _pending
-
-  _pending = fetch('/api/images')
-    .then(r => r.ok ? r.json() : {})
-    .then((data: Record<string, string>) => {
-      _cache = { ...DEFAULTS, ...data }
-      _pending = null
-      return _cache
-    })
-    .catch(() => {
-      _pending = null
-      return DEFAULTS
-    })
-
-  return _pending
+// Stabile Referenz — kein Re-Render bei Consumern.
+function img(key: string): string {
+  return IMAGES[key] ?? ''
 }
 
 // ── Hook ──────────────────────────────────────────────────────────────────
@@ -51,20 +35,5 @@ export function useSiteImages(): {
   img: (key: string) => string
   loading: boolean
 } {
-  const [images, setImages] = useState<Record<string, string>>(_cache ?? DEFAULTS)
-  const [loading, setLoading] = useState(!_cache)
-
-  useEffect(() => {
-    if (_cache) return
-    fetchImages().then(map => {
-      setImages(map)
-      setLoading(false)
-    })
-  }, [])
-
-  return {
-    /** Gibt die URL für einen Image-Key zurück. Fallback = lokaler Pfad. */
-    img: (key: string) => images[key] ?? DEFAULTS[key] ?? '',
-    loading,
-  }
+  return { img, loading: false }
 }

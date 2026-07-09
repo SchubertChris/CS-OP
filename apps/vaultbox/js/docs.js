@@ -28,7 +28,7 @@ function renderDocs() {
     { icon: "🕯️", label: "2023 — Candlestick Charts",date: "Sommer 2023",   desc: "Der Name 'Candlescope' entsteht: Persönliche Finanzen in der Sprache der Trader. OHLC-Kerzen für monatliche Ein- und Ausgaben — kein anderes PFM macht das. Das Killer-Feature." },
     { icon: "⚡", label: "2024 — Electron & Desktop", date: "Frühjahr 2024", desc: "Migration zu Electron. Echte Desktop-App mit Native Dialogs, sicherem Datenspeicher, IPC-Bridge. Safepoints, Import/Export, druckbare Berichte. Die App wird ernsthaft." },
     { icon: "🎨", label: "2025 — Design & Features",  date: "2025",          desc: "Komplettes UI-Redesign: 6 Themes, Space Grotesk, futuristische Sidebar. Vision Board, Kreditoren, Globale Schnellsuche Ctrl+K. 22 Features. v10.x." },
-    { icon: "🚀", label: "2026 — VaultBox Launch",     date: "Juni 2026",     desc: "Desktop-Launch v1.0 als VaultBox — bereit für die Welt. Rebranding, Lizenz-System, FIFO Krypto-Steuer-Engine. Offline. Privat. 149€ einmalig, kein Abo." },
+    { icon: "🚀", label: "2026 — VaultBox Launch",     date: "Juni 2026",     desc: "Desktop-Launch v1.0 als VaultBox — bereit für die Welt. Rebranding, Lizenz-System, FIFO Krypto-Steuer-Engine. Offline. Privat. Faire monatliche Lizenz (5,99 €/Monat)." },
   ];
   _docsTLActive = _DOCS_TL.length - 1;
 
@@ -88,6 +88,16 @@ function renderDocs() {
   ];
 
   const changelog = [
+    {
+      version: "v11.0 — Verschlüsselung & Sicherheit", date: "Juni 2026",
+      items: [
+        "Zero-Knowledge-Verschlüsselung: alle Finanzdaten lokal mit AES-256-GCM (Schlüssel via Argon2id) — niemand außer dir kann sie lesen",
+        "Notfall-Schlüssel (Recovery-Code): schützt vor Datenverlust bei vergessenem Master-Passwort",
+        "Krypto-Steuerdatenbank jetzt ebenfalls verschlüsselt (SQLCipher)",
+        "Sicherheit gehärtet: kritische Lücke im Dokumenten-Archiv geschlossen",
+        "Lizenzsystem auf moderne asymmetrische Kryptografie (Ed25519) umgestellt",
+      ],
+    },
     {
       version: "v10.6 — Polish & Suche", date: "April 2026",
       items: [
@@ -298,7 +308,7 @@ function renderDocs() {
       left: _dbPage('Kapitel 6', 'Passwort & Privacy',
         '<p>Deine Daten bleiben geheim — auch wenn jemand deinen PC nutzt:</p>'
         + _dbList([
-          '<b>Passwort</b> — SHA-256 Hash, wird nie im Klartext gespeichert',
+          '<b>Passwort</b> — scrypt-Schlüssel, wird nie im Klartext gespeichert',
           '<b>Auto-Lock</b> — Bildschirm sperrt nach 5 Min Inaktivität',
           '<b>Privacy Mode</b> — alle Zahlen ausblenden (Klick aufs Auge)',
           'Passwort nachträglich ändern oder entfernen',
@@ -382,9 +392,9 @@ function renderDocs() {
   const statsHtml = [
     { num: "0",       lbl: "Server-Anfragen" },
     { num: "100",     lbl: "% Offline-fähig", suffix: "%" },
-    { num: "22",      lbl: "Features v10.6" },
-    { num: "12",      lbl: "Versionen" },
-    { num: "SHA-256", lbl: "Passwort-Hash" },
+    { num: "25",      lbl: "Features v11.0" },
+    { num: "13",      lbl: "Versionen" },
+    { num: "scrypt",  lbl: "Passwort-Hash" },
     { num: "7",       lbl: "Jahre Demo-Daten" },
   ].map(function(s, i) {
     return '<div class="docs-stat-chip docs-reveal" data-reveal="up" style="--reveal-delay:' + (i * 55) + 'ms">'
@@ -497,7 +507,7 @@ function renderDocs() {
     + '<div class="docs-pillars docs-reveal" data-reveal="up">'
     + '<div class="docs-pillar"><div class="docs-pillar-icon">🔒</div><div class="docs-pillar-title">Privacy First</div><p class="docs-pillar-body">Alle Daten liegen ausschließlich auf deinem Gerät. Kein Server, keine Telemetrie, keine Werbung. SHA-256 Passwortschutz und Auto-Lock machen die App zum sichersten Finanz-Tresor den du besitzt.</p></div>'
     + '<div class="docs-pillar"><div class="docs-pillar-icon">📊</div><div class="docs-pillar-title">Trader-Ästhetik</div><p class="docs-pillar-body">Deine Finanzen in der Sprache der Profis: Candlestick-Charts für monatliche Ein- und Ausgaben. Kein anderes Personal-Finance-Tool zeigt dein Leben in OHLC-Kerzen.</p></div>'
-    + '<div class="docs-pillar"><div class="docs-pillar-icon">🚀</div><div class="docs-pillar-title">Kein Abo. Je.</div><p class="docs-pillar-body">Einmal kaufen, für immer nutzen. Keine monatlichen Kosten, keine Premium-Tier-Gimmicks. Was du kaufst gehört dir — vollständig, dauerhaft.</p></div>'
+    + '<div class="docs-pillar"><div class="docs-pillar-icon">🚀</div><div class="docs-pillar-title">Faires Abo</div><p class="docs-pillar-body">Nur 5,99 € im Monat. Jederzeit monatlich kündbar. Keine Mindestlaufzeit, keine versteckten Kosten. Deine Daten bleiben dennoch vollständig lokal.</p></div>'
     + '</div>'
 
     // TIMELINE
@@ -543,11 +553,11 @@ function renderDocs() {
     + '<div class="docs-tile-stripe"></div>'
     + '<div class="docs-tile-icon">🔒</div>'
     + '<div class="docs-tile-tag">Sicherheit & Philosophie</div>'
-    + '<div class="docs-tile-title">Warum 100% offline?</div>'
-    + '<p class="docs-tile-body">Deine Kontonummern, Sparziele und Monatseinkommen gehören nur dir. VaultBox sendet <strong>keine einzige Zahl</strong> an Server — keine Cloud, keine Accounts, kein Tracking.<br><br><strong>Kein Abo. Kein Login. Keine Datenschutzerklärung.</strong></p>'
+    + '<div class="docs-tile-title">Deine Datenhoheit</div>'
+    + '<p class="docs-tile-body">Unter DAC8 und dem KStTG melden Krypto-Börsen Transaktionsdaten automatisch an das Finanzamt – das ist unvermeidbar. Umso wichtiger ist es, dass dein vollständiges Finanzbild in deinen Händen bleibt. VaultBox sendet <strong>keine einzige Zahl</strong> ins Netz. Kein Abo, kein Cloud-Zwang, kein Tracking.<br><br><strong>Privater CSV-Import:</strong> Statt sensible API-Keys mit Drittanbietern zu teilen, importierst du deine Börsendaten sicher und offline per Datei. Deine Datenhoheit bleibt unberührt.</p>'
     + '<div class="docs-chips">'
-    + '<span class="docs-chip">localStorage</span><span class="docs-chip">SHA-256</span><span class="docs-chip">Kein Backend</span>'
-    + '<span class="docs-chip">Privacy Mode</span><span class="docs-chip">Auto-Lock</span><span class="docs-chip">0 npm packages</span>'
+    + '<span class="docs-chip">localStorage</span><span class="docs-chip">scrypt</span><span class="docs-chip">Kein Backend</span>'
+    + '<span class="docs-chip">Privacy Mode</span><span class="docs-chip">Auto-Lock</span><span class="docs-chip">0 Server-Syncs</span>'
     + '</div></div>'
     + '<div class="docs-tile docs-tile--stack">'
     + '<div class="docs-tile-icon">⚙️</div>'

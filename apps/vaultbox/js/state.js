@@ -65,8 +65,36 @@ const S = {
 // ── PERSIST (debounced) ───────────────
 // Schnelle, aufeinanderfolgende Mutationen werden zu einem Schreibvorgang
 // zusammengefasst (Performance bei vielen Buchungen). Datenintegrität bleibt
-// gewahrt: localStorage ist die maßgebliche Quelle für hydrate() und wird
-// synchron vor App-Schließen/Reload geflusht (beforeunload/pagehide).
+// gewahrt: im Legacy-Modus ist localStorage die Quelle für hydrate(); im
+// Vault-Modus kommt der State NUR aus dem entschlüsselten Unlock-Ergebnis.
+
+// ── VAULT-MODUS (Verschlüsselung) ──
+let _vaultMode = false;
+function setVaultMode(on) { _vaultMode = !!on; }
+
+// Boot/Re-Unlock: initialBoot → aus Platte hydrieren; sonst RAM nachspeichern
+// (verhindert, dass ein Re-Unlock ungespeicherte Änderungen überschreibt).
+async function unlockVaultFlow(pw, opts) {
+  const r = await window.csf.vault.unlock(pw);
+  if (!r || !r.ok) return r || { ok: false, error: "error" };
+  if (opts && opts.initialBoot) hydrate(r.state);
+  else if (_persistDirty || _unsavedChanges) persistNow();
+  return r;
+}
+
+// Verschlüsselung aktivieren: create → verifyIntegrity → erst dann Klartext-Abriss.
+async function enableEncryption(pw) {
+  const snap = JSON.parse(JSON.stringify(S));
+  const c = await window.csf.vault.create(pw, snap);
+  if (!c || !c.ok) return c || { ok: false, error: "create-failed" };
+  const ver = await window.csf.vault.verifyIntegrity(pw, snap);
+  if (!ver || !ver.ok) return { ok: false, error: "Integritätsprüfung fehlgeschlagen (" + ((ver && ver.error) || "?") + ") — Klartext bleibt unangetastet." };
+  try { await window.csf.vault.migrateCryptoDb(); } catch (_) {}   // crypto.db → SQLCipher (Self-Heal sonst beim nächsten Zugriff)
+  setVaultMode(true);
+  localStorage.removeItem("csf_v1");   // letzte Klartext-Brücke — erst jetzt
+  return { ok: true, recoveryCode: c.recoveryCode };
+}
+
 let _persistTimer = null;
 let _persistDirty = false;
 const PERSIST_DEBOUNCE_MS = 200;
@@ -98,25 +126,31 @@ function _persistFlush() {
     }
   }
   _clearSaveVibrate();
-  // Wenn IPC verfügbar: auch in AppData speichern (Mirror; async ok)
+
   if (window.csf?.state?.save) {
-    window.csf.state.save(S).catch(() => {});
+    window.csf.state.save(S).then((r) => {
+      if (r && r.ok === false) {                 // Speichern fehlgeschlagen (z.B. gesperrt)
+        _persistDirty = true; _markUnsaved();    // Daten NICHT verlieren
+        if (r.error === "locked" && typeof showToast === "function")
+          showToast("Gesperrt — zum Speichern bitte entsperren", "warning", 4000);
+      }
+    }).catch(() => { _persistDirty = true; _markUnsaved(); });
   }
-  try {
-    localStorage.setItem("csf_v1", JSON.stringify(S));
-    const dot = document.getElementById("saveDot");
-    const lbl = document.getElementById("saveLabel");
-    if (dot) {
-      dot.classList.add("saved");
-      lbl.textContent = "gespeichert";
-      clearTimeout(dot._t);
-      dot._t = setTimeout(() => {
-        dot.classList.remove("saved");
-        lbl.textContent = CFG?.autosave ? "autosave · on" : "autosave · off";
-      }, 1500);
-    }
-  } catch (e) {
-    console.warn("persist failed", e);
+  // Klartext-Spiegel NUR im Legacy-Modus (im Vault-Modus verschlüsselt main())
+  if (!_vaultMode) {
+    try { localStorage.setItem("csf_v1", JSON.stringify(S)); } catch (e) { console.warn("persist failed", e); }
+  }
+
+  const dot = document.getElementById("saveDot");
+  const lbl = document.getElementById("saveLabel");
+  if (dot) {
+    dot.classList.add("saved");
+    if (lbl) lbl.textContent = "gespeichert";
+    clearTimeout(dot._t);
+    dot._t = setTimeout(() => {
+      dot.classList.remove("saved");
+      if (lbl) lbl.textContent = CFG?.autosave ? "autosave · on" : "autosave · off";
+    }, 1500);
   }
 }
 
@@ -186,11 +220,14 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // ── HYDRATE ───────────────────────────
-function hydrate() {
+function hydrate(seed) {
   try {
-    const raw = localStorage.getItem("csf_v1");
-    if (!raw) return false;
-    const p = JSON.parse(raw);
+    let p = seed;                                  // Vault-Modus: entschlüsselter State
+    if (!p) {                                       // Legacy: aus localStorage
+      const raw = localStorage.getItem("csf_v1");
+      if (!raw) return false;
+      p = JSON.parse(raw);
+    }
 
     if (Array.isArray(p.accounts)) {
       S.accounts = p.accounts.map((a) => ({

@@ -7,126 +7,9 @@ import { useEffect, useRef, useState } from 'react'
 import { useScroll, useMotionValueEvent, useReducedMotion } from 'framer-motion'
 import { useTheme } from '../../contexts/ThemeContext'
 
-// Rahmen-Pfad wird dynamisch aus der echten Position der #work-Sektion gebaut,
-// damit der Split die (sticky, 560vh hohe) Carousel sauber umschließt: öffnet
-// knapp über der Sektion, schließt knapp darunter (unter Sentinel) — auf jeder
-// Bildschirmgröße korrekt. yOpen/yClose sind viewBox-Einheiten (0..1000).
-function buildTimelinePath(side: 'left' | 'right', yOpen: number, yClose: number) {
-  const edge = side === 'left' ? 2 : 98
-  const c1 = side === 'left' ? 35 : 65
-  const c2 = side === 'left' ? 10 : 90
-  const o = Math.round(yOpen)
-  const cl = Math.round(yClose)
-  return (
-    `M51,18 C51,100 6,130 3.5,220 ` +
-    `C2,${o - 120} 50,${o - 60} 50,${o} ` +
-    `C${c1},${o} ${c2},${o} ${edge},${o} ` +
-    `L${edge},${cl - 30} ` +
-    `C${c2},${cl - 30} ${c1},${cl} 50,${cl} ` +
-    `C50,${cl + 70} 50,${Math.round((cl + 982) / 2)} 50,982`
-  )
-}
 
-const DEFAULT_Y_OPEN = 345
-const DEFAULT_Y_CLOSE = 780
 
-const RANGES = [0, 0.22, 0.28, 0.35, 0.42, 0.48, 0.55, 0.62, 0.70, 0.78, 0.85, 1]
-
-interface ThemePalette {
-  accent: string
-  accentDim: string
-  glow: string
-  cometShadow: string
-}
-
-const PALETTES_DARK: ThemePalette[] = [
-  { accent: '#C9A84C', accentDim: 'rgba(201, 168, 76, 0.25)', glow: 'rgba(232, 197, 109, 0.25)', cometShadow: 'rgba(201, 168, 76, 0.6)' },
-  { accent: '#C9A84C', accentDim: 'rgba(201, 168, 76, 0.25)', glow: 'rgba(232, 197, 109, 0.25)', cometShadow: 'rgba(201, 168, 76, 0.6)' },
-  { accent: '#E87D3E', accentDim: 'rgba(232, 125, 62, 0.25)', glow: 'rgba(240, 153, 102, 0.25)', cometShadow: 'rgba(232, 125, 62, 0.6)' },
-  { accent: '#E87D3E', accentDim: 'rgba(232, 125, 62, 0.25)', glow: 'rgba(240, 153, 102, 0.25)', cometShadow: 'rgba(232, 125, 62, 0.6)' },
-  { accent: '#D2E83E', accentDim: 'rgba(210, 232, 62, 0.25)', glow: 'rgba(221, 240, 102, 0.25)', cometShadow: 'rgba(210, 232, 62, 0.6)' },
-  { accent: '#D2E83E', accentDim: 'rgba(210, 232, 62, 0.25)', glow: 'rgba(221, 240, 102, 0.25)', cometShadow: 'rgba(210, 232, 62, 0.6)' },
-  { accent: '#3EB9E8', accentDim: 'rgba(62, 185, 232, 0.25)', glow: 'rgba(102, 203, 240, 0.25)', cometShadow: 'rgba(62, 185, 232, 0.6)' },
-  { accent: '#3EB9E8', accentDim: 'rgba(62, 185, 232, 0.25)', glow: 'rgba(102, 203, 240, 0.25)', cometShadow: 'rgba(62, 185, 232, 0.6)' },
-  { accent: '#C43EE8', accentDim: 'rgba(196, 62, 232, 0.25)', glow: 'rgba(211, 102, 240, 0.25)', cometShadow: 'rgba(196, 62, 232, 0.6)' },
-  { accent: '#C43EE8', accentDim: 'rgba(196, 62, 232, 0.25)', glow: 'rgba(211, 102, 240, 0.25)', cometShadow: 'rgba(196, 62, 232, 0.6)' },
-  { accent: '#C9A84C', accentDim: 'rgba(201, 168, 76, 0.25)', glow: 'rgba(232, 197, 109, 0.25)', cometShadow: 'rgba(201, 168, 76, 0.6)' },
-  { accent: '#C9A84C', accentDim: 'rgba(201, 168, 76, 0.25)', glow: 'rgba(232, 197, 109, 0.25)', cometShadow: 'rgba(201, 168, 76, 0.6)' },
-]
-
-const PALETTES_LIGHT: ThemePalette[] = [
-  { accent: '#8A6A1E', accentDim: 'rgba(138, 106, 30, 0.25)', glow: 'rgba(179, 146, 62, 0.25)', cometShadow: 'rgba(138, 106, 30, 0.5)' },
-  { accent: '#8A6A1E', accentDim: 'rgba(138, 106, 30, 0.25)', glow: 'rgba(179, 146, 62, 0.25)', cometShadow: 'rgba(138, 106, 30, 0.5)' },
-  { accent: '#B2501B', accentDim: 'rgba(178, 80, 27, 0.25)', glow: 'rgba(214, 114, 60, 0.25)', cometShadow: 'rgba(178, 80, 27, 0.5)' },
-  { accent: '#B2501B', accentDim: 'rgba(178, 80, 27, 0.25)', glow: 'rgba(214, 114, 60, 0.25)', cometShadow: 'rgba(178, 80, 27, 0.5)' },
-  { accent: '#85961B', accentDim: 'rgba(133, 150, 27, 0.25)', glow: 'rgba(167, 184, 60, 0.25)', cometShadow: 'rgba(133, 150, 27, 0.5)' },
-  { accent: '#85961B', accentDim: 'rgba(133, 150, 27, 0.25)', glow: 'rgba(167, 184, 60, 0.25)', cometShadow: 'rgba(133, 150, 27, 0.5)' },
-  { accent: '#1C7FA3', accentDim: 'rgba(28, 127, 163, 0.25)', glow: 'rgba(60, 160, 196, 0.25)', cometShadow: 'rgba(28, 127, 163, 0.5)' },
-  { accent: '#1C7FA3', accentDim: 'rgba(28, 127, 163, 0.25)', glow: 'rgba(60, 160, 196, 0.25)', cometShadow: 'rgba(28, 127, 163, 0.5)' },
-  { accent: '#8E1CA3', accentDim: 'rgba(142, 28, 163, 0.25)', glow: 'rgba(175, 60, 196, 0.25)', cometShadow: 'rgba(142, 28, 163, 0.5)' },
-  { accent: '#8E1CA3', accentDim: 'rgba(142, 28, 163, 0.25)', glow: 'rgba(175, 60, 196, 0.25)', cometShadow: 'rgba(142, 28, 163, 0.5)' },
-  { accent: '#8A6A1E', accentDim: 'rgba(138, 106, 30, 0.25)', glow: 'rgba(179, 146, 62, 0.25)', cometShadow: 'rgba(138, 106, 30, 0.5)' },
-  { accent: '#8A6A1E', accentDim: 'rgba(138, 106, 30, 0.25)', glow: 'rgba(179, 146, 62, 0.25)', cometShadow: 'rgba(138, 106, 30, 0.5)' },
-]
-
-function interpolateColor(color1: string, color2: string, factor: number) {
-  const r1 = parseInt(color1.substring(1, 3), 16)
-  const g1 = parseInt(color1.substring(3, 5), 16)
-  const b1 = parseInt(color1.substring(5, 7), 16)
-
-  const r2 = parseInt(color2.substring(1, 3), 16)
-  const g2 = parseInt(color2.substring(3, 5), 16)
-  const b2 = parseInt(color2.substring(5, 7), 16)
-
-  const r = Math.round(r1 + factor * (r2 - r1))
-  const g = Math.round(g1 + factor * (g2 - g1))
-  const b = Math.round(b1 + factor * (b2 - b1))
-
-  return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`
-}
-
-function interpolateRgbString(rgb1: string, rgb2: string, factor: number) {
-  const parse = (s: string) => {
-    const m = s.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/)
-    return m ? [parseFloat(m[1]), parseFloat(m[2]), parseFloat(m[3]), m[4] !== undefined ? parseFloat(m[4]) : 1.0] : [0, 0, 0, 1]
-  }
-
-  const [r1, g1, b1, a1] = parse(rgb1)
-  const [r2, g2, b2, a2] = parse(rgb2)
-
-  const r = Math.round(r1 + factor * (r2 - r1))
-  const g = Math.round(g1 + factor * (g2 - g1))
-  const b = Math.round(b1 + factor * (b2 - b1))
-  const a = a1 + factor * (a2 - a1)
-
-  return `rgba(${r}, ${g}, ${b}, ${a})`
-}
-
-function getColorsForProgress(v: number, isLight: boolean, ranges: number[]) {
-  const palettes = isLight ? PALETTES_LIGHT : PALETTES_DARK
-  let idx = 0
-  for (let i = 0; i < ranges.length - 1; i++) {
-    if (v >= ranges[i] && v <= ranges[i + 1]) {
-      idx = i
-      break
-    }
-  }
-  const v1 = ranges[idx]
-  const v2 = ranges[idx + 1]
-  const factor = (v - v1) / (v2 - v1 || 1)
-
-  const p1 = palettes[idx]
-  const p2 = palettes[idx + 1]
-
-  if (!p1 || !p2) return palettes[0]
-
-  return {
-    accent: interpolateColor(p1.accent, p2.accent, factor),
-    accentDim: interpolateRgbString(p1.accentDim, p2.accentDim, factor),
-    glow: interpolateRgbString(p1.glow, p2.glow, factor),
-    cometShadow: interpolateRgbString(p1.cometShadow, p2.cometShadow, factor),
-  }
-}
+// Colors helper functions removed because colors are now static theme-based gold
 
 // WebGL shaders for the 3D rotating crystals at the checkpoints
 const VS_SOURCE = `
@@ -204,7 +87,7 @@ const FS_SOURCE = `
   varying float vRandom;
   varying float vShapeIndex;
   uniform float uLightMode;
-  uniform float uTime;
+  uniform highp float uTime;
   uniform float uActiveState[4];
 
   void main() {
@@ -241,17 +124,13 @@ export default function ThreeParticleTimeline({ targetRef }: { targetRef: React.
   const containerRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
-  // Double paths for splitting and merging around the carousel
+  // Single straight path for left margin rule
   const pathLeftRef = useRef<SVGPathElement>(null)
-  const pathRightRef = useRef<SVGPathElement>(null)
   const glowLeftRef = useRef<SVGPathElement>(null)
-  const glowRightRef = useRef<SVGPathElement>(null)
   const coreLeftRef = useRef<SVGPathElement>(null)
-  const coreRightRef = useRef<SVGPathElement>(null)
 
-  // Double comets for left and right loops
+  // Single comet for left side
   const diamondLeftRef = useRef<HTMLDivElement>(null)
-  const diamondRightRef = useRef<HTMLDivElement>(null)
 
   const lenRef = useRef(0)
   const firedRef = useRef<Set<number>>(new Set())
@@ -262,19 +141,21 @@ export default function ThreeParticleTimeline({ targetRef }: { targetRef: React.
 
   // Tracking dynamic checkpoints & scroll colors
   const [checkpoints, setCheckpoints] = useState<number[]>([0.16, 0.40, 0.74, 0.80])
-  const [ranges, setRanges] = useState<number[]>(RANGES)
+  const [totalHeight, setTotalHeight] = useState(1000)
 
-  // Dynamisch an #work gekoppelter Rahmen-Pfad (Split öffnet/schließt um die Sektion)
-  const [paths, setPaths] = useState({
-    left: buildTimelinePath('left', DEFAULT_Y_OPEN, DEFAULT_Y_CLOSE),
-    right: buildTimelinePath('right', DEFAULT_Y_OPEN, DEFAULT_Y_CLOSE),
-  })
-  const lastPathKeyRef = useRef('')
+  // Dynamic vertical path geometry based on total page height
+  const yStart = window.innerHeight * 0.5
+  const yEnd = Math.max(yStart + 100, totalHeight - window.innerHeight * 0.5)
+  const pathD = `M5,${yStart} L5,${yEnd}`
 
   // WebGL Uniform states
   const explodeStateRef = useRef<number[]>([0, 0, 0, 0])
   const activeStateRef = useRef<number[]>([0, 0, 0, 0])
   const shapePositionsRef = useRef<[number, number][]>([[0,0], [0,0], [0,0], [0,0]])
+
+  // Track the start and end of the horizontal work carousel for opacity transitions
+  const pStartRef = useRef(0.12)
+  const pEndRef = useRef(0.95)
 
   // High performance Refs to avoid recompiling WebGL on scroll, theme, or checkpoint changes
   const checkpointsRef = useRef(checkpoints)
@@ -288,11 +169,9 @@ export default function ThreeParticleTimeline({ targetRef }: { targetRef: React.
     themeRef.current = theme
   }, [theme])
 
-  // Double comet trail history
+  // Single comet trail history
   const trailLeftRefs = useRef<(HTMLDivElement | null)[]>([])
-  const trailRightRefs = useRef<(HTMLDivElement | null)[]>([])
   const trailLeftHistory = useRef<{ x: number; y: number }[]>([])
-  const trailRightHistory = useRef<{ x: number; y: number }[]>([])
 
   const { scrollYProgress } = useScroll({
     target: targetRef,
@@ -308,6 +187,9 @@ export default function ThreeParticleTimeline({ targetRef }: { targetRef: React.
       const maxScroll = document.documentElement.scrollHeight - window.innerHeight
       if (maxScroll <= 0) return
 
+      const tHeight = document.documentElement.scrollHeight
+      setTotalHeight(tHeight)
+
       const rect = workEl.getBoundingClientRect()
       const scrollTop = window.scrollY || document.documentElement.scrollTop
       const startScroll = rect.top + scrollTop
@@ -316,43 +198,17 @@ export default function ThreeParticleTimeline({ targetRef }: { targetRef: React.
       const pStart = Math.max(0.12, Math.min(0.85, startScroll / maxScroll))
       const pEnd = Math.max(pStart + 0.1, Math.min(0.95, endScroll / maxScroll))
 
-      const step = (pEnd - pStart) / 3
-      const cp1 = pStart
-      const cp2 = pStart + step
-      const cp3 = pStart + step * 2
-      const cp4 = pEnd
+      pStartRef.current = pStart
+      pEndRef.current = pEnd
+
+      const range = pEnd - pStart
+      // Trigger checkpoints earlier so they morph in sync before/as cards center
+      const cp1 = pStart + 0.04 * range
+      const cp2 = pStart + 0.28 * range
+      const cp3 = pStart + 0.52 * range
+      const cp4 = pStart + 0.78 * range
 
       setCheckpoints([cp1, cp2, cp3, cp4])
-
-      setRanges([
-        0,
-        cp1 - 0.04, cp1 + 0.04,
-        cp2 - 0.04, cp2 + 0.04,
-        cp3 - 0.04, cp3 + 0.04,
-        cp4 - 0.04, cp4 + 0.04,
-        Math.min(0.90, cp4 + 0.08),
-        Math.min(0.95, cp4 + 0.12),
-        1
-      ])
-
-      // Rahmen-Pfad an die echte #work-Position koppeln (viewBox 0..1000 = ganze Seite).
-      // Öffnet ~250px über der Sektion, schließt ~200px darunter (unter Sentinel).
-      const totalHeight = document.documentElement.scrollHeight
-      const workTopPx = startScroll
-      const workBottomPx = rect.bottom + scrollTop
-      let yOpen = ((workTopPx - 250) / totalHeight) * 1000
-      let yClose = ((workBottomPx + 200) / totalHeight) * 1000
-      yOpen = Math.max(250, yOpen)
-      yClose = Math.min(930, yClose)
-      if (yOpen > yClose - 140) yOpen = yClose - 140
-      const pathKey = `${Math.round(yOpen)}-${Math.round(yClose)}`
-      if (pathKey !== lastPathKeyRef.current) {
-        lastPathKeyRef.current = pathKey
-        setPaths({
-          left: buildTimelinePath('left', yOpen, yClose),
-          right: buildTimelinePath('right', yOpen, yClose),
-        })
-      }
     }
 
     const timer = setTimeout(updateCheckpoints, 400)
@@ -367,7 +223,6 @@ export default function ThreeParticleTimeline({ targetRef }: { targetRef: React.
   }, [reduced])
 
   // Recalculate checkpoints physical positions along SVG path.
-  // Läuft auch neu, wenn sich der (dynamische) Pfad ändert → Länge frisch messen.
   useEffect(() => {
     const p = pathLeftRef.current
     if (!p) return
@@ -378,91 +233,83 @@ export default function ThreeParticleTimeline({ targetRef }: { targetRef: React.
     // Map checkpoint percentages to coordinates on screen using pathLeftRef
     const newCoords = checkpoints.map(cp => {
       const pt = p.getPointAtLength(cp * len)
-      // Convert SVG viewbox coords (0..100, 0..1000) to NDC space (-1..1) for WebGL
+      // Convert SVG viewbox coords (0..100, 0..totalHeight) to NDC space (-1..1) for WebGL
       const glX = (pt.x / 100) * 2.0 - 1.0
-      const glY = (1.0 - pt.y / 1000) * 2.0 - 1.0
+      const glY = (1.0 - pt.y / totalHeight) * 2.0 - 1.0
       return [glX, glY] as [number, number]
     })
     shapePositionsRef.current = newCoords
 
-    // Füllstand am aktuellen Scroll-Fortschritt halten (nicht auf 0 zurücksetzen)
+    // Füllstand am aktuellen Scroll-Fortschritt halten
     const prog = Math.max(0, Math.min(1, scrollYProgress.get()))
     const off = reduced ? '0' : `${len * (1 - prog)}`
-    for (const el of [glowLeftRef.current, glowRightRef.current, coreLeftRef.current, coreRightRef.current]) {
+    for (const el of [glowLeftRef.current, coreLeftRef.current]) {
       if (!el) continue
       el.style.strokeDasharray = `${len}`
       el.style.strokeDashoffset = off
     }
     if (reduced) {
       if (diamondLeftRef.current) diamondLeftRef.current.style.opacity = '0'
-      if (diamondRightRef.current) diamondRightRef.current.style.opacity = '0'
     }
-  }, [checkpoints, paths, reduced])
+  }, [checkpoints, reduced])
 
   // Scroll triggers and updates
   useMotionValueEvent(scrollYProgress, 'change', (v) => {
     if (reduced) return
     const pL = pathLeftRef.current
-    const pR = pathRightRef.current
     const len = lenRef.current
-    if (!pL || !pR || !len) return
+    if (!pL || !len) return
 
     const prog = Math.max(0, Math.min(1, v))
 
-    // 1. Dynamic color changes
-    const colors = getColorsForProgress(prog, theme === 'light', ranges)
+    // 1. Constant theme colors (no dynamic color changes on scroll)
+    const isLight = theme === 'light'
+    const colors = {
+      accent: isLight ? '#8a6a1e' : '#C9A84C',
+      accentDim: isLight ? 'rgba(138, 106, 30, 0.24)' : 'rgba(201, 168, 76, 0.28)',
+      glow: isLight ? 'rgba(138, 106, 30, 0.12)' : 'rgba(232, 197, 109, 0.15)',
+      cometShadow: isLight ? 'rgba(138, 106, 30, 0.3)' : 'rgba(201, 168, 76, 0.4)'
+    }
     const container = containerRef.current
     if (container) {
       container.style.setProperty('--cs-thread-accent', colors.accent)
       container.style.setProperty('--cs-thread-accent-dim', colors.accentDim)
       container.style.setProperty('--cs-thread-glow-color', colors.glow)
       container.style.setProperty('--cs-comet-shadow', colors.cometShadow)
+
+      // Make scroll timeline thread and comet paler (0.12 opacity) while in the reading carousel
+      const pStart = pStartRef.current
+      const pEnd = pEndRef.current
+      const isCarouselActive = prog >= pStart && prog <= pEnd
+      container.style.opacity = isCarouselActive ? '0.12' : '1.0'
     }
 
-    // SVG path offset growth for BOTH left and right paths
+    // SVG path offset growth
     const off = `${len * (1 - prog)}`
     if (glowLeftRef.current) glowLeftRef.current.style.strokeDashoffset = off
-    if (glowRightRef.current) glowRightRef.current.style.strokeDashoffset = off
     if (coreLeftRef.current) coreLeftRef.current.style.strokeDashoffset = off
-    if (coreRightRef.current) coreRightRef.current.style.strokeDashoffset = off
 
-    // 2. Animate comet indicators (Left & Right comets).
-    // Kleiner Vorlauf: die Rahmen-Schleife verlängert den Pfad in der Mitte, dadurch
-    // fällt der Punkt (arc-length-basiert) hinter den Scroll zurück — leicht vorziehen.
-    const cometProg = Math.min(1, prog + 0.025)
+    // 2. Animate comet indicator (remove +0.01 offset for perfect midpoint alignment)
+    const cometProg = prog
     const ptL = pL.getPointAtLength(cometProg * len)
-    const ptR = pR.getPointAtLength(cometProg * len)
 
     const dL = diamondLeftRef.current
-    const dR = diamondRightRef.current
-    
-    // We only show comets if prog is within boundaries
     const isVisible = prog > 0.012 && prog < 0.988
     
     if (dL) {
       dL.style.left = `${ptL.x}%`
-      dL.style.top = `${ptL.y / 10}%`
+      dL.style.top = `${ptL.y}px`
       dL.style.opacity = isVisible ? '1' : '0'
     }
-    if (dR) {
-      dR.style.left = `${ptR.x}%`
-      dR.style.top = `${ptR.y / 10}%`
-      dR.style.opacity = isVisible ? '1' : '0'
-    }
 
-    // 3. Comet trail updates (Left & Right trails)
-    trailLeftHistory.current.push({ x: ptL.x, y: ptL.y / 10 })
-    trailRightHistory.current.push({ x: ptR.x, y: ptR.y / 10 })
-    
+    // 3. Comet trail updates
+    trailLeftHistory.current.push({ x: ptL.x, y: ptL.y })
     if (trailLeftHistory.current.length > 30) trailLeftHistory.current.shift()
-    if (trailRightHistory.current.length > 30) trailRightHistory.current.shift()
 
     const histL = trailLeftHistory.current
-    const histR = trailRightHistory.current
 
     for (let i = 0; i < 6; i++) {
       const trailElL = trailLeftRefs.current[i]
-      const trailElR = trailRightRefs.current[i]
       const op = (1 - (i / 6)) * 0.6
       const scale = 1 - (i / 6)
 
@@ -471,24 +318,11 @@ export default function ThreeParticleTimeline({ targetRef }: { targetRef: React.
         if (histIdxL >= 0 && isVisible) {
           const hPt = histL[histIdxL]
           trailElL.style.left = `${hPt.x}%`
-          trailElL.style.top = `${hPt.y}%`
+          trailElL.style.top = `${hPt.y}px`
           trailElL.style.opacity = `${op}`
           trailElL.style.transform = `translate(-50%, -50%) scale(${scale})`
         } else {
           trailElL.style.opacity = '0'
-        }
-      }
-
-      const histIdxR = histR.length - 1 - (i + 1) * 2
-      if (trailElR) {
-        if (histIdxR >= 0 && isVisible) {
-          const hPt = histR[histIdxR]
-          trailElR.style.left = `${hPt.x}%`
-          trailElR.style.top = `${hPt.y}%`
-          trailElR.style.opacity = `${op}`
-          trailElR.style.transform = `translate(-50%, -50%) scale(${scale})`
-        } else {
-          trailElR.style.opacity = '0'
         }
       }
     }
@@ -623,7 +457,7 @@ export default function ThreeParticleTimeline({ targetRef }: { targetRef: React.
 
     gl.useProgram(program)
 
-    // Bind Attributes with safety checks to avoid invalid index WebGL errors
+    // Bind Attributes
     const bindAttribute = (name: string, data: Float32Array, size: number) => {
       const buffer = gl.createBuffer()
       gl.bindBuffer(gl.ARRAY_BUFFER, buffer)
@@ -677,7 +511,7 @@ export default function ThreeParticleTimeline({ targetRef }: { targetRef: React.
         currentActive[i] += (activeStateRef.current[i] - currentActive[i]) * 0.15
       }
 
-      // Calculate dynamic WebGL positions for the shapes based on current scroll offset in 100vh viewport canvas
+      // Calculate dynamic WebGL positions for the shapes
       const path = pathLeftRef.current
       const len = lenRef.current
       const totalHeight = document.documentElement.scrollHeight
@@ -688,12 +522,10 @@ export default function ThreeParticleTimeline({ targetRef }: { targetRef: React.
       if (path && len > 0 && maxScroll > 0) {
         checkpointsRef.current.forEach((cp, idx) => {
           const pt = path.getPointAtLength(cp * len)
-          const absY = cp * totalHeight
-          // Smooth scroll current interpolation from framer-motion useScroll
+          const absY = pt.y
           const s = scrollYProgress.get()
           const viewY = absY - s * maxScroll
           
-          // Map to WebGL NDC space (-1 to 1) for the 100vh viewport canvas
           const glX = (pt.x / 100) * 2.0 - 1.0
           const glY = (1.0 - viewY / window.innerHeight) * 2.0 - 1.0
 
@@ -734,35 +566,34 @@ export default function ThreeParticleTimeline({ targetRef }: { targetRef: React.
 
   return (
     <>
-    {/* 3D WebGL rotating crystal checkpoints overlay (fixed viewport height) - moved behind content to z-[1] and expanded to 100vw */}
+    {/* 3D WebGL rotating crystal checkpoints overlay (fixed viewport height) */}
     {!reduced && webglSupported && (
       <div className="hidden lg:block fixed inset-0 z-[1] pointer-events-none" aria-hidden="true">
         <canvas ref={canvasRef} className="w-full h-full block" />
       </div>
     )}
 
-    {/* SVG Scroll progress line tracks (Left & Right loops) - moved behind content to z-[0] and expanded to 100vw */}
-    <div ref={containerRef} className="hidden lg:block absolute inset-x-0 top-0 bottom-0 z-[0] pointer-events-none" aria-hidden="true">
+    {/* SVG Scroll progress line track - centered and aligned with content margin */}
+    <div ref={containerRef} className="hidden lg:block absolute inset-y-0 left-0 right-0 z-[0] pointer-events-none transition-opacity duration-500" aria-hidden="true">
       <svg
-        viewBox="0 0 100 1000"
+        viewBox={`0 0 100 ${totalHeight}`}
         preserveAspectRatio="none"
         className="absolute inset-0 w-full h-full"
       >
-        {/* ==================== LEFT PROGRESS PATH ==================== */}
-        {/* Blasser Hintergrund-Pfad Links */}
+        {/* Blasser Hintergrund-Pfad */}
         <path
           ref={pathLeftRef}
-          d={paths.left}
+          d={pathD}
           fill="none"
           stroke="var(--cs-thread-accent-dim, rgba(201, 168, 76, 0.28))"
           strokeWidth="1.2"
           vectorEffect="non-scaling-stroke"
           style={{ transition: 'stroke 0.4s ease' }}
         />
-        {/* Glow Halo Links */}
+        {/* Glow Halo */}
         <path
           ref={glowLeftRef}
-          d={paths.left}
+          d={pathD}
           fill="none"
           stroke="var(--cs-thread-glow-color, rgba(232, 197, 109, 0.15))"
           strokeWidth="3.2"
@@ -770,44 +601,10 @@ export default function ThreeParticleTimeline({ targetRef }: { targetRef: React.
           vectorEffect="non-scaling-stroke"
           style={{ transition: 'stroke 0.4s ease' }}
         />
-        {/* Core Linie Links */}
+        {/* Core Linie */}
         <path
           ref={coreLeftRef}
-          d={paths.left}
-          fill="none"
-          stroke="var(--cs-thread-accent, #C9A84C)"
-          strokeWidth="1.6"
-          strokeLinecap="round"
-          vectorEffect="non-scaling-stroke"
-          style={{ transition: 'stroke 0.4s ease' }}
-        />
-
-        {/* ==================== RIGHT PROGRESS PATH ==================== */}
-        {/* Blasser Hintergrund-Pfad Rechts */}
-        <path
-          ref={pathRightRef}
-          d={paths.right}
-          fill="none"
-          stroke="var(--cs-thread-accent-dim, rgba(201, 168, 76, 0.28))"
-          strokeWidth="1.2"
-          vectorEffect="non-scaling-stroke"
-          style={{ transition: 'stroke 0.4s ease' }}
-        />
-        {/* Glow Halo Rechts */}
-        <path
-          ref={glowRightRef}
-          d={paths.right}
-          fill="none"
-          stroke="var(--cs-thread-glow-color, rgba(232, 197, 109, 0.15))"
-          strokeWidth="3.2"
-          strokeLinecap="round"
-          vectorEffect="non-scaling-stroke"
-          style={{ transition: 'stroke 0.4s ease' }}
-        />
-        {/* Core Linie Rechts */}
-        <path
-          ref={coreRightRef}
-          d={paths.right}
+          d={pathD}
           fill="none"
           stroke="var(--cs-thread-accent, #C9A84C)"
           strokeWidth="1.6"
@@ -817,7 +614,7 @@ export default function ThreeParticleTimeline({ targetRef }: { targetRef: React.
         />
       </svg>
 
-      {/* Left Comet Trails */}
+      {/* Comet Trails */}
       {!reduced && Array.from({ length: 6 }).map((_, i) => (
         <div
           key={`trail-l-${i}`}
@@ -832,38 +629,9 @@ export default function ThreeParticleTimeline({ targetRef }: { targetRef: React.
         />
       ))}
 
-      {/* Right Comet Trails */}
-      {!reduced && Array.from({ length: 6 }).map((_, i) => (
-        <div
-          key={`trail-r-${i}`}
-          ref={el => { trailRightRefs.current[i] = el }}
-          className="absolute w-2 h-2 rounded-full pointer-events-none"
-          style={{
-            background: 'var(--cs-thread-accent, #C9A84C)',
-            boxShadow: '0 0 10px var(--cs-thread-accent, var(--cs-fx-glow))',
-            opacity: 0,
-            transform: 'translate(-50%, -50%)',
-          }}
-        />
-      ))}
-
-      {/* Left glowing diamond comet */}
+      {/* Glowing diamond comet */}
       <div
         ref={diamondLeftRef}
-        className="absolute w-3.5 h-3.5 pointer-events-none"
-        style={{
-          background: '#FFFDF5',
-          border: '1px solid var(--cs-thread-accent, #C9A84C)',
-          boxShadow: '0 0 12px var(--cs-thread-accent, var(--cs-fx-glow)), 0 0 4px #FFFDF5',
-          transform: 'translate(-50%, -50%) rotate(45deg)',
-          opacity: 0,
-          transition: 'border-color 0.4s ease, box-shadow 0.4s ease',
-        }}
-      />
-
-      {/* Right glowing diamond comet */}
-      <div
-        ref={diamondRightRef}
         className="absolute w-3.5 h-3.5 pointer-events-none"
         style={{
           background: '#FFFDF5',

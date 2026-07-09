@@ -1,7 +1,35 @@
 # VaultBox — Nächste Schritte
 
-> Stand: 2026-06-13 · Branch `design-icons-bg` (6 Commits über `audit-fixes`)
-> Ideen-Liste für die nächste Session, grob nach Priorität.
+> Stand: 2026-06-21 · Security-Hardening (SEC-1…SEC-5) umgesetzt & in echtem Electron
+> verifiziert. Offene Punkte aus dieser Runde stehen ganz oben.
+> Ältere Ideen-Liste (Stand 13.06.) darunter, grob nach Priorität.
+
+---
+
+## 🔐 Offen aus Security-Hardening (2026-06-21)
+
+- [ ] **LIVE-TEST durch den Nutzer** (ausstehend, höchste Prio): Verschlüsselung in der
+      laufenden App über die Einstellungen aktivieren → **Neustart + Entsperren** auf
+      einer **Datenkopie** prüfen. Backup liegt unter
+      `%APPDATA%/vaultbox/_backup_vor_vault_20260621/`.
+- [x] **Seitentür 3 — `export:fullAuto` verschlüsselt** (erledigt 2026-06-21): Der
+      Auto-Backup nach Downloads vor dem Löschen schreibt im Vault-Modus jetzt ein
+      **DEK-verschlüsseltes** JSON statt Klartext. `io.js importAll` erkennt den
+      DEK-Container (Felder `enc`+`vaultbox`) und entschlüsselt ihn über den entsperrten
+      Vault (neuer IPC `vault:decryptExport`). Die main.js-Handler `export:full`/
+      `import:full` waren ungenutzter Code. In echtem Electron getestet: keine
+      Klartext-IBAN/-Salden in der Backup-Datei, Import stellt identisch wieder her,
+      fremder Vault/DEK kann nicht entschlüsseln. **Damit sind alle 4 Seitentüren
+      geschlossen** — `state.json`, Safepoints, `crypto.db` und Export sind im
+      Vault-Modus verschlüsselt.
+- [ ] **Lizenz vor Release scharfschalten**: eigenen Public Key via
+      `tools/gen-license-keys.js` setzen + Renew-Endpoint konfigurieren (aktuell nur
+      Verify-Key-Gerüst nach Ed25519-Umstellung).
+- [ ] **Renderer-Lizenz-UI anpassen**: Aktivierungsfeld nimmt jetzt **signierte
+      Lizenz-JSON** entgegen; ergänzen: „Geräte-ID anzeigen" + „Erneuern".
+- [ ] **Ehrliche Grenze dokumentieren** (Handbuch/Marketing): client-seitige
+      Verschlüsselung = hohe Hürde, **nicht unknackbar** (`asar` patchbar) — nicht als
+      absolute Sicherheit verkaufen.
 
 ---
 
@@ -15,6 +43,9 @@
 
 ## 🎨 Design-Kohärenz (Track B — offene Hälfte vom Audit)
 
+- [ ] **Geplanter Claude-Design-/Optik-Durchgang der neuen UI** — gezielter Pass über
+      die neu gebaute Oberfläche (Icon-System, Hintergrund, Logo-Slots, Pill-Nav) auf
+      Optik & Konsistenz, bevor sie als final gilt.
 - [ ] Visuelle Vereinheitlichung über die 4+ Themes: Abstände, Schatten, Radien,
       Glas-Effekte konsistent.
 - [ ] **Pill-Nav Active-State**: aktives Item hat aktuell *keinen* dauerhaften
@@ -44,9 +75,9 @@
 
 - [ ] **Auto-Updater** (electron-updater) — sonst manuelles Nachladen pro Version.
 - [ ] **Windows Code-Signing** — sonst SmartScreen-Warnung bei Neukunden.
-- [ ] **scrypt-Passwort verifizieren** — `_pwHash` unterstützt scrypt via
-      `window.csf.pw`; prüfen ob's wirklich greift (CLAUDE.md warnt noch vor
-      „SHA-256 ohne Salt").
+- [x] **Passwort-Hashing gehärtet** — abgelöst durch **Argon2id** (Vault-Modus,
+      Modul `crypto-vault.js`, 2026-06-21). Damit ist die Alt-Warnung „SHA-256 ohne
+      Salt" gegenstandslos. Hinweis: CLAUDE.md/Memory-Texte noch entsprechend nachziehen.
 
 ---
 

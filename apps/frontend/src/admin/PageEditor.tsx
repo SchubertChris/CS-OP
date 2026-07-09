@@ -132,7 +132,7 @@ export default function PageEditor() {
                   : 'border-[var(--cs-text)]/12 bg-[var(--cs-s2)] text-[var(--cs-text-2)]'
               }`}>
               <Save size={12} strokeWidth={1.5} />
-              {savedFlash ? 'SAVED ✓' : isDirty ? 'SAVE *' : 'SAVED'}
+              {savedFlash ? 'GESPEICHERT' : isDirty ? 'SPEICHERN *' : 'GESPEICHERT'}
             </button>
           </div>
         </div>
@@ -222,7 +222,12 @@ export default function PageEditor() {
                   { k: 'TITLE',   v: page.title },
                   { k: 'SLUG',    v: '/' + (page.slug || '') },
                   { k: 'BLOCKS',  v: String(page.blocks.length) },
-                  { k: 'STATUS',  v: page.published ? '🟢 LIVE' : '⚪ ENTWURF' },
+                  { k: 'STATUS',  v: (
+                    <span className="inline-flex items-center gap-1.5">
+                      <span className={`w-2 h-2 rounded-full ${page.published ? 'bg-[var(--cs-success)]' : 'bg-[var(--cs-text-3)]'}`} />
+                      {page.published ? 'LIVE' : 'ENTWURF'}
+                    </span>
+                  ) },
                   { k: 'NAV',     v: page.nav?.visible ? 'Sichtbar' : 'Versteckt' },
                   { k: 'UPDATED', v: new Date(page.updatedAt).toLocaleDateString('de-DE') },
                 ].map(({ k, v }) => (

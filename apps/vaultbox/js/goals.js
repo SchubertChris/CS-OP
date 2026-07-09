@@ -1,4 +1,4 @@
-﻿let _goalCreatePosten = true; // Auto-Posten beim Erstellen eines Ziels
+let _goalCreatePosten = true; // Auto-Posten beim Erstellen eines Ziels
 
 // ══════════════════════════════════════
 //  GOALS — Sparziele
@@ -50,8 +50,8 @@ function renderGoals() {
           Deine Sparziele bleiben vollständig lokal — kein Server, keine Cloud, kein Tracking. Setze Ziele, verknüpfe Konten und behalte den Überblick.
         </div>
         <div class="goals-promo-tags">
-          <span>100% Offline</span><span>Kein Abo</span>
-          <span>149€ einmalig</span><span>FIFO Engine</span>
+          <span>100% Offline</span><span>Faire Lizenz</span>
+          <span>5,99 € / Monat</span><span>FIFO Engine</span>
         </div>
       </div>
 

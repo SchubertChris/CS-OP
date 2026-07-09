@@ -5,6 +5,7 @@
 import { useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, useInView } from 'framer-motion'
+import { Magnetic } from '../components/home/primitives'
 import PageHero from '../components/ui/PageHero'
 import {
   SectionWrapper, SectionHeader, GoldDivider,
@@ -15,6 +16,7 @@ import {
   TrendingUp, Zap, Users, Heart,
   BookOpen, Shield, Star, ArrowRight,
   Globe, Bot, GraduationCap, Briefcase,
+  Gamepad2, Car, Coffee, MapPin,
 } from 'lucide-react'
 import { useSiteImages } from '../hooks/useSiteImages'
 
@@ -52,7 +54,7 @@ function TimelineItem({ year, title, desc, current }: {
       </div>
       <div className="flex-1 pb-2">
         <span className="font-mono text-[10px] tracking-[0.16em] uppercase text-[var(--cs-text-2)] mb-1 block">{year}</span>
-        <h4 className="font-display text-base text-[var(--cs-text)] mb-1">{title}</h4>
+        <h4 className="font-display font-medium text-base text-[var(--cs-text)] mb-1">{title}</h4>
         <p className="text-[var(--cs-text-2)] text-sm leading-relaxed">{desc}</p>
         {current && (
           <div className="flex items-center gap-1.5 mt-2">
@@ -73,7 +75,7 @@ function ValueCard({ icon, title, desc }: { icon: React.ReactNode; title: string
         {icon}
       </div>
       <div>
-        <h4 className="font-display text-sm text-[var(--cs-text)] mb-1">{title}</h4>
+        <h4 className="font-display font-medium text-sm text-[var(--cs-text)] mb-1">{title}</h4>
         <p className="text-[var(--cs-text-2)] text-[13px] leading-relaxed">{desc}</p>
       </div>
     </motion.div>
@@ -87,7 +89,7 @@ function ServiceCard({ icon, title, desc, tags }: {
     <motion.div whileHover={{ y: -4 }} transition={{ duration: 0.22 }}
       className="flex flex-col h-full rounded-xl border border-[var(--cs-border-w2)] bg-[var(--cs-s1)] p-6 hover:border-[#C9A84C]/20 transition-colors duration-300">
       <CardIcon>{icon}</CardIcon>
-      <h4 className="font-display text-base text-[var(--cs-text)] mb-2">{title}</h4>
+      <h4 className="font-display font-medium text-base text-[var(--cs-text)] mb-2">{title}</h4>
       <p className="text-[var(--cs-text-2)] text-[13px] leading-relaxed mb-4 flex-1">{desc}</p>
       <div className="flex flex-wrap gap-1.5">
         {tags.map(t => (
@@ -131,56 +133,55 @@ const SERVICES = [
 ]
 
 const FUN_FACTS = [
-  '🎮 Gaming seit ich einen Controller halten kann — hauptsächlich PC',
-  '🚗 Führerschein mit 17 selbst bezahlt — erste echte Lektion in Eigenverantwortung',
-  '☕ Kaffee ist kein Getränk, es ist eine Lebenseinstellung',
-  '🤖 Claude AI ist mein täglicher Copilot — ich nutze KI nicht als Ersatz, sondern als Werkzeug',
-  '📈 Mein erster Trade war eine Katastrophe — das beste was mir passieren konnte',
-  '🏙️ Potsdam ist meine Stadt — Bundestag, Brandenburger Tor, alles um die Ecke',
+  { icon: <Gamepad2 size={16} strokeWidth={1.5} />,  text: 'Gaming seit ich einen Controller halten kann — hauptsächlich PC' },
+  { icon: <Car size={16} strokeWidth={1.5} />,       text: 'Führerschein mit 17 selbst bezahlt — erste echte Lektion in Eigenverantwortung' },
+  { icon: <Coffee size={16} strokeWidth={1.5} />,    text: 'Kaffee ist kein Getränk, es ist eine Lebenseinstellung' },
+  { icon: <Bot size={16} strokeWidth={1.5} />,       text: 'Claude AI ist mein täglicher Copilot — ich nutze KI nicht als Ersatz, sondern als Werkzeug' },
+  { icon: <TrendingUp size={16} strokeWidth={1.5} />, text: 'Mein erster Trade war eine Katastrophe — das beste was mir passieren konnte' },
+  { icon: <MapPin size={16} strokeWidth={1.5} />,    text: 'Potsdam ist meine Stadt — Bundestag, Brandenburger Tor, alles um die Ecke' },
 ]
 
 export default function AboutPage() {
   const { img } = useSiteImages()
+  const pageRef = useRef<HTMLDivElement>(null)
   return (
-    <>
-      <PageHero
-        eyebrow="Chris Schubert · Potsdam, DE"
-        titleLine1="Selbst entwickelt."
-        titleLine2="Produktiv deployed."
-        titleAccent="line2"
-        description="WebDev · Finance · KI-Automatisierung. Praxiserfahrung aus über einem Jahrzehnt — selbst gelernt, selbst gebaut, selbst verantwortet."
-        badge="Verfügbar für Projekte"
-        theme="about"
-      >
-        {/* Primär-CTA: Kontakt ist die Conversion dieser Seite */}
-        <Link to="/contact"
-          className="relative overflow-hidden group text-[11px] tracking-[0.18em] uppercase bg-[#C9A84C] text-[#080808] px-8 py-3.5 rounded-full font-semibold shadow-lg shadow-[#C9A84C]/25 hover:shadow-[#C9A84C]/40 transition-shadow duration-300">
-          <span className="relative z-10">Zusammenarbeiten</span>
-          <span className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-full" />
-        </Link>
-
-        {/* Sekundär-CTA */}
-        <a href="https://github.com/SchubertChris" target="_blank" rel="noopener noreferrer"
-          className="text-[11px] tracking-[0.16em] uppercase text-[var(--cs-text-3)] hover:text-[var(--cs-text)] transition-colors duration-300 flex items-center gap-2 group">
-          GitHub ansehen
-          <span className="w-4 h-px bg-current transition-transform duration-300 group-hover:scale-x-[1.5] origin-left" />
-        </a>
-
-        {/* Credibility Strip: echtes Shipped Product als Beweis */}
-        <div className="w-full pt-5 border-t border-[var(--cs-text)]/8">
-          <div className="flex flex-wrap items-center gap-3">
-            <span className="font-mono text-[9px] tracking-[0.16em] uppercase text-[var(--cs-text-3)]">Flagship</span>
-            <span className="w-px h-3 bg-[var(--cs-text)]/12" />
-            <Link to="/dev"
-              className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#C9A84C]/6 border border-[#C9A84C]/30 hover:border-[#C9A84C]/50 hover:bg-[#C9A84C]/10 transition-colors group">
-              <div className="w-1 h-1 rounded-full bg-[#22c55e]" />
-              <span className="font-mono text-[9px] tracking-[0.12em] uppercase text-[var(--cs-text-2)] group-hover:text-[#C9A84C] transition-colors">VaultBox</span>
-              <ArrowRight size={9} strokeWidth={1.5} className="text-[var(--cs-text-3)] group-hover:text-[#C9A84C] transition-colors" />
+    <div ref={pageRef} className="relative" style={{ overflowX: 'clip' }}>
+      <div className="relative z-[5]">
+        <PageHero
+          eyebrow="Chris Schubert · Potsdam, DE"
+          titleLine1="Selbst entwickelt."
+          titleLine2="Produktiv deployed."
+          titleAccent="line2"
+          description="WebDev · Finance · KI-Automatisierung. Praxiserfahrung aus über einem Jahrzehnt — selbst gelernt, selbst gebaut, selbst verantwortet."
+          theme="about"
+        >
+          <Magnetic strength={0.2}>
+            <Link to="/contact"
+              className="cs-btn-pill cs-btn-pill-primary px-7 py-3.5 text-[11px]">
+              Zusammenarbeiten
             </Link>
-            <span className="font-mono text-[9px] text-[var(--cs-text-3)]">selbst entwickelt · selbst deployed · offline</span>
+          </Magnetic>
+          <Magnetic strength={0.2}>
+            <a href="https://github.com/SchubertChris" target="_blank" rel="noopener noreferrer"
+              className="cs-btn-pill cs-btn-pill-secondary px-7 py-3.5 text-[11px]">
+              GitHub ansehen
+            </a>
+          </Magnetic>
+
+          <div className="w-full pt-5 border-t border-[#C9A84C]/8 flex flex-wrap items-center gap-x-5 gap-y-3 mt-2 font-mono">
+            <span className="inline-flex items-center gap-2.5 text-[0.72rem] uppercase tracking-[0.18em] text-[var(--cs-text)]">
+              <span className="relative flex w-2 h-2">
+                <span className="absolute inset-0 rounded-full bg-[var(--cs-success)] animate-ping opacity-60" />
+                <span className="relative inline-flex rounded-full w-2 h-2 bg-[var(--cs-success)]" />
+              </span>
+              Verfügbar für Projekte
+            </span>
+            <span className="w-px h-3.5 bg-[var(--cs-border-w3)]" />
+            <span className="text-[0.66rem] tracking-[0.14em] uppercase text-[var(--cs-text-3)]">
+              selbst entwickelt · selbst deployed · offline
+            </span>
           </div>
-        </div>
-      </PageHero>
+        </PageHero>
 
       {/* ── Foto + Story ──────────────────────────────────── */}
       <SectionWrapper id="story">
@@ -223,9 +224,7 @@ export default function AboutPage() {
             </p>
             <HighlightLine>"I automate what others do manually — for maximum efficiency and freedom."</HighlightLine>
             <div className="flex flex-wrap gap-3 pt-2">
-              <Link to="/contact">
-                <CtaButton variant="primary" href="/contact">Projekt anfragen</CtaButton>
-              </Link>
+              <CtaButton variant="primary" href="/contact">Projekt anfragen</CtaButton>
               <Link to="/dev" className="flex items-center gap-2 text-[11px] tracking-[0.14em] uppercase text-[var(--cs-text-3)] hover:text-[var(--cs-text)] transition-colors duration-200 px-2">
                 Meine Projekte <ArrowRight size={13} strokeWidth={1.5} />
               </Link>
@@ -313,9 +312,9 @@ export default function AboutPage() {
         <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {FUN_FACTS.map((fact, i) => (
             <StaggerItem key={i}>
-              <div className="flex items-start gap-3 p-4 rounded-xl border border-[var(--cs-border-w)] bg-[var(--cs-s1)] hover:border-[#C9A84C]/15 transition-colors duration-200">
-                <span className="text-base shrink-0">{fact.split(' ')[0]}</span>
-                <span className="text-[var(--cs-text-2)] text-sm leading-relaxed">{fact.split(' ').slice(1).join(' ')}</span>
+              <div className="flex items-start gap-3 p-4 rounded-xl border border-[var(--cs-border-w)] bg-[var(--cs-s1)] hover:border-[var(--cs-gold)]/20 transition-colors duration-200">
+                <span className="text-[var(--cs-gold)] shrink-0 mt-0.5">{fact.icon}</span>
+                <span className="text-[var(--cs-text-2)] text-sm leading-relaxed">{fact.text}</span>
               </div>
             </StaggerItem>
           ))}
@@ -339,7 +338,7 @@ export default function AboutPage() {
                 <div className="w-1.5 h-1.5 rounded-full bg-[#00C896] animate-pulse" />
                 <span className="font-mono text-[10px] tracking-[0.18em] uppercase text-[#00C896]">Open for work</span>
               </div>
-              <h2 className="font-display text-3xl md:text-4xl text-[var(--cs-text)] leading-tight mb-4">
+              <h2 className="font-display font-medium text-3xl md:text-4xl text-[var(--cs-text)] leading-tight mb-4">
                 Lass uns etwas<br /><GradientText>Großes bauen.</GradientText>
               </h2>
               <p className="text-[var(--cs-text-2)] leading-relaxed mb-8">
@@ -347,9 +346,7 @@ export default function AboutPage() {
                 ich bin direkt erreichbar. Kein Formular das ins Leere geht, kein Vertrieb der dich anruft.
               </p>
               <div className="flex flex-wrap gap-3">
-                <Link to="/contact">
-                  <CtaButton variant="primary" href="/contact">Jetzt anfragen</CtaButton>
-                </Link>
+                <CtaButton variant="primary" href="/contact">Jetzt anfragen</CtaButton>
                 <a href="mailto:info@candlescope.de"
                   className="flex items-center gap-2 text-[11px] tracking-[0.14em] uppercase text-[var(--cs-text-3)] hover:text-[var(--cs-text)] transition-colors duration-200 px-4">
                   info@candlescope.de <ArrowRight size={13} strokeWidth={1.5} />
@@ -374,6 +371,7 @@ export default function AboutPage() {
           </div>
         </div>
       </SectionWrapper>
-    </>
+      </div>
+    </div>
   )
 }

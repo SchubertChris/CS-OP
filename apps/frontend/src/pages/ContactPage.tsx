@@ -19,7 +19,6 @@ import {
 
 import { SOCIALS } from '../data/socials'
 
-const FORMSPREE_ID = import.meta.env.VITE_FORMSPREE_ID ?? 'mojzyrnq'
 const DISCORD      = SOCIALS.discord
 const INSTAGRAM    = SOCIALS.instagram
 
@@ -68,19 +67,12 @@ export default function ContactPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!validate()) return
-    if (!FORMSPREE_ID) {
-      const subject = `[CandleScope] ${form.topic} — ${form.name}`
-      const body = `Name: ${form.name}\nE-Mail: ${form.email}\nThema: ${form.topic}\n\n${form.message}`
-      window.location.href = `mailto:info@candlescope.de?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
-      setStatus('success')
-      return
-    }
     setStatus('sending')
     try {
-      const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+      const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({ name: form.name, email: form.email, topic: form.topic, message: form.message, _subject: `[CandleScope] ${form.topic} — ${form.name}` }),
+        body: JSON.stringify({ name: form.name, email: form.email, topic: form.topic, message: form.message }),
       })
       if (res.ok) { setStatus('success'); setForm({ name: '', email: '', topic: '', message: '' }) }
       else setStatus('error')

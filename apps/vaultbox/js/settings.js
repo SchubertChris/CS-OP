@@ -24,11 +24,19 @@ const DEFAULT_SETTINGS = {
 };
 
 let CFG = { ...DEFAULT_SETTINGS };
+// Merkt sich, ob in den Einstellungen jemals ein Zahltag EXPLIZIT gespeichert
+// wurde. Ohne das schattet der Default (15) den echten, in den Nutzerdaten
+// hinterlegten Zahltag (z.B. 25 aus dem Hauptkonto) in getZahltag() ab.
+let _zahltagWasPersisted = false;
 // ── LOAD / SAVE ───────────────────────
 function loadSettings() {
   try {
     const raw = localStorage.getItem(SETTINGS_KEY);
-    if (raw) CFG = Object.assign({}, DEFAULT_SETTINGS, JSON.parse(raw));
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      _zahltagWasPersisted = typeof parsed.zahltag === "number";
+      CFG = Object.assign({}, DEFAULT_SETTINGS, parsed);
+    }
   } catch (e) {}
   if (CFG.zahltag) S.zahltag = CFG.zahltag;
   if (CFG.fontSize < 17) CFG.fontSize = 17;
@@ -116,9 +124,32 @@ function setZahltag(val) {
   const z = Math.min(31, Math.max(1, parseInt(val) || 15));
   CFG.zahltag = z;
   S.zahltag = z;
+  _zahltagWasPersisted = true;
   persist();
   saveSettings();
   refreshDash();
+}
+
+// Hält den Zahltag zwischen Settings (CFG) und Nutzerdaten (S) konsistent.
+// Aufruf beim Boot NACH hydrate()/seedData() (deckt Normal-, Seed- und
+// Vault-Pfad ab). Wurde nie ein Zahltag in den Einstellungen gespeichert,
+// gilt der in den Daten hinterlegte Wert (z.B. aus dem Hauptkonto) — sonst
+// rechnete die Zahlungsübersicht mit dem Default 15 statt dem echten Zahltag.
+function reconcileZahltag() {
+  const sZ = parseInt(S && S.zahltag);
+  const sValid = sZ >= 1 && sZ <= 31;
+  if (!_zahltagWasPersisted && sValid) {
+    CFG.zahltag = sZ;
+  } else {
+    const cz = Math.min(31, Math.max(1, parseInt(CFG.zahltag) || 15));
+    CFG.zahltag = cz;
+    if (S && S.zahltag !== cz) {
+      S.zahltag = cz;
+      if (typeof persist === "function") persist();
+    }
+  }
+  _zahltagWasPersisted = true;
+  if (typeof saveSettings === "function") saveSettings();
 }
 function setFontSize(val) {
   CFG.fontSize = parseInt(val);
@@ -1118,10 +1149,10 @@ function renderSettings() {
       <div class="settings-promo-title">Offline. Privat. Dein Vermögen.</div>
       <div class="settings-promo-body">
         Alle Daten bleiben auf deinem Gerät. Kein Server, keine Cloud, kein Tracking.
-        149€ einmalig — kein Abo, keine Überraschungen.
+        5,99 € / Monat — monatlich kündbar, kein Datenverkauf.
       </div>
       <div class="settings-promo-tags">
-        <span>100% Offline</span><span>Kein Abo</span><span>FIFO Engine</span><span>Lizenziert</span>
+        <span>100% Offline</span><span>Faire Lizenz</span><span>FIFO Engine</span><span>Lizenziert</span>
       </div>
     </div>`;
   // ── DATENSPEICHER CARD ──
@@ -1447,6 +1478,34 @@ function renderSettings() {
     pwBody.appendChild(form);
     pwBody.appendChild(hint);
   }
+  // ── DATENVERSCHLÜSSELUNG (Vault) ──
+  const encWrap = _e("div");
+  encWrap.style.cssText = "margin-top:18px;padding-top:16px;border-top:1px solid var(--border);";
+  const encLbl = _e("div", "settings-row-label");
+  encLbl.style.cssText = "margin-bottom:8px;"; encLbl.textContent = "Datenverschlüsselung";
+  encWrap.appendChild(encLbl);
+  const encStatus = _e("div", "settings-row-desc");
+  encStatus.id = "encStatusRow"; encStatus.style.marginBottom = "10px"; encStatus.textContent = "Status wird geprüft…";
+  encWrap.appendChild(encStatus);
+  pwBody.appendChild(encWrap);
+  (async () => {
+    let vs = { exists: false };
+    try { if (window.csf?.vault) vs = await window.csf.vault.status(); } catch (_) {}
+    const row = document.getElementById("encStatusRow"); if (!row) return; row.textContent = "";
+    if (vs.exists) {
+      const ok = _e("div"); ok.style.cssText = "color:var(--green);font-weight:600;font-size:.85em;";
+      ok.textContent = "✓ Daten sind verschlüsselt (AES-256-GCM)."; row.appendChild(ok);
+    } else {
+      const desc = _e("div", "settings-row-desc"); desc.style.marginBottom = "10px";
+      desc.textContent = "Verschlüssele alle Finanzdaten lokal mit einem Master-Passwort. Zero-Knowledge: ohne Passwort gibt es KEINE Wiederherstellung.";
+      row.appendChild(desc);
+      const btn = _e("button", "btn primary");
+      btn.textContent = "🔒 Verschlüsselung jetzt aktivieren";
+      btn.addEventListener("click", showVaultSetupUI);
+      row.appendChild(btn);
+    }
+  })();
+
   const pwErr = _e("div", "settings-err");
   pwErr.id = "pwErr";
   pwBody.appendChild(pwErr);

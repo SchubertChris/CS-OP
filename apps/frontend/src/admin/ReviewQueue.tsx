@@ -127,7 +127,7 @@ export default function ReviewQueue() {
         <div className="flex flex-col gap-3">
           {pending.length === 0 ? (
             <div className="flex flex-col items-center gap-2 py-10 text-center">
-              <span className="text-3xl opacity-20">✓</span>
+              <Check size={32} strokeWidth={1.5} className="opacity-20" />
               <p className="text-[var(--cs-text-3)] text-xs">Keine ausstehenden Bewertungen</p>
             </div>
           ) : (

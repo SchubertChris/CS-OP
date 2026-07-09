@@ -2,8 +2,11 @@ import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { neon } from '@neondatabase/serverless'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  const token = (req.headers['x-migrate-token'] ?? req.query.token) as string
-  if (token !== process.env.setup_token) {
+  // Fail-closed: ohne konfiguriertes setup_token bleibt der Endpoint gesperrt.
+  // (Sonst wäre `undefined !== undefined` = false → Auth-Check übersprungen.)
+  if (!process.env.setup_token) return res.status(403).json({ error: 'Setup nicht aktiviert' })
+  const token = (req.headers['x-migrate-token'] ?? req.query.token) as string | undefined
+  if (!token || token !== process.env.setup_token) {
     return res.status(401).json({ error: 'Unauthorized' })
   }
 
@@ -37,7 +40,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     )`
 
     return res.status(200).json({ ok: true, message: 'Schema erstellt' })
-  } catch (e: unknown) {
-    return res.status(500).json({ error: String(e) })
+  } catch {
+    return res.status(500).json({ error: 'Migration fehlgeschlagen' })
   }
 }

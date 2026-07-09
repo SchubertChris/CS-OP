@@ -731,7 +731,10 @@
   border: 1px solid var(--border2);
   border-radius: 18px;
   padding: 28px 28px 24px;
-  width: 340px;
+  width: min(360px, 92vw);          /* responsive statt fixer 340px */
+  max-height: 90vh;
+  overflow-y: auto;
+  box-sizing: border-box;
   box-shadow: 0 24px 64px rgba(0,0,0,.55);
   display: flex;
   flex-direction: column;
@@ -774,7 +777,11 @@
 }
 .io-pw-btns {
   display: flex;
+  flex-direction: column;           /* Buttons stapeln → fliegen nicht mehr aus dem Modal */
   gap: 8px;
-  justify-content: flex-end;
-  margin-top: 4px;
+  margin-top: 8px;
+}
+.io-pw-btns .btn {
+  width: 100%;
+  justify-content: center;
 }

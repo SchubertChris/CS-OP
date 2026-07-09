@@ -1102,9 +1102,9 @@ function _renderBudgetPromo(cur, mainIncome, spentPct) {
           </div>
         </div>
         <div class="mi-promo-brand-title">Offline. Privat. Dein Vermögen.</div>
-        <div class="mi-promo-brand-body">Alle Daten lokal. Kein Server, kein Abo, kein Tracking. 149€ einmalig.</div>
+        <div class="mi-promo-brand-body">Alle Daten lokal. Kein Server, kein Datenverkauf. 5,99 € / Monat.</div>
         <div class="mi-promo-brand-tags">
-          <span>100% Offline</span><span>FIFO Engine</span><span>Lizenziert</span>
+          <span>100% Offline</span><span>Faire Lizenz</span><span>FIFO Engine</span><span>Lizenziert</span>
         </div>
       </div>
     </div>`}

@@ -2,7 +2,7 @@
    CandleScope — Root Layout
    src/components/layout/RootLayout.tsx
    ============================================================ */
-import { useState, useEffect } from 'react'
+import { useState, useLayoutEffect } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import Header from './Header'
 import Footer from './Footer'
@@ -13,10 +13,15 @@ import { useAnalytics } from '../../hooks/useAnalytics'
 
 // Nicht lazy — sofort laden damit kein Flash
 import IntroAnimation from '../ui/IntroAnimation'
+import CursorRoot from '../home/CursorRoot'
+import Starfield from '../home/Starfield'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
-  useEffect(() => { window.scrollTo(0, 0) }, [pathname])
+  useLayoutEffect(() => {
+    if ('scrollRestoration' in window.history) window.history.scrollRestoration = 'manual'
+    window.scrollTo(0, 0)
+  }, [pathname])
   return null
 }
 
@@ -51,10 +56,12 @@ export default function RootLayout() {
       {/* Seite komplett versteckt bis Intro fertig */}
       <div style={{ visibility: introComplete ? 'visible' : 'hidden' }}>
         <BackgroundEffect />
+        <CursorRoot />
+        <Starfield />
         <ScrollToTop />
         <AnalyticsTracker />
         <Header />
-        <main className="flex-1 relative z-10">
+        <main className="flex-1 relative z-10 overflow-x-clip">
           <Outlet />
         </main>
         <Footer />

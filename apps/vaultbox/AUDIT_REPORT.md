@@ -4,6 +4,121 @@
 
 ---
 
+## Nachtrag — Backend-/Sicherheits-Audit 2026-06-21
+
+> Dieser Nachtrag betrifft die **Main-Prozess-/IPC-Ebene** (preload, main.js, Lizenz,
+> Verschlüsselung at rest) — eine andere Schicht als das Frontend-Audit vom 13.06.
+> Alle Punkte sind **umgesetzt und in echtem Electron gegen Kopien der echten Daten
+> verifiziert** (argon2 nativ, SQLCipher, voller Roundtrip, Recovery-Key 8 Checks,
+> crypto.db-Migration 6 tx/5 lots/1 match identisch — alles grün).
+
+### KRITISCH
+
+#### SEC-1: RCE über `archive:openPath` — beliebige Programmausführung — GESCHLOSSEN
+
+**Datei:** `preload.js`, `main.js` (Archiv-IPC)
+
+**Problem:** Der IPC-Handler `archive:openPath` reichte einen **rohen, vom Renderer
+gelieferten Dateipfad** direkt an `shell.openPath` weiter. Bei einem XSS im Renderer
+(und davon listet das Frontend-Audit vom 13.06. mehrere Vektoren) konnte ein Angreifer
+damit **beliebige Programme auf dem Host ausführen** (Remote Code Execution). Höchste
+denkbare Schwere in einer Electron-App.
+
+**Fix (umgesetzt 2026-06-21):**
+- `archive:openPath` **entfernt** → ersetzt durch `archive:openDoc` (nimmt nur noch eine
+  `docId`, keinen Pfad).
+- Neue Funktion `resolveOpenableArchiveFile()`: `realpath`-Recheck (löst Symlinks/`..`
+  auf und prüft, dass das Ziel wirklich innerhalb des Archiv-Verzeichnisses liegt) +
+  **Endungs-Allowlist** (nur erlaubte Dokumenttypen öffenbar).
+- `addBuffer` gehärtet: Endung wird kanonisiert, Größe auf **20 MB gedeckelt**.
+- **Path-Traversal-Fixes** zusätzlich in `openFolder` und im Safepoints-Pfad.
+
+**Status:** GESCHLOSSEN — verifiziert in echtem Electron.
+
+---
+
+#### SEC-2: Lizenz-Geheimnis im öffentlichen Repo geleakt / fälschbar — BEHOBEN
+
+**Dateien:** Lizenz-Modul, `main.js`
+
+**Problem:** Das alte Lizenzsystem nutzte einen **hardcodierten `MASTER_KEY` und ein
+`LICENSE_HMAC_SECRET`** (symmetrisch). Da das Repo `SchubertChris/CS-OP` öffentlich ist,
+waren diese Geheimnisse **geleakt** — jeder konnte damit gültige Lizenzen selbst
+signieren/fälschen.
+
+**Fix (umgesetzt 2026-06-21):**
+- Umstellung auf **Ed25519 (asymmetrisch)**. Im Binary liegt nur noch der **öffentliche
+  Verify-Key** — kein Geheimnis mehr im Code.
+- `MASTER_KEY` + `LICENSE_HMAC_SECRET` **vollständig entfernt**.
+- **Hybrid-Modell:** Perpetual (kein Ablauf) + optionales Abo (`validUntil` +
+  Geräte-Bindung + Grace-Period + Online-Erneuerung).
+
+**Status:** BEHOBEN. Offen vor Release: eigener Public Key via
+`tools/gen-license-keys.js` setzen, Renew-Endpoint konfigurieren (siehe NEXT_STEPS).
+
+---
+
+### HOCH — frühere Schwächen geschlossen
+
+#### SEC-3: Keine Verschlüsselung at rest + „SHA-256 ohne Salt" — GESCHLOSSEN
+
+> Schließt die in `CLAUDE.md` / Memory dokumentierten Alt-Schwächen
+> **„SHA-256 ohne Salt"** und **„keine Verschlüsselung at rest"**.
+
+**Neues Modul:** `crypto-vault.js`
+
+**Umsetzung (Zero-Knowledge-Verschlüsselung at rest, opt-in über Einstellungen):**
+- **Argon2id** leitet aus dem Master-Passwort einen KEK (Key-Encryption-Key) ab →
+  ersetzt das alte ungesalzene SHA-256.
+- KEK verschlüsselt einen **zufälligen DEK** (Data-Encryption-Key); Nutzdaten via
+  **AES-256-GCM** mit **frischem IV pro Write**.
+- **AAD-authentifizierter Header** als Anti-Rollback-Schutz.
+- Krypto läuft **ausschließlich im Main-Prozess** — der DEK gelangt **nie in den
+  Renderer**.
+- **Transaktionale Migration** mit `verifyIntegrity` + automatischem **Rollback** bei
+  Fehler.
+
+**Status:** GESCHLOSSEN — voller Roundtrip in echtem Electron verifiziert.
+
+---
+
+#### SEC-4: Total-Datenverlust bei vergessenem Master-Passwort — ENTSCHÄRFT
+
+**Fix:** **Recovery-Key** (Notfall-Schlüssel) implementiert — entschlüsselt den Vault
+auch ohne Master-Passwort. Verifiziert über 8 Checks.
+
+---
+
+#### SEC-5: Seitentüren / Klartext-Lecks am Vault vorbei — alle 4 geschlossen
+
+| Tür | Leck | Status |
+|-----|------|--------|
+| 1 | localStorage-Spiegel enthielt Klartext-State | **Im Vault-Modus deaktiviert** |
+| 2 | Safepoints lagen unverschlüsselt vor | **Verschlüsselt** |
+| 3 | `export:fullAuto` (Auto-Export nach Downloads) | **GESCHLOSSEN (2026-06-21) — DEK-verschlüsselt** |
+| 4 | `crypto.db` (Krypto-Modul) unverschlüsselt | **SQLCipher + `temp_store=MEMORY` + selbstheilende Migration** |
+
+Tür 3 (geschlossen 2026-06-21): Der Auto-Backup nach Downloads vor dem Löschen
+(`export:fullAuto`) schreibt im Vault-Modus jetzt ein **DEK-verschlüsseltes** JSON
+statt Klartext. `io.js importAll` erkennt den DEK-Container (Felder `enc`+`vaultbox`)
+und entschlüsselt ihn über den entsperrten Vault (neuer IPC `vault:decryptExport`).
+Die main.js-Handler `export:full`/`import:full` waren ungenutzter Code. In echtem
+Electron getestet: Backup-Datei ohne Klartext-IBAN/-Saldo, Import stellt identisch
+wieder her, ein fremder Vault/DEK kann nicht entschlüsseln. Damit sind **`state.json`,
+Safepoints, `crypto.db` und Export** im Vault-Modus verschlüsselt.
+
+---
+
+### Ehrliche Grenze (dokumentiert)
+
+Client-seitige Verschlüsselung ist eine **hohe Hürde, aber nicht unknackbar**: Das
+`asar`-Archiv ist patchbar, d.h. ein lokaler Angreifer mit Schreibzugriff auf die
+Installation kann theoretisch Code manipulieren. Schutzziel ist **Daten-Vertraulichkeit
+at rest** (gestohlene Datei / fremder Zugriff), nicht Manipulationssicherheit gegen
+einen Angreifer mit vollem lokalen Zugriff.
+
+---
+
 ## Übersicht
 
 | Severity | Anzahl Issues | Betroffene Dateien |

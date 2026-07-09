@@ -129,11 +129,13 @@ rm -rf "$APPDATA/candlescope-financeboard"
 ## Architecture — The Big Picture
 
 ```text
-main.js        ← Electron main: IPC handlers, file I/O, archive, safepoints, print, storage path
-preload.js     ← contextBridge → exposes window.csf to renderer
-index.html     ← App shell + ALL modal HTML + <script> load order (order = dependency chain)
-js/            ← 26 feature modules, all global scope, share S and CFG objects
-styles/        ← ~11,000 lines CSS; base.css defines all design tokens
+main.js          ← Electron main: IPC handlers, file I/O, archive, safepoints, print, storage path, license-gate, vault-IPC
+preload.js       ← contextBridge → exposes window.csf to renderer
+crypto-vault.js  ← Zero-Knowledge-Verschlüsselung at Rest (NUR Main-Prozess, NIE im Renderer geladen)
+index.html       ← App shell + ALL modal HTML + <script> load order (order = dependency chain)
+js/              ← 26 feature modules, all global scope, share S and CFG objects
+tools/           ← Lizenz-Signier-Tools (gen-license-keys.js, issue-license.js) — NICHT im Build
+styles/          ← ~11,000 lines CSS; base.css defines all design tokens
 styles/components/ ← modular component styles (dashboard, posten, pivot, etc.)
 ```
 
@@ -178,10 +180,11 @@ goals.js → docs.js → kreditoren.js → pivot.js → visionboard.js → booki
 | `io.js` | Import/export/safepoints | `migrateState()`, `exportAll()`, `importAll()`, `saveSafepoint(label)`, `restoreSafepoint(idx)`, `initSafepoints()` |
 | `intro.js` | Onboarding tutorial (floating card) | `openTutorial(step?)`, `runSplash()`, `checkFirstVisit()` — 16-step guided tour. Floating `#tutPanel` (position:fixed, z-index 900). `#tutBlocker` (z-index 800) blocks all app interaction. `#tutReticle` targeting frame tracks highlighted elements via rAF loop. |
 | `lockscreen.js` | Password lock | `checkLock()`, `sha256(str)` — Web Crypto API, SHA-256 |
-| `archive.js` | Document archive | `renderArchivePage()` (async, renders into `#p-archiv`), `_archShowCatDocs(catId)` (populates right panel), `_archSetSort(by)` (toggles sort), `_archRefreshAfterEdit(catId)` (reload-safe refresh without full page reload). Module vars: `_archActiveCat`, `_archSortBy` ("date"/"name"/"size"), `_archSortDir` (-1/1), `_archAllDocs`. Explorer layout: KPI strip + `.arch-explorer` grid (200px sidebar + 1fr main). Sidebar: category list with `.arch-exp-cat.active`. Main panel: header with sort buttons (`.arch-sort-btn`) + document list (`.arch-cat-list`). Sort buttons toggle dir when same field clicked. Upload uses `await renderArchivePage()` for reload-fix. Only works with `window.csf.archive` (Electron only). |
+| `archive.js` | Document archive | `renderArchivePage()` (async, renders into `#p-archiv`), `_archShowCatDocs(catId)` (populates right panel), `_archSetSort(by)` (toggles sort), `_archRefreshAfterEdit(catId)` (reload-safe refresh without full page reload). Module vars: `_archActiveCat`, `_archSortBy` ("date"/"name"/"size"), `_archSortDir` (-1/1), `_archAllDocs`. Explorer layout: KPI strip + `.arch-explorer` grid (200px sidebar + 1fr main). Sidebar: category list with `.arch-exp-cat.active`. Main panel: header with sort buttons (`.arch-sort-btn`) + document list (`.arch-cat-list`). Sort buttons toggle dir when same field clicked. Upload uses `await renderArchivePage()` for reload-fix. Only works with `window.csf.archive` (Electron only). **Sicherheit**: Öffnen läuft über `archive:openDoc(docId)` (nur ID, kein Pfad) — `archive:openPath` (RCE) wurde entfernt. |
+| `crypto-vault.js` | **Verschlüsselung at Rest (NUR Main-Prozess)** | Zero-Knowledge-Krypto-Modul, das ausschließlich im Electron-Main-Prozess läuft — wird NIE in den Renderer geladen (taucht daher nicht in der `index.html` `<script>`-Ladereihenfolge auf). Argon2id (KDF) → KEK → zufälliger 32-Byte DEK → AES-256-GCM mit frischem 12-Byte-IV pro Schreibvorgang + AAD-authentifiziertem Header (Anti-Rollback). Schreibt `vault.enc` in `dataDir()`. Der DEK lebt NUR im Main-RAM → XSS im Renderer kann den Schlüssel nicht stehlen. Liefert die `vault:`-IPC-Handler. Funktionen u.a. `unlockWithRecovery()`, `lockVaultNow()`. |
 | `notes.js` | Sticky notes panel | `openNotesPanel()`, `closeNotesPanel()` — stored in `csf_notes` localStorage key |
 | `print.js` | Print/PDF export | `openPrintPreview()` — sends HTML via `window.csf.print.html()` IPC → new BrowserWindow. Always light mode. System fonts only (Segoe UI/Arial). All CSS inline hex (no `var()` — MS Print to PDF doesn't resolve custom properties). |
-| `docs.js` | About page | `renderDocs()` — current version v10.6. Update hero badge, footer, stats strip, changelog array, and feature count here on release. Changelog keeps last 4 entries. |
+| `docs.js` | About page | `renderDocs()` — aktueller Changelog-Stand **v11.0** (Verschlüsselung & Sicherheit), Produkt-Version v1.0. Update hero badge, footer, stats strip, changelog array, and feature count here on release. Changelog keeps last 4 entries. |
 | `visionboard.js` | Visual idea board | `renderVisionBoard()`, `_vbLoad()`, `_vbSave()`, `_vbCreateBoard()`, `_vbCenterOnNodes()` — nodes + connections, pan/zoom, drag/resize, rubber-band selection. Saved via `window.csf.visionboard.save()` → `visionboards.json`. `_vbCenterOnNodes()` calculates bounding-box of all nodes and sets `_vbPanX`/`_vbPanY` to center them in the visible viewport — called via `requestAnimationFrame` after async load. Props panel (`vb-props`, always visible 200px) shows in idle state: Aktionen section (2×2 grid of quick-add buttons for text/node/image/sticky) + Canvas section (Zentrieren + Alles auswählen buttons) + minimap. When a node is selected it shows node properties as before. |
 | `kreditoren.js` | Creditors/payees page | `renderKreditoren()`, `openCreditorModal(id?)`, `closeCreditorModal()`, `saveCreditor()`, `deleteCreditor()`. Stored in `S.creditors[]`. Each creditor can optionally link to one of `S.accounts[]` (stored as `accountId`). Card popover shows `bankGroup + " · " + acc.label` when account is linked. Modal account dropdown uses `<optgroup>` per bankGroup; hint div (`#krAccountHint`) shows `group · accountType` on selection. No linked-Posten preview — creditor filtering belongs in Transaktionen filter. |
 
@@ -191,8 +194,8 @@ goals.js → docs.js → kreditoren.js → pivot.js → visionboard.js → booki
 
 ### Dual persistence on every `persist()` call
 
-1. `localStorage["csf_v1"]` — always, immediate
-2. `window.csf.state.save(S)` — IPC → Electron writes to `stateFile()` (custom path or AppData default)
+1. `localStorage["csf_v1"]` — always, immediate **(ABER: im Vault-Modus abgeschaltet — kein Klartext-Spiegel, siehe „Verschlüsselung at Rest")**
+2. `window.csf.state.save(S)` — IPC → Electron writes to `stateFile()` (custom path or AppData default). **Im Vault-Modus** wird `S` stattdessen verschlüsselt nach `vault.enc` geschrieben (DEK nur im Main-RAM).
 
 Guard: `window.csf?.state?.save` — silently no-ops in browser/non-Electron context.
 
@@ -227,10 +230,12 @@ On path change via `storage:choosePath`: existing data copied via `copyDirSync()
 
 | Path | Contents |
 | ---- | -------- |
-| `state.json` | Mirror of `csf_v1` |
+| `state.json` | Mirror of `csf_v1` (Klartext — nur ohne Vault-Modus) |
+| `vault.enc` | **Vault-Modus:** AES-256-GCM-verschlüsselter `S`-Container (DEK nur im Main-RAM). Ersetzt `state.json` als Quelle der Wahrheit, wenn Verschlüsselung aktiv ist. |
+| `crypto.db` | SQLCipher-DB (SQLCipher via `better-sqlite3-multiple-ciphers`, `PRAGMA temp_store=MEMORY`); selbstheilende Migration in `_getCryptoDb()` |
 | `settings.json` | Mirror of CFG |
 | `visionboards.json` | Vision board nodes + connections |
-| `safepoints/*.json` | Safepoint snapshots (max 10, auto hourly) |
+| `safepoints/*.json` | Safepoint snapshots (max 10, auto hourly). **Im Vault-Modus verschlüsselt** (DEK-Container statt Klartext-JSON). |
 | `archive/main.json` | Document index |
 | `archive/<category>/` | Uploaded files (9 preset categories on first run) |
 
@@ -478,7 +483,7 @@ window.csf = {
   state:       { load(), save(data) },
   settings:    { load(), save(data) },
   visionboard: { load(), save(data) },
-  archive:     { list(filter), add(), addBuffer(), getPath(), open(), openPath(),
+  archive:     { list(filter), add(), addBuffer(), getPath(), open(), openDoc(),
                  openFolder(opts), updateNote(), delete(), relinkDocs(),
                  linkDoc(), renameDoc(), size() },
   export:      { full(), fullAuto() },
@@ -486,8 +491,76 @@ window.csf = {
   safepoints:  { list(), save(label, snapshot), load(filename), delete(filename) },
   print:       { page(options), html(htmlString) },
   storage:     { getPath(), choosePath(), openFolder(), resetPath() },
+  license:     { check(), activate(licenseString), info(), machineId(), renew() },
+  vault:       { status(), create(password), verifyIntegrity(), unlock(password),
+                 recover(recoveryKey), migrateCryptoDb(), lock(), changePw(oldPw, newPw),
+                 decryptExport(container) },
 }
 ```
+
+**Archiv: `openDoc(docId)` statt `openPath(path)`** — der frühere `archive:openPath` reichte einen rohen Renderer-Pfad an `shell.openPath` durch (RCE-Risiko). Entfernt. `archive:openDoc` akzeptiert nur eine `docId`; main.js löst sie über `resolveOpenableArchiveFile()` auf (realpath-Recheck, dass die Datei innerhalb `archiveDir()` liegt + Endungs-Allowlist `ARCHIVE_OPEN_ALLOWED_EXT`). Niemals wieder einen Renderer-Pfad direkt öffnen.
+
+**`license:` (Ed25519, asymmetrisch)** — siehe Abschnitt „Lizenz-System".
+**`vault:` (Verschlüsselung at Rest, Zero-Knowledge)** — siehe Abschnitt „Verschlüsselung at Rest".
+
+---
+
+## Lizenz-System (Ed25519, asymmetrisch)
+
+**Neu 2026-06-21 — Umstellung von symmetrisch auf asymmetrisch.** Früher: HMAC-Signatur mit hardcoded `MASTER_KEY` + `LICENSE_HMAC_SECRET` in main.js — wer den Build entpackte, konnte beliebige Lizenzen selbst signieren. **Jetzt: Ed25519.** Im Build liegt NUR der öffentliche Schlüssel `LICENSE_PUBLIC_KEY_PEM` in main.js — er kann Signaturen prüfen, aber keine erzeugen. `MASTER_KEY` und `LICENSE_HMAC_SECRET` wurden ENTFERNT.
+
+- **Signier-Tools (NICHT im Build, nur lokal beim Owner):** `tools/gen-license-keys.js` (erzeugt das Ed25519-Schlüsselpaar einmalig), `tools/issue-license.js` (signiert eine Lizenz mit dem privaten Schlüssel). Der private Schlüssel verlässt nie den Owner-Rechner.
+- **Hybrid-Modell (zwei Tier-Klassen):**
+  - `perpetual` / `owner` → **kein Ablauf**, keine Online-Prüfung, keine Geräte-Bindung.
+  - `sub` / `subscription` → **`validUntil`-Gate** + Geräte-Bindung (`node-machine-id`) + **14 Tage Offline-Grace** + Online-Erneuerung + Sperrbildschirm bei Ablauf.
+- **Start-Gate:** `gateStartup()` in main.js prüft beim App-Start die Lizenz, bevor das Fenster freigegeben wird.
+- **IPC** (`csf.license`): `check()`, `activate(licenseString)`, `info()`, `machineId()`, `renew()`.
+- **Owner** = signierte Lizenz mit `tier:owner` (kein Sonderpfad im Code mehr, kein hardcoded Geheimnis).
+
+---
+
+## Verschlüsselung at Rest (Zero-Knowledge)
+
+**Neu 2026-06-21 — opt-in / staged.** Aktivierung über Einstellungen → „Verschlüsselung aktivieren". Implementiert in `crypto-vault.js` (NUR Main-Prozess).
+
+**Krypto-Kette:**
+
+```text
+Master-Passwort → Argon2id (KDF) → KEK (Key Encryption Key)
+KEK verschlüsselt → DEK (zufälliger 32-Byte Data Encryption Key)
+DEK → AES-256-GCM, frischer 12-Byte-IV pro Schreibvorgang
+Header AAD-authentifiziert (Anti-Rollback)
+→ Datei: vault.enc in dataDir()
+```
+
+- **DEK lebt NUR im Main-RAM** — der Renderer bekommt ihn nie. XSS im Renderer kann den Schlüssel daher nicht stehlen.
+- **Migration transaktional:** beim Aktivieren wird die bestehende Klartext-DB in den Vault überführt — `vault:verifyIntegrity` + Rollback bei Fehler, kein Teilzustand.
+- **Auto-Lock:** der Inaktivitäts-Timer wirft im Vault-Modus den DEK aus dem RAM (`lockVaultNow()`). Danach ist erneutes Entsperren mit Master-Passwort nötig.
+
+**IPC** (`csf.vault`): `status()`, `create(password)`, `verifyIntegrity()`, `unlock(password)`, `recover(recoveryKey)`, `migrateCryptoDb()`, `lock()`, `changePw(oldPw, newPw)`, `decryptExport(container)` — `decryptExport` (IPC `vault:decryptExport`) entschlüsselt einen DEK-Container (`enc`+`vaultbox`) über den entsperrten Vault; von `io.js importAll` beim Re-Import eines verschlüsselten Auto-Backups genutzt.
+
+**Neue Dependencies:** `argon2`, `better-sqlite3-multiple-ciphers` (ersetzt `better-sqlite3` als Require in main.js → SQLCipher-fähig), `node-machine-id`.
+
+### Recovery-Key (Notfall-Schlüssel)
+
+- Beim Aktivieren der Verschlüsselung **EINMALIG** angezeigt — danach nicht wiederherstellbar.
+- Format: 25 Zeichen, `XXXXX-XXXXX-XXXXX-XXXXX-XXXXX`.
+- Öffnet den Vault bei **vergessenem Master-Passwort** und **überlebt Passwort-Resets** (entschlüsselt den DEK unabhängig vom Master-Passwort).
+- Funktion: `unlockWithRecovery()`.
+
+### Seitentüren (Klartext-Lecks im Vault-Modus)
+
+Im Vault-Modus dürfen keine Klartext-Spiegel der Daten zurückbleiben. **Alle 4 Seitentüren sind geschlossen** (Stand 2026-06-21):
+
+- **Seitentür 1 — localStorage-Spiegel (`csf_v1`) abgeschaltet** — im Vault-Modus wird `S` NICHT mehr nach localStorage geschrieben (nur noch in `vault.enc`).
+- **Seitentür 2 — Safepoints verschlüsselt** — als DEK-Container statt Klartext-JSON.
+- **Seitentür 3 — Export (`export:fullAuto`, Auto-Backup nach Downloads) verschlüsselt** — im Vault-Modus schreibt `export:fullAuto` jetzt ein DEK-verschlüsseltes JSON (kein Klartext). `io.js importAll` erkennt den DEK-Container (`enc`+`vaultbox`) und entschlüsselt ihn über den entsperrten Vault (neuer IPC `vault:decryptExport`, in der `csf.vault`-Bridge ergänzt). `export:full`/`import:full` (main.js) waren ungenutzt. In Electron getestet: kein Klartext in der Datei, identische Wiederherstellung, fremder DEK scheitert.
+- **Seitentür 4 — `crypto.db` → SQLCipher** — `PRAGMA temp_store=MEMORY` (keine Klartext-Temp-Dateien) + selbstheilende Migration in `_getCryptoDb()` / `_migrateCryptoDbToEncrypted()`.
+
+### Ehrliche Sicherheitsgrenze (bewusst dokumentiert)
+
+- Client-seitige Verschlüsselung ist eine **hohe Hürde, NICHT unknackbar** — das `asar`-Archiv ist patchbar (lokaler Angreifer mit Root/Admin kann den Renderer-/Main-Code manipulieren).
+- Das **Master-Passwort hat keine Wiederherstellung** außer dem Recovery-Code. Verloren = Vault-Daten verloren.
 
 ---
 
@@ -555,11 +628,13 @@ Component styles split: `styles/components/` for new features, individual files 
 1. **Archive temp ID** — orphaned `new_[timestamp]` docs if save fails mid-way
 2. **No transaction rollback** — partial state mutation possible if `persist()` throws
 3. ~~**Bookings not regenerated on savePosten()**~~ — Fixed: `_afterSave()` calls `_syncBookingsAfterSerieEdit()` → `_generatePastBookings()` which regenerates all bookings including new Posten.
+4. ~~**Archiv-RCE via `archive:openPath`**~~ — **Fixed 2026-06-21:** roher Renderer-Pfad an `shell.openPath` (RCE) entfernt → ersetzt durch `archive:openDoc(docId)` + `resolveOpenableArchiveFile()` (realpath-Recheck innerhalb `archiveDir()` + Endungs-Allowlist `ARCHIVE_OPEN_ALLOWED_EXT`). `archive:addBuffer` gehärtet (Endung auf `[a-z0-9]` kanonisiert, 20 MB Cap). Pfad-Traversal in `archive:openFolder` + `safepoints:load/delete` mit `path.basename` geschlossen.
+5. ~~**Seitentür 3 — `export:fullAuto` (Auto-Backup nach Downloads) noch Klartext**~~ — **Geschlossen 2026-06-21:** im Vault-Modus schreibt `export:fullAuto` jetzt ein DEK-verschlüsseltes JSON (kein Klartext). `io.js importAll` erkennt den DEK-Container (`enc`+`vaultbox`) und entschlüsselt ihn über den entsperrten Vault (neuer IPC `vault:decryptExport`, in der `csf.vault`-Bridge ergänzt). `export:full`/`import:full` (main.js) waren ungenutzt. In Electron getestet (kein Klartext in der Datei, identische Wiederherstellung, fremder DEK scheitert). **Damit sind alle 4 Seitentüren geschlossen** (state.json, Safepoints, crypto.db/SQLCipher, Export).
 
 **High:**
 
-1. **SHA-256 without salt** — password vulnerable to rainbow tables; needs scrypt/Argon2
-2. **XSS via user input** — `esc()` exists but not consistently used in all render paths
+1. **SHA-256 without salt** — betrifft nur den alten **Lockscreen-Passwortschutz** (`lockscreen.js`, `sha256()`), nicht den Vault. Der **Vault-Modus** leitet das Master-Passwort über **Argon2id** ab (siehe „Verschlüsselung at Rest"). Lockscreen-Hash selbst sollte noch auf scrypt/Argon2 migriert werden.
+2. **XSS via user input** — `esc()` exists but not consistently used in all render paths. **Mitigation im Vault-Modus:** der DEK lebt nur im Main-RAM, ein XSS im Renderer kann den Verschlüsselungs-Schlüssel daher nicht stehlen.
 3. **Pivot vs Umsätze totals differ** — by design: Pivot reads `S.data`, Umsätze reads `S.bookings`; known and acceptable
 4. **Booking overrides lost on import** — overrides are on booking objects which are regenerated
 5. **`activeInMonth()` modulo fragile** — missing contractStart month defaults to 0
