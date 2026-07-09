@@ -68,35 +68,15 @@ export default function IntroAnimation({ onComplete }: { onComplete: () => void 
           transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
         >
           {/* Centered side-by-side flex layout block */}
-          <div className="flex flex-row items-center justify-center max-w-[90vw] overflow-visible">
-            {/* Wordmark revealed on the left next to logo */}
-            <motion.h1
-              className="font-display font-semibold uppercase text-[var(--cs-text)] text-[2.2rem] md:text-[3.4rem] whitespace-nowrap overflow-hidden flex items-center"
-              initial={{ width: 0, opacity: 0, letterSpacing: '0.1em', marginRight: 0 }}
-              animate={{ 
-                width: 'clamp(240px, 30vw, 380px)', 
-                opacity: 1, 
-                letterSpacing: '0.35em',
-                marginRight: 24,
-                transition: { 
-                  width: { duration: 1.3, delay: 2.1, ease: EASE },
-                  opacity: { duration: 0.8, delay: 2.3, ease: 'easeOut' },
-                  letterSpacing: { duration: 1.3, delay: 2.1, ease: EASE },
-                  marginRight: { duration: 1.3, delay: 2.1, ease: EASE }
-                }
-              }}
-            >
-              Candle<span style={{ color: GOLD }}>Scope</span>
-            </motion.h1>
-
-            {/* Large SVG Logo on the right */}
+          <div className="flex flex-row items-center justify-center max-w-[95vw] overflow-visible">
+            {/* Large SVG Logo on the left (now 400px) */}
             <motion.svg
               version="1.1"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="25 20 960 900"
               style={{
-                width: 360,
-                height: 360
+                width: 400,
+                height: 400
               }}
               initial={reduced ? false : { opacity: 0, scale: 0.92, y: 8 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -121,6 +101,26 @@ export default function IntroAnimation({ onComplete }: { onComplete: () => void 
                 )
               })}
             </motion.svg>
+
+            {/* Wordmark revealed on the right side next to logo */}
+            <motion.h1
+              className="font-display font-semibold uppercase text-[var(--cs-text)] text-[2.2rem] md:text-[3.4rem] whitespace-nowrap overflow-hidden flex items-center"
+              initial={{ maxWidth: 0, opacity: 0, letterSpacing: '0.1em', marginLeft: 0 }}
+              animate={{ 
+                maxWidth: '600px', 
+                opacity: 1, 
+                letterSpacing: '0.35em',
+                marginLeft: 24,
+                transition: { 
+                  maxWidth: { duration: 1.3, delay: 2.1, ease: EASE },
+                  opacity: { duration: 0.8, delay: 2.3, ease: 'easeOut' },
+                  letterSpacing: { duration: 1.3, delay: 2.1, ease: EASE },
+                  marginLeft: { duration: 1.3, delay: 2.1, ease: EASE }
+                }
+              }}
+            >
+              Candle<span style={{ color: GOLD }}>Scope</span>
+            </motion.h1>
           </div>
         </motion.div>
       )}

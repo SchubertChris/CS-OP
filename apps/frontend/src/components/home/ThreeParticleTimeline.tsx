@@ -185,11 +185,11 @@ export default function ThreeParticleTimeline({ targetRef }: { targetRef: React.
       const workEl = document.getElementById('work')
       if (!workEl) return
 
-      const maxScroll = document.documentElement.scrollHeight - window.innerHeight
-      if (maxScroll <= 0) return
-
-      const tHeight = document.documentElement.scrollHeight
+      const tHeight = targetRef.current ? targetRef.current.offsetHeight : document.documentElement.scrollHeight
       setTotalHeight(tHeight)
+
+      const maxScroll = tHeight - window.innerHeight
+      if (maxScroll <= 0) return
 
       const rect = workEl.getBoundingClientRect()
       const scrollTop = window.scrollY || document.documentElement.scrollTop
@@ -334,10 +334,11 @@ export default function ThreeParticleTimeline({ targetRef }: { targetRef: React.
       const dist = Math.abs(prog - cp)
       activeStateRef.current[i] = dist < 0.06 ? Math.max(0, 1.0 - dist / 0.06) : 0.0
 
-      if (prog >= cp && !firedRef.current.has(i)) {
+      // Explode when entering the bottom edge of the screen
+      if (prog >= cp - 0.04 && !firedRef.current.has(i)) {
         firedRef.current.add(i)
         explodeStateRef.current[i] = 2.5
-      } else if (prog < cp - 0.03 && firedRef.current.has(i)) {
+      } else if (prog < cp - 0.07 && firedRef.current.has(i)) {
         firedRef.current.delete(i)
       }
     })
