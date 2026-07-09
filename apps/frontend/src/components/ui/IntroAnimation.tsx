@@ -7,7 +7,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 
 const GOLD = '#C9A84C'
-const DISPLAY_MS = 4000
+const DISPLAY_MS = 5000
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1]
 
 const LOGO_PATHS = [
@@ -96,7 +96,7 @@ export default function IntroAnimation({ onComplete }: { onComplete: () => void 
                     fill="none"
                     initial={{ pathLength: 0 }}
                     animate={{ pathLength: 1 }}
-                    transition={{ duration: 1.8, delay: 0.15 + idx * 0.06, ease: EASE }}
+                    transition={{ duration: 2.6, delay: 0.2 + idx * 0.08, ease: EASE }}
                   />
                 )
               })}
@@ -112,10 +112,10 @@ export default function IntroAnimation({ onComplete }: { onComplete: () => void 
                 letterSpacing: '0.35em',
                 marginLeft: 24,
                 transition: { 
-                  maxWidth: { duration: 1.3, delay: 2.1, ease: EASE },
-                  opacity: { duration: 0.8, delay: 2.3, ease: 'easeOut' },
-                  letterSpacing: { duration: 1.3, delay: 2.1, ease: EASE },
-                  marginLeft: { duration: 1.3, delay: 2.1, ease: EASE }
+                  maxWidth: { duration: 1.4, delay: 2.8, ease: EASE },
+                  opacity: { duration: 0.8, delay: 3.0, ease: 'easeOut' },
+                  letterSpacing: { duration: 1.4, delay: 2.8, ease: EASE },
+                  marginLeft: { duration: 1.4, delay: 2.8, ease: EASE }
                 }
               }}
             >
