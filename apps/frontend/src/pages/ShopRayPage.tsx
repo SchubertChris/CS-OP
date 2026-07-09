@@ -79,7 +79,7 @@ function AnimatedTitle({ line1, line2 }: { line1: string; line2: string }) {
   const c2 = line2.split('')
   return (
     <h1 className="font-display leading-[1.05] tracking-[-0.01em] mb-8">
-      <span className="block text-5xl sm:text-6xl md:text-7xl xl:text-8xl text-[#C9A84C]">
+      <span className="block text-5xl sm:text-6xl md:text-7xl xl:text-8xl text-gold">
         {c1.map((ch, i) => (
           <motion.span key={i} custom={i} variants={CHAR_VARIANTS} initial="hidden" animate="visible"
             className="inline-block" style={{ whiteSpace: ch === ' ' ? 'pre' : 'normal' }}>{ch}</motion.span>
@@ -98,9 +98,9 @@ function AnimatedTitle({ line1, line2 }: { line1: string; line2: string }) {
 /* ── Screenshot Frame ──────────────────────────────────────── */
 function ScreenshotFrame({ src, alt, className = '' }: { src: string; alt: string; className?: string }) {
   return (
-    <div className={`rounded-2xl overflow-hidden border border-[#C9A84C]/20 shadow-2xl shadow-black/50 ${className}`}>
+    <div className={`rounded-2xl overflow-hidden border border-gold/20 shadow-2xl shadow-black/50 ${className}`}>
       {/* Browser chrome */}
-      <div className="bg-[var(--cs-s4)] px-4 py-2.5 flex items-center gap-2 border-b border-[#C9A84C]/8">
+      <div className="bg-[var(--cs-s4)] px-4 py-2.5 flex items-center gap-2 border-b border-gold/8">
         <div className="w-2.5 h-2.5 rounded-full bg-[#ef4444]/60" />
         <div className="w-2.5 h-2.5 rounded-full bg-[#eab308]/60" />
         <div className="w-2.5 h-2.5 rounded-full bg-[#22c55e]/60" />
@@ -129,13 +129,13 @@ function ShopRayHero() {
                             linear-gradient(90deg, rgba(201,168,76,0.025) 1px, transparent 1px)`,
           backgroundSize: '80px 80px',
         }} />
-        <div className="absolute -top-40 -left-40 w-[600px] h-[600px] rounded-full bg-[#C9A84C]/6 blur-[100px]" />
-        <div className="absolute top-1/4 right-0 w-[500px] h-[500px] rounded-full bg-[#C9A84C]/3 blur-[120px]" />
+        <div className="absolute -top-40 -left-40 w-[600px] h-[600px] rounded-full bg-gold/6 blur-[100px]" />
+        <div className="absolute top-1/4 right-0 w-[500px] h-[500px] rounded-full bg-gold/3 blur-[120px]" />
       </motion.div>
 
       {/* Left accent line */}
       <motion.div
-        className="absolute left-8 md:left-16 lg:left-24 top-28 w-px bg-gradient-to-b from-[#C9A84C]/50 via-[#C9A84C]/10 to-transparent"
+        className="absolute left-8 md:left-16 lg:left-24 top-28 w-px bg-gradient-to-b from-gold/50 via-gold/10 to-transparent"
         style={{ height: '55%' }}
         initial={{ scaleY: 0, originY: 0 }} animate={{ scaleY: 1 }}
         transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
@@ -149,11 +149,11 @@ function ShopRayHero() {
           <motion.div className="flex items-center gap-4 mb-8"
             initial={{ opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}>
-            <span className="w-6 h-px bg-[#C9A84C]" />
-            <span className="text-[11px] tracking-[0.22em] uppercase text-[#C9A84C] font-medium">
+            <span className="w-6 h-px bg-gold" />
+            <span className="text-[11px] tracking-[0.22em] uppercase text-gold font-medium">
               Shop-Setup · Schlüsselfertig
             </span>
-            <motion.span className="text-[10px] tracking-[0.12em] uppercase border border-[#C9A84C]/25 text-[#C9A84C]/60 px-3 py-1 rounded-full"
+            <motion.span className="text-[10px] tracking-[0.12em] uppercase border border-gold/25 text-gold/60 px-3 py-1 rounded-full"
               initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.4, duration: 0.4 }}>
               Setup inklusive
@@ -181,7 +181,7 @@ function ShopRayHero() {
           </motion.div>
 
           {/* Stats strip */}
-          <motion.div className="pt-5 border-t border-[#C9A84C]/8"
+          <motion.div className="pt-5 border-t border-gold/8"
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.1 }}>
             <div className="flex flex-wrap items-center gap-6">
               {[
@@ -191,7 +191,7 @@ function ShopRayHero() {
                 { val: '32',  label: 'Migrations' },
               ].map(({ val, label }) => (
                 <div key={label} className="flex flex-col gap-0.5">
-                  <span className="font-mono text-[15px] text-[#C9A84C] leading-none tabular-nums">{val}</span>
+                  <span className="font-mono text-[15px] text-gold leading-none tabular-nums">{val}</span>
                   <span className="font-mono text-[8px] tracking-[0.18em] uppercase text-[var(--cs-text-4)]">{label}</span>
                 </div>
               ))}
@@ -256,22 +256,20 @@ function ShopRayHero() {
       {/* Scroll hint */}
       <motion.div className="absolute bottom-8 left-8 md:left-16 lg:left-24 flex items-center gap-3 z-10"
         initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5 }}>
-        <motion.span className="w-px h-6 bg-gradient-to-b from-[#C9A84C]/60 to-transparent block"
+        <motion.span className="w-px h-6 bg-gradient-to-b from-gold/60 to-transparent block"
           animate={{ y: [0, 4, 0] }} transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }} />
         <span className="text-[10px] tracking-[0.16em] uppercase text-[var(--cs-text-4)]">Scroll</span>
       </motion.div>
 
       {/* Bottom divider */}
-      <motion.div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#C9A84C]/15 to-transparent"
+      <motion.div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/15 to-transparent"
         initial={{ scaleX: 0 }} animate={{ scaleX: 1 }}
         transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1], delay: 0.3 }} />
     </section>
   )
 }
 
-/* ══════════════════════════════════════════════════════════════
-   DATA
-══════════════════════════════════════════════════════════════ */
+/* ── Data ──────────────────────────────────────────────────── */
 const FEATURES = [
   {
     icon: <ShoppingBag size={22} strokeWidth={1.5} />,
@@ -342,9 +340,7 @@ const INCLUDES = [
   'Demo-Mode (schreibende Aktionen geblockt)',
 ]
 
-/* ══════════════════════════════════════════════════════════════
-   PAGE
-══════════════════════════════════════════════════════════════ */
+/* ── Page ──────────────────────────────────────────────────── */
 export default function ShopRayPage() {
   const { img } = useSiteImages()
   return (
@@ -357,11 +353,11 @@ export default function ShopRayPage() {
       <section className="px-8 md:px-16 lg:px-24 py-16 max-w-7xl mx-auto">
         <Reveal direction="up" className="mb-10">
           <div className="flex items-center gap-3">
-            <div className="w-1 h-1 rounded-full bg-[#C9A84C] animate-pulse" />
+            <div className="w-1 h-1 rounded-full bg-gold animate-pulse" />
             <span className="font-mono text-[11px] tracking-[0.18em] uppercase text-[var(--cs-text-3)]">
               Alle Bereiche im Überblick
             </span>
-            <div className="flex-1 h-px bg-gradient-to-r from-[#C9A84C]/20 to-transparent" />
+            <div className="flex-1 h-px bg-gradient-to-r from-gold/20 to-transparent" />
           </div>
         </Reveal>
 
@@ -439,7 +435,7 @@ export default function ShopRayPage() {
             <div className="flex flex-col gap-2.5 mb-6">
               {INCLUDES.map((item, i) => (
                 <div key={i} className="flex items-start gap-3">
-                  <Check size={15} strokeWidth={2} className="text-[#C9A84C] shrink-0 mt-0.5" />
+                  <Check size={15} strokeWidth={2} className="text-gold shrink-0 mt-0.5" />
                   <span className="text-[var(--cs-text-2)] text-sm">{item}</span>
                 </div>
               ))}
@@ -449,11 +445,11 @@ export default function ShopRayPage() {
             </HighlightLine>
 
             {/* Tech Stack Tags */}
-            <div className="mt-6 p-5 rounded-2xl border border-[#C9A84C]/15 bg-[#C9A84C]/3">
-              <p className="font-mono text-[10px] tracking-[0.18em] uppercase text-[#C9A84C] mb-3">Tech Stack</p>
+            <div className="mt-6 p-5 rounded-2xl border border-gold/15 bg-gold/3">
+              <p className="font-mono text-[10px] tracking-[0.18em] uppercase text-gold mb-3">Tech Stack</p>
               <div className="flex flex-wrap gap-2">
                 {STACK.map((tag) => (
-                  <span key={tag} className="font-mono text-[10px] tracking-[0.1em] px-2.5 py-1 rounded-full border border-[#C9A84C]/15 bg-[#C9A84C]/5 text-[var(--cs-text-2)]">
+                  <span key={tag} className="font-mono text-[10px] tracking-[0.1em] px-2.5 py-1 rounded-full border border-gold/15 bg-gold/5 text-[var(--cs-text-2)]">
                     {tag}
                   </span>
                 ))}
@@ -475,7 +471,7 @@ export default function ShopRayPage() {
                   { icon: <Database size={14} />, label: 'Database', sub: 'Supabase' },
                 ].map((p) => (
                   <div key={p.label} className="flex items-center gap-3 p-3 rounded-xl border border-[var(--cs-border-w)] bg-[var(--cs-s1)]">
-                    <div className="w-8 h-8 rounded-lg bg-[#C9A84C]/8 border border-[#C9A84C]/15 flex items-center justify-center text-[#C9A84C]/70 shrink-0">
+                    <div className="w-8 h-8 rounded-lg bg-gold/8 border border-gold/15 flex items-center justify-center text-gold/70 shrink-0">
                       {p.icon}
                     </div>
                     <div>
@@ -532,12 +528,12 @@ export default function ShopRayPage() {
                     <CardIcon>{item.icon}</CardIcon>
                     <Badge variant={item.badgeVariant}>{item.badge}</Badge>
                   </div>
-                  <h3 className="font-display text-xl text-[var(--cs-text)] mb-3 group-hover:text-[#C9A84C] transition-colors">{item.title}</h3>
+                  <h3 className="font-display text-xl text-[var(--cs-text)] mb-3 group-hover:text-gold transition-colors">{item.title}</h3>
                   <p className="text-[var(--cs-text-2)] text-sm leading-relaxed mb-5">{item.desc}</p>
                   <div className="flex flex-col gap-1.5 mt-auto">
                     {item.items.map((it) => (
                       <div key={it} className="flex items-center gap-2">
-                        <div className="w-1 h-1 rounded-full bg-[#C9A84C]/50 shrink-0" />
+                        <div className="w-1 h-1 rounded-full bg-gold/50 shrink-0" />
                         <span className="text-[12px] text-[var(--cs-text-2)]">{it}</span>
                       </div>
                     ))}
@@ -558,7 +554,7 @@ export default function ShopRayPage() {
             <motion.div
               animate={{ opacity: [0.4, 1, 0.4] }}
               transition={{ duration: 3, repeat: Infinity }}
-              className="w-16 h-px bg-gradient-to-r from-transparent via-[#C9A84C] to-transparent mx-auto mb-8"
+              className="w-16 h-px bg-gradient-to-r from-transparent via-gold to-transparent mx-auto mb-8"
             />
             <SectionHeader
               eyebrow="Preis & Lizenz"
@@ -582,7 +578,7 @@ export default function ShopRayPage() {
                 </p>
 
                 {/* Enthalten */}
-                <p className="font-mono text-[10px] tracking-[0.16em] uppercase text-[#C9A84C] mb-3">Enthalten</p>
+                <p className="font-mono text-[10px] tracking-[0.16em] uppercase text-gold mb-3">Enthalten</p>
                 <div className="flex flex-col gap-2 mb-6">
                   {[
                     'Vollständiger Source Code (Frontend + Backend + Admin)',
@@ -592,7 +588,7 @@ export default function ShopRayPage() {
                     'E-Mail Support (30 Tage)',
                   ].map((f) => (
                     <div key={f} className="flex items-start gap-2.5">
-                      <Check size={13} strokeWidth={2} className="text-[#C9A84C] shrink-0 mt-0.5" />
+                      <Check size={13} strokeWidth={2} className="text-gold shrink-0 mt-0.5" />
                       <span className="text-[var(--cs-text-2)] text-[12.5px]">{f}</span>
                     </div>
                   ))}
@@ -617,7 +613,7 @@ export default function ShopRayPage() {
                 <div className="mt-auto flex flex-col gap-3">
                   <CtaButton href="/contact" variant="ghost">Lizenz kaufen</CtaButton>
                   <a href="https://shopray-indol.vercel.app" target="_blank" rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2 text-[11px] tracking-[0.12em] uppercase text-[var(--cs-text-3)] hover:text-[#C9A84C] transition-colors group">
+                    className="flex items-center justify-center gap-2 text-[11px] tracking-[0.12em] uppercase text-[var(--cs-text-3)] hover:text-gold transition-colors group">
                     <Lock size={11} strokeWidth={1.5} />
                     Live-Demo ansehen
                     <ArrowRight size={10} strokeWidth={1.5} className="group-hover:translate-x-1 transition-transform" />
@@ -628,14 +624,14 @@ export default function ShopRayPage() {
 
             {/* ── Karte 2: Setup-Service ── */}
             <StaggerItem>
-              <div className="relative h-full p-8 rounded-3xl border border-[#C9A84C]/30 bg-gradient-to-b from-[#C9A84C]/6 to-transparent flex flex-col">
+              <div className="relative h-full p-8 rounded-3xl border border-gold/30 bg-gradient-to-b from-gold/6 to-transparent flex flex-col">
                 <motion.div
                   className="absolute -inset-px rounded-3xl pointer-events-none"
                   style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(201,168,76,0.10) 0%, transparent 65%)' }}
                 />
                 {/* Empfohlen-Badge */}
                 <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
-                  <span className="text-[10px] tracking-[0.16em] uppercase bg-[#C9A84C] text-black font-semibold px-4 py-1 rounded-full whitespace-nowrap">
+                  <span className="text-[10px] tracking-[0.16em] uppercase bg-gold text-black font-semibold px-4 py-1 rounded-full whitespace-nowrap">
                     Empfohlen
                   </span>
                 </div>
@@ -650,7 +646,7 @@ export default function ShopRayPage() {
                 </p>
 
                 {/* Enthalten */}
-                <p className="font-mono text-[10px] tracking-[0.16em] uppercase text-[#C9A84C] mb-3">Alles aus der Lizenz, plus</p>
+                <p className="font-mono text-[10px] tracking-[0.16em] uppercase text-gold mb-3">Alles aus der Lizenz, plus</p>
                 <div className="flex flex-col gap-2 mb-6">
                   {[
                     'Vollständige Einrichtung durch uns',
@@ -662,7 +658,7 @@ export default function ShopRayPage() {
                     'Direkter Support via E-Mail',
                   ].map((f) => (
                     <div key={f} className="flex items-start gap-2.5">
-                      <Check size={13} strokeWidth={2} className="text-[#C9A84C] shrink-0 mt-0.5" />
+                      <Check size={13} strokeWidth={2} className="text-gold shrink-0 mt-0.5" />
                       <span className="text-[var(--cs-text-2)] text-[12.5px]">{f}</span>
                     </div>
                   ))}
@@ -671,7 +667,7 @@ export default function ShopRayPage() {
                 <div className="mt-auto flex flex-col gap-3">
                   <CtaButton href="/contact" variant="primary">Jetzt anfragen</CtaButton>
                   <a href="https://shopray-indol.vercel.app" target="_blank" rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2 text-[11px] tracking-[0.12em] uppercase text-[var(--cs-text-3)] hover:text-[#C9A84C] transition-colors group">
+                    className="flex items-center justify-center gap-2 text-[11px] tracking-[0.12em] uppercase text-[var(--cs-text-3)] hover:text-gold transition-colors group">
                     <Lock size={11} strokeWidth={1.5} />
                     Live-Demo ansehen
                     <ArrowRight size={10} strokeWidth={1.5} className="group-hover:translate-x-1 transition-transform" />
@@ -692,7 +688,7 @@ export default function ShopRayPage() {
                 { icon: <Zap size={14} />, text: 'Sofort lieferbar' },
               ].map((g) => (
                 <div key={g.text} className="flex items-center gap-2 text-[var(--cs-text-3)] text-[11px]">
-                  <span className="text-[#C9A84C]/60">{g.icon}</span>
+                  <span className="text-gold/60">{g.icon}</span>
                   {g.text}
                 </div>
               ))}

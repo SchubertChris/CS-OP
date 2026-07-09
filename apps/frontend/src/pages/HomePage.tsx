@@ -210,7 +210,7 @@ export default function HomePage() {
         <div ref={sectionRef} className="relative">
           <motion.section 
             style={reduced ? undefined : { clipPath: clipPathValue }}
-            className="px-8 md:px-16 lg:px-24 max-w-[1240px] mx-auto py-20 md:py-28 cs-glass-panel border border-[#C9A84C]/15 rounded-3xl my-16 relative overflow-hidden"
+            className="px-8 md:px-16 lg:px-24 max-w-[1240px] mx-auto py-20 md:py-28 cs-glass-panel border border-gold/15 rounded-3xl my-16 relative overflow-hidden"
           >
             {/* Ambient golden core inside the portal */}
             <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,rgba(201,168,76,0.06)_0%,transparent_70%)]" />
@@ -341,7 +341,7 @@ export default function HomePage() {
 
         {/* ═══════════ KONTAKT ═══════════ */}
         <section id="kontakt" className="px-6 md:px-12 lg:px-20 max-w-[1000px] mx-auto py-24 md:py-36">
-          <div className="cs-glass-panel border border-[#C9A84C]/20 rounded-3xl p-12 md:p-20 text-center relative overflow-hidden">
+          <div className="cs-glass-panel border border-gold/20 rounded-3xl p-12 md:p-20 text-center relative overflow-hidden">
             {/* Ambient gold glow */}
             <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,rgba(201,168,76,0.06)_0%,transparent_70%)]" />
             
