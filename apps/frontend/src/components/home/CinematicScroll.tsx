@@ -36,15 +36,16 @@ export default function CinematicScroll({ cases }: Props) {
   })
 
   // Horizontal translation of the row: from 0% to -75% (for 4 items).
-  // Delayed start (0.18) so the first card holds centred on entry, and the
-  // slide finishes at 0.86 so the LAST card is held fully centred before unpin.
+  // Starts at 0.22 to hold the first card centered on entry.
+  // Finishes at 0.72 to allow the last card (Sentinel) to fully center and settle
+  // well before the container unpins at 1.0.
   const numItems = cases.length
   const translationPercentage = -((numItems - 1) / numItems) * 100
-  const xRaw = useTransform(scrollYProgress, [0.32, 0.80], ['0%', `${translationPercentage}%`])
+  const xRaw = useTransform(scrollYProgress, [0.22, 0.72], ['0%', `${translationPercentage}%`])
   const x = useSpring(xRaw, { stiffness: 95, damping: 23 })
 
   // Parallax offsets for background text in each slide (moves faster horizontally)
-  const bgXRaw = useTransform(scrollYProgress, [0.32, 0.80], [0, -320])
+  const bgXRaw = useTransform(scrollYProgress, [0.22, 0.72], [0, -320])
   const bgX = useSpring(bgXRaw, { stiffness: 70, damping: 25 })
 
   // Render vertical layout on mobile or reduced-motion
