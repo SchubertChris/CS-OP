@@ -206,7 +206,7 @@ export default function HomePage() {
         </section>
 
         {/* Cinematic image scale-down & dissolve transition */}
-        <CinematicDissolve imageSrc={img('candlescope')} />
+        <CinematicDissolve />
 
         {/* ═══════════ WAS ICH MACHE ═══════════ */}
         <div ref={sectionRef} className="relative">
