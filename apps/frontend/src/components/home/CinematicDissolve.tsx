@@ -16,23 +16,23 @@ export default function CinematicDissolve() {
   })
 
   // Stay 100vw throughout, zoom scale slightly, fade out / dissolve on scroll progress
-  const scale = useTransform(scrollYProgress, [0.22, 0.58], [1.05, 0.9])
+  const scale = useTransform(scrollYProgress, [0.42, 0.70], [1.05, 0.9])
   
   // Fade out / dissolve opacity
-  const opacity = useTransform(scrollYProgress, [0.45, 0.68], [1, 0])
+  const opacity = useTransform(scrollYProgress, [0.50, 0.75], [1, 0])
   
   // Dynamic blur dissolve
-  const blurValue = useTransform(scrollYProgress, [0.4, 0.68], [0, 24])
+  const blurValue = useTransform(scrollYProgress, [0.46, 0.75], [0, 24])
   const filter = useTransform(blurValue, (b) => `blur(${b}px)`)
 
   // Subtle Y translation offset
-  const y = useTransform(scrollYProgress, [0.22, 0.68], [0, 80])
+  const y = useTransform(scrollYProgress, [0.42, 0.75], [0, 80])
 
   // Dynamically scale top padding to clear header only when full screen
-  const paddingTop = useTransform(scrollYProgress, [0.22, 0.58], ['80px', '0px'])
+  const paddingTop = useTransform(scrollYProgress, [0.42, 0.70], ['80px', '0px'])
 
   // Interactive scroll-driven logo outline drawing animation
-  const drawProgressRaw = useTransform(scrollYProgress, [0.15, 0.40], [0, 1])
+  const drawProgressRaw = useTransform(scrollYProgress, [0.05, 0.32], [0, 1])
   const drawProgress = useSpring(drawProgressRaw, { stiffness: 45, damping: 15 })
 
   if (reduced) return null
@@ -48,7 +48,7 @@ export default function CinematicDissolve() {
           <motion.svg
             version="1.1"
             xmlns="http://www.w3.org/2000/svg"
-            viewBox="-500 -50 1500 1100"
+            viewBox="25 20 960 900"
             className="max-w-[80vw] max-h-[56vh] w-auto h-auto object-contain"
           >
             <motion.path
