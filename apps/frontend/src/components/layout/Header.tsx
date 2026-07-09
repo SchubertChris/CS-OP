@@ -104,16 +104,14 @@ export default function Header() {
             <LogIn size={12} strokeWidth={2} />
             Login
           </a>
-          <a
-            href="https://cal.com/chris-schubert-9newp6"
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            data-cal-link="chris-schubert-9newp6"
             aria-label="Termin vereinbaren"
-            className="flex items-center gap-1.5 text-[11px] tracking-[0.12em] uppercase px-4 py-2 rounded-full bg-[var(--cs-gold)] text-[var(--cs-on-gold)] font-semibold transition-colors duration-200 hover:bg-[var(--cs-gold-hi)]"
+            className="flex items-center gap-1.5 text-[11px] tracking-[0.12em] uppercase px-4 py-2 rounded-full bg-[var(--cs-gold)] text-[var(--cs-on-gold)] font-semibold transition-colors duration-200 hover:bg-[var(--cs-gold-hi)] cursor-pointer"
           >
             <Calendar size={12} strokeWidth={2} />
             Termin
-          </a>
+          </button>
         </div>
       </header>
 
@@ -192,11 +190,14 @@ export default function Header() {
           </Link>
 
           {/* Termin vereinbaren */}
-          <a href="https://cal.com/chris-schubert-9newp6" target="_blank" rel="noopener noreferrer" aria-label="Termin vereinbaren"
-            className="flex items-center gap-3 px-2 h-10 rounded-xl text-[var(--cs-text-2)] hover:bg-[#C9A84C]/8 hover:text-[#C9A84C] transition-colors duration-200 shrink-0 overflow-hidden">
+          <button
+            data-cal-link="chris-schubert-9newp6"
+            aria-label="Termin vereinbaren"
+            className="flex items-center gap-3 px-2 h-10 rounded-xl text-[var(--cs-text-2)] hover:bg-[#C9A84C]/8 hover:text-[#C9A84C] transition-colors duration-200 shrink-0 overflow-hidden w-full text-left cursor-pointer"
+          >
             <span className="shrink-0 ml-1"><Calendar size={16} strokeWidth={1.5} /></span>
             <span className="text-[11px] tracking-[0.08em] font-medium whitespace-nowrap">Termin vereinbaren</span>
-          </a>
+          </button>
 
           {/* Theme Toggle */}
           <button onClick={toggle} aria-label="Theme wechseln"

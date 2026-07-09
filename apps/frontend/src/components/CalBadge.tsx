@@ -42,31 +42,18 @@ export default function CalBadge() {
     // Initialize Cal
     window.Cal("init", { origin: "https://app.cal.com" });
 
-    // Configure Floating Button
-    window.Cal("floatingButton", {
-      calLink: "chris-schubert-9newp6",
-      calOrigin: "https://app.cal.com",
-      buttonText: "Termin vereinbaren",
-      buttonColor: "#C9A84C",
-      buttonTextColor: "#080808",
-      buttonPosition: "bottom-right",
-      config: {
-        theme: "dark",
-        ui: {
-          theme: "dark"
+    // Setup global UI config for popups
+    window.Cal("ui", {
+      theme: "dark",
+      styles: {
+        branding: {
+          brandColor: "#C9A84C"
         }
       }
     });
 
     return () => {
-      // Clean up the added scripts and elements
-      const el = document.getElementById("cal-floating-button") || document.querySelector("[data-cal-link]");
-      if (el) el.remove();
-      
-      document.querySelectorAll("button[style*='position: fixed']").forEach(btn => {
-        if (btn.outerHTML.includes("chris-schubert-9newp6")) btn.remove();
-      });
-
+      // Clean up the added scripts
       const scripts = document.head.querySelectorAll("script");
       scripts.forEach(s => {
         if (s.src.includes("cal.com/embed/embed.js")) s.remove();
