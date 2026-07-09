@@ -44,7 +44,7 @@ export default function CalBadge() {
 
     // Configure Floating Button
     window.Cal("floatingButton", {
-      calLink: "schubertchris8/new-meeting",
+      calLink: "chris-schubert-9newp6",
       calOrigin: "https://app.cal.com",
       buttonText: "Termin vereinbaren",
       buttonColor: "#C9A84C",
@@ -64,7 +64,7 @@ export default function CalBadge() {
       if (el) el.remove();
       
       document.querySelectorAll("button[style*='position: fixed']").forEach(btn => {
-        if (btn.outerHTML.includes("schubertchris8")) btn.remove();
+        if (btn.outerHTML.includes("chris-schubert-9newp6")) btn.remove();
       });
 
       const scripts = document.head.querySelectorAll("script");

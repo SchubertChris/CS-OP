@@ -182,7 +182,7 @@ export default function Header() {
           </Link>
 
           {/* Termin vereinbaren */}
-          <a href="https://cal.com/schubertchris8/new-meeting" target="_blank" rel="noopener noreferrer" aria-label="Termin vereinbaren"
+          <a href="https://cal.com/chris-schubert-9newp6" target="_blank" rel="noopener noreferrer" aria-label="Termin vereinbaren"
             className="flex items-center gap-3 px-2 h-10 rounded-xl text-[var(--cs-text-2)] hover:bg-[#C9A84C]/8 hover:text-[#C9A84C] transition-colors duration-200 shrink-0 overflow-hidden">
             <span className="shrink-0 ml-1"><Calendar size={16} strokeWidth={1.5} /></span>
             <span className="text-[11px] tracking-[0.08em] font-medium whitespace-nowrap">Termin vereinbaren</span>
