@@ -138,6 +138,7 @@ export default function ThreeParticleTimeline({ targetRef }: { targetRef: React.
   const reduced = useReducedMotion()
 
   const [webglSupported, setWebglSupported] = useState(true)
+  const [isInitialized, setIsInitialized] = useState(false)
 
   // Tracking dynamic checkpoints & scroll colors
   const [checkpoints, setCheckpoints] = useState<number[]>([0.16, 0.40, 0.74, 0.80])
@@ -202,13 +203,14 @@ export default function ThreeParticleTimeline({ targetRef }: { targetRef: React.
       pEndRef.current = pEnd
 
       const range = pEnd - pStart
-      // Trigger checkpoints earlier so they morph in sync before/as cards center
-      const cp1 = pStart + 0.04 * range
-      const cp2 = pStart + 0.28 * range
-      const cp3 = pStart + 0.52 * range
-      const cp4 = pStart + 0.78 * range
+      // Mathematically aligned to trigger exactly when each card/slide centers horizontally
+      const cp1 = pStart + 0.22 * range
+      const cp2 = pStart + 0.3867 * range
+      const cp3 = pStart + 0.5533 * range
+      const cp4 = pStart + 0.72 * range
 
       setCheckpoints([cp1, cp2, cp3, cp4])
+      setIsInitialized(true)
     }
 
     const timer = setTimeout(updateCheckpoints, 400)
@@ -568,13 +570,22 @@ export default function ThreeParticleTimeline({ targetRef }: { targetRef: React.
     <>
     {/* 3D WebGL rotating crystal checkpoints overlay (fixed viewport height) */}
     {!reduced && webglSupported && (
-      <div className="hidden lg:block fixed inset-0 z-[31] pointer-events-none" aria-hidden="true">
+      <div 
+        className="hidden lg:block fixed inset-0 z-[31] pointer-events-none transition-opacity duration-300"
+        style={{ opacity: isInitialized ? 1 : 0 }}
+        aria-hidden="true"
+      >
         <canvas ref={canvasRef} className="w-full h-full block" />
       </div>
     )}
 
     {/* SVG Scroll progress line track - centered and aligned with content margin */}
-    <div ref={containerRef} className="hidden lg:block absolute inset-y-0 left-0 right-0 z-[30] pointer-events-none transition-opacity duration-500" aria-hidden="true">
+    <div 
+      ref={containerRef} 
+      className="hidden lg:block absolute inset-y-0 left-0 right-0 z-[30] pointer-events-none transition-opacity duration-300" 
+      style={{ opacity: isInitialized ? 1 : 0 }}
+      aria-hidden="true"
+    >
       <svg
         viewBox={`0 0 100 ${totalHeight}`}
         preserveAspectRatio="none"
