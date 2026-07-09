@@ -104,6 +104,16 @@ export default function Header() {
             <LogIn size={12} strokeWidth={2} />
             Login
           </a>
+          <a
+            href="https://cal.com/chris-schubert-9newp6"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Termin vereinbaren"
+            className="flex items-center gap-1.5 text-[11px] tracking-[0.12em] uppercase px-4 py-2 rounded-full bg-[var(--cs-gold)] text-[var(--cs-on-gold)] font-semibold transition-colors duration-200 hover:bg-[var(--cs-gold-hi)]"
+          >
+            <Calendar size={12} strokeWidth={2} />
+            Termin
+          </a>
         </div>
       </header>
 
