@@ -11,10 +11,10 @@ import {
   Card, CardIcon, GradientText, CtaButton, TagList,
 } from '../components/ui'
 import {
-  MessageSquare, TrendingUp,
-  Shield, BarChart2, Code2, Video,
+  MessageSquare,
+  Shield, Code2, Video,
   CheckCircle2, ArrowRight, Volume2, Terminal, Zap, GitBranch,
-  Crown, X, Sprout, Wallet, AlertTriangle, Mic, Flame, Handshake, ThumbsUp, HelpCircle,
+  Crown, X, Sprout, Mic, Flame, Handshake, ThumbsUp, HelpCircle,
 } from 'lucide-react'
 
 /* ── Discord Invite Hook ─────────────────────────────────── */
@@ -98,47 +98,35 @@ const DISCORD_STRUCTURE = [
     channels: [
       { name: 'willkommen', type: 'text' },
       { name: 'regeln', type: 'text' },
-      { name: 'forum', type: 'forum' },
-      { name: 'neues', type: 'text' },
+      { name: 'neues-updates', type: 'text' },
+      { name: 'ideen-box', type: 'forum' },
     ],
   },
   {
-    name: '| Community',
+    name: '| Developer Area',
     channels: [
-      { name: 'global', type: 'text' },
-      { name: 'long', type: 'text' },
-      { name: 'short', type: 'text' },
-      { name: 'setups', type: 'text' },
-      { name: 'scam-alarm', type: 'text' },
+      { name: 'global-dev', type: 'text' },
+      { name: 'showcase', type: 'text' },
+      { name: 'code-hilfe', type: 'text' },
+      { name: 'design-ui-ux', type: 'text' },
     ],
   },
   {
-    name: '| Anlage & Vorsorge',
+    name: '| Tech Stack',
     channels: [
-      { name: 'aktien', type: 'text' },
-      { name: 'anleihen', type: 'text' },
-      { name: 'depotvorstellung', type: 'text' },
-      { name: 'devisen', type: 'text' },
-      { name: 'exchange-traded-funds', type: 'text' },
-      { name: 'rohstoffe', type: 'text' },
-    ],
-  },
-  {
-    name: '| Coding & Tech',
-    channels: [
-      { name: 'webdev', type: 'text' },
-      { name: 'trading-bots', type: 'text' },
-      { name: 'automatisierung', type: 'text' },
+      { name: 'frontend', type: 'text' },
+      { name: 'backend', type: 'text' },
+      { name: 'scripts-python', type: 'text' },
+      { name: 'devops-server', type: 'text' },
       { name: 'code-review', type: 'forum' },
-      { name: 'tools', type: 'text' },
     ],
   },
   {
-    name: '| Speak',
+    name: '| Speak & Co-Working',
     channels: [
-      { name: 'CandleScope |', type: 'voice' },
-      { name: 'CandleScope ||', type: 'voice' },
-      { name: 'CandleScope |||', type: 'voice' },
+      { name: 'Dev-Talk |', type: 'voice' },
+      { name: 'Dev-Talk ||', type: 'voice' },
+      { name: 'Quiet Coding', type: 'voice' },
     ],
   },
 ]
@@ -308,13 +296,12 @@ function WaitlistForm() {
 const INVITE_CODE = 'HRxbTW4ujT'
 
 const FEATURES = [
-  { icon: <TrendingUp size={20} strokeWidth={1.5} />, title: 'Trading & Setups', desc: 'Setups, Entry-Punkte und Marktanalysen — teilen, hinterfragen und gemeinsam besser werden.' },
-  { icon: <BarChart2 size={20} strokeWidth={1.5} />, title: 'Krypto & Märkte', desc: 'Krypto, Aktien, ETFs, Rohstoffe — Chartanalysen und Ideen aus der Community, ohne Hype.' },
-  { icon: <Code2 size={20} strokeWidth={1.5} />, title: 'Webdev & Open Source', desc: 'React, TypeScript, APIs — Code-Austausch, Reviews und gemeinsame Projekte mit anderen Entwicklern.' },
-  { icon: <Terminal size={20} strokeWidth={1.5} />, title: 'Trading-Bots & Automatisierung', desc: 'Eigene Bots bauen, Strategien automatisieren, Broker-APIs nutzen — von der Idee bis zur Umsetzung.' },
-  { icon: <Video size={20} strokeWidth={1.5} />, title: 'Live Q&A & Voice', desc: 'Regelmäßige Live-Sessions: Chart-Analysen, Code-Reviews, Fragen und direkter Austausch.' },
+  { icon: <Code2 size={20} strokeWidth={1.5} />, title: 'Webdev & Open Source', desc: 'React, TypeScript, Tailwind, Next.js — Code-Austausch, Reviews und gemeinsame Projekte mit anderen Entwicklern.' },
+  { icon: <Terminal size={20} strokeWidth={1.5} />, title: 'Skripte & Automatisierung', desc: 'Eigene Scripts schreiben, Workflows automatisieren, APIs nutzen — von der Idee bis zur Umsetzung.' },
+  { icon: <Zap size={20} strokeWidth={1.5} />, title: 'Code-Reviews & Best Practices', desc: 'Teile deinen Code, erhalte konstruktives Feedback und lerne modernste Entwurfsmuster.' },
+  { icon: <Video size={20} strokeWidth={1.5} />, title: 'Live Dev-Sessions & Voice', desc: 'Regelmäßige Live-Sessions im Voice: Code-Walkthroughs, Fragenrunden und gemeinsames Coden.' },
   { icon: <Handshake size={20} strokeWidth={1.5} />, title: 'Netzwerk & Kontakte', desc: 'Gleichgesinnte finden, an Projekten zusammenarbeiten und sich gegenseitig weiterbringen.' },
-  { icon: <Shield size={20} strokeWidth={1.5} />, title: 'Scam-Alarm & Schutz', desc: 'Community-geprüfte Warnungen vor Betrug, Pump & Dump und unseriösen Angeboten.' },
+  { icon: <Shield size={20} strokeWidth={1.5} />, title: 'Tools & Workspaces', desc: 'Austausch über IDEs, Plugins, Shell-Setups, Shortcuts und Tools, die deinen Workflow beschleunigen.' },
 ]
 
 export default function CommunityPage() {
@@ -325,11 +312,11 @@ export default function CommunityPage() {
   return (
     <>
       <PageHero
-        eyebrow="Candlescope Community · Discord"
+        eyebrow="Candlescope Dev-Community · Discord"
         titleLine1="Lass uns"
         titleLine2="Netzwerken."
         titleAccent="line2"
-        description="Ein Netzwerk aus Tradern, Entwicklern und Machern — Trading, Krypto, Dev & Automatisierung an einem Ort. Ohne Bullshit, kein Schnellreich-Versprechen, nur ehrlicher Austausch."
+        description="Ein Netzwerk aus Entwicklern, Designern und Tech-Begeisterten. Webdev, Skripte, Automatisierung und Code-Reviews an einem Ort. Ohne Bullshit, nur ehrlicher, fachlicher Austausch."
         badge="Jetzt live"
         theme="community"
       >
@@ -372,7 +359,7 @@ export default function CommunityPage() {
         <StaggerContainer className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <StaggerItem><StatCard value={memberCount ? String(memberCount) : '—'} label="Member" sub="gesamt" loading={discordStatus === 'loading'} /></StaggerItem>
           <StaggerItem><StatCard value={onlineCount ? String(onlineCount) : '—'} label="Online" sub="gerade aktiv" loading={discordStatus === 'loading'} /></StaggerItem>
-          <StaggerItem><StatCard value="6" label="Kategorien" sub="im Server" /></StaggerItem>
+          <StaggerItem><StatCard value="4" label="Kategorien" sub="im Server" /></StaggerItem>
           <StaggerItem><StatCard value="24/7" label="Aktiv" sub="immer offen" /></StaggerItem>
         </StaggerContainer>
       </SectionWrapper>
@@ -392,14 +379,14 @@ export default function CommunityPage() {
             <div className="relative">
               <p className="font-mono text-[10px] tracking-[0.22em] uppercase text-[#C9A84C]/70 mb-4">Was wir nicht sind</p>
               <h2 className="font-display text-2xl md:text-4xl text-[var(--cs-text)] leading-tight mb-8">
-                Kein Hype. Keine Versprechen.<br />
+                Kein Spam. Keine Fake-Gurus.<br />
                 <GradientText>Nur ehrlicher Austausch.</GradientText>
               </h2>
               <div className="flex flex-wrap items-center justify-center gap-3">
                 {[
-                  'Keine bezahlten Signale',
-                  'Kein Pump & Dump',
-                  'Kein Coaching-Bullshit',
+                  'Keine bezahlten Kurse',
+                  'Kein Job-Vermittlung-Spam',
+                  'Kein Scheinwissen-Bullshit',
                 ].map((item, i) => (
                   <span key={i} className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-[var(--cs-border-w)] bg-[var(--cs-s1)] font-mono text-[11px] tracking-[0.08em] text-[var(--cs-text-2)]">
                     <X size={12} strokeWidth={2} className="text-[var(--cs-danger)] shrink-0" />
@@ -419,7 +406,7 @@ export default function CommunityPage() {
         <SectionHeader
           eyebrow="Was dich erwartet"
           title={<>Mehr als nur <GradientText>ein Server</GradientText></>}
-          description="Eine aktive Community rund um Trading, Krypto, Dev & Automatisierung — mit echtem Mehrwert."
+          description="Eine aktive Community rund um Webdev, Open Source, Scripts & Automatisierung — mit echtem Mehrwert."
           className="mb-14"
         />
         <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -443,31 +430,31 @@ export default function CommunityPage() {
       <SectionWrapper id="audience">
         <SectionHeader
           eyebrow="Für wen?"
-          title={<>Ein Server — <GradientText>drei Communities</GradientText></>}
-          description="Ob du tradest, codest oder beides — hier findest du Leute die auf demselben Weg sind."
+          title={<>Ein Server — <GradientText>voller Expertise</GradientText></>}
+          description="Ob du im Frontend zauberst, Backends aufbaust oder Workflows automatisierst — hier findest du Leute auf demselben Weg."
           className="mb-14"
         />
         <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {[
             {
-              icon: <TrendingUp size={26} strokeWidth={1.4} />,
-              label: 'Trader & Investor',
-              desc: 'Du willst nicht allein traden. Chart-Austausch, Setups, Marktanalysen — und jemand der dich auf Bullshit hinweist.',
-              tags: ['Setups', 'Chartanalyse', 'Depot', 'ETFs'],
+              icon: <Code2 size={26} strokeWidth={1.4} />,
+              label: 'Frontend-Entwickler',
+              desc: 'React, TypeScript, Next.js und UI/UX-Design. Tausche dich über responsive Layouts, State Management und moderne Styling-Tokens aus.',
+              tags: ['React', 'TypeScript', 'UI/UX', 'Next.js'],
               href: '#features',
             },
             {
-              icon: <Code2 size={26} strokeWidth={1.4} />,
-              label: 'Developer',
-              desc: 'Du baust Trading-Bots, automatisierst Strategien oder entwickelst Web-Apps. Hier findest du Gleichgesinnte und echte Code-Reviews.',
-              tags: ['Bots', 'APIs', 'TypeScript', 'Open Source'],
+              icon: <Terminal size={26} strokeWidth={1.4} />,
+              label: 'Backend & scripting',
+              desc: 'Datenbanken, Webhooks, Python-Scripts und Serverless Deployments. Optimiere deine APIs und automatisiere lästige Standard-Prozesse.',
+              tags: ['Node.js', 'Python', 'APIs', 'Datenbanken'],
               href: '#dev',
             },
             {
               icon: <Sprout size={26} strokeWidth={1.4} />,
               label: 'Einsteiger & Neugierige',
-              desc: 'Du willst rein — egal ob Trading, Coding oder Automatisierung. Ohne Hype, ohne Schnellreich-Versprechen. Fragen stellen, lernen, wachsen.',
-              tags: ['Grundlagen', 'Erste Schritte', 'Fragen stellen', 'Community'],
+              desc: 'Du möchtest Programmieren lernen oder eigene Web-Projekte umsetzen. Ohne Hype und falschen Druck. Fragen stellen, Code teilen, wachsen.',
+              tags: ['Grundlagen', 'Erste Schritte', 'Code-Reviews', 'Community'],
               href: '#features',
             },
           ].map((card, i) => (
@@ -510,11 +497,11 @@ export default function CommunityPage() {
             />
             <StaggerContainer className="flex flex-col gap-3 mb-8">
               {[
-                { icon: <TrendingUp size={16} strokeWidth={1.5} />, text: 'Trading Setups · Long & Short Channels' },
-                { icon: <Wallet size={16} strokeWidth={1.5} />, text: 'Anlage & Vorsorge — Aktien · ETFs · Devisen · Rohstoffe' },
-                { icon: <AlertTriangle size={16} strokeWidth={1.5} />, text: 'Scam-Alarm für die Community' },
-                { icon: <Mic size={16} strokeWidth={1.5} />, text: '3 Voice Channels für Live-Sessions' },
-                { icon: <Code2 size={16} strokeWidth={1.5} />, text: 'Coding & Tech — Bots · Webdev · Automatisierung' },
+                { icon: <Code2 size={16} strokeWidth={1.5} />, text: 'Frontend-Channels für CSS, React & State-Management' },
+                { icon: <Terminal size={16} strokeWidth={1.5} />, text: 'Backend- & API-Bereiche für Node.js, Python & SQL' },
+                { icon: <Zap size={16} strokeWidth={1.5} />, text: 'Skripte- & Automatisierungs-Austausch' },
+                { icon: <Mic size={16} strokeWidth={1.5} />, text: '3 Voice-Channels für Co-Working & Pair Programming' },
+                { icon: <GitBranch size={16} strokeWidth={1.5} />, text: 'Code-Reviews & Showcase-Showoff' },
                 { icon: <Shield size={16} strokeWidth={1.5} />, text: 'Organisierte Moderationsstruktur' },
               ].map((item, i) => (
                 <StaggerItem key={i}>
@@ -546,12 +533,12 @@ export default function CommunityPage() {
         />
         <div className="flex flex-col gap-6">
           <div>
-            <p className="font-mono text-[10px] tracking-[0.16em] uppercase text-[var(--cs-text-3)] mb-3">Finanzen & Trading</p>
-            <TagList tags={['Aktien', 'ETFs', 'Krypto', 'Devisen', 'Rohstoffe', 'Anleihen', 'Technische Analyse', 'Fundamental', 'Trading Psychology', 'Depot-Aufbau', 'DeFi', 'Options', 'Futures']} />
+            <p className="font-mono text-[10px] tracking-[0.16em] uppercase text-[var(--cs-text-3)] mb-3">Web- & Mobile-Development</p>
+            <TagList tags={['React', 'TypeScript', 'Next.js', 'Node.js', 'Express.js', 'Supabase', 'CSS & Tailwind', 'UI/UX', 'Performance', 'Electron', 'Responsive Design', 'Git', 'Vercel']} />
           </div>
           <div>
-            <p className="font-mono text-[10px] tracking-[0.16em] uppercase text-[var(--cs-text-3)] mb-3">Dev & Tech</p>
-            <TagList tags={['React', 'TypeScript', 'Node.js', 'Express.js', 'Supabase', 'REST APIs', 'Trading Bots', 'Automatisierung', 'Web Scraping', 'Open Source', 'Code Review']} />
+            <p className="font-mono text-[10px] tracking-[0.16em] uppercase text-[var(--cs-text-3)] mb-3">Automation & APIs</p>
+            <TagList tags={['Python', 'Web Scraping', 'REST APIs', 'GraphQL', 'Cronjobs', 'Workflows', 'Docker', 'Automatisierung', 'Open Source', 'Code Review']} />
           </div>
         </div>
       </SectionWrapper>
@@ -564,16 +551,16 @@ export default function CommunityPage() {
           <div>
             <SectionHeader
               eyebrow="Coding Community"
-              title={<>Nicht nur <GradientText>Trader</GradientText></>}
-              description="Ein eigener Bereich für Entwickler — egal ob du Trading-Bots baust, Web-Apps entwickelst oder einfach Gleichgesinnte suchst."
+              title={<>Entwickler unter <GradientText>sich</GradientText></>}
+              description="Ein eigener Bereich für Entwickler — egal ob du Web-Apps entwickelst, Skripte baust oder einfach Gleichgesinnte suchst."
               className="mb-8"
             />
             <StaggerContainer className="flex flex-col gap-3 mb-8">
               {[
-                { icon: <Terminal size={14} strokeWidth={1.5} />, text: 'Trading Bots & Broker-API Integration' },
                 { icon: <Code2    size={14} strokeWidth={1.5} />, text: 'Code Reviews & gemeinsame Projekte' },
-                { icon: <Zap      size={14} strokeWidth={1.5} />, text: 'Automatisierung von Strategien & Workflows' },
-                { icon: <GitBranch size={14} strokeWidth={1.5} />, text: 'Open Source Tools für Trader & Entwickler' },
+                { icon: <Terminal size={14} strokeWidth={1.5} />, text: 'API-Integrationen & Webhooks' },
+                { icon: <Zap      size={14} strokeWidth={1.5} />, text: 'Automatisierung von Workflows & Serverless Scripts' },
+                { icon: <GitBranch size={14} strokeWidth={1.5} />, text: 'Open Source Tools & nützliche NPM-Pakete' },
               ].map((item, i) => (
                 <StaggerItem key={i}>
                   <div className="flex items-center gap-3">
@@ -650,9 +637,9 @@ export default function CommunityPage() {
             <StaggerContainer className="flex flex-col gap-3 mb-8">
               {[
                 { icon: <MessageSquare size={16} strokeWidth={1.5} />, text: 'Täglich aktiver Austausch in mehreren Channels' },
-                { icon: <Flame size={16} strokeWidth={1.5} />, text: 'Setup-Sharing mit echtem Community-Feedback' },
+                { icon: <Code2 size={16} strokeWidth={1.5} />, text: 'Code-Reviews & echte Pull-Request Hilfestellung' },
                 { icon: <Handshake size={16} strokeWidth={1.5} />, text: 'Direkte Antworten statt Copy-Paste-Boilerplate' },
-                { icon: <Zap size={16} strokeWidth={1.5} />, text: 'Trading-Bots die live in der Community gebaut werden' },
+                { icon: <Zap size={16} strokeWidth={1.5} />, text: 'Automatisierung & Cloud-Deployment Strategien' },
               ].map((item, i) => (
                 <StaggerItem key={i}>
                   <div className="flex items-center gap-3">
@@ -675,7 +662,7 @@ export default function CommunityPage() {
               <div className="h-px bg-gradient-to-r from-transparent via-[#C9A84C]/30 to-transparent" />
               <div className="px-4 py-3 border-b border-[#ffffff]/6 bg-[var(--cs-input)] flex items-center gap-2">
                 <span className="font-mono text-[12px] text-[var(--cs-text-3)]">#</span>
-                <span className="font-mono text-[11px] text-[var(--cs-text-2)]">setups</span>
+                <span className="font-mono text-[11px] text-[var(--cs-text-2)]">code-hilfe</span>
                 <div className="ml-auto flex items-center gap-1.5">
                   <motion.div className="w-1.5 h-1.5 rounded-full bg-[#00C896]"
                     animate={{ opacity: [1, 0.4, 1] }} transition={{ duration: 2, repeat: Infinity }} />
@@ -687,30 +674,30 @@ export default function CommunityPage() {
                   {
                     avatar: 'AT', color: '#5865F2',
                     name: 'Alex_T.', time: 'Heute 09:42',
-                    text: 'BTC Setup läuft — Einstieg 65k, TP 68k, SL 63.5k',
+                    text: 'React 19 Hydration Mismatch behoben: lag an verschachtelten <a> Tags im DOM.',
                     code: null,
                     reactions: [{ icon: <Flame size={12} strokeWidth={1.6} />, count: 4 }, { icon: <CheckCircle2 size={12} strokeWidth={1.6} />, count: 2 }],
                   },
                   {
                     avatar: 'MD', color: '#57F287',
                     name: 'MaxDev', time: 'Heute 10:14',
-                    text: 'Hat jemand die Binance WebSocket API im Griff? Reconnect klappt nicht...',
-                    code: `ws.on('error', () => reconnect())`,
+                    text: 'Hat jemand die native Node.js fetch API für file-uploads im Griff? Multipart/form-data wirft Fehler...',
+                    code: `fetch(url, { method: 'POST', body: formData })`,
                     reactions: [],
                   },
                   {
                     avatar: 'CS', color: '#C9A84C',
                     name: 'Chris_S', time: 'Heute 10:17',
-                    text: '@MaxDev setTimeout 3000ms vor dem reconnect() — WS braucht kurz bis die Connection wirklich closed ist.',
+                    text: '@MaxDev Übergib das FormData-Objekt direkt als Body und lass die Content-Type Header komplett weg. Der Browser/Node setzt die boundary dann automatisch richtig.',
                     code: null,
-                    reactions: [{ icon: <ThumbsUp size={12} strokeWidth={1.6} />, count: 3 }],
+                    reactions: [{ icon: <ThumbsUp size={12} strokeWidth={1.6} />, count: 5 }],
                   },
                   {
                     avatar: 'SR', color: '#FEE75C',
                     name: 'Stefan_R', time: 'Heute 11:02',
-                    text: 'ETH/USD Daily — das Wedge Pattern spannt sich zu. Breakout oder Breakdown?',
+                    text: 'Next.js App Router dynamic layouts — hat jemand ein sauberes Pattern um Sidebar/Topbar je nach Route auszublenden?',
                     code: null,
-                    reactions: [{ icon: <BarChart2 size={12} strokeWidth={1.6} />, count: 5 }, { icon: <HelpCircle size={12} strokeWidth={1.6} />, count: 3 }],
+                    reactions: [{ icon: <Code2 size={12} strokeWidth={1.6} />, count: 3 }, { icon: <HelpCircle size={12} strokeWidth={1.6} />, count: 2 }],
                   },
                 ].map((msg, i) => (
                   <motion.div key={i}
