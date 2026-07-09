@@ -1,8 +1,7 @@
-import { useLayoutEffect, useState, useEffect, useRef } from 'react'
-import { motion, useMotionValue, animate, useTransform, useReducedMotion } from 'framer-motion'
+import { useLayoutEffect, useState } from 'react'
+import { motion } from 'framer-motion'
 
 /* ─── Mobile Check Hook ─────────────────────────────────── */
-// matchMedia statt innerWidth — kein Forced Reflow
 const mobileQuery = typeof window !== 'undefined' ? window.matchMedia('(max-width: 767px)') : null
 
 function useIsMobile() {
@@ -64,1120 +63,120 @@ function AnimatedTitle({ line1, line2, accent }: { line1: string; line2: string;
   )
 }
 
-/* ── Finance: Portfolio Rings ────────────────────────────── */
+/* ── Finance: Portfolio Rings (Static) ────────────────────── */
 function FinanceBg() {
-  const cx = 340, cy = 200
-  const rings = [
-    { r: 130, pct: 0.78, label: 'Girokonto', delay: 0.5 },
-    { r: 100, pct: 0.62, label: 'Tagesgeld', delay: 0.85 },
-    { r: 72,  pct: 0.45, label: 'Depot',     delay: 1.2 },
-    { r: 46,  pct: 0.28, label: 'Sparziel',  delay: 1.55 },
-  ]
-  const endPt = (r: number, pct: number) => ({
-    x: cx + r * Math.cos(-Math.PI / 2 + pct * 2 * Math.PI),
-    y: cy + r * Math.sin(-Math.PI / 2 + pct * 2 * Math.PI),
-  })
-
+  const cx = 350, cy = 200
+  const circles = [130, 100, 72, 46]
   return (
-    <>
-      {/* Mobile — 3 soft rings */}
-      <svg className="absolute top-12 left-0 pointer-events-none block md:hidden"
-        width="100vw" height="220" viewBox="0 0 400 220" preserveAspectRatio="xMidYMin meet">
-        {[80, 56, 34].map((r, i) => (
-          <g key={i} transform="rotate(-90, 200, 110)">
-            <motion.circle cx={200} cy={110} r={r}
-              fill="none" stroke="#C9A84C" strokeWidth={1.5}
-              initial={{ pathLength: 0 }} animate={{ pathLength: [0.78, 0.62, 0.45][i] }}
-              transition={{ delay: 0.5 + i * 0.3, duration: 1.4, ease: [0.22, 1, 0.36, 1] }} />
-          </g>
-        ))}
-        {[80, 56, 34].map((r, i) => (
-          <circle key={`t-${i}`} cx={200} cy={110} r={r}
-            fill="none" stroke="#C9A84C" strokeOpacity={0.06} strokeWidth={1} />
-        ))}
-        <circle cx={200} cy={110} r={5} fill="#C9A84C" fillOpacity={0.7} />
-      </svg>
-
-      {/* Desktop — full animated rings with labels */}
-      <svg className="absolute inset-0 w-full h-full pointer-events-none hidden md:block"
-        viewBox="0 0 500 400" preserveAspectRatio="xMidYMid slice">
-        <defs>
-          <filter id="rglow" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="3" result="blur" />
-            <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
-          </filter>
-        </defs>
-
-        {/* Track circles */}
-        {rings.map((ring, i) => (
-          <circle key={`tr-${i}`} cx={cx} cy={cy} r={ring.r}
-            fill="none" stroke="#C9A84C" strokeOpacity={0.07} strokeWidth={1} />
-        ))}
-
-        {/* Animated arcs */}
-        {rings.map((ring, i) => (
-          <g key={`arc-${i}`} transform={`rotate(-90, ${cx}, ${cy})`}>
-            <motion.circle cx={cx} cy={cy} r={ring.r}
-              fill="none" stroke="#C9A84C"
-              strokeWidth={i === 0 ? 2.5 : i === 1 ? 2 : 1.5}
-              strokeOpacity={0.75 - i * 0.1}
-              initial={{ pathLength: 0 }}
-              animate={{ pathLength: ring.pct }}
-              transition={{ delay: ring.delay, duration: 1.6, ease: [0.22, 1, 0.36, 1] }} />
-          </g>
-        ))}
-
-        {/* End dots + labels */}
-        {rings.map((ring, i) => {
-          const pt = endPt(ring.r, ring.pct)
-          return (
-            <g key={`ep-${i}`}>
-              <motion.circle cx={pt.x} cy={pt.y} r={3.5} fill="#C9A84C"
-                filter="url(#rglow)"
-                initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: ring.delay + 1.5, duration: 0.4, ease: [0.34, 1.56, 0.64, 1] }} />
-              <motion.text
-                x={pt.x + (pt.x > cx ? 9 : -9)} y={pt.y + 4}
-                fill="#C9A84C" fillOpacity={0.5} fontSize={8.5}
-                fontFamily="JetBrains Mono, monospace"
-                textAnchor={pt.x > cx ? 'start' : 'end'}
-                initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                transition={{ delay: ring.delay + 1.7, duration: 0.5 }}>
-                {ring.label}
-              </motion.text>
-            </g>
-          )
-        })}
-
-        {/* Center */}
-        <motion.circle cx={cx} cy={cy} r={5} fill="#C9A84C"
-          initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 0.85, scale: 1 }}
-          transition={{ delay: 0.3, duration: 0.5, ease: [0.34, 1.56, 0.64, 1] }} />
-        <motion.circle cx={cx} cy={cy} r={14} fill="none" stroke="#C9A84C"
-          initial={{ opacity: 0, scale: 0.4 }}
-          animate={{ opacity: [0, 0.25, 0], scale: [0.4, 1.8, 2.4] }}
-          transition={{ delay: 0.8, duration: 2.2, repeat: Infinity, repeatDelay: 3.5 }} />
-      </svg>
-    </>
+    <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-40 hidden md:block"
+      viewBox="0 0 500 400" preserveAspectRatio="xMidYMid slice">
+      {circles.map((r, i) => (
+        <circle key={i} cx={cx} cy={cy} r={r} fill="none" stroke="#C9A84C" strokeOpacity={0.15 - i * 0.02} strokeWidth={1} />
+      ))}
+      <circle cx={cx} cy={cy} r={4} fill="#C9A84C" fillOpacity={0.5} />
+    </svg>
   )
 }
 
-/* ── Dev: Git Flow Graph ────────────────────────────────── */
+/* ── Dev: Git Flow Graph (Static) ────────────────────────── */
 function DevBg() {
-  // Commits: [x, branch(0=main,1=feat,2=hotfix), label, gold]
-  const commits: [number, number, string, boolean][] = [
-    [60,  0, 'init',     false],
-    [130, 0, '',         false],
-    [180, 1, 'feat: ui', false],
-    [240, 1, 'feat: api',false],
-    [300, 2, 'fix:build',false],
-    [360, 0, 'merge',    false],
-    [430, 0, 'v10.6',    true ],
-    [490, 0, 'HEAD',     true ],
-  ]
-  const branchY: Record<number, number> = { 0: 180, 1: 96, 2: 230 }
-  // Feature branch arc: x from 130 to 360, apex y=96
-  const featPath = `M 130 180 C 155 180, 160 96, 180 96 L 240 96 C 290 96, 340 180, 360 180`
-  // Hotfix arc: x from 130 to 360 lower
-  const hotfixPath = `M 130 180 C 155 180, 160 230, 180 230 L 300 230 C 330 230, 345 180, 360 180`
-  // Main line
-  const mainPath = `M 40 180 L 490 180`
-
-  const branchColors: Record<number, string> = { 0: '#C9A84C', 1: '#7C9EFF', 2: '#FF8A65' }
-  const branchLabels = [
-    { label: 'main',    color: '#C9A84C', y: 44 },
-    { label: 'feature', color: '#7C9EFF', y: 56 },
-    { label: 'hotfix',  color: '#FF8A65', y: 68 },
-  ]
-
   return (
-    <>
-      {/* Mobile — simplified horizontal branch lines */}
-      <svg className="absolute top-14 left-0 pointer-events-none block md:hidden"
-        width="100vw" height="160" viewBox="0 0 400 160" preserveAspectRatio="xMidYMin meet">
-        <defs>
-          <mask id="gitMaskM">
-            <motion.rect x="0" y="0" width="400" height="160" fill="white"
-              initial={{ scaleX: 0 }} animate={{ scaleX: 1 }}
-              style={{ transformOrigin: '0 0' }}
-              transition={{ duration: 1.8, ease: [0.22, 1, 0.36, 1], delay: 0.3 }} />
-          </mask>
-        </defs>
-        <g mask="url(#gitMaskM)">
-          <line x1="20" y1="90" x2="390" y2="90" stroke="#C9A84C" strokeOpacity="0.35" strokeWidth="1.5" />
-          <path d="M 80 90 C 100 90, 105 48, 120 48 L 260 48 C 275 48, 280 90, 300 90"
-            fill="none" stroke="#7C9EFF" strokeOpacity="0.3" strokeWidth="1.2" />
-        </g>
-        {[80, 150, 220, 300, 370].map((x, i) => (
-          <motion.circle key={i} cx={x} cy={90} r={4}
-            fill={i >= 3 ? '#C9A84C' : '#1a1a1a'} stroke="#C9A84C" strokeWidth={1.5}
-            strokeOpacity={0.5}
-            initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.5 + i * 0.15, duration: 0.3, ease: [0.34, 1.56, 0.64, 1] }} />
-        ))}
-        {[150, 260].map((x, i) => (
-          <motion.circle key={i} cx={x} cy={48} r={3.5}
-            fill="#1a1a1a" stroke="#7C9EFF" strokeWidth={1.2} strokeOpacity={0.5}
-            initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.8 + i * 0.2, duration: 0.3, ease: [0.34, 1.56, 0.64, 1] }} />
-        ))}
-        <motion.text x="370" y="76" fill="#C9A84C" fillOpacity="0.6" fontSize="8"
-          fontFamily="JetBrains Mono, monospace" textAnchor="middle"
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.8 }}>HEAD</motion.text>
-      </svg>
-
-      {/* Desktop — full git flow */}
-      <div className="absolute top-12 right-4 xl:right-10 w-[520px] pointer-events-none hidden md:block">
-        {/* Branch legend */}
-        <motion.div className="flex items-center gap-5 mb-4 pl-2"
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
-          {branchLabels.map(({ label, color }) => (
-            <div key={label} className="flex items-center gap-1.5">
-              <span className="w-3 h-px" style={{ backgroundColor: color, opacity: 0.6, display: 'inline-block' }} />
-              <span className="text-[9px] font-mono" style={{ color, opacity: 0.55 }}>{label}</span>
-            </div>
-          ))}
-        </motion.div>
-
-        <svg width="100%" viewBox="0 0 530 300" overflow="visible">
-          <defs>
-            <mask id="gitMask">
-              <motion.rect x="0" y="0" width="530" height="300" fill="white"
-                initial={{ scaleX: 0 }} animate={{ scaleX: 1 }}
-                style={{ transformOrigin: '0 0' }}
-                transition={{ duration: 2.2, ease: [0.22, 1, 0.36, 1], delay: 0.4 }} />
-            </mask>
-            <filter id="cglow" x="-100%" y="-100%" width="300%" height="300%">
-              <feGaussianBlur stdDeviation="4" result="blur" />
-              <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
-            </filter>
-          </defs>
-
-          {/* Branch lines */}
-          <g mask="url(#gitMask)">
-            <path d={mainPath} fill="none" stroke="#C9A84C" strokeOpacity="0.35" strokeWidth="1.5" />
-            <path d={featPath} fill="none" stroke="#7C9EFF" strokeOpacity="0.3" strokeWidth="1.2" />
-            <path d={hotfixPath} fill="none" stroke="#FF8A65" strokeOpacity="0.25" strokeWidth="1.2" />
-          </g>
-
-          {/* Horizontal tick lines */}
-          {[90, 150, 215, 300, 370, 440].map((x) => (
-            <line key={x} x1={x} y1={170} x2={x} y2={190}
-              stroke="#C9A84C" strokeOpacity="0.08" strokeWidth="0.8" />
-          ))}
-
-          {/* Commits */}
-          {commits.map(([x, branch, label, gold], i) => {
-            const y = branchY[branch]
-            const color = branchColors[branch]
-            return (
-              <g key={i}>
-                <motion.circle cx={x} cy={y} r={gold ? 6 : 5}
-                  fill={gold ? '#C9A84C' : '#111'} stroke={color} strokeWidth={gold ? 0 : 1.5}
-                  strokeOpacity={gold ? 0 : 0.6}
-                  filter={gold ? 'url(#cglow)' : undefined}
-                  initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.8 + i * 0.18, duration: 0.35, ease: [0.34, 1.56, 0.64, 1] }} />
-                {label && (
-                  <motion.text x={x} y={y - 13} fill={color} fillOpacity={gold ? 0.8 : 0.45}
-                    fontSize={8} fontFamily="JetBrains Mono, monospace" textAnchor="middle"
-                    initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                    transition={{ delay: 1.0 + i * 0.18, duration: 0.4 }}>
-                    {label}
-                  </motion.text>
-                )}
-              </g>
-            )
-          })}
-
-          {/* HEAD pulse */}
-          <motion.circle cx={490} cy={180} r={14} fill="none" stroke="#C9A84C"
-            initial={{ opacity: 0, scale: 0.4 }}
-            animate={{ opacity: [0, 0.3, 0], scale: [0.4, 1.6, 2.2] }}
-            transition={{ delay: 3.0, duration: 1.8, repeat: Infinity, repeatDelay: 3 }} />
-        </svg>
-      </div>
-    </>
+    <svg className="absolute top-12 right-4 xl:right-10 w-[520px] pointer-events-none opacity-40 hidden md:block"
+      viewBox="0 0 530 300" overflow="visible">
+      <line x1={40} y1={180} x2={490} y2={180} stroke="#C9A84C" strokeOpacity={0.25} strokeWidth={1.5} />
+      <path d="M 130 180 C 155 180, 160 96, 180 96 L 240 96 C 290 96, 340 180, 360 180" fill="none" stroke="#C9A84C" strokeOpacity={0.18} strokeWidth={1.2} />
+      <circle cx={130} cy={180} r={4} fill="#C9A84C" fillOpacity={0.4} />
+      <circle cx={180} cy={96} r={4} fill="#C9A84C" fillOpacity={0.4} />
+      <circle cx={360} cy={180} r={4} fill="#C9A84C" fillOpacity={0.4} />
+    </svg>
   )
 }
 
-/* ── About: Skill Constellation ─────────────────────────── */
-interface OrbitConnectorProps {
-  node: {
-    x: import('framer-motion').MotionValue<number>
-    y: import('framer-motion').MotionValue<number>
-    color: string
-  }
-  cx: number
-  cy: number
-  active: boolean
-}
-
-function OrbitConnector({ node, cx, cy, active }: OrbitConnectorProps) {
-  const xPercent = useTransform(node.x, (val) => `${val}%`)
-  const yPercent = useTransform(node.y, (val) => `${val}%`)
-  
-  return (
-    <motion.line
-      x1={`${cx}%`}
-      y1={`${cy}%`}
-      x2={xPercent}
-      y2={yPercent}
-      stroke={node.color}
-      strokeWidth={active ? 0.65 : 0.2}
-      strokeOpacity={active ? 0.5 : 0.12}
-      strokeDasharray={active ? 'none' : '2 3'}
-    />
-  )
-}
-
-interface OrbitStarProps {
-  node: {
-    id: string
-    name: string
-    x: import('framer-motion').MotionValue<number>
-    y: import('framer-motion').MotionValue<number>
-    r: number
-    color: string
-  }
-  cx: number
-  active: boolean
-  onMouseEnter: () => void
-  onMouseLeave: () => void
-}
-
-function OrbitStar({ node, cx, active, onMouseEnter, onMouseLeave }: OrbitStarProps) {
-  const xPercent = useTransform(node.x, (val) => `${val}%`)
-  const yPercent = useTransform(node.y, (val) => `${val}%`)
-  const textX = useTransform(node.x, (val) => `${val + (val > cx ? node.r + 1.2 : -(node.r + 1.2))}%`)
-  const textY = useTransform(node.y, (val) => `${val + 0.4}%`)
-  const textAnchor = useTransform(node.x, (val) => (val > cx ? 'start' : 'end'))
-
-  return (
-    <g
-      className="pointer-events-auto cursor-pointer"
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
-    >
-      {/* Pulsing ring on active */}
-      {active && (
-        <motion.circle
-          cx={xPercent}
-          cy={yPercent}
-          r={`${node.r * 2.8}%`}
-          fill="none"
-          stroke={node.color}
-          strokeWidth="0.7"
-          initial={{ scale: 0.7, opacity: 0.6 }}
-          animate={{ scale: 1.4, opacity: 0 }}
-          transition={{ duration: 1.2, repeat: Infinity, ease: 'easeOut' }}
-        />
-      )}
-
-      {/* Star dot (filled center) */}
-      <motion.circle
-        cx={xPercent}
-        cy={yPercent}
-        r={`${node.r}%`}
-        fill={node.color}
-        filter="url(#nodeGlow)"
-        animate={{ scale: active ? 1.25 : 1 }}
-        transition={{ duration: 0.25 }}
-      />
-
-      {/* Layer 1: Robust Inner Border */}
-      <motion.circle
-        cx={xPercent}
-        cy={yPercent}
-        r={`${node.r * 1.8}%`}
-        fill="none"
-        stroke={node.color}
-        strokeWidth="0.8"
-        strokeOpacity={active ? 0.95 : 0.6}
-        transition={{ duration: 0.3 }}
-      />
-
-      {/* Layer 2: Stepped Outer Border */}
-      <motion.circle
-        cx={xPercent}
-        cy={yPercent}
-        r={`${node.r * 2.6}%`}
-        fill="none"
-        stroke={node.color}
-        strokeWidth="0.55"
-        strokeOpacity={active ? 0.75 : 0.35}
-        transition={{ duration: 0.3 }}
-      />
-
-      {/* Layer 3: Faint outer dashed border (stepped target look) */}
-      <motion.circle
-        cx={xPercent}
-        cy={yPercent}
-        r={`${node.r * 3.4}%`}
-        fill="none"
-        stroke={node.color}
-        strokeWidth="0.35"
-        strokeOpacity={active ? 0.5 : 0.22}
-        strokeDasharray="2.5 3.5"
-        transition={{ duration: 0.3 }}
-      />
-
-      {/* Inline Label (rotates with node but text stays upright) */}
-      <motion.text
-        x={textX}
-        y={textY}
-        fill={node.color}
-        fillOpacity={active ? 0.85 : 0.45}
-        fontSize="1.4"
-        fontFamily="JetBrains Mono, monospace"
-        textAnchor={textAnchor}
-        fontWeight="400"
-        letterSpacing="0.08em"
-        transition={{ duration: 0.25 }}
-      >
-        {node.name}
-      </motion.text>
-    </g>
-  )
-}
-
-interface OrbitTooltipProps {
-  node: {
-    id: string
-    x: import('framer-motion').MotionValue<number>
-    y: import('framer-motion').MotionValue<number>
-    color: string
-    title: string
-    desc: string
-  }
-  cx: number
-  active: boolean
-}
-
-function OrbitTooltip({ node, cx, active }: OrbitTooltipProps) {
-  const tooltipX = useTransform(node.x, (val) => {
-    const shift = val > cx ? 2.5 : -32.5
-    return `${val + shift}%`
-  })
-  const tooltipY = useTransform(node.y, (val) => `${val - 10}%`)
-
-  return (
-    <motion.g
-      style={{
-        x: tooltipX,
-        y: tooltipY,
-        pointerEvents: active ? 'auto' : 'none',
-      }}
-      initial={{ opacity: 0, scale: 0.92 }}
-      animate={{ opacity: active ? 1 : 0, scale: active ? 1 : 0.92 }}
-      transition={{ duration: 0.25, ease: 'easeOut' }}
-    >
-      {/* Tooltip backing card */}
-      <rect
-        x="0"
-        y="0"
-        width="30%"
-        height="6.8%"
-        rx="1.5"
-        fill="rgba(8, 8, 8, 0.9)"
-        stroke={node.color}
-        strokeWidth="0.4"
-        style={{ filter: 'drop-shadow(0 4px 15px rgba(0,0,0,0.65))' }}
-      />
-      {/* Highlight signal line */}
-      <line x1="0" y1="0" x2="0" y2="6.8%" stroke={node.color} strokeWidth="1.2" />
-
-      {/* Tooltip Header */}
-      <text
-        x="1.8%"
-        y="2.2%"
-        fill={node.color}
-        fontSize="1.3"
-        fontWeight="400"
-        fontFamily="JetBrains Mono, monospace"
-        letterSpacing="0.06em"
-      >
-        {node.title}
-      </text>
-
-      {/* Tooltip Desc */}
-      <text
-        x="1.8%"
-        y="4.5%"
-        fill="var(--cs-text-3)"
-        fontSize="1.0"
-        fontWeight="300"
-        fontFamily="ui-sans-serif, system-ui, sans-serif"
-      >
-        {node.desc}
-      </text>
-    </motion.g>
-  )
-}
-
+/* ── About: Skill Constellation (Static) ─────────────────── */
 function AboutBg() {
-  const isMobile = useIsMobile()
-  const reduced = useReducedMotion()
-  const [hoveredNode, setHoveredNode] = useState<string | null>(null)
-
-  const cx = isMobile ? 50 : 72.5
-  const cy = isMobile ? 40 : 47.5
-
-  // Time value for continuous orbit rotation
-  const time = useMotionValue(0)
-  useEffect(() => {
-    if (reduced) return
-    const anim = animate(time, 360, {
-      duration: 55,
-      repeat: Infinity,
-      ease: 'linear',
-    })
-    return () => anim.stop()
-  }, [time, reduced])
-
-
-  // Orbit 1: Inner (Potsdam) - r = 12
-  const angleInner = useTransform(time, v => (v * 1.6 * Math.PI) / 180)
-  const potsdamX = useTransform(angleInner, a => cx + 12 * Math.cos(a))
-  const potsdamY = useTransform(angleInner, a => cy + 12 * Math.sin(a))
-
-  // Orbit 2: Middle (Finance & AI) - r = 23
-  const angleMiddle = useTransform(time, v => (v * 1.0 * Math.PI) / 180)
-  // AI Node: base offset 120 deg (2.094 rad)
-  const aiX = useTransform(angleMiddle, a => cx + 23 * Math.cos(a + 2.094))
-  const aiY = useTransform(angleMiddle, a => cy + 23 * Math.sin(a + 2.094))
-  // Finance Node: base offset 300 deg (5.236 rad)
-  const financeX = useTransform(angleMiddle, a => cx + 23 * Math.cos(a + 5.236))
-  const financeY = useTransform(angleMiddle, a => cy + 23 * Math.sin(a + 5.236))
-
-  // Orbit 3: Outer (WebDev) - r = 34
-  const angleOuter = useTransform(time, v => (v * 0.6 * Math.PI) / 180)
-  // WebDev Node: base offset 240 deg (4.188 rad)
-  const webdevX = useTransform(angleOuter, a => cx + 34 * Math.cos(a + 4.188))
-  const webdevY = useTransform(angleOuter, a => cy + 34 * Math.sin(a + 4.188))
-
-  const NODES = [
-    {
-      id: 'potsdam',
-      name: 'POTSDAM',
-      x: potsdamX,
-      y: potsdamY,
-      r: 1.2,
-      color: '#C9A84C',
-      title: 'Vor Ort & Remote',
-      desc: 'Potsdam, Berlin & Brandenburg',
-    },
-    {
-      id: 'ai',
-      name: 'AI & WORKFLOWS',
-      x: aiX,
-      y: aiY,
-      r: 1.4,
-      color: '#7C9EFF',
-      title: 'KI & Workflows',
-      desc: 'Python-Scripts & LLM-Pipelines',
-    },
-    {
-      id: 'finance',
-      name: 'FINANCE',
-      x: financeX,
-      y: financeY,
-      r: 1.4,
-      color: '#FF8A65',
-      title: 'Trading & Steuern',
-      desc: 'Chartanalyse & Krypto-Tools',
-    },
-    {
-      id: 'webdev',
-      name: 'WEBDEV',
-      x: webdevX,
-      y: webdevY,
-      r: 1.7,
-      color: '#C084FC',
-      title: 'React & Node.js',
-      desc: 'TypeScript, Electron & Next.js',
-    },
-  ]
-
+  const cx = 50, cy = 50
+  const circles = [15, 28, 42]
   return (
-    <svg
-      className="absolute inset-0 w-full h-full pointer-events-none select-none"
-      viewBox="0 0 100 100"
-      preserveAspectRatio="xMidYMid slice"
-    >
-      <defs>
-        <filter id="coreGlow" x="-150%" y="-150%" width="400%" height="400%">
-          <feGaussianBlur stdDeviation="3" result="blur" />
-          <feMerge>
-            <feMergeNode in="blur" />
-            <feMergeNode in="SourceGraphic" />
-          </feMerge>
-        </filter>
-        <filter id="nodeGlow" x="-100%" y="-100%" width="300%" height="300%">
-          <feGaussianBlur stdDeviation="1.5" result="blur" />
-          <feMerge>
-            <feMergeNode in="blur" />
-            <feMergeNode in="SourceGraphic" />
-          </feMerge>
-        </filter>
-        <radialGradient id="centerGlow" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#C9A84C" stopOpacity="0.12" />
-          <stop offset="100%" stopColor="#C9A84C" stopOpacity="0" />
-        </radialGradient>
-      </defs>
-
-      {/* Orbit 3 (Outer) */}
-      <motion.circle
-        cx={`${cx}%`}
-        cy={`${cy}%`}
-        r="34%"
-        fill="none"
-        stroke="#C9A84C"
-        strokeWidth="0.12"
-        strokeOpacity="0.18"
-      />
-
-      {/* Orbit 2 (Middle) */}
-      <motion.circle
-        cx={`${cx}%`}
-        cy={`${cy}%`}
-        r="23%"
-        fill="none"
-        stroke="#C9A84C"
-        strokeWidth="0.12"
-        strokeOpacity="0.22"
-      />
-
-      {/* Orbit 1 (Inner) */}
-      <motion.circle
-        cx={`${cx}%`}
-        cy={`${cy}%`}
-        r="12%"
-        fill="none"
-        stroke="#C9A84C"
-        strokeWidth="0.12"
-        strokeOpacity="0.26"
-      />
-
-      {/* Center ambient glow */}
-      <circle cx={`${cx}%`} cy={`${cy}%`} r="24%" fill="url(#centerGlow)" />
-
-      {/* Orbit connectors to hovered nodes (draw dynamically) */}
-      {NODES.map((n) => (
-        <OrbitConnector
-          key={`connector-${n.id}`}
-          node={n}
-          cx={cx}
-          cy={cy}
-          active={hoveredNode === n.id}
-        />
+    <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-40 hidden md:block"
+      viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">
+      {circles.map((r, i) => (
+        <circle key={i} cx={`${cx}%`} cy={`${cy}%`} r={`${r}%`} fill="none" stroke="#C9A84C" strokeOpacity={0.12 - i * 0.03} strokeWidth="0.25" />
       ))}
+      <circle cx={`${cx}%`} cy={`${cy}%`} r="1%" fill="#C9A84C" fillOpacity={0.6} />
+      <circle cx={`${cx - 20}%`} cy={`${cy - 20}%`} r="0.8%" fill="#C9A84C" fillOpacity={0.4} />
+      <circle cx={`${cx + 30}%`} cy={`${cy + 10}%`} r="1.2%" fill="#C9A84C" fillOpacity={0.5} />
+    </svg>
+  )
+}
 
-      {/* Central Star: CHRIS */}
-      <g className="pointer-events-auto cursor-pointer" onMouseEnter={() => setHoveredNode('center')} onMouseLeave={() => setHoveredNode(null)}>
-        <motion.circle
-          cx={`${cx}%`}
-          cy={`${cy}%`}
-          r="2.0%"
-          fill="#C9A84C"
-          filter="url(#coreGlow)"
-          animate={{ scale: hoveredNode === 'center' ? 1.15 : 1 }}
-          transition={{ duration: 0.3 }}
-        />
-        {/* Layer 1: Robust Inner Border */}
-        <motion.circle
-          cx={`${cx}%`}
-          cy={`${cy}%`}
-          r="3.4%"
-          fill="none"
-          stroke="#C9A84C"
-          strokeWidth="0.8"
-          strokeOpacity={hoveredNode === 'center' ? 0.95 : 0.6}
-          transition={{ duration: 0.3 }}
-        />
-        {/* Layer 2: Stepped Middle Border */}
-        <motion.circle
-          cx={`${cx}%`}
-          cy={`${cy}%`}
-          r="4.8%"
-          fill="none"
-          stroke="#C9A84C"
-          strokeWidth="0.55"
-          strokeOpacity={hoveredNode === 'center' ? 0.65 : 0.35}
-          transition={{ duration: 0.3 }}
-        />
-        {/* Layer 3: Thin outer dashed step */}
-        <motion.circle
-          cx={`${cx}%`}
-          cy={`${cy}%`}
-          r="6.2%"
-          fill="none"
-          stroke="#C9A84C"
-          strokeWidth="0.35"
-          strokeOpacity={hoveredNode === 'center' ? 0.45 : 0.2}
-          strokeDasharray="2.5 3.5"
-          transition={{ duration: 0.3 }}
-        />
-        {/* Pulsing ring on active/hover */}
-        <motion.circle
-          cx={`${cx}%`}
-          cy={`${cy}%`}
-          r="3.5%"
-          fill="none"
-          stroke="#C9A84C"
-          strokeWidth="0.7"
-          initial={{ strokeOpacity: 0.4, scale: 0.8 }}
-          animate={{ strokeOpacity: [0.4, 0, 0.4], scale: [0.8, 1.8, 0.8] }}
-          transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-        />
-        <text
-          x={`${cx}%`}
-          y={`${cy + 0.4}%`}
-          fill="#080808"
-          fontSize="1.3"
-          fontWeight="500"
-          fontFamily="ui-monospace, monospace"
-          textAnchor="middle"
-          letterSpacing="0.08em"
-        >
-          CHRIS
-        </text>
-      </g>
-
-      {/* Orbit Node Stars */}
-      {NODES.map((n) => (
-        <OrbitStar
-          key={`star-${n.id}`}
-          node={n}
-          cx={cx}
-          active={hoveredNode === n.id}
-          onMouseEnter={() => setHoveredNode(n.id)}
-          onMouseLeave={() => setHoveredNode(null)}
-        />
+/* ── Community: Member Network (Static) ──────────────────── */
+function CommunityBg() {
+  const members = [
+    { x: 68, y: 22, init: 'A' },
+    { x: 80, y: 38, init: 'M' },
+    { x: 85, y: 58, init: 'S' },
+    { x: 74, y: 72, init: 'J' },
+    { x: 60, y: 68, init: 'K' },
+    { x: 58, y: 48, init: 'T' },
+    { x: 65, y: 34, init: 'L' },
+    { x: 76, y: 50, init: 'P' },
+  ]
+  const edges = [[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,0],[7,1],[7,5],[7,3]]
+  return (
+    <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-45 hidden md:block"
+      viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">
+      {edges.map(([a, b], i) => (
+        <line key={i} x1={`${members[a].x}%`} y1={`${members[a].y}%`} x2={`${members[b].x}%`} y2={`${members[b].y}%`} stroke="#C9A84C" strokeWidth="0.25" strokeOpacity={0.15} />
       ))}
-
-      {/* Holographic Popover Tooltips (rendered inline inside SVG for absolute positioning correctness) */}
-      {NODES.map((n) => (
-        <OrbitTooltip
-          key={`tooltip-${n.id}`}
-          node={n}
-          cx={cx}
-          active={hoveredNode === n.id}
-        />
+      {members.map((m, i) => (
+        <g key={i}>
+          <circle cx={`${m.x}%`} cy={`${m.y}%`} r="2.5%" fill="var(--cs-s2)" stroke="#C9A84C" strokeWidth="0.4" strokeOpacity={0.4} />
+          <text x={`${m.x}%`} y={`${m.y}%`} fill="#C9A84C" fillOpacity={0.65} fontSize="2" fontFamily="JetBrains Mono, monospace" textAnchor="middle" dominantBaseline="middle">{m.init}</text>
+        </g>
       ))}
     </svg>
   )
 }
 
-/* ── Community: Member Network ──────────────────────────── */
-function CommunityBg() {
-  const members = [
-    { x: 68, y: 22, init: 'A', delay: 0.3 },
-    { x: 80, y: 38, init: 'M', delay: 0.55 },
-    { x: 85, y: 58, init: 'S', delay: 0.8 },
-    { x: 74, y: 72, init: 'J', delay: 1.05 },
-    { x: 60, y: 68, init: 'K', delay: 1.3 },
-    { x: 58, y: 48, init: 'T', delay: 1.55 },
-    { x: 65, y: 34, init: 'L', delay: 1.8 },
-    { x: 76, y: 50, init: 'P', delay: 2.05 },
-  ]
-  const edges = [[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,0],[7,1],[7,5],[7,3]]
-
-  return (
-    <>
-      {/* Mobile */}
-      <svg className="absolute top-14 left-0 pointer-events-none block md:hidden"
-        width="100vw" height="300" viewBox="0 0 100 100" preserveAspectRatio="xMidYMin meet">
-        {edges.map(([a, b], i) => (
-          <motion.line key={i}
-            x1={`${members[a].x}%`} y1={`${members[a].y}%`}
-            x2={`${members[b].x}%`} y2={`${members[b].y}%`}
-            stroke="#C9A84C" strokeWidth="0.3"
-            initial={{ strokeOpacity: 0 }} animate={{ strokeOpacity: 0.2 }}
-            transition={{ delay: 0.6 + i * 0.08, duration: 0.7 }} />
-        ))}
-        {members.map((m, i) => (
-          <g key={i}>
-            <motion.circle cx={`${m.x}%`} cy={`${m.y}%`} r="3.5%"
-              fill="#111" stroke="#C9A84C" strokeWidth="0.5" strokeOpacity="0.5"
-              initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: m.delay, duration: 0.4, ease: [0.34, 1.56, 0.64, 1] }} />
-            <motion.text x={`${m.x}%`} y={`${m.y + 1}%`}
-              fill="#C9A84C" fillOpacity="0.6" fontSize="3.5"
-              fontFamily="JetBrains Mono, monospace" textAnchor="middle"
-              dominantBaseline="middle"
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-              transition={{ delay: m.delay + 0.3, duration: 0.4 }}>
-              {m.init}
-            </motion.text>
-          </g>
-        ))}
-      </svg>
-
-      {/* Desktop */}
-      <svg className="absolute inset-0 w-full h-full pointer-events-none hidden md:block"
-        viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">
-        <defs>
-          <filter id="aGlow" x="-100%" y="-100%" width="300%" height="300%">
-            <feGaussianBlur stdDeviation="1.2" result="blur" />
-            <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
-          </filter>
-        </defs>
-
-        {/* Edges */}
-        {edges.map(([a, b], i) => (
-          <motion.line key={i}
-            x1={`${members[a].x}%`} y1={`${members[a].y}%`}
-            x2={`${members[b].x}%`} y2={`${members[b].y}%`}
-            stroke="#C9A84C" strokeWidth="0.25"
-            initial={{ strokeOpacity: 0 }} animate={{ strokeOpacity: 0.15 }}
-            transition={{ delay: 0.6 + i * 0.1, duration: 0.9 }} />
-        ))}
-
-        {/* Member nodes */}
-        {members.map((m, i) => (
-          <g key={i}>
-            {/* Outer ring */}
-            <motion.circle cx={`${m.x}%`} cy={`${m.y}%`} r="4%"
-              fill="none" stroke="#C9A84C" strokeWidth="0.35" strokeOpacity="0.25"
-              initial={{ opacity: 0, scale: 0.4 }} animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: m.delay, duration: 0.5, ease: [0.34, 1.56, 0.64, 1] }} />
-            {/* Avatar */}
-            <motion.circle cx={`${m.x}%`} cy={`${m.y}%`} r="2.5%"
-              fill="var(--cs-s2)" stroke="#C9A84C" strokeWidth="0.4" strokeOpacity="0.5"
-              filter="url(#aGlow)"
-              initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: m.delay + 0.1, duration: 0.4, ease: [0.34, 1.56, 0.64, 1] }} />
-            {/* Initial */}
-            <motion.text x={`${m.x}%`} y={`${m.y}%`}
-              fill="#C9A84C" fillOpacity="0.65" fontSize="2"
-              fontFamily="JetBrains Mono, monospace" textAnchor="middle"
-              dominantBaseline="middle"
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-              transition={{ delay: m.delay + 0.35, duration: 0.5 }}>
-              {m.init}
-            </motion.text>
-            {/* Pulse on every 3rd node */}
-            {i % 3 === 0 && (
-              <motion.circle cx={`${m.x}%`} cy={`${m.y}%`} r="6%"
-                fill="none" stroke="#C9A84C"
-                initial={{ strokeOpacity: 0, scale: 0.5 }}
-                animate={{ strokeOpacity: [0, 0.18, 0], scale: [0.5, 1.5, 2] }}
-                transition={{ delay: m.delay + 1.2, duration: 2.5, repeat: Infinity, repeatDelay: 4 + i * 0.8 }} />
-            )}
-          </g>
-        ))}
-      </svg>
-    </>
-  )
-}
-
-/* ── Contact: Radar Sweep ────────────────────────────────── */
+/* ── Contact: Radar Sweep (Static) ───────────────────────── */
 function ContactBg() {
-  const cx = 75, cy = 45  // center in viewBox 0 0 100 100
+  const cx = 75, cy = 45
   const rings = [12, 22, 32, 42]
-
-  // SVG-nativer Drehpunkt: rotate(angle cx cy) — kein CSS-Transform-Box-Problem
-  const sweepRef = useRef<SVGGElement>(null)
-  const sweepAngle = useMotionValue(0)
-  useEffect(() => {
-    const unsub = sweepAngle.on('change', v =>
-      sweepRef.current?.setAttribute('transform', `rotate(${v} ${cx} ${cy})`)
-    )
-    const anim = animate(sweepAngle, 360, { duration: 5, repeat: Infinity, ease: 'linear' })
-    return () => { unsub(); anim.stop() }
-  }, [sweepAngle])
-
-  // delay = ((angle + 90) % 360) / 360 * 5 — exakt synchron mit Arm-Rotation
-  const icons = [
-    { angle: 40,  r: 18, delay: 1.806 }, // Mail
-    { angle: 110, r: 28, delay: 2.778 }, // Phone
-    { angle: 200, r: 14, delay: 4.028 }, // Pin
-    { angle: 310, r: 34, delay: 0.556 }, // Chat
-  ]
-  const toXY = (angle: number, r: number) => ({
-    x: cx + r * Math.cos((angle * Math.PI) / 180),
-    y: cy + r * Math.sin((angle * Math.PI) / 180),
-  })
-
   return (
-    <>
-      {/* Mobile — static rings + crosshair */}
-      <svg className="absolute top-14 left-0 pointer-events-none block md:hidden"
-        width="100vw" height="280" viewBox="0 0 100 100" preserveAspectRatio="xMidYMin meet">
-        {[14, 28, 42].map((r, i) => (
-          <motion.circle key={i} cx="50%" cy="40%" r={`${r}%`}
-            fill="none" stroke="#C9A84C" strokeWidth="0.35" strokeOpacity={0.18 - i * 0.04}
-            strokeDasharray="1.5 3"
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 + i * 0.2, duration: 0.7 }} />
-        ))}
-        <motion.line x1="50%" y1="10%" x2="50%" y2="70%"
-          stroke="#C9A84C" strokeWidth="0.2" strokeOpacity="0.12"
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }} />
-        <motion.line x1="15%" y1="40%" x2="85%" y2="40%"
-          stroke="#C9A84C" strokeWidth="0.2" strokeOpacity="0.12"
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }} />
-        <motion.circle cx="50%" cy="40%" r="1.5%"
-          fill="#C9A84C" fillOpacity="0.7"
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} />
-      </svg>
-
-      {/* Desktop — animated radar */}
-      <svg className="absolute inset-0 w-full h-full pointer-events-none hidden md:block"
-        viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">
-        <defs>
-          <radialGradient id="sweepGrad" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="#C9A84C" stopOpacity="0.15" />
-            <stop offset="100%" stopColor="#C9A84C" stopOpacity="0" />
-          </radialGradient>
-          <filter id="bGlow" x="-100%" y="-100%" width="300%" height="300%">
-            <feGaussianBlur stdDeviation="1.5" result="blur" />
-            <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
-          </filter>
-          {/* Weicher Schweif — blendet die harte Kante aus */}
-          <filter id="sweepBlur" x="-15%" y="-15%" width="130%" height="130%">
-            <feGaussianBlur stdDeviation="0.9" />
-          </filter>
-          <style>{`
-            .radar-icon { opacity: 0; }
-            @keyframes radarFlash {
-              0%   { opacity: 0.9; }
-              18%  { opacity: 0.35; }
-              45%  { opacity: 0; }
-              100% { opacity: 0; }
-            }
-            .radar-ring { opacity: 0; transform: scale(0.4); }
-            @keyframes radarPing {
-              0%   { opacity: 0.65; transform: scale(0.4); }
-              28%  { opacity: 0;    transform: scale(2.8); }
-              29%  { opacity: 0;    transform: scale(0.4); }
-              100% { opacity: 0;    transform: scale(0.4); }
-            }
-          `}</style>
-        </defs>
-
-        {/* Rings */}
-        {rings.map((r, i) => (
-          <motion.circle key={i} cx={`${cx}%`} cy={`${cy}%`} r={`${r}%`}
-            fill="none" stroke="#C9A84C" strokeWidth="0.3"
-            strokeOpacity={0.2 - i * 0.03} strokeDasharray="2 4"
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 + i * 0.15, duration: 0.7 }} />
-        ))}
-
-        {/* Crosshair */}
-        <motion.line x1={`${cx}%`} y1={`${cy - 44}%`} x2={`${cx}%`} y2={`${cy + 44}%`}
-          stroke="#C9A84C" strokeWidth="0.2" strokeOpacity="0.1"
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }} />
-        <motion.line x1={`${cx - 44}%`} y1={`${cy}%`} x2={`${cx + 44}%`} y2={`${cy}%`}
-          stroke="#C9A84C" strokeWidth="0.2" strokeOpacity="0.1"
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }} />
-
-        {/* Rotating sweep — Drehpunkt exakt bei (cx,cy) via SVG rotate(a cx cy) */}
-        <g ref={sweepRef}>
-          <line x1={cx} y1={cy} x2={cx} y2={cy - 43}
-            stroke="#C9A84C" strokeWidth="0.4" strokeOpacity="0.5" />
-          <path
-            d={`M ${cx} ${cy} L ${cx + 43 * Math.cos(-Math.PI / 2 - 0.8)} ${cy + 43 * Math.sin(-Math.PI / 2 - 0.8)} A 43 43 0 0 1 ${cx} ${cy - 43} Z`}
-            fill="url(#sweepGrad)" opacity="0.5" filter="url(#sweepBlur)" />
-        </g>
-
-        {/* Icons — leuchten auf wenn Arm drüberfährt, synchron mit Rotation */}
-        {icons.map((b, i) => {
-          const pt = toXY(b.angle, b.r)
-          return (
-            <g key={i}
-              transform={`translate(${pt.x} ${pt.y})`}
-              className="radar-icon"
-              style={{ animation: `radarFlash 5s linear ${b.delay}s infinite` }}
-              stroke="#C9A84C" strokeWidth="0.45" fill="none"
-              strokeLinecap="round" strokeLinejoin="round"
-            >
-              {/* Ausbreitungsring beim Ping */}
-              <circle className="radar-ring" r="3.2" fill="none" strokeWidth="0.35"
-                style={{ animation: `radarPing 5s linear ${b.delay}s infinite` }} />
-              {i === 0 && /* Mail */ <>
-                <path d="M-2.5,-1.8 L2.5,-1.8 L2.5,1.8 L-2.5,1.8 Z" />
-                <polyline points="-2.5,-1.8 0,0.5 2.5,-1.8" />
-              </>}
-              {i === 1 && /* Smartphone */ <>
-                <rect x="-1.5" y="-2.8" width="3" height="5.5" rx="0.5" />
-                <line x1="-0.6" y1="2" x2="0.6" y2="2" />
-              </>}
-              {i === 2 && /* MapPin */ <>
-                <path d="M-1.8,-1.8 A2.5,2.5,0,0,1,1.8,-1.8 Q1.5,0.5,0,3 Q-1.5,0.5,-1.8,-1.8 Z" />
-                <circle cx="0" cy="-1.2" r="0.75" />
-              </>}
-              {i === 3 && /* Chat */ <>
-                <path d="M-2.5,-2.2 L2.5,-2.2 L2.5,0.8 L0.5,0.8 L0,2.5 L-0.5,0.8 L-2.5,0.8 Z" />
-              </>}
-            </g>
-          )
-        })}
-
-        {/* Center dot */}
-        <motion.circle cx={`${cx}%`} cy={`${cy}%`} r="0.8%" fill="#C9A84C"
-          initial={{ opacity: 0 }} animate={{ opacity: 0.8 }} transition={{ delay: 0.4 }} />
-      </svg>
-    </>
+    <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-40 hidden md:block"
+      viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">
+      {rings.map((r, i) => (
+        <circle key={i} cx={`${cx}%`} cy={`${cy}%`} r={`${r}%`} fill="none" stroke="#C9A84C" strokeWidth="0.3" strokeOpacity={0.15 - i * 0.03} strokeDasharray="1.5 3" />
+      ))}
+      <line x1={`${cx}%`} y1="10%" x2={`${cx}%`} y2="80%" stroke="#C9A84C" strokeWidth="0.2" strokeOpacity={0.1} />
+      <line x1="30%" y1={`${cy}%`} x2="95%" y2={`${cy}%`} stroke="#C9A84C" strokeWidth="0.2" strokeOpacity={0.1} />
+      <circle cx={`${cx}%`} cy={`${cy}%`} r="1%" fill="#C9A84C" fillOpacity={0.6} />
+    </svg>
   )
 }
 
-/* ── Home: Floating Data Chips ──────────────────────────── */
+/* ── Home: Dev Stack Card (Static) ───────────────────────── */
 function HomeBg() {
-  // Sparkline points for mini SVG (12 values, normalized 0-40)
-  const spark = [28, 22, 30, 18, 25, 14, 20, 10, 16, 6, 11, 3]
-  const sparkPath = spark.map((y, i) => `${i === 0 ? 'M' : 'L'} ${i * 20} ${y}`).join(' ')
-  const sparkFill = sparkPath + ` L ${11 * 20} 44 L 0 44 Z`
-
-  const cats = [
-    { label: 'Wohnen',  pct: 82 },
-    { label: 'Leben',   pct: 58 },
-    { label: 'Freizeit',pct: 34 },
-  ]
-
   return (
-    <>
-      {/* Mobile — thin sparkline strip */}
-      <svg className="absolute top-12 left-0 pointer-events-none block md:hidden"
-        width="100vw" height="120" viewBox="0 0 220 44" preserveAspectRatio="xMidYMin meet">
-        <defs>
-          <linearGradient id="mSpFill" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#C9A84C" stopOpacity="0.22" />
-            <stop offset="100%" stopColor="#C9A84C" stopOpacity="0" />
-          </linearGradient>
-          <mask id="mSpMask">
-            <motion.rect x="0" y="0" width="220" height="44" fill="white"
-              initial={{ scaleX: 0 }} animate={{ scaleX: 1 }}
-              style={{ transformOrigin: 'left center', transformBox: 'fill-box' }}
-              transition={{ duration: 2, ease: [0.22, 1, 0.36, 1], delay: 0.3 }} />
-          </mask>
-        </defs>
-        <path d={sparkFill} fill="url(#mSpFill)" mask="url(#mSpMask)" />
-        <path d={sparkPath} fill="none" stroke="#C9A84C" strokeWidth="1.5" strokeOpacity="0.55" mask="url(#mSpMask)" />
-        <motion.circle cx={220} cy={3} r={3} fill="#C9A84C"
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.2 }} />
-      </svg>
-
-      {/* Desktop — 3 floating chips, no window chrome */}
-      <div className="absolute inset-0 pointer-events-none hidden md:block">
-        {/* Chip 1: Gesamtvermögen (large, top-right) */}
-        <motion.div
-          className="absolute top-[14%] right-[7%] xl:right-[9%]"
-          initial={{ opacity: 0, y: -18, scale: 0.95 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}>
-          <motion.div
-            animate={{ y: [0, -6, 0] }}
-            transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}>
-            <div className="border border-[#C9A84C]/20 rounded-2xl bg-[var(--cs-s0)]/80 backdrop-blur-md px-5 py-4 shadow-2xl shadow-black/70"
-              style={{ boxShadow: '0 0 40px rgba(201,168,76,0.06), 0 20px 60px rgba(0,0,0,0.7)' }}>
-              <div className="text-[9px] font-mono text-[#4a4540] tracking-widest uppercase mb-1">Gesamtvermögen</div>
-              <div className="flex items-baseline gap-2.5">
-                <span className="text-[28px] font-mono text-[var(--cs-text)] tracking-tight leading-none">€ 24,830</span>
-                <motion.span className="text-[11px] font-mono text-[#22c55e]"
-                  initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.0 }}>
-                  +3.2% YTD
-                </motion.span>
-              </div>
-              <div className="mt-3 h-px bg-gradient-to-r from-transparent via-[#C9A84C]/15 to-transparent" />
-              <div className="mt-2 flex gap-4">
-                {[{ l: 'Konten', v: '4' }, { l: 'Module', v: '10' }, { l: 'Offline', v: '100%' }].map(({ l, v }) => (
-                  <div key={l}>
-                    <div className="text-[8px] font-mono text-[var(--cs-text-4)]">{l}</div>
-                    <div className="text-[11px] font-mono text-[#C9A84C]/70">{v}</div>
-                  </div>
-                ))}
-              </div>
+    <div className="absolute inset-0 pointer-events-none hidden md:block opacity-45">
+      {/* Dev Tech Stack overlay */}
+      <div className="absolute top-[14%] right-[7%] xl:right-[9%] border border-[#C9A84C]/15 rounded-2xl bg-[var(--cs-s0)]/80 backdrop-blur-md px-5 py-4 shadow-2xl"
+        style={{ boxShadow: '0 20px 50px rgba(0,0,0,0.5)' }}>
+        <div className="text-[9px] font-mono text-[var(--cs-text-4)] tracking-widest uppercase mb-1">Code & Tech Stack</div>
+        <div className="flex items-baseline gap-2.5">
+          <span className="text-[28px] font-mono text-[var(--cs-text)] tracking-tight leading-none">TypeScript</span>
+        </div>
+        <div className="mt-3 h-px bg-gradient-to-r from-transparent via-[#C9A84C]/15 to-transparent" />
+        <div className="mt-2 flex gap-4">
+          {[{ l: 'Backend', v: 'Python' }, { l: 'Frontend', v: 'React' }, { l: 'Deploy', v: 'Vercel' }].map(({ l, v }) => (
+            <div key={l}>
+              <div className="text-[8px] font-mono text-[var(--cs-text-4)]">{l}</div>
+              <div className="text-[11px] font-mono text-[#C9A84C]/70">{v}</div>
             </div>
-          </motion.div>
-        </motion.div>
-
-        {/* Connector line between chip 1 and chip 2 */}
-        <svg className="absolute inset-0 w-full h-full" style={{ zIndex: 1 }}>
-          <motion.line x1="75%" y1="30%" x2="80%" y2="52%"
-            stroke="#C9A84C" strokeWidth="0.8" strokeOpacity="0.12" strokeDasharray="3 5"
-            initial={{ pathLength: 0 }} animate={{ pathLength: 1 }}
-            transition={{ delay: 1.2, duration: 0.8 }} />
-          <motion.line x1="80%" y1="52%" x2="76%" y2="70%"
-            stroke="#C9A84C" strokeWidth="0.8" strokeOpacity="0.08" strokeDasharray="3 5"
-            initial={{ pathLength: 0 }} animate={{ pathLength: 1 }}
-            transition={{ delay: 1.8, duration: 0.8 }} />
-        </svg>
-
-        {/* Chip 2: Mini sparkline (mid-right, offset inward) */}
-        <motion.div
-          className="absolute top-[44%] right-[10%] xl:right-[12%]"
-          style={{ opacity: 0.75 }}
-          initial={{ opacity: 0, y: 14, scale: 0.94 }}
-          animate={{ opacity: 0.75, y: 0, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.65, ease: [0.22, 1, 0.36, 1] }}>
-          <motion.div
-            animate={{ y: [0, 5, 0] }}
-            transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', delay: 1.2 }}>
-            <div className="border border-[#C9A84C]/12 rounded-xl bg-[var(--cs-s0)]/70 backdrop-blur-md px-4 py-3 w-[200px]">
-              <div className="text-[8px] font-mono text-[var(--cs-text-4)] tracking-widest uppercase mb-2">Ausgaben · Jan–Dez</div>
-              <svg width="100%" viewBox="0 0 220 44">
-                <defs>
-                  <linearGradient id="spFill" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#C9A84C" stopOpacity="0.2" />
-                    <stop offset="100%" stopColor="#C9A84C" stopOpacity="0" />
-                  </linearGradient>
-                  <mask id="spMask">
-                    <motion.rect x="0" y="0" width="220" height="44" fill="white"
-                      initial={{ scaleX: 0 }} animate={{ scaleX: 1 }}
-                      style={{ transformOrigin: 'left center', transformBox: 'fill-box' }}
-                      transition={{ duration: 1.8, ease: [0.22, 1, 0.36, 1], delay: 1.0 }} />
-                  </mask>
-                </defs>
-                <path d={sparkFill} fill="url(#spFill)" mask="url(#spMask)" />
-                <path d={sparkPath} fill="none" stroke="#C9A84C" strokeWidth="1.8" strokeOpacity="0.55" mask="url(#spMask)" />
-                <motion.circle cx={220} cy={3} r={3} fill="#C9A84C"
-                  initial={{ opacity: 0 }} animate={{ opacity: 0.9 }} transition={{ delay: 2.6 }} />
-              </svg>
-              <div className="mt-1.5 flex justify-between">
-                <span className="text-[8px] font-mono text-[var(--cs-text-4)]">Jan</span>
-                <span className="text-[8px] font-mono text-[#C9A84C]/50">–12.4% ggü. Vorjahr</span>
-                <span className="text-[8px] font-mono text-[var(--cs-text-4)]">Dez</span>
-              </div>
-            </div>
-          </motion.div>
-        </motion.div>
-
-        {/* Chip 3: Category bars (lower-right, most faded) */}
-        <motion.div
-          className="absolute top-[68%] right-[8%] xl:right-[10%]"
-          style={{ opacity: 0.5 }}
-          initial={{ opacity: 0, y: 16, scale: 0.92 }}
-          animate={{ opacity: 0.5, y: 0, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.95, ease: [0.22, 1, 0.36, 1] }}>
-          <motion.div
-            animate={{ y: [0, -4, 0] }}
-            transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut', delay: 2 }}>
-            <div className="border border-[#C9A84C]/10 rounded-xl bg-[var(--cs-s0)]/65 backdrop-blur-md px-4 py-3 w-[180px]">
-              <div className="text-[8px] font-mono text-[var(--cs-text-4)] tracking-widest uppercase mb-3">Kategorien</div>
-              <div className="flex flex-col gap-2">
-                {cats.map((cat, i) => (
-                  <div key={cat.label}>
-                    <div className="flex justify-between mb-0.5">
-                      <span className="text-[8px] font-mono text-[#4a4540]">{cat.label}</span>
-                      <span className="text-[8px] font-mono text-[#C9A84C]/50">{cat.pct}%</span>
-                    </div>
-                    <div className="h-0.5 w-full bg-[#C9A84C]/08 rounded-full overflow-hidden">
-                      <motion.div className="h-full bg-[#C9A84C]/50 rounded-full origin-left"
-                        style={{ width: `${cat.pct}%` }}
-                        initial={{ scaleX: 0 }} animate={{ scaleX: 1 }}
-                        transition={{ delay: 1.4 + i * 0.2, duration: 1, ease: [0.22, 1, 0.36, 1] }} />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-        </motion.div>
+          ))}
+        </div>
       </div>
-    </>
+    </div>
   )
 }
 
@@ -1195,7 +194,7 @@ function ThemeBg({ theme }: { theme: HeroTheme }) {
 
 /* ══════════════════════════════════════════════════════════
    PAGE HERO
-══════════════════════════════════════════════════════════ */
+   ══════════════════════════════════════════════════════════ */
 export default function PageHero({
   eyebrow, titleLine1, titleLine2, titleAccent = 'line2',
   description, badge, theme = 'default', children,
