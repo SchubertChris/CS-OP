@@ -7,7 +7,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 
 const GOLD = '#C9A84C'
-const DISPLAY_MS = 5000
+const DISPLAY_MS = typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('slow') ? 20000 : 5000
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1]
 
 const LOGO_PATHS = [
@@ -68,14 +68,15 @@ export default function IntroAnimation({ onComplete }: { onComplete: () => void 
           transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
         >
           {/* Centered responsive flex block using CSS media queries */}
-          <div className="flex flex-col md:flex-row items-center justify-center max-w-[95vw] overflow-visible">
+          <div className="flex flex-col lg:flex-row items-center justify-center max-w-[95vw] overflow-visible">
             {/* SVG Logo (responsive sizing via standard classNames) */}
             <motion.svg
               version="1.1"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="25 20 960 900"
-              className="w-[280px] h-[280px] sm:w-[320px] sm:h-[320px] md:w-[400px] md:h-[400px] shrink-0"
+              className="w-[280px] h-[280px] sm:w-[320px] sm:h-[320px] lg:w-[400px] lg:h-[400px] shrink-0"
               initial={reduced ? false : { opacity: 0, scale: 0.92, y: 8 }}
+              style={{ opacity: reduced ? 1 : 0 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               transition={{ duration: 0.85, ease: EASE }}
             >
@@ -101,21 +102,22 @@ export default function IntroAnimation({ onComplete }: { onComplete: () => void 
 
             {/* Wordmark revealed dynamically. Text font size scaled down on mobile to prevent overflow clipping. */}
             <motion.h1
-              className="font-display font-semibold uppercase text-[var(--cs-text)] text-[1.4rem] sm:text-[2.0rem] md:text-[3.4rem] whitespace-nowrap overflow-hidden flex items-center justify-center mt-4 md:mt-0 md:ml-6 shrink-0"
+              className="font-display font-semibold uppercase text-[var(--cs-text)] text-[1.4rem] sm:text-[2.0rem] lg:text-[3.4rem] whitespace-nowrap flex items-center justify-center mt-4 lg:mt-0 lg:ml-6 shrink-0"
               initial={{
-                width: 0,
                 opacity: 0,
-                letterSpacing: '0.1em'
+                y: 8,
+                letterSpacing: '0.08em'
               }}
+              style={{ opacity: 0, letterSpacing: '0.08em' }}
               animate={{ 
-                width: 'max-content', 
                 opacity: 1, 
+                y: 0,
                 letterSpacing: '0.35em'
               }}
               transition={{ 
-                width: { duration: 1.4, delay: 2.8, ease: EASE },
-                opacity: { duration: 0.8, delay: 3.0, ease: 'easeOut' },
-                letterSpacing: { duration: 1.4, delay: 2.8, ease: EASE }
+                opacity: { duration: 1.8, delay: 2.8, ease: 'easeOut' },
+                y: { duration: 1.8, delay: 2.8, ease: EASE },
+                letterSpacing: { duration: 2.4, delay: 2.8, ease: EASE }
               }}
             >
               Candle<span style={{ color: GOLD }}>Scope</span>

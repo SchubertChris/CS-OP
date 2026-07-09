@@ -33,9 +33,13 @@ function AnalyticsTracker() {
 const SESSION_KEY = 'cs_intro_seen'
 
 export default function RootLayout() {
-  const [introComplete, setIntroComplete] = useState(
-    () => sessionStorage.getItem(SESSION_KEY) === '1' || navigator.webdriver
-  )
+  const [introComplete, setIntroComplete] = useState(() => {
+    const params = new URLSearchParams(window.location.search)
+    if (params.has('intro') || params.has('forceIntro')) {
+      return false
+    }
+    return sessionStorage.getItem(SESSION_KEY) === '1' || navigator.webdriver
+  })
 
   const handleIntroComplete = () => {
     sessionStorage.setItem(SESSION_KEY, '1')
