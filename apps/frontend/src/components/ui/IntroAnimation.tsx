@@ -36,8 +36,16 @@ const LOGO_TRANSFORMS = [
 
 export default function IntroAnimation({ onComplete }: { onComplete: () => void }) {
   const [visible, setVisible] = useState(true)
+  const [isMobile, setIsMobile] = useState(false)
   const doneRef = useRef(false)
   const reduced = useReducedMotion()
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768)
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [])
 
   const complete = useCallback(() => {
     if (doneRef.current) return
@@ -67,16 +75,16 @@ export default function IntroAnimation({ onComplete }: { onComplete: () => void 
           }}
           transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
         >
-          {/* Centered side-by-side flex layout block */}
-          <div className="flex flex-row items-center justify-center max-w-[95vw] overflow-visible">
-            {/* Large SVG Logo on the left (now 400px) */}
+          {/* Centered side-by-side on desktop, stacked on mobile */}
+          <div className={`flex ${isMobile ? 'flex-col' : 'flex-row'} items-center justify-center max-w-[95vw] overflow-visible`}>
+            {/* Large SVG Logo (400px on desktop, 320px on mobile) */}
             <motion.svg
               version="1.1"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="25 20 960 900"
               style={{
-                width: 400,
-                height: 400
+                width: isMobile ? 320 : 400,
+                height: isMobile ? 320 : 400
               }}
               initial={reduced ? false : { opacity: 0, scale: 0.92, y: 8 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -102,11 +110,32 @@ export default function IntroAnimation({ onComplete }: { onComplete: () => void 
               })}
             </motion.svg>
 
-            {/* Wordmark revealed on the right side next to logo */}
+            {/* Wordmark revealed on the right side on desktop, below on mobile */}
             <motion.h1
-              className="font-display font-semibold uppercase text-[var(--cs-text)] text-[2.2rem] md:text-[3.4rem] whitespace-nowrap overflow-hidden flex items-center"
-              initial={{ maxWidth: 0, opacity: 0, letterSpacing: '0.1em', marginLeft: 0 }}
-              animate={{ 
+              className="font-display font-semibold uppercase text-[var(--cs-text)] text-[2.0rem] md:text-[3.4rem] whitespace-nowrap overflow-hidden flex items-center justify-center"
+              initial={isMobile ? {
+                maxHeight: 0,
+                opacity: 0,
+                letterSpacing: '0.1em',
+                marginTop: 0
+              } : {
+                maxWidth: 0,
+                opacity: 0,
+                letterSpacing: '0.1em',
+                marginLeft: 0
+              }}
+              animate={isMobile ? { 
+                maxHeight: '120px', 
+                opacity: 1, 
+                letterSpacing: '0.35em',
+                marginTop: 16,
+                transition: { 
+                  maxHeight: { duration: 1.3, delay: 2.8, ease: EASE },
+                  opacity: { duration: 0.8, delay: 3.0, ease: 'easeOut' },
+                  letterSpacing: { duration: 1.3, delay: 2.8, ease: EASE },
+                  marginTop: { duration: 1.3, delay: 2.8, ease: EASE }
+                }
+              } : { 
                 maxWidth: '600px', 
                 opacity: 1, 
                 letterSpacing: '0.35em',
