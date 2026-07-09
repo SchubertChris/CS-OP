@@ -217,22 +217,20 @@ export default function DatenschutzPage() {
           </p>
         </section>
 
-        {/* 7. Calendly (externer Link) */}
+        {/* 7. Cal.com (Widget & externer Link) */}
         <section>
-          <h2 className="font-display text-xl text-[var(--cs-text)] mb-4">7. Terminbuchung via Calendly</h2>
+          <h2 className="font-display text-xl text-[var(--cs-text)] mb-4">7. Terminbuchung via Cal.com</h2>
           <p className="text-[14px]">
-            Auf der Kontaktseite befindet sich ein Link zu{' '}
-            <strong className="text-[var(--cs-text)]">Calendly</strong> (Calendly LLC, 271 17th Street NW,
-            Atlanta, GA 30363, USA). Beim Klick auf den Link verlassen Sie diese Website und werden
-            zu Calendly weitergeleitet. Es werden dabei <strong className="text-[var(--cs-text)]">keine Daten von dieser
-            Website an Calendly übermittelt</strong> — das Widget ist nicht eingebettet.
+            Auf unserer Website ist das Buchungs-Widget von{' '}
+            <strong className="text-[var(--cs-text)]">Cal.com</strong> (Cal.com, Inc., 228 Park Ave S, PMB 99325,
+            New York, NY 10003, USA) eingebunden. Bei der Nutzung des Widgets oder beim Klick auf den Buchungslink werden
+            Verbindungsdaten (wie Ihre IP-Adresse) an Cal.com übertragen.
           </p>
           <p className="text-[14px] mt-3">
-            Sobald Sie auf der Calendly-Seite einen Termin buchen, gelten die dortigen
-            Datenschutzbestimmungen. Weitere Informationen:{' '}
-            <a href="https://calendly.com/privacy" target="_blank" rel="noopener noreferrer"
+            Die Verarbeitung erfolgt auf Grundlage von Art. 6 Abs. 1 lit. b DSGVO (Vertragsanbahnung) bzw. Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an einer einfachen Terminvereinbarung). Weitere Informationen:{' '}
+            <a href="https://cal.com/privacy" target="_blank" rel="noopener noreferrer"
               className="text-[var(--cs-text-2)] hover:text-[#C9A84C] transition-colors">
-              calendly.com/privacy
+              cal.com/privacy
             </a>
           </p>
         </section>

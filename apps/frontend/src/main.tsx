@@ -3,11 +3,11 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter, useLocation } from 'react-router-dom'
 import './styles/index.css'
 import App from './App'
-import CalendlyBadge from './components/CalendlyBadge'
+import CalBadge from './components/CalBadge'
 
 function ConditionalCalendly() {
   const { pathname } = useLocation()
-  // Calendly-Badge erst NACH der Entrance-Animation einblenden
+  // Cal.com-Badge erst NACH der Entrance-Animation einblenden
   const [introDone, setIntroDone] = useState(
     () => sessionStorage.getItem('cs_intro_seen') === '1' || navigator.webdriver
   )
@@ -21,7 +21,7 @@ function ConditionalCalendly() {
 
   if (pathname.startsWith('/admin') || pathname.startsWith('/analytics')) return null
   if (!introDone) return null
-  return <CalendlyBadge />
+  return <CalBadge />
 }
 
 createRoot(document.getElementById('root')!).render(
