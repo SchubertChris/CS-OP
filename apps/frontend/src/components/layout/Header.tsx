@@ -65,7 +65,7 @@ export default function Header() {
       `}
       style={scrolled ? { background: 'var(--cs-header-bg)' } : undefined}>
         <Link to="/" aria-label="CandleScope Startseite" className="group flex items-center gap-3 shrink-0">
-          <img src={csLogo} alt="CandleScope Logo"
+          <img src={csLogo} alt=""
             className={`object-contain transition-transform duration-300 group-hover:scale-105 ${scrolled ? 'w-8 h-8' : 'w-10 h-10'}`} />
           <span className={`font-display tracking-[0.15em] text-[var(--cs-text)] uppercase ${scrolled ? 'text-sm' : 'text-base'}`}>
             Candle<span className="text-[#C9A84C]">Scope</span>
@@ -136,7 +136,7 @@ export default function Header() {
           {/* Logo */}
           <Link to="/" aria-label="CandleScope Startseite"
             className="flex items-center gap-2.5 px-2 h-10 mb-1 shrink-0 overflow-hidden">
-            <img src={csLogo} alt="CandleScope"
+            <img src={csLogo} alt=""
               className="w-6 h-6 object-contain shrink-0 hover:scale-110 transition-transform duration-200" />
             <span className="font-display text-[11px] tracking-[0.12em] uppercase text-[var(--cs-text)] whitespace-nowrap">
               Candle<span className="text-[#C9A84C]">Scope</span>

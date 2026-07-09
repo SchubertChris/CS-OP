@@ -45,7 +45,9 @@ export default function CinematicDissolve({ imageSrc }: { imageSrc: string }) {
             src={imageSrc}
             alt="CandleScope Logo"
             className="max-w-[80vw] max-h-[56vh] object-contain"
-            loading="lazy"
+            fetchPriority="high"
+            width={1000}
+            height={1000}
           />
 
           {/* Futuristic straight text claim under the logo */}

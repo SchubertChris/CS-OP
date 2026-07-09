@@ -57,10 +57,9 @@ export default function IntroAnimation({ onComplete }: { onComplete: () => void 
             transition={{ duration: 1, ease: EASE }}
           />
 
-          {/* Logo */}
           <motion.img
             src={csLogo}
-            alt="CandleScope"
+            alt=""
             className="relative"
             style={{ width: 104, height: 104, objectFit: 'contain', filter: 'drop-shadow(0 0 28px rgba(201,168,76,0.35))' }}
             initial={reduced ? false : { opacity: 0, scale: 0.9, y: 6 }}

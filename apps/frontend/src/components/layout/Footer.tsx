@@ -45,7 +45,7 @@ export default function Footer() {
             <Link to="/" className="group flex items-center gap-3 w-fit">
               <img
                 src={csLogo}
-                alt="CandleScope"
+                alt=""
                 className="w-9 h-9 object-contain group-hover:scale-105 transition-transform duration-300"
               />
               <span className="font-display text-lg tracking-[0.14em] text-[var(--cs-text)] uppercase">

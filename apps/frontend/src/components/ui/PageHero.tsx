@@ -1,5 +1,5 @@
 import { useLayoutEffect, useState, useEffect, useRef } from 'react'
-import { motion, useMotionValue, animate } from 'framer-motion'
+import { motion, useMotionValue, animate, useTransform, useReducedMotion } from 'framer-motion'
 
 /* ─── Mobile Check Hook ─────────────────────────────────── */
 // matchMedia statt innerWidth — kein Forced Reflow
@@ -302,99 +302,470 @@ function DevBg() {
 }
 
 /* ── About: Skill Constellation ─────────────────────────── */
+interface OrbitConnectorProps {
+  node: {
+    x: import('framer-motion').MotionValue<number>
+    y: import('framer-motion').MotionValue<number>
+    color: string
+  }
+  cx: number
+  cy: number
+  active: boolean
+}
+
+function OrbitConnector({ node, cx, cy, active }: OrbitConnectorProps) {
+  const xPercent = useTransform(node.x, (val) => `${val}%`)
+  const yPercent = useTransform(node.y, (val) => `${val}%`)
+  
+  return (
+    <motion.line
+      x1={`${cx}%`}
+      y1={`${cy}%`}
+      x2={xPercent}
+      y2={yPercent}
+      stroke={node.color}
+      strokeWidth={active ? 0.65 : 0.2}
+      strokeOpacity={active ? 0.5 : 0.12}
+      strokeDasharray={active ? 'none' : '2 3'}
+    />
+  )
+}
+
+interface OrbitStarProps {
+  node: {
+    id: string
+    name: string
+    x: import('framer-motion').MotionValue<number>
+    y: import('framer-motion').MotionValue<number>
+    r: number
+    color: string
+  }
+  cx: number
+  active: boolean
+  onMouseEnter: () => void
+  onMouseLeave: () => void
+}
+
+function OrbitStar({ node, cx, active, onMouseEnter, onMouseLeave }: OrbitStarProps) {
+  const xPercent = useTransform(node.x, (val) => `${val}%`)
+  const yPercent = useTransform(node.y, (val) => `${val}%`)
+  const textX = useTransform(node.x, (val) => `${val + (val > cx ? node.r + 1.2 : -(node.r + 1.2))}%`)
+  const textY = useTransform(node.y, (val) => `${val + 0.4}%`)
+  const textAnchor = useTransform(node.x, (val) => (val > cx ? 'start' : 'end'))
+
+  return (
+    <g
+      className="pointer-events-auto cursor-pointer"
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+    >
+      {/* Pulsing ring on active */}
+      {active && (
+        <motion.circle
+          cx={xPercent}
+          cy={yPercent}
+          r={`${node.r * 2.8}%`}
+          fill="none"
+          stroke={node.color}
+          strokeWidth="0.7"
+          initial={{ scale: 0.7, opacity: 0.6 }}
+          animate={{ scale: 1.4, opacity: 0 }}
+          transition={{ duration: 1.2, repeat: Infinity, ease: 'easeOut' }}
+        />
+      )}
+
+      {/* Star dot (filled center) */}
+      <motion.circle
+        cx={xPercent}
+        cy={yPercent}
+        r={`${node.r}%`}
+        fill={node.color}
+        filter="url(#nodeGlow)"
+        animate={{ scale: active ? 1.25 : 1 }}
+        transition={{ duration: 0.25 }}
+      />
+
+      {/* Layer 1: Robust Inner Border */}
+      <motion.circle
+        cx={xPercent}
+        cy={yPercent}
+        r={`${node.r * 1.8}%`}
+        fill="none"
+        stroke={node.color}
+        strokeWidth="0.8"
+        strokeOpacity={active ? 0.95 : 0.6}
+        transition={{ duration: 0.3 }}
+      />
+
+      {/* Layer 2: Stepped Outer Border */}
+      <motion.circle
+        cx={xPercent}
+        cy={yPercent}
+        r={`${node.r * 2.6}%`}
+        fill="none"
+        stroke={node.color}
+        strokeWidth="0.55"
+        strokeOpacity={active ? 0.75 : 0.35}
+        transition={{ duration: 0.3 }}
+      />
+
+      {/* Layer 3: Faint outer dashed border (stepped target look) */}
+      <motion.circle
+        cx={xPercent}
+        cy={yPercent}
+        r={`${node.r * 3.4}%`}
+        fill="none"
+        stroke={node.color}
+        strokeWidth="0.35"
+        strokeOpacity={active ? 0.5 : 0.22}
+        strokeDasharray="2.5 3.5"
+        transition={{ duration: 0.3 }}
+      />
+
+      {/* Inline Label (rotates with node but text stays upright) */}
+      <motion.text
+        x={textX}
+        y={textY}
+        fill={node.color}
+        fillOpacity={active ? 0.85 : 0.45}
+        fontSize="1.4"
+        fontFamily="JetBrains Mono, monospace"
+        textAnchor={textAnchor}
+        fontWeight="400"
+        letterSpacing="0.08em"
+        transition={{ duration: 0.25 }}
+      >
+        {node.name}
+      </motion.text>
+    </g>
+  )
+}
+
+interface OrbitTooltipProps {
+  node: {
+    id: string
+    x: import('framer-motion').MotionValue<number>
+    y: import('framer-motion').MotionValue<number>
+    color: string
+    title: string
+    desc: string
+  }
+  cx: number
+  active: boolean
+}
+
+function OrbitTooltip({ node, cx, active }: OrbitTooltipProps) {
+  const tooltipX = useTransform(node.x, (val) => {
+    const shift = val > cx ? 2.5 : -32.5
+    return `${val + shift}%`
+  })
+  const tooltipY = useTransform(node.y, (val) => `${val - 10}%`)
+
+  return (
+    <motion.g
+      style={{
+        x: tooltipX,
+        y: tooltipY,
+        pointerEvents: active ? 'auto' : 'none',
+      }}
+      initial={{ opacity: 0, scale: 0.92 }}
+      animate={{ opacity: active ? 1 : 0, scale: active ? 1 : 0.92 }}
+      transition={{ duration: 0.25, ease: 'easeOut' }}
+    >
+      {/* Tooltip backing card */}
+      <rect
+        x="0"
+        y="0"
+        width="30%"
+        height="6.8%"
+        rx="1.5"
+        fill="rgba(8, 8, 8, 0.9)"
+        stroke={node.color}
+        strokeWidth="0.4"
+        style={{ filter: 'drop-shadow(0 4px 15px rgba(0,0,0,0.65))' }}
+      />
+      {/* Highlight signal line */}
+      <line x1="0" y1="0" x2="0" y2="6.8%" stroke={node.color} strokeWidth="1.2" />
+
+      {/* Tooltip Header */}
+      <text
+        x="1.8%"
+        y="2.2%"
+        fill={node.color}
+        fontSize="1.3"
+        fontWeight="400"
+        fontFamily="JetBrains Mono, monospace"
+        letterSpacing="0.06em"
+      >
+        {node.title}
+      </text>
+
+      {/* Tooltip Desc */}
+      <text
+        x="1.8%"
+        y="4.5%"
+        fill="var(--cs-text-3)"
+        fontSize="1.0"
+        fontWeight="300"
+        fontFamily="ui-sans-serif, system-ui, sans-serif"
+      >
+        {node.desc}
+      </text>
+    </motion.g>
+  )
+}
+
 function AboutBg() {
-  // x/y in viewBox units (0–100)
-  const nodes = [
-    { x: 62, y: 18, label: 'React',      r: 2.2, delay: 0.3 },
-    { x: 76, y: 28, label: 'TypeScript', r: 1.8, delay: 0.55 },
-    { x: 85, y: 44, label: 'Node.js',    r: 2,   delay: 0.8 },
-    { x: 80, y: 62, label: 'Electron',   r: 1.6, delay: 1.05 },
-    { x: 68, y: 74, label: 'Finance',    r: 2.4, delay: 1.3 },
-    { x: 55, y: 65, label: 'Trading',    r: 1.8, delay: 1.55 },
-    { x: 60, y: 48, label: 'WebDev',     r: 2,   delay: 1.8 },
-    { x: 70, y: 36, label: 'Potsdam',    r: 1.6, delay: 2.05 },
-  ]
-  const edges = [
-    [0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 0], [6, 1], [5, 3],
+  const isMobile = useIsMobile()
+  const reduced = useReducedMotion()
+  const [hoveredNode, setHoveredNode] = useState<string | null>(null)
+
+  const cx = isMobile ? 50 : 72.5
+  const cy = isMobile ? 40 : 47.5
+
+  // Time value for continuous orbit rotation
+  const time = useMotionValue(0)
+  useEffect(() => {
+    if (reduced) return
+    const anim = animate(time, 360, {
+      duration: 55,
+      repeat: Infinity,
+      ease: 'linear',
+    })
+    return () => anim.stop()
+  }, [time, reduced])
+
+
+  // Orbit 1: Inner (Potsdam) - r = 12
+  const angleInner = useTransform(time, v => (v * 1.6 * Math.PI) / 180)
+  const potsdamX = useTransform(angleInner, a => cx + 12 * Math.cos(a))
+  const potsdamY = useTransform(angleInner, a => cy + 12 * Math.sin(a))
+
+  // Orbit 2: Middle (Finance & AI) - r = 23
+  const angleMiddle = useTransform(time, v => (v * 1.0 * Math.PI) / 180)
+  // AI Node: base offset 120 deg (2.094 rad)
+  const aiX = useTransform(angleMiddle, a => cx + 23 * Math.cos(a + 2.094))
+  const aiY = useTransform(angleMiddle, a => cy + 23 * Math.sin(a + 2.094))
+  // Finance Node: base offset 300 deg (5.236 rad)
+  const financeX = useTransform(angleMiddle, a => cx + 23 * Math.cos(a + 5.236))
+  const financeY = useTransform(angleMiddle, a => cy + 23 * Math.sin(a + 5.236))
+
+  // Orbit 3: Outer (WebDev) - r = 34
+  const angleOuter = useTransform(time, v => (v * 0.6 * Math.PI) / 180)
+  // WebDev Node: base offset 240 deg (4.188 rad)
+  const webdevX = useTransform(angleOuter, a => cx + 34 * Math.cos(a + 4.188))
+  const webdevY = useTransform(angleOuter, a => cy + 34 * Math.sin(a + 4.188))
+
+  const NODES = [
+    {
+      id: 'potsdam',
+      name: 'POTSDAM',
+      x: potsdamX,
+      y: potsdamY,
+      r: 1.2,
+      color: '#C9A84C',
+      title: 'Vor Ort & Remote',
+      desc: 'Potsdam, Berlin & Brandenburg',
+    },
+    {
+      id: 'ai',
+      name: 'AI & WORKFLOWS',
+      x: aiX,
+      y: aiY,
+      r: 1.4,
+      color: '#7C9EFF',
+      title: 'KI & Workflows',
+      desc: 'Python-Scripts & LLM-Pipelines',
+    },
+    {
+      id: 'finance',
+      name: 'FINANCE',
+      x: financeX,
+      y: financeY,
+      r: 1.4,
+      color: '#FF8A65',
+      title: 'Trading & Steuern',
+      desc: 'Chartanalyse & Krypto-Tools',
+    },
+    {
+      id: 'webdev',
+      name: 'WEBDEV',
+      x: webdevX,
+      y: webdevY,
+      r: 1.7,
+      color: '#C084FC',
+      title: 'React & Node.js',
+      desc: 'TypeScript, Electron & Next.js',
+    },
   ]
 
   return (
-    <>
-      {/* Mobile */}
-      <svg className="absolute top-14 left-0 pointer-events-none block md:hidden"
-        width="100vw" height="280" viewBox="0 0 100 100" preserveAspectRatio="xMidYMin meet">
-        {edges.map(([a, b], i) => (
-          <motion.line key={i}
-            x1={`${nodes[a].x}%`} y1={`${nodes[a].y}%`}
-            x2={`${nodes[b].x}%`} y2={`${nodes[b].y}%`}
-            stroke="#C9A84C" strokeWidth="0.3"
-            initial={{ strokeOpacity: 0 }} animate={{ strokeOpacity: 0.25 }}
-            transition={{ delay: 0.6 + i * 0.1, duration: 0.8 }} />
-        ))}
-        {nodes.map((n, i) => (
-          <motion.circle key={i} cx={`${n.x}%`} cy={`${n.y}%`} r={`${n.r * 1.1}%`}
-            fill="#C9A84C"
-            initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 0.55, scale: 1 }}
-            transition={{ delay: n.delay, duration: 0.45, ease: [0.34, 1.56, 0.64, 1] }} />
-        ))}
-      </svg>
+    <svg
+      className="absolute inset-0 w-full h-full pointer-events-none select-none"
+      viewBox="0 0 100 100"
+      preserveAspectRatio="xMidYMid slice"
+    >
+      <defs>
+        <filter id="coreGlow" x="-150%" y="-150%" width="400%" height="400%">
+          <feGaussianBlur stdDeviation="3" result="blur" />
+          <feMerge>
+            <feMergeNode in="blur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+        <filter id="nodeGlow" x="-100%" y="-100%" width="300%" height="300%">
+          <feGaussianBlur stdDeviation="1.5" result="blur" />
+          <feMerge>
+            <feMergeNode in="blur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+        <radialGradient id="centerGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#C9A84C" stopOpacity="0.12" />
+          <stop offset="100%" stopColor="#C9A84C" stopOpacity="0" />
+        </radialGradient>
+      </defs>
 
-      {/* Desktop */}
-      <svg className="absolute inset-0 w-full h-full pointer-events-none hidden md:block"
-        viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">
-        <defs>
-          <filter id="starGlow" x="-100%" y="-100%" width="300%" height="300%">
-            <feGaussianBlur stdDeviation="1.5" result="blur" />
-            <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
-          </filter>
-        </defs>
+      {/* Orbit 3 (Outer) */}
+      <motion.circle
+        cx={`${cx}%`}
+        cy={`${cy}%`}
+        r="34%"
+        fill="none"
+        stroke="#C9A84C"
+        strokeWidth="0.12"
+        strokeOpacity="0.18"
+      />
 
-        {/* Edges */}
-        {edges.map(([a, b], i) => (
-          <motion.line key={i}
-            x1={`${nodes[a].x}%`} y1={`${nodes[a].y}%`}
-            x2={`${nodes[b].x}%`} y2={`${nodes[b].y}%`}
-            stroke="#C9A84C" strokeWidth="0.25"
-            initial={{ strokeOpacity: 0 }} animate={{ strokeOpacity: 0.18 }}
-            transition={{ delay: 0.7 + i * 0.12, duration: 1 }} />
-        ))}
+      {/* Orbit 2 (Middle) */}
+      <motion.circle
+        cx={`${cx}%`}
+        cy={`${cy}%`}
+        r="23%"
+        fill="none"
+        stroke="#C9A84C"
+        strokeWidth="0.12"
+        strokeOpacity="0.22"
+      />
 
-        {/* Nodes */}
-        {nodes.map((n, i) => (
-          <g key={i}>
-            {/* Glow halo */}
-            <motion.circle cx={`${n.x}%`} cy={`${n.y}%`} r={`${n.r * 2.2}%`}
-              fill="#C9A84C" fillOpacity={0.04}
-              initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: n.delay, duration: 0.6 }} />
-            {/* Star dot */}
-            <motion.circle cx={`${n.x}%`} cy={`${n.y}%`} r={`${n.r}%`}
-              fill="#C9A84C" filter="url(#starGlow)"
-              initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 0.75, scale: 1 }}
-              transition={{ delay: n.delay, duration: 0.45, ease: [0.34, 1.56, 0.64, 1] }} />
-            {/* Label */}
-            <motion.text
-              x={`${n.x + (n.x > 72 ? n.r + 1.5 : -(n.r + 1.5))}%`}
-              y={`${n.y + 0.5}%`}
-              fill="#C9A84C" fillOpacity={0.4} fontSize="2.2"
-              fontFamily="JetBrains Mono, monospace"
-              textAnchor={n.x > 72 ? 'start' : 'end'}
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-              transition={{ delay: n.delay + 0.4, duration: 0.6 }}>
-              {n.label}
-            </motion.text>
-            {/* Occasional pulse */}
-            {i % 3 === 0 && (
-              <motion.circle cx={`${n.x}%`} cy={`${n.y}%`} r={`${n.r * 3}%`}
-                fill="none" stroke="#C9A84C"
-                initial={{ strokeOpacity: 0, scale: 0.5 }}
-                animate={{ strokeOpacity: [0, 0.2, 0], scale: [0.6, 1.8, 2.4] }}
-                transition={{ delay: n.delay + 1, duration: 2.8, repeat: Infinity, repeatDelay: 4 + i * 0.6 }} />
-            )}
-          </g>
-        ))}
-      </svg>
-    </>
+      {/* Orbit 1 (Inner) */}
+      <motion.circle
+        cx={`${cx}%`}
+        cy={`${cy}%`}
+        r="12%"
+        fill="none"
+        stroke="#C9A84C"
+        strokeWidth="0.12"
+        strokeOpacity="0.26"
+      />
+
+      {/* Center ambient glow */}
+      <circle cx={`${cx}%`} cy={`${cy}%`} r="24%" fill="url(#centerGlow)" />
+
+      {/* Orbit connectors to hovered nodes (draw dynamically) */}
+      {NODES.map((n) => (
+        <OrbitConnector
+          key={`connector-${n.id}`}
+          node={n}
+          cx={cx}
+          cy={cy}
+          active={hoveredNode === n.id}
+        />
+      ))}
+
+      {/* Central Star: CHRIS */}
+      <g className="pointer-events-auto cursor-pointer" onMouseEnter={() => setHoveredNode('center')} onMouseLeave={() => setHoveredNode(null)}>
+        <motion.circle
+          cx={`${cx}%`}
+          cy={`${cy}%`}
+          r="2.0%"
+          fill="#C9A84C"
+          filter="url(#coreGlow)"
+          animate={{ scale: hoveredNode === 'center' ? 1.15 : 1 }}
+          transition={{ duration: 0.3 }}
+        />
+        {/* Layer 1: Robust Inner Border */}
+        <motion.circle
+          cx={`${cx}%`}
+          cy={`${cy}%`}
+          r="3.4%"
+          fill="none"
+          stroke="#C9A84C"
+          strokeWidth="0.8"
+          strokeOpacity={hoveredNode === 'center' ? 0.95 : 0.6}
+          transition={{ duration: 0.3 }}
+        />
+        {/* Layer 2: Stepped Middle Border */}
+        <motion.circle
+          cx={`${cx}%`}
+          cy={`${cy}%`}
+          r="4.8%"
+          fill="none"
+          stroke="#C9A84C"
+          strokeWidth="0.55"
+          strokeOpacity={hoveredNode === 'center' ? 0.65 : 0.35}
+          transition={{ duration: 0.3 }}
+        />
+        {/* Layer 3: Thin outer dashed step */}
+        <motion.circle
+          cx={`${cx}%`}
+          cy={`${cy}%`}
+          r="6.2%"
+          fill="none"
+          stroke="#C9A84C"
+          strokeWidth="0.35"
+          strokeOpacity={hoveredNode === 'center' ? 0.45 : 0.2}
+          strokeDasharray="2.5 3.5"
+          transition={{ duration: 0.3 }}
+        />
+        {/* Pulsing ring on active/hover */}
+        <motion.circle
+          cx={`${cx}%`}
+          cy={`${cy}%`}
+          r="3.5%"
+          fill="none"
+          stroke="#C9A84C"
+          strokeWidth="0.7"
+          initial={{ strokeOpacity: 0.4, scale: 0.8 }}
+          animate={{ strokeOpacity: [0.4, 0, 0.4], scale: [0.8, 1.8, 0.8] }}
+          transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+        />
+        <text
+          x={`${cx}%`}
+          y={`${cy + 0.4}%`}
+          fill="#080808"
+          fontSize="1.3"
+          fontWeight="500"
+          fontFamily="ui-monospace, monospace"
+          textAnchor="middle"
+          letterSpacing="0.08em"
+        >
+          CHRIS
+        </text>
+      </g>
+
+      {/* Orbit Node Stars */}
+      {NODES.map((n) => (
+        <OrbitStar
+          key={`star-${n.id}`}
+          node={n}
+          cx={cx}
+          active={hoveredNode === n.id}
+          onMouseEnter={() => setHoveredNode(n.id)}
+          onMouseLeave={() => setHoveredNode(null)}
+        />
+      ))}
+
+      {/* Holographic Popover Tooltips (rendered inline inside SVG for absolute positioning correctness) */}
+      {NODES.map((n) => (
+        <OrbitTooltip
+          key={`tooltip-${n.id}`}
+          node={n}
+          cx={cx}
+          active={hoveredNode === n.id}
+        />
+      ))}
+    </svg>
   )
 }
 
