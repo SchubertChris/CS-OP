@@ -76,24 +76,24 @@
 :root,
 [data-theme='dark'] {
   color-scheme: dark;
-  --cs-bg: #080808;
-  --cs-s0: #090909;
-  --cs-s1: #0d0d0d;
-  --cs-s2: #0e0e0e;
-  --cs-s3: #111111;
-  --cs-s4: #161616;
-  --cs-s5: #1a1a1a;
-  --cs-input: #0a0a0a;
+  --cs-bg: #0a0a0a;
+  --cs-s0: #0e0e0e;
+  --cs-s1: #121212;
+  --cs-s2: #141414;
+  --cs-s3: #181818;
+  --cs-s4: #1c1c1c;
+  --cs-s5: #222222;
+  --cs-input: #0f0f0f;
 
   --cs-text: #f5f0e8;
   --cs-text-2: #9a9590;
   --cs-text-3: #5a5550;
   --cs-text-4: #3a3530;
 
-  --cs-backdrop: rgba(8, 8, 8, 0.75);
-  --cs-backdrop-2: rgba(8, 8, 8, 0.6);
-  --cs-header-bg: rgba(8, 8, 8, 0.95);
-  --cs-sidebar-mob: rgba(13, 13, 13, 0.9);
+  --cs-backdrop: rgba(10, 10, 10, 0.75);
+  --cs-backdrop-2: rgba(10, 10, 10, 0.6);
+  --cs-header-bg: rgba(10, 10, 10, 0.95);
+  --cs-sidebar-mob: rgba(18, 18, 18, 0.9);
   --cs-border-w: rgba(255, 255, 255, 0.06);
   --cs-border-w2: rgba(255, 255, 255, 0.08);
   --cs-border-w3: rgba(255, 255, 255, 0.1);
