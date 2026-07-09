@@ -7,7 +7,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 
 const GOLD = '#C9A84C'
-const DISPLAY_MS = 2500
+const DISPLAY_MS = 4000
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1]
 
 const LOGO_PATHS = [
@@ -63,76 +63,65 @@ export default function IntroAnimation({ onComplete }: { onComplete: () => void 
           onClick={complete}
           exit={{ 
             opacity: 0,
-            scale: 1.15,
-            filter: 'blur(30px)'
+            scale: 1.12
           }}
           transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
         >
-          {/* Subtle Golden Ambient Glow/Nebula */}
-          <motion.div
-            className="absolute pointer-events-none"
-            style={{
-              width: '100vw', height: '100vh',
-              background: 'radial-gradient(circle at center, rgba(201,168,76,0.09) 0%, transparent 60%)',
-            }}
-            initial={{ opacity: 0, scale: 0.85 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.5, ease: EASE }}
-          />
+          {/* Centered side-by-side flex layout block */}
+          <div className="flex flex-row items-center justify-center max-w-[90vw] overflow-visible">
+            {/* Wordmark revealed on the left next to logo */}
+            <motion.h1
+              className="font-display font-semibold uppercase text-[var(--cs-text)] text-[2.2rem] md:text-[3.4rem] whitespace-nowrap overflow-hidden flex items-center"
+              initial={{ width: 0, opacity: 0, letterSpacing: '0.1em', marginRight: 0 }}
+              animate={{ 
+                width: 'clamp(240px, 30vw, 380px)', 
+                opacity: 1, 
+                letterSpacing: '0.35em',
+                marginRight: 24,
+                transition: { 
+                  width: { duration: 1.3, delay: 2.1, ease: EASE },
+                  opacity: { duration: 0.8, delay: 2.3, ease: 'easeOut' },
+                  letterSpacing: { duration: 1.3, delay: 2.1, ease: EASE },
+                  marginRight: { duration: 1.3, delay: 2.1, ease: EASE }
+                }
+              }}
+            >
+              Candle<span style={{ color: GOLD }}>Scope</span>
+            </motion.h1>
 
-          {/* Large Cinematic Outline Drawing SVG Logo */}
-          <motion.svg
-            version="1.1"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="25 20 960 900"
-            className="relative"
-            style={{
-              width: 320,
-              height: 320,
-              filter: 'drop-shadow(0 0 32px rgba(201,168,76,0.22)) drop-shadow(0 0 64px rgba(201,168,76,0.08))'
-            }}
-            initial={reduced ? false : { opacity: 0, scale: 0.92, y: 8 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 0.85, ease: EASE }}
-          >
-            {LOGO_PATHS.map((d, idx) => {
-              const trans = LOGO_TRANSFORMS[idx]
-              return (
-                <motion.path
-                  key={idx}
-                  d={d}
-                  transform={trans}
-                  stroke="var(--cs-gold)"
-                  strokeWidth={2}
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  fill="none"
-                  initial={{ pathLength: 0 }}
-                  animate={{ pathLength: 1 }}
-                  transition={{ duration: 1.4, delay: 0.15 + idx * 0.05, ease: EASE }}
-                />
-              )
-            })}
-          </motion.svg>
-
-          {/* Wortmarke - Expanding Letter Spacing */}
-          <motion.h1
-            className="relative mt-8 font-display font-semibold uppercase text-[var(--cs-text)] text-[2.2rem] tracking-[0.2em]"
-            initial={reduced ? false : { opacity: 0, y: 12, filter: 'blur(8px)', letterSpacing: '0.2em' }}
-            animate={{ opacity: 1, y: 0, filter: 'blur(0px)', letterSpacing: '0.45em' }}
-            transition={{ duration: 1.3, delay: 0.35, ease: EASE }}
-          >
-            Candle<span style={{ color: GOLD }}>Scope</span>
-          </motion.h1>
-
-          {/* Fine golden animated split line */}
-          <motion.span
-            className="relative mt-6 block"
-            style={{ height: 1.2, width: 220, background: `linear-gradient(90deg, transparent, ${GOLD}, transparent)`, transformOrigin: 'center' }}
-            initial={reduced ? false : { scaleX: 0, opacity: 0 }}
-            animate={{ scaleX: 1, opacity: 1 }}
-            transition={{ duration: 0.85, delay: 0.6, ease: EASE }}
-          />
+            {/* Large SVG Logo on the right */}
+            <motion.svg
+              version="1.1"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="25 20 960 900"
+              style={{
+                width: 360,
+                height: 360
+              }}
+              initial={reduced ? false : { opacity: 0, scale: 0.92, y: 8 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ duration: 0.85, ease: EASE }}
+            >
+              {LOGO_PATHS.map((d, idx) => {
+                const trans = LOGO_TRANSFORMS[idx]
+                return (
+                  <motion.path
+                    key={idx}
+                    d={d}
+                    transform={trans}
+                    stroke="var(--cs-gold)"
+                    strokeWidth={2}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    fill="none"
+                    initial={{ pathLength: 0 }}
+                    animate={{ pathLength: 1 }}
+                    transition={{ duration: 1.8, delay: 0.15 + idx * 0.06, ease: EASE }}
+                  />
+                )
+              })}
+            </motion.svg>
+          </div>
         </motion.div>
       )}
     </AnimatePresence>
