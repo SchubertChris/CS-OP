@@ -144,8 +144,8 @@ export default function ThreeParticleTimeline({ targetRef }: { targetRef: React.
   const [totalHeight, setTotalHeight] = useState(1000)
 
   // Dynamic vertical path geometry based on total page height
-  const yStart = window.innerHeight * 0.5
-  const yEnd = Math.max(yStart + 100, totalHeight - window.innerHeight * 0.5)
+  const yStart = 0
+  const yEnd = totalHeight
   const pathD = `M5,${yStart} L5,${yEnd}`
 
   // WebGL Uniform states
@@ -568,13 +568,13 @@ export default function ThreeParticleTimeline({ targetRef }: { targetRef: React.
     <>
     {/* 3D WebGL rotating crystal checkpoints overlay (fixed viewport height) */}
     {!reduced && webglSupported && (
-      <div className="hidden lg:block fixed inset-0 z-[1] pointer-events-none" aria-hidden="true">
+      <div className="hidden lg:block fixed inset-0 z-[31] pointer-events-none" aria-hidden="true">
         <canvas ref={canvasRef} className="w-full h-full block" />
       </div>
     )}
 
     {/* SVG Scroll progress line track - centered and aligned with content margin */}
-    <div ref={containerRef} className="hidden lg:block absolute inset-y-0 left-0 right-0 z-[0] pointer-events-none transition-opacity duration-500" aria-hidden="true">
+    <div ref={containerRef} className="hidden lg:block absolute inset-y-0 left-0 right-0 z-[30] pointer-events-none transition-opacity duration-500" aria-hidden="true">
       <svg
         viewBox={`0 0 100 ${totalHeight}`}
         preserveAspectRatio="none"
