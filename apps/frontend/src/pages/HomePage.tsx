@@ -23,7 +23,6 @@ import ThreeParticleTimeline from '../components/home/ThreeParticleTimeline'
 import FloatingFrame from '../components/home/FloatingFrame'
 import HeroOrbit from '../components/home/HeroOrbit'
 import CinematicScroll from '../components/home/CinematicScroll'
-import CinematicDissolve from '../components/home/CinematicDissolve'
 import { CASES } from '../data/cases'
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1]
@@ -205,8 +204,7 @@ export default function HomePage() {
          </div>
         </section>
 
-        {/* Cinematic image scale-down & dissolve transition */}
-        <CinematicDissolve />
+
 
         {/* ═══════════ WAS ICH MACHE ═══════════ */}
         <div ref={sectionRef} className="relative">

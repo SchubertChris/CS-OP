@@ -1,17 +1,13 @@
 /* ============================================================
-   CandleScope — Intro Animation (minimal)
+   CandleScope — Intro Animation (Cinematic Redesign)
    src/components/ui/IntroAnimation.tsx
-
-   Bewusst reduziert: nur Logo + Wortmarke darunter, kein
-   Container/Box. Sanfter Glow, Blur-In-Wortmarke (Echo zum
-   Hero), kurze Dauer, Klick zum Überspringen.
    ============================================================ */
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 
 const GOLD = '#C9A84C'
-const DISPLAY_MS = 2000
+const DISPLAY_MS = 2500
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1]
 
 const LOGO_PATHS = [
@@ -47,7 +43,7 @@ export default function IntroAnimation({ onComplete }: { onComplete: () => void 
     if (doneRef.current) return
     doneRef.current = true
     setVisible(false)
-    setTimeout(onComplete, 460)
+    setTimeout(onComplete, 850) // Matches the duration of exit animation
   }, [onComplete])
 
   useEffect(() => {
@@ -62,38 +58,42 @@ export default function IntroAnimation({ onComplete }: { onComplete: () => void 
       {visible && (
         <motion.div
           key="intro"
-          className="fixed inset-0 z-[300] flex flex-col items-center justify-center"
+          className="fixed inset-0 z-[300] flex flex-col items-center justify-center overflow-hidden"
           style={{ background: 'var(--cs-bg)', cursor: 'pointer' }}
           onClick={complete}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.45, ease: 'easeInOut' }}
+          exit={{ 
+            opacity: 0,
+            scale: 1.15,
+            filter: 'blur(30px)'
+          }}
+          transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
         >
-          {/* Glow hinter dem Logo — kein Container, nur Licht */}
+          {/* Subtle Golden Ambient Glow/Nebula */}
           <motion.div
             className="absolute pointer-events-none"
             style={{
-              width: 460, height: 460, borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(201,168,76,0.16), transparent 62%)',
+              width: '100vw', height: '100vh',
+              background: 'radial-gradient(circle at center, rgba(201,168,76,0.09) 0%, transparent 60%)',
             }}
-            initial={reduced ? false : { opacity: 0, scale: 0.85 }}
+            initial={{ opacity: 0, scale: 0.85 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, ease: EASE }}
+            transition={{ duration: 1.5, ease: EASE }}
           />
 
-          {/* Animated SVG logo drawing for entrance animation (smaller scale than in scroll, larger than 104px) */}
+          {/* Large Cinematic Outline Drawing SVG Logo */}
           <motion.svg
             version="1.1"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="25 20 960 900"
             className="relative"
             style={{
-              width: 220,
-              height: 220,
-              filter: 'drop-shadow(0 0 24px rgba(201,168,76,0.32))'
+              width: 320,
+              height: 320,
+              filter: 'drop-shadow(0 0 32px rgba(201,168,76,0.22)) drop-shadow(0 0 64px rgba(201,168,76,0.08))'
             }}
-            initial={reduced ? false : { opacity: 0, scale: 0.9, y: 6 }}
+            initial={reduced ? false : { opacity: 0, scale: 0.92, y: 8 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: EASE }}
+            transition={{ duration: 0.85, ease: EASE }}
           >
             {LOGO_PATHS.map((d, idx) => {
               const trans = LOGO_TRANSFORMS[idx]
@@ -109,30 +109,29 @@ export default function IntroAnimation({ onComplete }: { onComplete: () => void 
                   fill="none"
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: 1 }}
-                  transition={{ duration: 1.3, delay: 0.1 + idx * 0.05, ease: EASE }}
+                  transition={{ duration: 1.4, delay: 0.15 + idx * 0.05, ease: EASE }}
                 />
               )
             })}
           </motion.svg>
 
-          {/* Wortmarke */}
-          <motion.p
-            className="relative mt-6 font-display font-semibold uppercase"
-            style={{ fontSize: 'clamp(1.6rem,1rem+2vw,2.4rem)', letterSpacing: '0.2em', color: 'var(--cs-text)' }}
-            initial={reduced ? false : { opacity: 0, y: 14, filter: 'blur(12px)' }}
-            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-            transition={{ duration: 0.9, delay: 0.25, ease: EASE }}
+          {/* Wortmarke - Expanding Letter Spacing */}
+          <motion.h1
+            className="relative mt-8 font-display font-semibold uppercase text-[var(--cs-text)] text-[2.2rem] tracking-[0.2em]"
+            initial={reduced ? false : { opacity: 0, y: 12, filter: 'blur(8px)', letterSpacing: '0.2em' }}
+            animate={{ opacity: 1, y: 0, filter: 'blur(0px)', letterSpacing: '0.45em' }}
+            transition={{ duration: 1.3, delay: 0.35, ease: EASE }}
           >
             Candle<span style={{ color: GOLD }}>Scope</span>
-          </motion.p>
+          </motion.h1>
 
-          {/* feine Gold-Linie, zeichnet sich */}
+          {/* Fine golden animated split line */}
           <motion.span
-            className="relative mt-5 block"
-            style={{ height: 1, width: 180, background: `linear-gradient(90deg, transparent, ${GOLD}, transparent)`, transformOrigin: 'center' }}
+            className="relative mt-6 block"
+            style={{ height: 1.2, width: 220, background: `linear-gradient(90deg, transparent, ${GOLD}, transparent)`, transformOrigin: 'center' }}
             initial={reduced ? false : { scaleX: 0, opacity: 0 }}
             animate={{ scaleX: 1, opacity: 1 }}
-            transition={{ duration: 0.7, delay: 0.5, ease: EASE }}
+            transition={{ duration: 0.85, delay: 0.6, ease: EASE }}
           />
         </motion.div>
       )}
